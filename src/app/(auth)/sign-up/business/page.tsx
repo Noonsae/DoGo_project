@@ -1,9 +1,8 @@
-import React from 'react'
+'use client';
+import React from 'react';
 
 const signUpBusinessPage = () => {
-  return (
-    <div>page</div>
-  )
-}
+  return <div>page</div>;
+};
 
 export default signUpBusinessPage;

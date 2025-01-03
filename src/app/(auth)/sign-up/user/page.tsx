@@ -1,9 +1,8 @@
-import React from 'react'
+'use client';
+import React from 'react';
 
 const signUpUserPage = () => {
-  return (
-    <div>page</div>
-  )
-}
+  return <div>user sign page</div>;
+};
 
 export default signUpUserPage;
