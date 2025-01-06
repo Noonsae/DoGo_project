@@ -20,11 +20,11 @@ export default async function handleSignupAction({
   try {
     console.log('Step 1: Checking for existing user');
     const { data: existingUser, error: fetchError } = await supabaseAdmin
-      .from(role === 'admin' ? 'admins' : role === 'business' ? 'businesses' : 'customers')
+      .from('users')
       .select('id')
       .eq('email', email)
       .single();
- 
+
     if (fetchError && fetchError.code !== 'PGRST116') {
       throw new Error('데이터 조회 중 오류가 발생했습니다.');
     }
@@ -48,20 +48,18 @@ export default async function handleSignupAction({
       throw new Error('사용자 생성에 실패했습니다.');
     }
 
-    console.log('Step 3: Inserting into role-specific table');
-    const tableName = role === 'admin' ? 'admins' : role === 'business' ? 'businesses' : 'customers';
+    console.log('Step 3: Inserting into users table');
     const insertData = {
       id: userId,
       email,
-      phone,
+      phone_number: phone,
       role,
-      ...(role === 'admin' && { admin_name: name }),
-      ...(role === 'business' && { business_name: name }),
-      ...(role === 'user' && { customer_name: name })
+      ...(role === 'admin' && { user_name: name }),
+      ...(role === 'business' && { business_number: name }),
+      ...(role === 'user' && { nickname: name })
     };
-    console.log('Insert Data:', insertData);
 
-    const { error: insertError } = await supabaseAdmin.from(tableName).insert([insertData]);
+    const { error: insertError } = await supabaseAdmin.from('users').insert([insertData]);
 
     if (insertError) {
       throw new Error(insertError.message);
