@@ -1,7 +1,22 @@
+'use client';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { fetchHotels } from '../api/hotel/list/hotelsApi';
+import { HotelsDatabase } from '@/types/supabase/supabase-type';
+import Image from 'next/image';
+
+type Hotel = HotelsDatabase['public']['Tables']['hotels']['Row'];
 
 const hotelList = () => {
+  const [hotels, setHotels] = useState<Hotel[]>([]);
+
+  useEffect(() => {
+    const loadHotels = async () => {
+      const data = await fetchHotels();
+      setHotels(data);
+    };
+    loadHotels();
+  }, []);
   return (
     <>
       <div className="mx-[360px]">
@@ -108,8 +123,22 @@ const hotelList = () => {
           </aside>
 
           {/* 호텔 리스트 */}
-          <div className="flex-1 border border-gray-300 rounded-md p-6 "></div>
-          <Link href=""></Link>
+
+          <ul>
+            <p>총 {}개의 결과</p>
+            <p className="mt-3">적용 필터:</p>
+
+            <div className="flex-1 border border-gray-300 rounded-md p-6 w-full ">
+              <Link href="">
+                {hotels.map((hotel, index) => (
+                  <li className="w-[872px] h-[277px] mt-[32px] flex items-center" key={index}>
+                    <Image src={hotel.main_img_url} alt={hotel.name || 'Default Image'} width={325} height={245} />
+                    <h3>{hotel.name}</h3>
+                  </li>
+                ))}
+              </Link>
+            </div>
+          </ul>
         </div>
       </div>
     </>
