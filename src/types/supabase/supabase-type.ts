@@ -1,12 +1,326 @@
-// 수파베이스 파입 정리 파일입니다.
-// 테이블 마다 만들어주세요.
-
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never;
+      answers: {
+        Row: {
+          contact_id: string;
+          content: string;
+          created_at: string;
+          id: string;
+          user_id: string;
+        };
+        Insert: {
+          contact_id?: string;
+          content: string;
+          created_at?: string;
+          id?: string;
+          user_id?: string;
+        };
+        Update: {
+          contact_id?: string;
+          content?: string;
+          created_at?: string;
+          id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'answers_contact_id_fkey';
+            columns: ['contact_id'];
+            isOneToOne: false;
+            referencedRelation: 'contacts';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'answers_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          }
+        ];
+      };
+      bookings: {
+        Row: {
+          check_in_date: string;
+          check_out_date: string;
+          created_at: string;
+          id: string;
+          room_id: string;
+          status: string;
+          user_id: string;
+        };
+        Insert: {
+          check_in_date: string;
+          check_out_date: string;
+          created_at?: string;
+          id?: string;
+          room_id?: string;
+          status: string;
+          user_id?: string;
+        };
+        Update: {
+          check_in_date?: string;
+          check_out_date?: string;
+          created_at?: string;
+          id?: string;
+          room_id?: string;
+          status?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'bookings_room_id_fkey';
+            columns: ['room_id'];
+            isOneToOne: false;
+            referencedRelation: 'rooms';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'bookings_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          }
+        ];
+      };
+      contacts: {
+        Row: {
+          booking_id: string | null;
+          content: string;
+          created_at: string;
+          hotel_id: string | null;
+          id: string;
+          room_id: string | null;
+          title: string;
+          user_id: string | null;
+        };
+        Insert: {
+          booking_id?: string | null;
+          content: string;
+          created_at: string;
+          hotel_id?: string | null;
+          id?: string;
+          room_id?: string | null;
+          title: string;
+          user_id?: string | null;
+        };
+        Update: {
+          booking_id?: string | null;
+          content?: string;
+          created_at?: string;
+          hotel_id?: string | null;
+          id?: string;
+          room_id?: string | null;
+          title?: string;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'contacts_booking_id_fkey';
+            columns: ['booking_id'];
+            isOneToOne: false;
+            referencedRelation: 'bookings';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'contacts_hotel_id_fkey';
+            columns: ['hotel_id'];
+            isOneToOne: false;
+            referencedRelation: 'hotels';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'contacts_room_id_fkey';
+            columns: ['room_id'];
+            isOneToOne: false;
+            referencedRelation: 'rooms';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'contacts_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          }
+        ];
+      };
+      hotels: {
+        Row: {
+          address: string;
+          check_in: string;
+          check_out: string;
+          contact_id: string;
+          description: string;
+          hotel_img_url: Json | null;
+          id: string;
+          kind: string;
+          main_img_url: string;
+          min_price: number;
+          name: string;
+          stars: number;
+          user_id: string;
+        };
+        Insert: {
+          address: string;
+          check_in: string;
+          check_out: string;
+          contact_id?: string;
+          description: string;
+          hotel_img_url?: Json | null;
+          id?: string;
+          kind: string;
+          main_img_url: string;
+          min_price: number;
+          name: string;
+          stars: number;
+          user_id?: string;
+        };
+        Update: {
+          address?: string;
+          check_in?: string;
+          check_out?: string;
+          contact_id?: string;
+          description?: string;
+          hotel_img_url?: Json | null;
+          id?: string;
+          kind?: string;
+          main_img_url?: string;
+          min_price?: number;
+          name?: string;
+          stars?: number;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'hotels_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          }
+        ];
+      };
+      reviews: {
+        Row: {
+          comment: string;
+          created_at: string;
+          id: string;
+          rating: number;
+          review_img_url: Json | null;
+          room_id: string;
+          user_id: string;
+        };
+        Insert: {
+          comment: string;
+          created_at?: string;
+          id?: string;
+          rating: number;
+          review_img_url?: Json | null;
+          room_id?: string;
+          user_id?: string;
+        };
+        Update: {
+          comment?: string;
+          created_at?: string;
+          id?: string;
+          rating?: number;
+          review_img_url?: Json | null;
+          room_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'reviews_room_id_fkey';
+            columns: ['room_id'];
+            isOneToOne: false;
+            referencedRelation: 'rooms';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'reviews_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          }
+        ];
+      };
+      rooms: {
+        Row: {
+          bed_type: string;
+          hotel_id: string;
+          id: string;
+          price: number;
+          room_img_url: Json | null;
+          room_type: string;
+        };
+        Insert: {
+          bed_type: string;
+          hotel_id?: string;
+          id?: string;
+          price: number;
+          room_img_url?: Json | null;
+          room_type: string;
+        };
+        Update: {
+          bed_type?: string;
+          hotel_id?: string;
+          id?: string;
+          price?: number;
+          room_img_url?: Json | null;
+          room_type?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'rooms_hotel_id_fkey';
+            columns: ['hotel_id'];
+            isOneToOne: false;
+            referencedRelation: 'hotels';
+            referencedColumns: ['id'];
+          }
+        ];
+      };
+      users: {
+        Row: {
+          business_number: number | null;
+          created_at: string;
+          email: string;
+          id: string;
+          nickname: string | null;
+          phone_number: number;
+          role: string;
+          user_info: Json | null;
+          user_name: string;
+        };
+        Insert: {
+          business_number?: number | null;
+          created_at?: string;
+          email: string;
+          id?: string;
+          nickname?: string | null;
+          phone_number: number;
+          role: string;
+          user_info?: Json | null;
+          user_name: string;
+        };
+        Update: {
+          business_number?: number | null;
+          created_at?: string;
+          email?: string;
+          id?: string;
+          nickname?: string | null;
+          phone_number?: number;
+          role?: string;
+          user_info?: Json | null;
+          user_name?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;
@@ -107,35 +421,3 @@ export type CompositeTypes<
   : PublicCompositeTypeNameOrOptions extends keyof PublicSchema['CompositeTypes']
   ? PublicSchema['CompositeTypes'][PublicCompositeTypeNameOrOptions]
   : never;
-
-export interface UserMetadata {
-  email: string;
-  role: string;
-}
-
-export interface SupabaseUser {
-  id: string;
-  email: string;
-  created_at: string;
-  app_metadata: UserMetadata;
-}
-
-export interface SignUpProps {
-  email: string;
-
-  setEmail: React.Dispatch<React.SetStateAction<string>>;
-  password: string;
-  setPassword: React.Dispatch<React.SetStateAction<string>>;
-  phone: string;
-  setPhone: React.Dispatch<React.SetStateAction<string>>;
-  name: string; // 일반화된 필드
-  setName: React.Dispatch<React.SetStateAction<string>>;
-  // admin_name: string;
-  // setAdminName: React.Dispatch<React.SetStateAction<string>>;
-  // setCustomer_name: React.Dispatch<React.SetStateAction<string>>;
-  // customer_name: string;
-  businessNumber?: string; // 사업자 번호 추가 (optional)
-  setBusinessNumber?: React.Dispatch<React.SetStateAction<string>>;
-  error: string;
-  handleSignup: () => void;
-}
