@@ -1,6 +1,7 @@
 'use client';
 import { login } from '@/app/api/sign-in/route';
 import React, { useState } from 'react';
+import Swal from 'sweetalert2';
 
 const Signin = () => {
   const [activeTab, setActiveTab] = useState('user');
@@ -20,7 +21,9 @@ const Signin = () => {
       console.error('로그인 실패:', err.message);
       setError('로그인에 실패했습니다. 다시 시도해주세요.');
     }
+    Swal.fire('회원가입 성공!', 'success');
   };
+
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
