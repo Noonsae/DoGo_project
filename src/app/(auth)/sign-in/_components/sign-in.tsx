@@ -32,7 +32,20 @@ const Signin = () => {
           <h2>일반 회원 로그인</h2>
           <input type="email" placeholder="이메일" style={{ display: 'block', marginBottom: '10px' }} />
           <input type="password" placeholder="비밀번호" style={{ display: 'block', marginBottom: '10px' }} />
+          <div>
+            <button>아이디찾기 | </button>
+            <button> 비밀번호찾기</button>
+          </div>
           <button>로그인</button>
+          <div>
+            <div>계정이 없으신가요?</div>
+            <button>회원가입</button>
+          </div>
+
+          <p>간편로그인</p>
+          <button>카카오톡으로 시작하기</button>
+          <button>개인정보처리방침</button>
+          <button>이용약관</button>
         </div>
       )}
 
@@ -41,7 +54,20 @@ const Signin = () => {
           <h2>사업자 회원 로그인</h2>
           <input type="email" placeholder="사업자 이메일" style={{ display: 'block', marginBottom: '10px' }} />
           <input type="password" placeholder="비밀번호" style={{ display: 'block', marginBottom: '10px' }} />
+          <div>
+            <button>아이디찾기 | </button>
+            <button> 비밀번호찾기</button>
+          </div>
           <button>로그인</button>
+          <div>
+            <div>계정이 없으신가요?</div>
+            <button>회원가입</button>
+          </div>
+
+          <p>간편로그인</p>
+          <button>카카오톡으로 시작하기</button>
+          <button>개인정보처리방침</button>
+          <button>이용약관</button>
         </div>
       )}
     </div>
