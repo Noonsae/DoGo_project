@@ -9,12 +9,14 @@ export default async function handleSignupAction({
   password,
   name,
   phone,
+  business_number,
   role
 }: {
   email: string;
   password: string;
   name: string;
   phone: string;
+  business_number?: string; // 사업자 번호는 선택적
   role: 'admin' | 'business' | 'user';
 }) {
   try {
@@ -54,9 +56,9 @@ export default async function handleSignupAction({
       email,
       phone_number: phone,
       role,
-      ...(role === 'admin' && { user_name: name }),
-      ...(role === 'business' && { business_number: name }),
-      ...(role === 'user' && { nickname: name })
+      user_name: role === 'user' || role === 'admin' ? name : null,
+      business_number: role === 'business' ? business_number : null,
+      nickname: role === 'user' ? name : null
     };
 
     const { error: insertError } = await supabaseAdmin.from('users').insert([insertData]);

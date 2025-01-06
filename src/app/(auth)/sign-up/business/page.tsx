@@ -4,6 +4,7 @@ import { useState } from 'react';
 import useAuthStore from '@/store/useAuth';
 import Swal from 'sweetalert2';
 import SignUpBusiness from './_components/sign-up-business';
+import handleSignupAction from '../actions/handleSignupAction';
 
 export default function SignUpBusinessPage() {
   const [email, setEmail] = useState('');
@@ -17,20 +18,15 @@ export default function SignUpBusinessPage() {
 
   const handleSignup = async () => {
     try {
-      const response = await fetch('/api/sign-up/business', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email,
-          password,
-          name,
-          phone,
-          business_number: businessNumber,
-          role: 'business'
-        })
+      const result = await handleSignupAction({
+        email,
+        password,
+        name,
+        phone,
+        business_number: businessNumber,
+        role: 'business'
       });
 
-      const result = await response.json();
       if (!result.success) {
         setError(result.message);
         return;
@@ -45,12 +41,11 @@ export default function SignUpBusinessPage() {
       });
 
       Swal.fire('회원가입 성공!', result.message, 'success');
-    } catch (err) {
+    } catch (err: any) {
       setError('회원가입 중 오류가 발생했습니다.');
       console.error(err);
     }
   };
-
   return (
     <div>
       <SignUpBusiness
@@ -65,6 +60,7 @@ export default function SignUpBusinessPage() {
         businessNumber={businessNumber}
         setBusinessNumber={setBusinessNumber}
         error={error}
+        setError={setError}
         handleSignup={handleSignup}
       />
     </div>

@@ -1,42 +1,49 @@
 'use client';
-import useAuthStore from '@/store/useAuth';
-import React, { useState } from 'react';
-import Swal from 'sweetalert2';
-import handleSignupAction from '../actions/handleSignupAction';
-import SignUpUser from './_components/sign-up-user';
 
-const SignUpUserPage = () => {
+import { useState } from 'react';
+import useAuthStore from '@/store/useAuth';
+import Swal from 'sweetalert2';
+import SignUpUser from './_components/sign-up-user';
+import handleSignupAction from '../actions/handleSignupAction';
+
+export default function SignUpUserPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
-  const [customer_name, setCustomer_name] = useState('');
   const [error, setError] = useState('');
+  const [nickname, setNickname] = useState('');
   const setUser = useAuthStore((state) => state.setUser);
 
-  let debounceTimer: NodeJS.Timeout;
-
   const handleSignup = async () => {
-    if (debounceTimer) clearTimeout(debounceTimer);
+    try {
+      const result = await handleSignupAction({
+        email,
+        password,
+        name,
+        phone,
+        role: 'user' // 역할 지정
+      });
 
-    debounceTimer = setTimeout(async () => {
-      try {
-        const result = await handleSignupAction({
-          email,
-          password,
-          name: customer_name,
-          phone,
-          role: 'user'
-        });
-
-        Swal.fire('회원가입 성공!', result.message, 'success');
-        setUser({ email, customer_name, phone, role: 'user' });
-      } catch (err: any) {
-        console.error('Signup Error:', err.message);
-        setError(err.message || '회원가입 실패!');
+      if (!result.success) {
+        setError(result.message);
+        return;
       }
-    }, 500); // 500ms 디바운스
-  };
 
+      // store에 유저 정보 저장
+      setUser({
+        email,
+        name,
+        phone,
+        role: 'user'
+      });
+
+      Swal.fire('회원가입 성공!', result.message, 'success');
+    } catch (err: any) {
+      setError('회원가입 중 오류가 발생했습니다.');
+      console.error(err);
+    }
+  };
   return (
     <div>
       <SignUpUser
@@ -46,13 +53,14 @@ const SignUpUserPage = () => {
         setPassword={setPassword}
         phone={phone}
         setPhone={setPhone}
-        name={customer_name}
-        setName={setCustomer_name}
+        name={name}
+        nickname={nickname}
+        setNickname={setNickname}
+        setName={setName}
         error={error}
+        setError={setError}
         handleSignup={handleSignup}
       />
     </div>
   );
-};
-
-export default SignUpUserPage;
+}

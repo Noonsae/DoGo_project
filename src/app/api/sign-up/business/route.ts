@@ -63,12 +63,9 @@ export async function POST(request: Request) {
     ]);
 
     if (insertError) {
-      return NextResponse.json({ success: false, message: insertError.message }, { status: 400 });
+      return NextResponse.json({ error: insertError.message }, { status: 400 });
     }
-
-    return NextResponse.json({ success: true, message: '회원가입 성공!' }, { status: 201 });
-  } catch (error: any) {
-    console.error('Unhandled Error:', error.message);
-    return NextResponse.json({ success: false, message: '서버 에러 발생' }, { status: 500 });
+  
+    return NextResponse.json({ message: '회원가입 성공' }, { status: 201 });
   }
 }
