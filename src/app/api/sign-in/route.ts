@@ -1,28 +1,27 @@
 'use server';
-// 로그인 페이지 라우트 핸들러
 
-import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-
 import { serverSupabase } from '@/supabase/supabase-server';
 
-export async function login(formData: FormData) {
+export async function login(data: { email: string; password: string }) {
   const supabase = await serverSupabase();
 
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-  const data = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string
-  };
-
-  const { error } = await supabase.auth.signInWithPassword(data);
+  const { data: signInData, error } = await supabase.auth.signInWithPassword({
+    email: data.email,
+    password: data.password
+  });
 
   if (error) {
-    redirect('/error');
+    console.error('로그인 실패:', error.message);
+    redirect('/sign-in/error');
   }
 
-  revalidatePath('/', 'layout');
+  if (!signInData.user) {
+    console.error('사용자 정보 없음');
+    redirect('/sign-in/error');
+  }
+
+  console.log('로그인 성공:', signInData.user);
+
   redirect('/');
 }
-

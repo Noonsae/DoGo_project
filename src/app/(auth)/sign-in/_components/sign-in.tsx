@@ -1,8 +1,26 @@
 'use client';
+import { login } from '@/app/api/sign-in/route';
 import React, { useState } from 'react';
 
 const Signin = () => {
   const [activeTab, setActiveTab] = useState('user');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleLogin = async () => {
+    try {
+      if (!email || !password) {
+        setError('이메일과 비밀번호를 입력해주세요.');
+        return;
+      }
+
+      await login({ email, password });
+    } catch (err: any) {
+      console.error('로그인 실패:', err.message);
+      setError('로그인에 실패했습니다. 다시 시도해주세요.');
+    }
+  };
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
@@ -30,13 +48,25 @@ const Signin = () => {
       {activeTab === 'user' && (
         <div>
           <h2>일반 회원 로그인</h2>
-          <input type="email" placeholder="이메일" style={{ display: 'block', marginBottom: '10px' }} />
-          <input type="password" placeholder="비밀번호" style={{ display: 'block', marginBottom: '10px' }} />
+          <input
+            type="email"
+            placeholder="이메일"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            style={{ display: 'block', marginBottom: '10px' }}
+          />
+          <input
+            type="password"
+            placeholder="비밀번호"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            style={{ display: 'block', marginBottom: '10px' }}
+          />
           <div>
             <button>아이디찾기 | </button>
             <button> 비밀번호찾기</button>
           </div>
-          <button>로그인</button>
+          <button onClick={handleLogin}>로그인</button>
           <div>
             <div>계정이 없으신가요?</div>
             <button>회원가입</button>
