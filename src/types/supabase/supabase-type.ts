@@ -12,3 +12,16 @@ export interface SupabaseUser {
   created_at: string;
   app_metadata: UserMetadata;
 }
+
+export interface SignUpProps {
+  email: string;
+  setEmail: React.Dispatch<React.SetStateAction<string>>;
+  password: string;
+  setPassword: React.Dispatch<React.SetStateAction<string>>;
+  phone: string;
+  setPhone: React.Dispatch<React.SetStateAction<string>>;
+  admin_name: string;
+  setAdminName: React.Dispatch<React.SetStateAction<string>>;
+  error: string;
+  handleSignup: () => void;
+}

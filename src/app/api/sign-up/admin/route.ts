@@ -3,7 +3,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 
-// Supabase 서비스 역할 키를 사용하여 클라이언트 초기화
 const supabaseAdmin = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
 
 export async function POST(request: Request) {
@@ -20,7 +19,26 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: '이메일, 비밀번호, 관리자 이름은 필수 입력 사항입니다.' }, { status: 400 });
     }
 
-    console.log('Step 3: Registering user in auth');
+    // Step 3: 중복 이메일 체크
+    console.log('Step 3: Checking for existing admin');
+    const { data: existingAdmin, error: fetchError } = await supabaseAdmin
+      .from('admins')
+      .select('id')
+      .eq('email', email)
+      .single();
+
+    if (fetchError && fetchError.code !== 'PGRST116') {
+      console.error('Fetch Error:', fetchError.message);
+      return NextResponse.json({ error: '데이터 조회 중 오류가 발생했습니다.' }, { status: 500 });
+    }
+
+    if (existingAdmin) {
+      console.error('Validation Error: Duplicate admin email');
+      return NextResponse.json({ error: '이미 등록된 이메일입니다.' }, { status: 400 });
+    }
+
+    // Step 4: Auth 사용자 생성
+    console.log('Step 4: Registering user in auth');
     const { data: authData, error: authError } = await supabaseAdmin.auth.signUp({
       email,
       password
@@ -32,13 +50,13 @@ export async function POST(request: Request) {
     }
 
     const userId = authData.user?.id;
-    console.log('Step 4: User ID from auth:', userId);
 
     if (!userId) {
       console.error('User ID is missing after auth.signUp');
       return NextResponse.json({ error: '사용자 생성에 실패했습니다.' }, { status: 400 });
     }
 
+    // Step 5: Admins 테이블에 삽입
     console.log('Step 5: Inserting into admins table');
     const { error: insertError } = await supabaseAdmin.from('admins').insert([
       {
