@@ -2,7 +2,11 @@
 import React from 'react';
 
 const signUpUserPage = () => {
-  return <div>user sign page</div>;
+  return (
+    <div>
+      
+    </div>
+  );
 };
 
 export default signUpUserPage;
