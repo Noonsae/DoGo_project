@@ -1,9 +1,9 @@
 import { browserSupabase } from '@/supabase/supabase-client';
-import { HotelsDatabase } from '@/types/supabase/supabase-type';
+import { Tables } from '@/types/database.types';
 
-type Hotel = HotelsDatabase['public']['Tables']['hotels']['Row'];
+export type HotelsType = Tables<'hotels'>;
 
-export const fetchHotels = async (): Promise<Hotel[]> => {
+export const fetchHotels = async () => {
   const supabase = browserSupabase();
   const { data, error } = await supabase.from('hotels').select('*');
 
