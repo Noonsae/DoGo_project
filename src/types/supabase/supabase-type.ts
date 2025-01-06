@@ -20,8 +20,12 @@ export interface SignUpProps {
   setPassword: React.Dispatch<React.SetStateAction<string>>;
   phone: string;
   setPhone: React.Dispatch<React.SetStateAction<string>>;
-  admin_name: string;
-  setAdminName: React.Dispatch<React.SetStateAction<string>>;
+  name: string; // 일반화된 필드
+  setName: React.Dispatch<React.SetStateAction<string>>;
+  // admin_name: string;
+  // setAdminName: React.Dispatch<React.SetStateAction<string>>;
+  // setCustomer_name: React.Dispatch<React.SetStateAction<string>>;
+  // customer_name: string;
   error: string;
   handleSignup: () => void;
 }

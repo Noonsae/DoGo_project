@@ -1,4 +1,3 @@
-//서버액션 회원가입 재사용 코드입니다.
 'use server';
 
 import { createClient } from '@supabase/supabase-js';
@@ -19,7 +18,22 @@ export default async function handleSignupAction({
   role: 'admin' | 'business' | 'user';
 }) {
   try {
-    // Auth 사용자 생성
+    console.log('Step 1: Checking for existing user');
+    const { data: existingUser, error: fetchError } = await supabaseAdmin
+      .from(role === 'admin' ? 'admins' : role === 'business' ? 'businesses' : 'customers')
+      .select('id')
+      .eq('email', email)
+      .single();
+ 
+    if (fetchError && fetchError.code !== 'PGRST116') {
+      throw new Error('데이터 조회 중 오류가 발생했습니다.');
+    }
+
+    if (existingUser) {
+      throw new Error('이미 등록된 이메일입니다.');
+    }
+
+    console.log('Step 2: Creating user in Auth');
     const { data: authData, error: authError } = await supabaseAdmin.auth.signUp({
       email,
       password
@@ -34,8 +48,8 @@ export default async function handleSignupAction({
       throw new Error('사용자 생성에 실패했습니다.');
     }
 
-    // 역할별 테이블 이름과 데이터 구성
-    const tableName = role === 'admin' ? 'admins' : role === 'business' ? 'businesses' : 'users';
+    console.log('Step 3: Inserting into role-specific table');
+    const tableName = role === 'admin' ? 'admins' : role === 'business' ? 'businesses' : 'customers';
     const insertData = {
       id: userId,
       email,
@@ -43,19 +57,20 @@ export default async function handleSignupAction({
       role,
       ...(role === 'admin' && { admin_name: name }),
       ...(role === 'business' && { business_name: name }),
-      ...(role === 'user' && { user_name: name })
+      ...(role === 'user' && { customer_name: name })
     };
+    console.log('Insert Data:', insertData);
 
-    // 역할별 테이블에 데이터 삽입
     const { error: insertError } = await supabaseAdmin.from(tableName).insert([insertData]);
 
     if (insertError) {
       throw new Error(insertError.message);
     }
 
-    return { message: `${role} 회원가입 성공`, userId };
+    console.log('Step 4: Successfully inserted data');
+    return { success: true, message: `${role} 회원가입 성공` };
   } catch (error: any) {
     console.error('Signup Error:', error.message);
-    throw new Error(error.message);
+    return { success: false, message: error.message };
   }
 }
