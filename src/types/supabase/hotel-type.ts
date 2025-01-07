@@ -1,3 +1,3 @@
-import { Tables } from "./supabase-type";
+import { Tables } from './supabase-type';
 
 export type HotelType = Tables<'hotels'>;

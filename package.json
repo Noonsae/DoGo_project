@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "server": "json-server --watch --port 5432 db.json",
-    "genTypes": "supabase gen types typescript --project-id dsggwbvtcrwuopwelpxy --schema public > src>types>supabase>supabase-type.ts "
+    "genTypes": "supabase gen types typescript --project-id dsggwbvtcrwuopwelpxy --schema public > src/types/supabase/supabase-type.ts"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.1.15",
@@ -23,7 +23,7 @@
     "next": "14.2.21",
     "react": "^18",
     "react-dom": "^18",
-    "sweetalert2": "^11.15.9",
+    "sweetalert2": "^11.6.13",
     "swiper": "^11.2.0",
     "tailwindcss-textshadow": "^2.1.3",
     "zustand": "^5.0.2"
