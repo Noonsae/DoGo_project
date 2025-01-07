@@ -1,61 +1,47 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const AsideFilter = () => {
+interface FilterProps {
+  onFilterChange: (filters: { grade?: number }) => void;
+}
+
+const AsideFilter = ({ onFilterChange }: FilterProps) => {
+  const [selectedGrade, setSelectedGrade] = useState<number | null>(null);
+
+  const handleHotelGradeChange = (grade: number) => {
+    setSelectedGrade(grade);
+    onFilterChange({ grade });
+  };
+
   return (
-    <aside className="w-[266px] h-[1825px] p-4 border border-gray-300 rounded-md bg-gray-50">
+    <aside className="w-[266px] p-4 border border-gray-300 rounded-md bg-gray-50">
       <h2 className="text-lg font-bold mb-4">필터</h2>
+
+      {/* 호텔 성급 필터 */}
       <div className="mb-6">
-        <h3 className="text-md font-semibold mb-2">가격</h3>
-        {/* 가격 필터 */}
-        <input type="range" min="0" max="30000000" step="100000" className="w-full" />
-      </div>
-      <div className="mb-6">
-        <h3 className="text-md font-semibold mb-2">평점</h3>
-        {/* 평점 필터 */}
+        <h3 className="text-md font-semibold mb-2">호텔 성급</h3>
         <ul>
           <li>
-            <input type="radio" id="rating1" name="rating" />
-            <label htmlFor="rating1" className="ml-2">
-              5점
+            <input
+              type="radio"
+              id="rating-5"
+              name="rating"
+              onChange={() => handleHotelGradeChange(5)}
+              checked={selectedGrade === 5}
+            />
+            <label htmlFor="rating-5" className="ml-2">
+              5성
             </label>
           </li>
           <li>
-            <input type="radio" id="rating2" name="rating" />
-            <label htmlFor="rating2" className="ml-2">
-              4점 이상
-            </label>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <h3>침대 갯수</h3>
-        <li>
-          <input type="radio" id="rating3" name="rating" />
-          <label htmlFor="rating3">더블침대 1개</label>
-          <input type="radio" id="rating4" name="rating" />
-          <label htmlFor="rating4">침대 2개</label>
-        </li>
-        <li>
-          <input type="radio" id="rating5" name="rating" />
-          <label htmlFor="rating5">더블침대 2개</label>
-          <input type="radio" id="rating6" name="rating" />
-          <label htmlFor="rating6">침대 3개</label>
-        </li>
-      </div>
-      {/* 추가 필터 섹션 */}
-      <div>
-        <h3 className="text-md font-semibold mb-2">공용 시설</h3>
-        <ul>
-          <li>
-            <input type="checkbox" id="facility1" />
-            <label htmlFor="facility1" className="ml-2">
-              Wi-Fi
-            </label>
-          </li>
-          <li>
-            <input type="checkbox" id="facility2" />
-            <label htmlFor="facility2" className="ml-2">
-              주차장
+            <input
+              type="radio"
+              id="rating-4"
+              name="rating"
+              onChange={() => handleHotelGradeChange(4)}
+              checked={selectedGrade === 4}
+            />
+            <label htmlFor="rating-4" className="ml-2">
+              4성
             </label>
           </li>
         </ul>
