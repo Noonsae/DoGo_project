@@ -72,8 +72,8 @@ const Signin = () => {
     }
   };
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="p-8 bg-white shadow-lg rounded-lg w-[400px]">
+    <div className="flex justify-center items-center min-h-screen ">
+      <div className="p-8 bg-white  rounded-lg w-[400px]">
         <div className="flex justify-between mb-8">
           <button
             className={`pb-2 w-1/2 text-center ${activeTab === 'user' ? 'border-b-2 border-black' : 'text-gray-400'}`}
@@ -93,7 +93,6 @@ const Signin = () => {
 
         {activeTab === 'user' && (
           <div>
-            <h2 className="text-lg font-semibold mb-4">일반 회원 로그인</h2>
             <input
               type="email"
               placeholder="이메일"
@@ -141,7 +140,6 @@ const Signin = () => {
         {/* 사업자 회원 */}
         {activeTab === 'business' && (
           <div>
-            <h2 className="text-lg font-semibold mb-4">사업자 회원 로그인</h2>
             <input
               type="email"
               placeholder="사업자 이메일"
