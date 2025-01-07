@@ -1,13 +1,14 @@
-import { Database } from '@/types/database.types';
+import { Database } from '@/types/supabase/supabase-type';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
 export async function serverSupabase() {
   const cookieStore = await cookies();
 
-  return (
-    createServerClient <
-    Database>(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, {
+  return createServerClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
       cookies: {
         getAll() {
           return cookieStore.getAll();
@@ -22,6 +23,6 @@ export async function serverSupabase() {
           }
         }
       }
-    })
+    }
   );
 }
