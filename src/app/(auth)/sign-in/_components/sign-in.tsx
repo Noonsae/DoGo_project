@@ -3,7 +3,6 @@ import { login } from '@/app/api/sign-in/route';
 import { useAuthState } from '@/utils/isLogin';
 import { useRouter } from 'next/navigation';
 // import { logout } from '@/app/api/sign-out/route';
-
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 
@@ -13,7 +12,15 @@ const Signin = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const { setAuth } = useAuthState();
+
   const router = useRouter();
+
+  const handleKakaoLogin = () => {
+    const redirectTo = `https://dsggwbvtcrwuopwelpxy.supabase.co/auth/v1/authorize?provider=kakao`;
+
+    window.location.href = redirectTo;
+  };
+
   const handleLogin = async () => {
     try {
       if (!email || !password) {
@@ -71,6 +78,7 @@ const Signin = () => {
       console.error('activeTab 값이 올바르지 않습니다:', activeTab);
     }
   };
+
   return (
     <div className="flex justify-center items-center min-h-screen ">
       <div className="p-8 bg-white  rounded-lg w-[400px]">
@@ -129,7 +137,10 @@ const Signin = () => {
                 <span className="px-4 text-gray-500">간편 로그인</span>
                 <hr className="flex-grow border-t border-gray-300" />
               </div>
-              <button className="w-full bg-[#FEE500] text-black py-2 rounded-lg flex justify-center items-center gap-2 hover:text-gray-500 transition">
+              <button
+                className="w-full bg-[#FEE500] text-black py-2 rounded-lg flex justify-center items-center gap-2 hover:text-gray-500 transition"
+                onClick={handleKakaoLogin}
+              >
                 <span>카카오톡으로 시작하기</span>
               </button>
             </div>
@@ -173,7 +184,10 @@ const Signin = () => {
                 <span className="px-4 text-gray-500">간편 로그인</span>
                 <hr className="flex-grow border-t border-gray-300" />
               </div>
-              <button className="w-full bg-[#FEE500] text-black py-2 rounded-lg flex justify-center items-center gap-2 hover:text-gray-500 transition">
+              <button
+                onClick={handleKakaoLogin}
+                className="w-full bg-[#FEE500] text-black py-2 rounded-lg flex justify-center items-center gap-2 hover:text-gray-500 transition"
+              >
                 <span>카카오톡으로 시작하기</span>
               </button>
             </div>
