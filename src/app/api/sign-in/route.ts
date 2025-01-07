@@ -28,5 +28,7 @@ export async function login(data: { email: string; password: string }) {
   }
 
   console.log('로그인 성공:', signInData.user);
-  redirect('/');
+
+  // 로그인 성공 시 사용자 데이터를 반환
+  return { user: signInData.user };
 }
