@@ -129,7 +129,7 @@ const Signin = () => {
                 <span className="px-4 text-gray-500">간편 로그인</span>
                 <hr className="flex-grow border-t border-gray-300" />
               </div>
-              <button className="w-full bg-yellow-400 text-black py-2 rounded-lg flex justify-center items-center gap-2 hover:bg-yellow-500 transition">
+              <button className="w-full bg-[#FEE500] text-black py-2 rounded-lg flex justify-center items-center gap-2 hover:text-gray-500 transition">
                 <span>카카오톡으로 시작하기</span>
               </button>
             </div>
@@ -173,7 +173,7 @@ const Signin = () => {
                 <span className="px-4 text-gray-500">간편 로그인</span>
                 <hr className="flex-grow border-t border-gray-300" />
               </div>
-              <button className="w-full bg-yellow-400 text-black py-2 rounded-lg flex justify-center items-center gap-2 hover:bg-yellow-500 transition">
+              <button className="w-full bg-[#FEE500] text-black py-2 rounded-lg flex justify-center items-center gap-2 hover:text-gray-500 transition">
                 <span>카카오톡으로 시작하기</span>
               </button>
             </div>
