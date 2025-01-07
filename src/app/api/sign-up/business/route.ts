@@ -54,7 +54,7 @@ export async function POST(request: Request) {
       role: 'business',
       user_name,
       business_number,
-      user_info: null // 비즈니스 관련 추가 정보가 없으면 기본값으로 null 처리
+      user_info: null 
     }
   ]);
 
