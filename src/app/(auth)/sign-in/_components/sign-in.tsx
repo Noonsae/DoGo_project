@@ -1,5 +1,7 @@
 'use client';
 import { login } from '@/app/api/sign-in/route';
+// import { useRouter } from 'next/navigation';
+
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 
@@ -8,7 +10,7 @@ const Signin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-
+  // const router = useRouter();
   const handleLogin = async () => {
     try {
       if (!email || !password) {
@@ -16,12 +18,14 @@ const Signin = () => {
         return;
       }
 
-      await login({ email, password });
+      console.log('Login Request Data:', { email, password }); // 디버깅 추가
+      const response = await login({ email, password });
+
+      console.log('로그인 응답:', response); // 디버깅 추가
     } catch (err: any) {
       console.error('로그인 실패:', err.message);
       setError('로그인에 실패했습니다. 다시 시도해주세요.');
     }
-    Swal.fire('회원가입 성공!', 'success');
   };
 
   return (
