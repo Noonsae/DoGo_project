@@ -56,7 +56,7 @@ export default async function handleSignupAction({
       email,
       phone_number: phone,
       role,
-      user_name: role === 'user' || role === 'admin' ? name : null,
+      user_name: name,
       business_number: role === 'business' ? business_number : null,
       nickname: role === 'user' ? name : null
     };
