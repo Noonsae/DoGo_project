@@ -25,7 +25,7 @@ const Signin = () => {
       const response = await login({ email, password });
 
       if (!response || !response.user) {
-        throw new Error('로그인 응답 데이터가 없습니다.');
+        setError('로그인 응답 데이터가 없습니다.');
       }
 
       console.log('로그인 성공:', response); // 로그인 응답 확인
@@ -124,7 +124,11 @@ const Signin = () => {
               </button>
             </div>
             <div className="text-center mt-8">
-              <p className="text-gray-500 mb-2">간편 로그인</p>
+              <div className="flex items-center my-4">
+                <hr className="flex-grow border-t border-gray-300" />
+                <span className="px-4 text-gray-500">간편 로그인</span>
+                <hr className="flex-grow border-t border-gray-300" />
+              </div>
               <button className="w-full bg-yellow-400 text-black py-2 rounded-lg flex justify-center items-center gap-2 hover:bg-yellow-500 transition">
                 <span>카카오톡으로 시작하기</span>
               </button>
