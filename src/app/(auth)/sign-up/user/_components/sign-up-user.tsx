@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { SignUpProps } from '@/types/supabase/supabase-type';
 import Error from '../error';
+import { useRouter } from 'next/navigation';
 
 const SignUpUser: React.FC<SignUpProps> = ({
   email,
@@ -18,6 +19,7 @@ const SignUpUser: React.FC<SignUpProps> = ({
   handleSignup
 }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
+  const router = useRouter();
   const handlePasswordChange = (value: string) => {
     setPassword(value);
     if (confirmPassword && value !== confirmPassword) {
@@ -34,6 +36,10 @@ const SignUpUser: React.FC<SignUpProps> = ({
     } else {
       setError('');
     }
+  };
+
+  const handelSignIn = () => {
+    router.push('/sign-in');
   };
   return (
     <div className="flex justify-center items-center">
@@ -100,7 +106,8 @@ const SignUpUser: React.FC<SignUpProps> = ({
         >
           완료
         </button>
-
+        <span className="text-gray-500">이미 계정이 있으신가요?</span>
+        <button onClick={handelSignIn}>로그인</button>
         {error && <Error message={error} />}
       </div>
     </div>
