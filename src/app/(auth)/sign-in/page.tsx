@@ -1,9 +1,13 @@
-import React from 'react'
+'use client';
+
+import Signin from './_components/sign-in';
 
 const SignInPage = () => {
   return (
-    <div>page</div>
-  )
-}
+    <>
+      <Signin />
+    </>
+  );
+};
 
 export default SignInPage;
