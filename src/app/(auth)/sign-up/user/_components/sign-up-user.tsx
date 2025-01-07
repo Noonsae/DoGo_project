@@ -2,17 +2,17 @@ import React, { useState } from 'react';
 import { SignUpProps } from '@/types/supabase/supabase-type';
 import Error from '../error';
 
-const SignUpBusiness: React.FC<SignUpProps> = ({
+const SignUpUser: React.FC<SignUpProps> = ({
   email,
   setEmail,
   password,
   setPassword,
   phone,
   setPhone,
+  nickname,
+  setNickname,
   name,
   setName,
-  businessNumber,
-  setBusinessNumber,
   error,
   setError,
   handleSignup
@@ -37,8 +37,8 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
   };
   return (
     <div>
-      <h1>사업자 회원가입</h1>
-      <p>사업자 이메일</p>
+      <h1>일반회원 회원가입</h1>
+      <p>이메일</p>
       <input
         type="email"
         placeholder="이메일을 입력해주세요"
@@ -60,11 +60,7 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
         value={confirmPassword}
         onChange={(e) => handleConfirmPasswordChange(e.target.value)}
       />
-
-      <p>담당자 이름</p>
-      <input type="text" placeholder="이름을 입력해주세요" value={name} onChange={(e) => setName(e.target.value)} />
-
-      <p>담당자 번호</p>
+      <p>휴대폰 번호</p>
       <input
         type="tel"
         placeholder="휴대폰 번호을 입력해주세요"
@@ -72,12 +68,14 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
         onChange={(e) => setPhone(e.target.value)}
       />
 
-      <p>사업자 번호</p>
+      <p>이름</p>
+      <input type="text" placeholder="이름을 입력해주세요" value={name} onChange={(e) => setName(e.target.value)} />
+      <p>닉네임</p>
       <input
         type="text"
-        placeholder="사업자 번호을 입력해주세요"
-        value={businessNumber}
-        onChange={(e) => setBusinessNumber(e.target.value)}
+        placeholder="닉네임을 입력해주세요"
+        value={nickname}
+        onChange={(e) => setNickname(e.target.value)}
       />
 
       <button onClick={handleSignup}>완료</button>
@@ -86,4 +84,4 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
   );
 };
 
-export default SignUpBusiness;
+export default SignUpUser;

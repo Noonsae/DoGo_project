@@ -1,5 +1,5 @@
 import { browserSupabase } from '@/supabase/supabase-client';
-import { Tables } from '@/types/database.types';
+import { Tables } from '@/types/supabase/supabase-type';
 
 export type HotelsType = Tables<'hotels'>;
 
