@@ -2,7 +2,7 @@ import React from 'react';
 
 import SearchSectionList from './_components/SearchSection';
 import EventSection from './_components/EventSection';
-import RecommendedSectionList from './_components/RecommendedSectionList';
+import RecommendedSectionList from './_components/_contents/RecommendedSectionList';
 import HeroSection from './_components/HeroSection';
 
 const HomePage = () => {
