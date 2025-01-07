@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { SignUpProps } from '@/types/supabase/supabase-type';
 import Error from '../error';
@@ -18,6 +20,7 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
   handleSignup
 }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
+
   const handlePasswordChange = (value: string) => {
     setPassword(value);
     if (confirmPassword && value !== confirmPassword) {
@@ -35,6 +38,7 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
       setError('');
     }
   };
+
   return (
     <div>
       <h1>사업자 회원가입</h1>
@@ -49,14 +53,14 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
       <p>비밀번호</p>
       <input
         type="password"
-        placeholder="비밀번호을 입력해주세요"
+        placeholder="비밀번호를 입력해주세요"
         value={password}
         onChange={(e) => handlePasswordChange(e.target.value)}
       />
       <p>비밀번호 확인</p>
       <input
         type="password"
-        placeholder="비밀번호을 입력해주세요"
+        placeholder="비밀번호 확인을 입력해주세요"
         value={confirmPassword}
         onChange={(e) => handleConfirmPasswordChange(e.target.value)}
       />
@@ -67,7 +71,7 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
       <p>담당자 번호</p>
       <input
         type="tel"
-        placeholder="휴대폰 번호을 입력해주세요"
+        placeholder="휴대폰 번호를 입력해주세요"
         value={phone}
         onChange={(e) => setPhone(e.target.value)}
       />
@@ -75,7 +79,7 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
       <p>사업자 번호</p>
       <input
         type="text"
-        placeholder="사업자 번호을 입력해주세요"
+        placeholder="사업자 번호를 입력해주세요"
         value={businessNumber}
         onChange={(e) => setBusinessNumber(e.target.value)}
       />

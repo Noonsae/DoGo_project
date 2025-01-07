@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import useAuthStore from '@/store/useAuth';
 import Swal from 'sweetalert2';
-import SignUpBusiness from './_components/sign-up-business';
 import handleSignupAction from '../actions/handleSignupAction';
+import SignUpBusiness from './_components/sign-up-business';
 
 export default function SignUpBusinessPage() {
   const [email, setEmail] = useState('');
@@ -46,6 +46,7 @@ export default function SignUpBusinessPage() {
       console.error(err);
     }
   };
+
   return (
     <div>
       <SignUpBusiness
