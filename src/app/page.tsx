@@ -2,15 +2,15 @@ import React from 'react';
 
 import SearchSectionList from './_components/SearchSection';
 import EventSection from './_components/EventSection';
-import RecommendedSectionList from './_components/_contents/RecommendedSectionList';
+import ContentsList from './_components/_contents/ContentsList';
 import HeroSection from './_components/HeroSection';
 
 const HomePage = () => {
   return (
     <div className="">
-      <HeroSection/>
+      <HeroSection />
       <EventSection />
-      <RecommendedSectionList />
+      <ContentsList />
     </div>
   );
 };
