@@ -1,47 +1,67 @@
 'use client';
+
 import useAuthStore from '@/store/useAuth';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
+import { browserSupabase } from '@/supabase/supabase-client';
 
 const Signin = () => {
   const [activeTab, setActiveTab] = useState('user');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { setUser } = useAuthStore();
+  const { setUser, loadUserFromCookie } = useAuthStore(); // Zustand 상태 함수\
+
   const router = useRouter();
+
+  // 컴포넌트 마운트 시 쿠키에서 유저 정보를 로드
+  useEffect(() => {
+    loadUserFromCookie();
+  }, []);
 
   const handleLogin = async () => {
     try {
       if (!email || !password) {
         setError('이메일과 비밀번호를 입력해주세요.');
+        Swal.fire({
+          icon: 'warning',
+          title: '입력 오류',
+          text: '이메일과 비밀번호를 입력해주세요.',
+          confirmButtonText: '확인'
+        });
         return;
       }
 
-      const response = await fetch('/api/sign-in', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
+      // Supabase에서 직접 로그인 처리
+      const supabase = browserSupabase();
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
       });
 
-      const data = await response.json();
-
-      if (!response.ok || !data.user) {
+      if (error) {
+        console.error('로그인 실패:', error.message);
         setError('로그인 실패: 잘못된 이메일 또는 비밀번호입니다.');
+        Swal.fire({
+          icon: 'error',
+          title: '로그인 실패',
+          text: '잘못된 이메일 또는 비밀번호입니다.',
+          confirmButtonText: '확인'
+        });
         return;
       }
 
-      // 유저 정보를 Zustand와 로컬스토리지에 저장
+      console.log('로그인 성공:', data.user);
+
+      // Zustand 상태 업데이트 및 쿠키 저장
       setUser(data.user);
-      console.log('유저의 정보가 로컬스토리지에 저장됨:', data.user);
+      document.cookie = `user=${encodeURIComponent(JSON.stringify(data.user))}; path=/;`;
 
       Swal.fire({
         icon: 'success',
         title: '로그인 성공',
-        text: `${data.user.email}님 환영합니다!`,
+        text: `${data.user?.email}님 환영합니다!`,
         confirmButtonText: '확인'
       });
 
@@ -49,8 +69,15 @@ const Signin = () => {
     } catch (err: any) {
       console.error('로그인 실패:', err.message);
       setError('로그인에 실패했습니다. 다시 시도해주세요.');
+      Swal.fire({
+        icon: 'error',
+        title: '서버 오류',
+        text: '로그인에 실패했습니다. 다시 시도해주세요.',
+        confirmButtonText: '확인'
+      });
     }
   };
+
   const handleSignUpRoute = () => {
     if (activeTab === 'user') {
       router.push('/sign-up/user');
@@ -60,6 +87,7 @@ const Signin = () => {
       console.error('activeTab 값이 올바르지 않습니다:', activeTab);
     }
   };
+
   const handleKakaoLogin = () => {
     const redirectTo = `https://dsggwbvtcrwuopwelpxy.supabase.co/auth/v1/authorize?provider=kakao`; // Supabase OAuth URL
     window.location.href = redirectTo;
