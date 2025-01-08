@@ -1,10 +1,10 @@
-import React from 'react'
+import React from 'react';
 
 const Footer = () => {
   return (
     <div className="w-full h-[180px] py-[10px] bg-[#F9F9F9]">
       <p className="sr-only">Footer</p>
-      <div className="w-full max-w-[1200px] mx-auto px-[12px] text-[16px] text-[#666] font-regular">
+      <div className="w-full max-w-[1200px] mx-auto px-[12px] text-base text-[#666] font-normal">
         <div className="w-full h-[70px] flex flex-row justify-between items-center">
           <p>@ 2024 Dogo dev. 두게더</p>
           <ul className="flex flex-row justify-between items-center gap-8">
@@ -20,7 +20,7 @@ const Footer = () => {
           </ul>
         </div>
         <hr className="text-[#E6E6E6]" />
-        <div className="w-full h-[88px] text-[14px] text-[#999] font-regular py-[24px]">
+        <div className="w-full h-[88px] text-[14px] text-[#999] font-normal py-[24px]">
           <p>
             <span>사업자 등록 번호 : 000-00-0000</span> &nbsp; | &nbsp;
             <span>연락처 : test@test.com</span> &nbsp; | &nbsp;
@@ -31,6 +31,6 @@ const Footer = () => {
       </div>
     </div>
   );
-}
+};
 
-export default Footer
+export default Footer;
