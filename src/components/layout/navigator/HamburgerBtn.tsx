@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useClickAway } from 'react-use'; // 외부 클릭 감지를 위한 훅
 
-import { isLogins } from '@/utils/isLogin';
+import { isLogined } from '@/utils/isLogin';
 import NavigationMenuItem from './NavigatorMenuItem';
 
 const HamburgerBtn: React.FC = () => {
@@ -21,7 +21,7 @@ const HamburgerBtn: React.FC = () => {
   });
 
   // 로그인 상태에 따른 메뉴 항목
-  const menuItems = isLogins()
+  const menuItems = isLogined()
     ? [
         { href: '#', label: '로그아웃' }, // 로그인 상태일 때
         { href: '/event', label: 'Event' },

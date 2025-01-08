@@ -9,7 +9,16 @@ export const useAuthState = create<AuthState>((set) => ({
   setAuth: (auth) => set(auth)
 }));
 
-export const isLogins = () => {
+export const isLogined = () => {
   const { isAuthenticated } = useAuthState.getState();
   return isAuthenticated;
+};
+export const checkLoginStatus = () => {
+  const storedUser = localStorage.getItem('user');
+  return storedUser ? JSON.parse(storedUser) : null;
+};
+
+export const getAuthToken = () => {
+  const storedUser = checkLoginStatus();
+  return storedUser?.token || null;
 };

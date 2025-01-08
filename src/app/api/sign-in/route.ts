@@ -1,34 +1,30 @@
 'use server';
 
-import { redirect } from 'next/navigation';
+import { NextResponse } from 'next/server';
 import { serverSupabase } from '@/supabase/supabase-server';
 
-export async function login(data: { email: string; password: string }) {
-  const supabase = await serverSupabase();
+export async function POST(request: Request) {
+  try {
+    const { email, password } = await request.json(); // 클라이언트에서 전달한 데이터 파싱
+    const supabase = await serverSupabase();
 
-  console.log('Supabase 클라이언트 초기화 확인:', supabase); // 디버깅 추가
-  console.log('로그인 요청 데이터:', data); // 요청 데이터 확인
+    console.log('로그인 요청 데이터:', { email, password });
 
-  const { data: signInData, error } = await supabase.auth.signInWithPassword({
-    email: data.email,
-    password: data.password
-  });
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
 
-  console.log('signInWithPassword Data:', signInData); // 성공 시 사용자 데이터
-  console.log('signInWithPassword Error:', error); // 실패 시 에러 메시지
+    if (error) {
+      console.error('로그인 실패:', error.message);
+      return NextResponse.json({ error: error.message }, { status: 401 });
+    }
 
-  if (error) {
-    console.error('로그인 실패:', error.message);
-    redirect('/sign-in/error');
+    console.log('유저 데이터 조회 성공:', data.user);
+
+    return NextResponse.json({ user: data.user }, { status: 200 });
+  } catch (err: any) {
+    console.error('서버 오류:', err.message);
+    return NextResponse.json({ error: '서버 오류가 발생했습니다.' }, { status: 500 });
   }
-
-  if (!signInData?.user) {
-    console.error('사용자 정보 없음');
-    redirect('/sign-in/error');
-  }
-
-  console.log('로그인 성공:', signInData.user);
-
-  // 로그인 성공 시 사용자 데이터를 반환
-  return { user: signInData.user };
 }
