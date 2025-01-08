@@ -16,11 +16,10 @@ export default async function handleSignupAction({
   password: string;
   name: string;
   phone: string;
-  business_number?: string; // 사업자 번호는 선택적
+  business_number?: string;
   role: 'admin' | 'business' | 'user';
 }) {
   try {
-    console.log('Step 1: Checking for existing user');
     const { data: existingUser, error: fetchError } = await supabaseAdmin
       .from('users')
       .select('id')
@@ -35,7 +34,6 @@ export default async function handleSignupAction({
       throw new Error('이미 등록된 이메일입니다.');
     }
 
-    console.log('Step 2: Creating user in Auth');
     const { data: authData, error: authError } = await supabaseAdmin.auth.signUp({
       email,
       password
@@ -50,7 +48,6 @@ export default async function handleSignupAction({
       throw new Error('사용자 생성에 실패했습니다.');
     }
 
-    console.log('Step 3: Inserting into users table');
     const insertData = {
       id: userId,
       email,
@@ -67,7 +64,6 @@ export default async function handleSignupAction({
       throw new Error(insertError.message);
     }
 
-    console.log('Step 4: Successfully inserted data');
     return { success: true, message: `${role} 회원가입 성공` };
   } catch (error: any) {
     console.error('Signup Error:', error.message);
