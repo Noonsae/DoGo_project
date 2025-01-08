@@ -1,6 +1,5 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
 import AsideFilter from './_components/AsideFilter';
 import { HotelType } from '@/types/supabase/hotel-type';
 import Swal from 'sweetalert2';
@@ -10,7 +9,7 @@ import HotelCardList from './_components/HotelsCardList';
 const HotelList = () => {
   const [hotels, setHotels] = useState<HotelType[]>([]); // 호텔 데이터
   const [filteredHotels, setFilteredHotels] = useState<{ grade?: number } | undefined>(undefined); // 필터 상태
-  const [favoriteStatus, setFavoriteStatus] = useState<{ [key: number]: boolean }>({}); // 즐겨찾기 상태
+  const [favoriteStatus, setFavoriteStatus] = useState<{ [key: string]: boolean }>({}); // 즐겨찾기 상태
   const loadUserFromCookie = useAuthStore((state) => state.loadUserFromCookie);
   const user = useAuthStore((state) => state.user);
 
