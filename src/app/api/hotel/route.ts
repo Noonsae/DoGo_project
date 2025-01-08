@@ -16,9 +16,7 @@ export const GET = async (req: Request) => {
     if (grade) {
       query = query.eq('stars', Number(grade));
     }
-
     const { data, error } = await query;
-
     if (error) {
       console.error('Supabase Query Error:', error.message);
       return new Response(JSON.stringify({ error: error.message }), {
