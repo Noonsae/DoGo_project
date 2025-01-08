@@ -4,7 +4,7 @@ const Discover = () => {
  return (
    <section className="w-full max-w-[1200px] mx-auto h-[828px] py-[80px] pb-[120px]">
      <h3 className="text-[24px] font-semibold">이런 상품은 어떠세요? /title</h3>
-     <p className="text-[18px] font-regular">최근 본 호텔과 비슷한 분위기의 호텔을 추천해 드릴게요. /subtittle</p>
+     <p className="text-[18px] font-normal">최근 본 호텔과 비슷한 분위기의 호텔을 추천해 드릴게요. /subtittle</p>
 
      {/* 슬라이드로 구현될 예정 */}
      <div className="flex flex-row gap-2">
@@ -16,19 +16,19 @@ const Discover = () => {
        </button>
        <button
          type="button"
-         className="w-[80px] h-[44px] mr-[12px] mt-[28px] border border-[#CDCDCD] rounded-[8px] text-[18px] font-regular"
+         className="w-[80px] h-[44px] mr-[12px] mt-[28px] border border-[#CDCDCD] rounded-[8px] text-[18px] font-normal"
        >
          서울
        </button>
        <button
          type="button"
-         className="w-[80px] h-[44px] mr-[12px] mt-[28px] border border-[#CDCDCD] rounded-[8px] text-[18px] font-regular"
+         className="w-[80px] h-[44px] mr-[12px] mt-[28px] border border-[#CDCDCD] rounded-[8px] text-[18px] font-normal"
        >
          부산
        </button>
        <button
          type="button"
-         className="w-[80px] h-[44px] mr-[12px] mt-[28px] border border-[#CDCDCD] rounded-[8px] text-[18px] font-regular"
+         className="w-[80px] h-[44px] mr-[12px] mt-[28px] border border-[#CDCDCD] rounded-[8px] text-[18px] font-normal"
        >
          제주도
        </button>
