@@ -10,29 +10,6 @@ export interface SupabaseUser {
   app_metadata: UserMetadata;
 }
 
-export interface SignUpProps {
-  email: string;
-
-  setEmail: React.Dispatch<React.SetStateAction<string>>;
-  password: string;
-  setPassword: React.Dispatch<React.SetStateAction<string>>;
-  phone: string;
-  setPhone: React.Dispatch<React.SetStateAction<string>>;
-  name: string; // 일반화된 필드
-  setName: React.Dispatch<React.SetStateAction<string>>;
-  nickname: string;
-  setNickname: React.Dispatch<React.SetStateAction<string>>;
-  // admin_name: string;
-  // setAdminName: React.Dispatch<React.SetStateAction<string>>;
-  // setCustomer_name: React.Dispatch<React.SetStateAction<string>>;
-  // customer_name: string;
-  businessNumber?: string; // 사업자 번호 추가 (optional)
-  setBusinessNumber?: React.Dispatch<React.SetStateAction<string>>;
-  error: string;
-  setError: React.Dispatch<React.SetStateAction<string>>;
-  handleSignup: () => void;
-}
-
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
@@ -356,18 +333,55 @@ export type Database = {
         };
         Relationships: [];
       };
+      favorites: {
+        // 새로운 테이블 추가
+        Row: {
+          id: string; // 기본 키
+          created_at: string; // 생성 시점
+          hotel_id: string; // 외래 키: hotels 테이블의 id
+          user_id: string; // 외래 키: users 테이블의 id
+        };
+        Insert: {
+          id?: string; // 선택적으로 기본 키 설정
+          created_at?: string; // 선택적으로 생성 시점 설정
+          hotel_id: string; // 필수: hotels 테이블의 id
+          user_id: string; // 필수: users 테이블의 id
+        };
+        Update: {
+          id?: string; // 선택적으로 업데이트
+          created_at?: string; // 선택적으로 업데이트
+          hotel_id?: string; // 선택적으로 업데이트
+          user_id?: string; // 선택적으로 업데이트
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'favorites_hotel_id_fkey'; // 외래 키 이름
+            columns: ['hotel_id']; // 현재 테이블의 참조 열
+            isOneToOne: false; // 다대일 관계
+            referencedRelation: 'hotels'; // 참조 테이블
+            referencedColumns: ['id']; // 참조 테이블의 열
+          },
+          {
+            foreignKeyName: 'favorites_user_id_fkey'; // 외래 키 이름
+            columns: ['user_id']; // 현재 테이블의 참조 열
+            isOneToOne: false; // 다대일 관계
+            referencedRelation: 'users'; // 참조 테이블
+            referencedColumns: ['id']; // 참조 테이블의 열
+          }
+        ];
+      };
     };
     Views: {
-      [_ in never]: never;
+      /* ... */
     };
     Functions: {
-      [_ in never]: never;
+      /* ... */
     };
     Enums: {
-      [_ in never]: never;
+      /* ... */
     };
     CompositeTypes: {
-      [_ in never]: never;
+      /* ... */
     };
   };
 };
