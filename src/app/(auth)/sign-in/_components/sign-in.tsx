@@ -15,12 +15,6 @@ const Signin = () => {
 
   const router = useRouter();
 
-  const handleKakaoLogin = () => {
-    const redirectTo = `https://dsggwbvtcrwuopwelpxy.supabase.co/auth/v1/authorize?provider=kakao`;
-
-    window.location.href = redirectTo;
-  };
-
   const handleLogin = async () => {
     try {
       if (!email || !password) {
@@ -47,6 +41,7 @@ const Signin = () => {
         confirmButtonText: '확인'
       });
     } catch (err: any) {
+      router.push('/sign-in');
       console.error('로그인 실패:', err.message);
       setError('로그인에 실패했습니다. 다시 시도해주세요.');
 
@@ -78,7 +73,10 @@ const Signin = () => {
       console.error('activeTab 값이 올바르지 않습니다:', activeTab);
     }
   };
-
+  const handleKakaoLogin = () => {
+    const redirectTo = `https://dsggwbvtcrwuopwelpxy.supabase.co/auth/v1/authorize?provider=kakao`; // Supabase OAuth URL
+    window.location.href = redirectTo;
+  };
   return (
     <div className="flex justify-center items-center min-h-screen ">
       <div className="p-8 bg-white  rounded-lg w-[400px]">
@@ -100,38 +98,40 @@ const Signin = () => {
         </div>
 
         {activeTab === 'user' && (
-          <div>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleLogin();
+            }}
+          >
             <input
               type="email"
               placeholder="이메일"
               value={email}
-              className="w-full p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-black"
+              className="w-[378px] p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-black"
               onChange={(e) => setEmail(e.target.value)}
             />
             <input
               type="password"
               placeholder="비밀번호"
               value={password}
-              className="w-full p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-black"
+              className="w-[378px] p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-black"
               onChange={(e) => setPassword(e.target.value)}
             />
             <div className="flex justify-between text-sm text-gray-500 mb-4">
               <button>아이디 찾기</button>
               <button>비밀번호 찾기</button>
             </div>
-            <button
-              onClick={handleLogin}
-              className="w-full bg-[#7C7C7C] text-white py-2 rounded-lg hover:bg-[#a0a0a0] transition"
-            >
+            <button className="w-[378px] bg-[#7C7C7C] text-white py-2 rounded-lg hover:bg-[#a0a0a0] transition">
               로그인
             </button>
-            <div className="text-center mt-4">
+            <div className="text-center mt-4 w-[378px]">
               <span className="text-gray-500">계정이 없으신가요? </span>
               <button className="text-black font-semibold underline" onClick={handleSignUpRoute}>
                 회원가입
               </button>
             </div>
-            <div className="text-center mt-8">
+            <div className="text-center mt-8 w-[378px]">
               <div className="flex items-center my-4">
                 <hr className="flex-grow border-t border-gray-300" />
                 <span className="px-4 text-gray-500">간편 로그인</span>
@@ -141,62 +141,101 @@ const Signin = () => {
                 className="w-full bg-[#FEE500] text-black py-2 rounded-lg flex justify-center items-center gap-2 hover:text-gray-500 transition"
                 onClick={handleKakaoLogin}
               >
-                <span>카카오톡으로 시작하기</span>
+                <span className="flex items-center">
+                  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="48" height="48" rx="24" fill="#FEE500" />
+                    <g opacity="0.9">
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M24.0053 12C16.639 12 10.666 16.6391 10.666 22.3528C10.666 25.9099 12.9782 29.0446 16.4908 30.9121L15.0087 36.3442C14.8753 36.8259 15.4237 37.2112 15.8461 36.9296L22.3305 32.624C22.8789 32.6759 23.4347 32.7055 23.9979 32.7055C31.3641 32.7055 37.3371 28.0664 37.3371 22.3528C37.3371 16.6391 31.3715 12 24.0053 12Z"
+                        fill="black"
+                      />
+                    </g>
+                  </svg>
+                  카카오톡으로 시작하기
+                </span>
               </button>
             </div>
-            <div className="text-center mt-4 text-sm text-gray-400">
+            <div className="w-[378px] text-center mt-4 text-sm text-gray-400">
               <button>개인정보처리방침</button>
               <span className="mx-2">|</span>
               <button>이용약관</button>
             </div>
-          </div>
+          </form>
         )}
 
         {/* 사업자 회원 */}
         {activeTab === 'business' && (
-          <div>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleLogin();
+            }}
+          >
             <input
               type="email"
               placeholder="사업자 이메일"
-              className="w-full p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-black"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-[378px] p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-black"
             />
             <input
               type="password"
               placeholder="비밀번호"
-              className="w-full p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-black"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-[378px] p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-black"
             />
             <div className="flex justify-between text-sm text-gray-500 mb-4">
-              <button>아이디 찾기</button>
-              <button>비밀번호 찾기</button>
+              <button type="button">아이디 찾기</button>
+              <button type="button">비밀번호 찾기</button>
             </div>
-            <button className="w-full bg-[#7C7C7C] text-white py-2 rounded-lg hover:bg-[#a0a0a0] transition ">
+            <button
+              type="submit"
+              className="w-[378px] bg-[#7C7C7C] text-white py-2 rounded-lg hover:bg-[#a0a0a0] transition"
+            >
               로그인
             </button>
-            <div className="text-center mt-4">
+            <div className="text-center mt-4 w-[378px]">
               <span className="text-gray-500">계정이 없으신가요? </span>
-              <button className="text-black font-semibold underline" onClick={handleSignUpRoute}>
+              <button type="button" className="text-black font-semibold underline" onClick={handleSignUpRoute}>
                 회원가입
               </button>
             </div>
-            <div className="text-center mt-8">
+            <div className="text-center mt-8 w-[378px]">
               <div className="flex items-center my-4">
                 <hr className="flex-grow border-t border-gray-300" />
                 <span className="px-4 text-gray-500">간편 로그인</span>
                 <hr className="flex-grow border-t border-gray-300" />
               </div>
               <button
+                type="button"
                 onClick={handleKakaoLogin}
                 className="w-full bg-[#FEE500] text-black py-2 rounded-lg flex justify-center items-center gap-2 hover:text-gray-500 transition"
               >
-                <span>카카오톡으로 시작하기</span>
+                <span className="flex items-center">
+                  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="48" height="48" rx="24" fill="#FEE500" />
+                    <g opacity="0.9">
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M24.0053 12C16.639 12 10.666 16.6391 10.666 22.3528C10.666 25.9099 12.9782 29.0446 16.4908 30.9121L15.0087 36.3442C14.8753 36.8259 15.4237 37.2112 15.8461 36.9296L22.3305 32.624C22.8789 32.6759 23.4347 32.7055 23.9979 32.7055C31.3641 32.7055 37.3371 28.0664 37.3371 22.3528C37.3371 16.6391 31.3715 12 24.0053 12Z"
+                        fill="black"
+                      />
+                    </g>
+                  </svg>
+                  카카오톡으로 시작하기
+                </span>
               </button>
             </div>
-            <div className="text-center mt-4 text-sm text-gray-400">
-              <button>개인정보처리방침</button>
+            <div className="w-[378px] text-center mt-4 text-sm text-gray-400">
+              <button type="button">개인정보처리방침</button>
               <span className="mx-2">|</span>
-              <button>이용약관</button>
+              <button type="button">이용약관</button>
             </div>
-          </div>
+          </form>
         )}
       </div>
     </div>

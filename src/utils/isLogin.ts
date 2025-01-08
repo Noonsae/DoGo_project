@@ -9,7 +9,7 @@ export const useAuthState = create<AuthState>((set) => ({
   setAuth: (auth) => set(auth)
 }));
 
-export const isLogins = () => {
+export const isLogined = () => {
   const { isAuthenticated } = useAuthState.getState();
   return isAuthenticated;
 };
