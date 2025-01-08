@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { SignUpProps } from '@/types/supabase/supabase-type';
+import { SignUpProps } from '@/types/supabase/supabase-sign-up-type';
 import Error from '../error';
 import { useRouter } from 'next/navigation';
+import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
 
 const SignUpUser: React.FC<SignUpProps> = ({
   email,
@@ -19,7 +20,11 @@ const SignUpUser: React.FC<SignUpProps> = ({
   handleSignup
 }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const router = useRouter();
+
   const handlePasswordChange = (value: string) => {
     setPassword(value);
     if (confirmPassword && value !== confirmPassword) {
@@ -56,32 +61,52 @@ const SignUpUser: React.FC<SignUpProps> = ({
         />
 
         <p className="mb-2">비밀번호</p>
-        <input
-          type="password"
-          placeholder="비밀번호를 입력해주세요"
-          value={password}
-          onChange={(e) => handlePasswordChange(e.target.value)}
-          className="w-full p-2 border border-gray-300 rounded mb-4"
-        />
+        <div className="relative">
+          <input
+            type={showPassword ? 'text' : 'password'}
+            placeholder="비밀번호를 입력해주세요"
+            value={password}
+            onChange={(e) => handlePasswordChange(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded mb-4 pr-10"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)} // 첫 번째 상태 토글
+            className="absolute right-2 top-2 text-gray-600"
+          >
+            {showPassword ? <IoMdEyeOff size={24} /> : <IoMdEye size={24} />}
+          </button>
+        </div>
 
         <p className="mb-2">비밀번호 확인</p>
-        <input
-          type="password"
-          placeholder="비밀번호를 다시 입력해주세요"
-          value={confirmPassword}
-          onChange={(e) => handleConfirmPasswordChange(e.target.value)}
-          className="w-full p-2 border border-gray-300 rounded mb-4"
-        />
+        <div className="relative">
+          <input
+            type={showConfirmPassword ? 'text' : 'password'}
+            placeholder="비밀번호를 다시 입력해주세요"
+            value={confirmPassword}
+            onChange={(e) => handleConfirmPasswordChange(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded mb-4 pr-10"
+          />
+          <button
+            type="button"
+            onClick={() => setShowConfirmPassword((prev) => !prev)} // 두 번째 상태 토글
+            className="absolute right-2 top-2 text-gray-600"
+          >
+            {showConfirmPassword ? <IoMdEyeOff size={24} /> : <IoMdEye size={24} />}
+          </button>
+        </div>
 
         <p className="mb-2">휴대폰 번호</p>
-        <input
-          type="tel"
-          placeholder="휴대폰 번호를 입력해주세요"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          className="w-full p-2 border border-gray-300 rounded mb-4"
-        />
 
+        <div>
+          <input
+            type="tel"
+            placeholder="휴대폰 번호를 입력해주세요"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded mb-4"
+          />
+        </div>
         <p className="mb-2">이름</p>
         <input
           type="text"
