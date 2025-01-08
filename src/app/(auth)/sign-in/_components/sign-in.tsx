@@ -157,7 +157,7 @@ const Signin = () => {
                 onClick={handleKakaoLogin}
               >
                 <span className="flex items-center">
-                  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg width="40" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect width="48" height="48" rx="24" fill="#FEE500" />
                     <g opacity="0.9">
                       <path
@@ -230,7 +230,7 @@ const Signin = () => {
                 className="w-full bg-[#FEE500] text-black py-2 rounded-lg flex justify-center items-center gap-2 hover:text-gray-500 transition"
               >
                 <span className="flex items-center">
-                  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg width="40" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect width="48" height="48" rx="24" fill="#FEE500" />
                     <g opacity="0.9">
                       <path
