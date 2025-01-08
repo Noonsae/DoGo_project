@@ -5,8 +5,7 @@ export const fetchHotels = async () => {
 
   const { data, error } = await supabase
     .from('hotels')
-    .select('id, main_img_url, name, address, stars, rooms(price)')
-    .order('name', { ascending: true });
+    .select('*, rooms(price)');
 
   if (error) {
     throw new Error(error.message); // API Route에서 오류를 처리할 수 있도록 에러를 던짐
@@ -21,6 +20,7 @@ export const fetchHotels = async () => {
     stars: hotel.stars,
     min_price: Math.min(...hotel.rooms.map((room) => room.price))
   }));
+
 
   return hotels;
 };
