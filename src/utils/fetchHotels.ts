@@ -1,5 +1,4 @@
 import { NextApiResponse } from 'next';
-
 import { serverSupabase } from '@/supabase/supabase-server';
 
 const fetchHotels = async (res: NextApiResponse) => {
