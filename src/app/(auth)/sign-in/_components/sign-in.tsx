@@ -1,8 +1,6 @@
 'use client';
-import { login } from '@/app/api/sign-in/route';
-import { useAuthState } from '@/utils/isLogin';
+import useAuthStore from '@/store/useAuth';
 import { useRouter } from 'next/navigation';
-// import { logout } from '@/app/api/sign-out/route';
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 
@@ -11,8 +9,7 @@ const Signin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { setAuth } = useAuthState();
-
+  const { setUser } = useAuthStore();
   const router = useRouter();
 
   const handleLogin = async () => {
@@ -22,48 +19,38 @@ const Signin = () => {
         return;
       }
 
-      console.log('Login Request Data:', { email, password }); // 디버깅 추가
-      const response = await login({ email, password });
+      const response = await fetch('/api/sign-in', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      });
 
-      if (!response || !response.user) {
-        setError('로그인 응답 데이터가 없습니다.');
+      const data = await response.json();
+
+      if (!response.ok || !data.user) {
+        setError('로그인 실패: 잘못된 이메일 또는 비밀번호입니다.');
+        return;
       }
 
-      console.log('로그인 성공:', response); // 로그인 응답 확인
-
-      // Zustand 상태 업데이트 및 알림 표시
-      setAuth({ isAuthenticated: true, user: response.user });
+      // 유저 정보를 Zustand와 로컬스토리지에 저장
+      setUser(data.user);
+      console.log('유저의 정보가 로컬스토리지에 저장됨:', data.user);
 
       Swal.fire({
         icon: 'success',
         title: '로그인 성공',
-        text: `${response.user.email}님 환영합니다!`,
+        text: `${data.user.email}님 환영합니다!`,
         confirmButtonText: '확인'
       });
+
+      router.push('/'); // 로그인 후 메인 페이지로 이동
     } catch (err: any) {
-      router.push('/sign-in');
       console.error('로그인 실패:', err.message);
       setError('로그인에 실패했습니다. 다시 시도해주세요.');
-
-      Swal.fire({
-        icon: 'error',
-        title: '로그인 실패',
-        text: '로그인에 실패했습니다. 다시 시도해주세요.',
-        confirmButtonText: '확인'
-      });
     }
   };
-
-  //로그아웃
-  //  const handleLogout = async () => {
-  //   try {
-  //     await logout();
-  //     setAuth({ isAuthenticated: false, user: null });
-  //     console.log('로그아웃 성공');
-  //   } catch (err: any) {
-  //     console.error('로그아웃 실패:', err.message);
-  //   }
-  // };
   const handleSignUpRoute = () => {
     if (activeTab === 'user') {
       router.push('/sign-up/user');

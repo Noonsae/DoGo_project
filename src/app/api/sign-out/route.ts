@@ -1,17 +1,14 @@
 'use server';
 
-import { serverSupabase } from '@/supabase/supabase-server';
+import { redirect } from 'next/navigation';
 
 export async function logout() {
-  const supabase = await serverSupabase();
-  const { error } = await supabase.auth.signOut();
-
-  if (error) {
-    console.error('로그아웃 실패:', error.message);
+  try {
+    localStorage.removeItem('user'); // localStorage에서 유저 정보 삭제
+    console.log('User logged out');
+    redirect('/sign-in');
+  } catch (error) {
+    console.error('로그아웃 실패:', error);
     throw new Error('로그아웃에 실패했습니다.');
   }
-
-  return { success: true };
 }
-
-// 헤더에 넣어야 해서 아직 수정중
