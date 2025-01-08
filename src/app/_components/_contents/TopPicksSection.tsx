@@ -72,7 +72,7 @@ const TopPicksSection = () => {
               <span className="text-[#9E9E9E]"> (3,222) </span>
             </p>
             <p className="w-full mt-[24px] text-right text-[24px]-black font-semibold">
-              <span className="font-[16px] text-[#5b5b5b] font-medium mr-1">Sale%</span>
+              <span className="text-base text-[#5b5b5b] font-medium mr-1">Sale%</span>
               {(hotel.min_price ?? 0).toLocaleString()}원
             </p>
           </div>
