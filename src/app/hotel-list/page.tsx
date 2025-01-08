@@ -2,46 +2,61 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import AsideFilter from './_components/AsideFilter';
-import { addFavorite, removeFavorite } from '../api/hotel/favorites/FavoritesApi';
 import { HotelType } from '@/types/supabase/hotel-type';
-import useAuthStore from '@/store/useAuth';
 import Swal from 'sweetalert2';
+import useAuthStore from '@/store/useAuth';
 
 const HotelList = () => {
   const [hotels, setHotels] = useState<HotelType[]>([]); // 호텔 데이터
-  const [filteredHotels, setFilteredHotels] = useState<number | null>(null); // 필터 상태
-  const [favoriteStatus, setFavoriteStatus] = useState<{ FavoritesType: boolean }>({}); // 즐겨찾기 상태
+  const [filteredHotels, setFilteredHotels] = useState<{ grade?: number } | null>(null); // 필터 상태
+  const [favoriteStatus, setFavoriteStatus] = useState<{ [key: number]: boolean }>({}); // 즐겨찾기 상태
+  const loadUserFromCookie = useAuthStore((state) => state.loadUserFromCookie);
+  const user = useAuthStore((state) => state.user);
 
-  const { user } = useAuthStore(); // 사용자 인증 상태
-  const userId = user;
+  // 유저 정보 로드
+  useEffect(() => {
+    loadUserFromCookie();
+  }, []);
 
-  // API로 호텔 데이터 가져오기
-  const loadHotels = async (appliedFilters?: { grade?: number }) => {
+  // 필터 및 유저 상태 변경 감지
+  useEffect(() => {
+    if (user) {
+      loadHotelsAndFavorites(filteredHotels);
+    }
+  }, [user, filteredHotels]);
+
+  // 호텔 및 즐겨찾기 상태 로드
+  const loadHotelsAndFavorites = async (filters?: { grade?: number }) => {
     try {
-      const queryString = appliedFilters ? `?${new URLSearchParams(appliedFilters as any).toString()}` : '';
+      // 1. 필터 적용된 호텔 데이터 가져오기
+      const queryString = filters ? `?${new URLSearchParams(filters as any).toString()}` : '';
       const response = await fetch(`/api/hotel${queryString}`);
       if (!response.ok) throw new Error('Failed to fetch hotels');
-      const data = await response.json();
-      setHotels(data);
+      const hotelsData = await response.json();
+      setHotels(hotelsData);
+
+      // 2. 유저의 즐겨찾기 상태 가져오기
+      if (user) {
+        const favoriteStatuses: { [key: number]: boolean } = {};
+        for (const hotel of hotelsData) {
+          const res = await fetch('/api/favorites', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'check', userId: user.id, hotelId: hotel.id })
+          });
+          const { isFavorite } = await res.json();
+          favoriteStatuses[hotel.id] = isFavorite;
+        }
+        setFavoriteStatus(favoriteStatuses);
+      }
     } catch (error) {
-      console.error('Error fetching hotels:', error);
+      console.error('Error loading hotels or favorites:', error);
     }
   };
 
-  // 필터 변경 시 호출
-  const handleFilterChange = (newFilters: { grade?: number }) => {
-    setFilteredHotels((prevFilters) => ({ ...prevFilters, ...newFilters }));
-    loadHotels(newFilters); // 필터 적용 후 호텔 로드
-  };
-
-  // 컴포넌트 초기 로드 시 실행
-  useEffect(() => {
-    loadHotels();
-  }, []);
-
-  // 즐겨찾기 토글 함수
+  // 즐겨찾기 토글
   const toggleFavorite = async (hotelId: number) => {
-    if (!userId) {
+    if (!user) {
       Swal.fire({
         title: '로그인이 필요합니다.',
         text: '회원 정보를 확인할 수 없습니다. 로그인 후 이용해 주세요.',
@@ -51,16 +66,30 @@ const HotelList = () => {
     }
 
     try {
-      if (favoriteStatus[hotelId]) {
-        await removeFavorite(userId, hotelId); // 즐겨찾기 제거
-        setFavoriteStatus((prev) => ({ ...prev, [hotelId]: false }));
-      } else {
-        await addFavorite(userId, hotelId); // 즐겨찾기 추가
-        setFavoriteStatus((prev) => ({ ...prev, [hotelId]: true }));
+      const action = favoriteStatus[hotelId] ? 'remove' : 'add';
+      const res = await fetch('/api/favorites', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action, userId: user.id, hotelId })
+      });
+
+      if (!res.ok) throw new Error('Failed to update favorite status');
+      const { success } = await res.json();
+      if (success) {
+        setFavoriteStatus((prev) => ({ ...prev, [hotelId]: !prev[hotelId] }));
       }
     } catch (error) {
-      console.error('Error toggling favorite:', error);
+      Swal.fire({
+        title: '오류 발생',
+        text: '즐겨찾기 상태를 변경하는 중 오류가 발생했습니다.',
+        confirmButtonText: '확인'
+      });
     }
+  };
+
+  // 필터 변경 시 호출
+  const handleFilterChange = (newFilters: { grade?: number }) => {
+    setFilteredHotels(newFilters);
   };
 
   // 별 렌더링
