@@ -1,20 +1,31 @@
 'use client';
-import React from 'react';
-import useAuthStore from '@/store/useAuth';
 
-const ProfilePage = () => {
-  const user = useAuthStore((state) => state.user);
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-  if (!user) {
-    return <div>로그인하지 않았습니다.</div>;
-  }
+export default function ProfilePage() {
+  const [user, setUser] = useState<any>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    } else {
+      router.push('/sign-in');
+    }
+  }, [router]);
 
   return (
     <div>
-      <h2>환영합니다, {user.email}님!</h2>
-      <p>유저 ID: {user.id}</p>
+      {user ? (
+        <div>
+          <h1>환영합니다 , {user.email}</h1>
+          <p> {user.id}</p>
+        </div>
+      ) : (
+        <p>Loading...</p>
+      )}
     </div>
   );
-};
-
-export default ProfilePage;
+}

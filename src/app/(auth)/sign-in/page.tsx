@@ -1,4 +1,4 @@
-'use client';
+
 
 import Signin from './_components/sign-in';
 
