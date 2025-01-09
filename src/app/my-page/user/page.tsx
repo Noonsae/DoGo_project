@@ -4,7 +4,7 @@
 import { createClient } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
 
-import UserSidebar from '@/app/my-page/_components/usersidebar';
+import UserSidebar from '@/app/my-page/_components/usersidebar'
 // import ProfileContent from '../_components/ProfileContent';
 import BookingsContent from '../_components/BookingsContent';
 //import FavoritesContent from '../_components/FavoritesContent';
