@@ -10,16 +10,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: '이름과 휴대폰 번호는 필수입니다.' }, { status: 400 });
     }
 
-    // 서버 전용 Supabase 클라이언트 초기화
     const supabase = browserSupabase({ headers: request.headers, cookies });
 
-    // Supabase에서 데이터 조회
     const { data, error } = await supabase
-      .from('users') // 'users' 테이블 이름
-      .select('email') // 가져올 필드
+      .from('users')
+      .select('email')
       .eq('user_name', name)
       .eq('phone_number', phone)
-      .single(); // 단일 레코드 가져오기
+      .single();
 
     if (error || !data) {
       return NextResponse.json({ error: '입력한 정보와 일치하는 이메일을 찾을 수 없습니다.' }, { status: 404 });

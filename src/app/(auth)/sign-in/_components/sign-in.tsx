@@ -6,12 +6,18 @@ import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import { browserSupabase } from '@/supabase/supabase-client';
 import KakaoSignIn from './kakao-sign-in';
+import FindIdModal from './find-id-modal';
 
 const Signin = () => {
   const [activeTab, setActiveTab] = useState('user');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { setUser } = useAuthStore();
+  const [isFindIdModalOpen, setIsFindIdModalOpen] = useState(false);
+
+  const openFindIdModal = () => setIsFindIdModalOpen(true);
+  const closeFindIdModal = () => setIsFindIdModalOpen(false);
+
   const router = useRouter();
 
   const handleLogin = async () => {
@@ -70,7 +76,9 @@ const Signin = () => {
   const findId = () => {
     router.push('/find-id');
   };
-
+  const findPassword = () => {
+    router.push('/find-password');
+  };
   return (
     <div className="flex justify-center items-center min-h-screen ">
       <div className="p-8 bg-white  rounded-lg w-[400px]">
@@ -114,10 +122,12 @@ const Signin = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
               <div className="flex justify-between text-sm text-gray-500 mb-4">
-                <button type="button" onClick={findId} className="hover:underline">
+                <button type="button" onClick={openFindIdModal} className="hover:underline">
                   아이디 찾기
                 </button>
-                <button type="button">비밀번호 찾기</button>
+                <button type="button" onClick={findPassword} className="hover:underline">
+                  비밀번호 찾기
+                </button>
               </div>
               <button className="w-[378px] bg-[#7C7C7C] text-white py-2 rounded-lg hover:bg-[#a0a0a0] transition">
                 로그인
@@ -129,6 +139,7 @@ const Signin = () => {
                 </button>
               </div>
             </form>
+            {isFindIdModalOpen && <FindIdModal onClose={closeFindIdModal} />}
             {/* 간편 로그인 버튼 (form 태그 바깥) */}
             <div className="text-center mt-8 w-[378px]">
               <div className="flex items-center my-4">
@@ -170,10 +181,12 @@ const Signin = () => {
                 className="w-[378px] p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-black"
               />
               <div className="flex justify-between text-sm text-gray-500 mb-4">
-                <button type="button" onClick={findId} className="hover:underline">
+                <button type="button" onClick={openFindIdModal} className="hover:underline">
                   아이디 찾기
                 </button>
-                <button type="button">비밀번호 찾기</button>
+                <button type="button" onClick={findPassword} className="hover:underline">
+                  비밀번호 찾기
+                </button>
               </div>
               <button
                 type="submit"
