@@ -45,6 +45,14 @@ const AsideFilter = ({ onFilterChange }: FilterProps) => {
             </label>
           </li>
         </ul>
+        <h3 className="text-md font-semibold mb-2">룸 등급</h3>
+        <ul>
+          <li>
+            <button>Deluxe</button>
+            <button>Suite</button>
+            <button>Executive</button>
+          </li>
+        </ul>
       </div>
     </aside>
   );
