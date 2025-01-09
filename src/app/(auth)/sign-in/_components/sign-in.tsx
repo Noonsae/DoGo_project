@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { browserSupabase } from '@/supabase/supabase-client';
+import { useSessionCheck } from '@/hooks/kakaoSignIn/useSessionCheck';
 
 const Signin = () => {
   const [activeTab, setActiveTab] = useState('user');
@@ -12,18 +13,14 @@ const Signin = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const { setUser, loadUserFromCookie } = useAuthStore(); // Zustand 상태 함수\
-
+  const [phone, setPhone] = useState('');
   const router = useRouter();
 
-  // 컴포넌트 마운트 시 쿠키에서 유저 정보를 로드
-  useEffect(() => {
-    loadUserFromCookie();
-  }, []);
+  useSessionCheck();
 
   const handleLogin = async () => {
     try {
       if (!email || !password) {
-        setError('이메일과 비밀번호를 입력해주세요.');
         Swal.fire({
           icon: 'warning',
           title: '입력 오류',
@@ -33,7 +30,6 @@ const Signin = () => {
         return;
       }
 
-      // Supabase에서 직접 로그인 처리
       const supabase = browserSupabase();
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
@@ -41,8 +37,6 @@ const Signin = () => {
       });
 
       if (error) {
-        console.error('로그인 실패:', error.message);
-        setError('로그인 실패: 잘못된 이메일 또는 비밀번호입니다.');
         Swal.fire({
           icon: 'error',
           title: '로그인 실패',
@@ -52,23 +46,19 @@ const Signin = () => {
         return;
       }
 
-      console.log('로그인 성공:', data.user);
-
-      // Zustand 상태 업데이트 및 쿠키 저장
       setUser(data.user);
       document.cookie = `user=${encodeURIComponent(JSON.stringify(data.user))}; path=/;`;
 
       Swal.fire({
         icon: 'success',
         title: '로그인 성공',
-        text: `${data.user?.email}님 환영합니다!`,
+        text: `${data.user.email}님 환영합니다!`,
         confirmButtonText: '확인'
       });
 
-      router.push('/'); // 로그인 후 메인 페이지로 이동
-    } catch (err: any) {
+      router.push('/');
+    } catch (err) {
       console.error('로그인 실패:', err.message);
-      setError('로그인에 실패했습니다. 다시 시도해주세요.');
       Swal.fire({
         icon: 'error',
         title: '서버 오류',
@@ -77,7 +67,6 @@ const Signin = () => {
       });
     }
   };
-
   const handleSignUpRoute = () => {
     if (activeTab === 'user') {
       router.push('/sign-up/user');
@@ -91,6 +80,24 @@ const Signin = () => {
   const handleKakaoLogin = () => {
     const redirectTo = `https://dsggwbvtcrwuopwelpxy.supabase.co/auth/v1/authorize?provider=kakao`; // Supabase OAuth URL
     window.location.href = redirectTo;
+  };
+  const handleFindEmail = async () => {
+    if (!email || !phone) {
+      alert('이름과 휴대폰 번호를 입력해주세요.');
+      return;
+    }
+
+    try {
+      const emails = await findEmail(email, phone);
+      if (emails.length > 0) {
+        alert(`등록된 이메일: ${emails.map((email) => email.email).join(', ')}`);
+      } else {
+        alert('입력한 정보와 일치하는 이메일을 찾을 수 없습니다.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('이메일 조회 중 문제가 발생했습니다.');
+    }
   };
   return (
     <div className="flex justify-center items-center min-h-screen ">
@@ -134,7 +141,9 @@ const Signin = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
             <div className="flex justify-between text-sm text-gray-500 mb-4">
-              <button>아이디 찾기</button>
+              <button type="button" onClick={handleFindEmail} className="text-blue-500 hover:underline">
+                아이디 찾기
+              </button>
               <button>비밀번호 찾기</button>
             </div>
             <button className="w-[378px] bg-[#7C7C7C] text-white py-2 rounded-lg hover:bg-[#a0a0a0] transition">
@@ -153,6 +162,7 @@ const Signin = () => {
                 <hr className="flex-grow border-t border-gray-300" />
               </div>
               <button
+                type="button"
                 className="w-full bg-[#FEE500] text-black py-2 rounded-lg flex justify-center items-center gap-2 hover:text-gray-500 transition"
                 onClick={handleKakaoLogin}
               >
