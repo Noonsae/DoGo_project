@@ -67,24 +67,10 @@ const Signin = () => {
     }
   };
 
-  const handleFindEmail = async () => {
-    if (!email || !phone) {
-      alert('이름과 휴대폰 번호를 입력해주세요.');
-      return;
-    }
-
-    try {
-      const emails = await findEmail(email, phone);
-      if (emails.length > 0) {
-        alert(`등록된 이메일: ${emails.map((email) => email.email).join(', ')}`);
-      } else {
-        alert('입력한 정보와 일치하는 이메일을 찾을 수 없습니다.');
-      }
-    } catch (error) {
-      console.error(error);
-      alert('이메일 조회 중 문제가 발생했습니다.');
-    }
+  const findId = () => {
+    router.push('/find-id');
   };
+
   return (
     <div className="flex justify-center items-center min-h-screen ">
       <div className="p-8 bg-white  rounded-lg w-[400px]">
@@ -128,10 +114,10 @@ const Signin = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
               <div className="flex justify-between text-sm text-gray-500 mb-4">
-                <button type="button" onClick={handleFindEmail} className="text-blue-500 hover:underline">
+                <button type="button" onClick={findId} className="hover:underline">
                   아이디 찾기
                 </button>
-                <button>비밀번호 찾기</button>
+                <button type="button">비밀번호 찾기</button>
               </div>
               <button className="w-[378px] bg-[#7C7C7C] text-white py-2 rounded-lg hover:bg-[#a0a0a0] transition">
                 로그인
@@ -184,7 +170,9 @@ const Signin = () => {
                 className="w-[378px] p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-black"
               />
               <div className="flex justify-between text-sm text-gray-500 mb-4">
-                <button type="button">아이디 찾기</button>
+                <button type="button" onClick={findId} className="hover:underline">
+                  아이디 찾기
+                </button>
                 <button type="button">비밀번호 찾기</button>
               </div>
               <button
