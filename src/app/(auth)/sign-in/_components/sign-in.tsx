@@ -2,21 +2,25 @@
 
 import useAuthStore from '@/store/useAuth';
 import { useRouter } from 'next/navigation';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import { browserSupabase } from '@/supabase/supabase-client';
-import { useSessionCheck } from '@/hooks/kakaoSignIn/useSessionCheck';
 
 const Signin = () => {
   const [activeTab, setActiveTab] = useState('user');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const { setUser, loadUserFromCookie } = useAuthStore(); // Zustand 상태 함수\
-  const [phone, setPhone] = useState('');
+  const { setUser } = useAuthStore();
   const router = useRouter();
-
-  useSessionCheck();
+  const supabase = browserSupabase();
+  const kakaoLogin = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'kakao',
+      options: {
+        redirectTo: `http://localhost:3000/api/auth/kakao`
+      }
+    });
+  };
 
   const handleLogin = async () => {
     try {
@@ -31,10 +35,7 @@ const Signin = () => {
       }
 
       const supabase = browserSupabase();
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
       if (error) {
         Swal.fire({
@@ -67,20 +68,15 @@ const Signin = () => {
       });
     }
   };
+
   const handleSignUpRoute = () => {
     if (activeTab === 'user') {
       router.push('/sign-up/user');
     } else if (activeTab === 'business') {
       router.push('/sign-up/business');
-    } else {
-      console.error('activeTab 값이 올바르지 않습니다:', activeTab);
     }
   };
 
-  const handleKakaoLogin = () => {
-    const redirectTo = `https://dsggwbvtcrwuopwelpxy.supabase.co/auth/v1/authorize?provider=kakao`; // Supabase OAuth URL
-    window.location.href = redirectTo;
-  };
   const handleFindEmail = async () => {
     if (!email || !phone) {
       alert('이름과 휴대폰 번호를 입력해주세요.');
@@ -164,7 +160,7 @@ const Signin = () => {
               <button
                 type="button"
                 className="w-full bg-[#FEE500] text-black py-2 rounded-lg flex justify-center items-center gap-2 hover:text-gray-500 transition"
-                onClick={handleKakaoLogin}
+                onClick={kakaoLogin}
               >
                 <span className="flex items-center">
                   <svg width="40" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
