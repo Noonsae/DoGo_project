@@ -6,6 +6,10 @@ export async function POST(req: Request) {
     const { action, userId, hotelId } = await req.json(); // JSON 데이터 파싱
     const supabase = await serverSupabase();
 
+    if (!action || !userId || !hotelId) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
     if (action === 'check') {
       const { data, error } = await supabase
         .from('favorites')

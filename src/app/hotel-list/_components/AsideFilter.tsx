@@ -1,15 +1,27 @@
 import React, { useState } from 'react';
 
 interface FilterProps {
-  onFilterChange: (filters: { grade?: number }) => void;
+  onFilterChange: (filters: { grade?: number; view?: string; bedType?: string }) => void;
 }
 
 const AsideFilter = ({ onFilterChange }: FilterProps) => {
   const [selectedGrade, setSelectedGrade] = useState<number | null>(null);
+  const [selectedView, setSelectedView] = useState<string | null>(null);
+  const [selectedBedType, setSelectedBedType] = useState<string | null>(null);
 
   const handleHotelGradeChange = (grade: number) => {
     setSelectedGrade(grade);
-    onFilterChange({ grade });
+    onFilterChange({ grade, view: selectedView, bedType: selectedBedType });
+  };
+
+  const handleViewChange = (view: string) => {
+    setSelectedView(view);
+    onFilterChange({ grade: selectedGrade, view, bedType: selectedBedType });
+  };
+
+  const handleBedTypeChange = (bedType: string) => {
+    setSelectedBedType(bedType);
+    onFilterChange({ grade: selectedGrade, view: selectedView, bedType });
   };
 
   return (
@@ -18,7 +30,7 @@ const AsideFilter = ({ onFilterChange }: FilterProps) => {
 
       {/* 호텔 성급 필터 */}
       <div className="mb-6">
-        <h3 className="text-md font-semibold mb-2">호텔 성급</h3>
+        <h3 className="text-md font-semibold mb-1">호텔 성급</h3>
         <ul>
           <li>
             <input
@@ -45,13 +57,21 @@ const AsideFilter = ({ onFilterChange }: FilterProps) => {
             </label>
           </li>
         </ul>
-        <h3 className="text-md font-semibold mb-2">룸 등급</h3>
+        <h3 className="text-md font-semibold mb-2">View</h3>
         <ul>
-          <li>
-            <button>Deluxe</button>
-            <button>Suite</button>
-            <button>Executive</button>
-          </li>
+          {['시티', '마운틴', '리버', '오션'].map((view) => (
+            <li key={view}>
+              <button onClick={() => handleViewChange(view)}>{view}</button>
+            </li>
+          ))}
+        </ul>
+        <h3 className="text-md font-semibold mb-1 ">침대 종류</h3>
+        <ul>
+          {['싱글', '더블', '트윈'].map((bedType) => (
+            <li key={bedType} className="">
+              <button onClick={() => handleBedTypeChange(bedType)}>{bedType}</button>
+            </li>
+          ))}
         </ul>
       </div>
     </aside>
