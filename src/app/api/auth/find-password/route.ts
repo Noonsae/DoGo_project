@@ -13,10 +13,9 @@ export async function POST(request: Request) {
 
     const supabase = browserSupabase({ headers: request.headers, cookies });
 
-    // 사용자 확인
     const { data, error } = await supabase
-      .from('users') // 'users' 테이블
-      .select('id') // 사용자 ID만 반환
+      .from('users')
+      .select('id') 
       .eq('email', email)
       .eq('name', name)
       .single();
