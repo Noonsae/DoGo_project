@@ -56,7 +56,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
       setIsLoading(false);
     }
   };
-
+  //// 커밋용 주석
   const handleTabChange = (tab: 'user' | 'business') => {
     setActiveTab(tab);
   };
