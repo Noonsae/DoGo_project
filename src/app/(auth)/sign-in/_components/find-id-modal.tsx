@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { IoIosCheckmark } from 'react-icons/io';
 import { IoClose } from 'react-icons/io5';
 import { PiWarningCircleFill } from 'react-icons/pi';
+import Swal from 'sweetalert2';
 const FindIdModal = ({ onClose }: { onClose: () => void }) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -25,7 +26,11 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
 
   const handleFindId = async () => {
     if (!name || !phone) {
-      alert('이름과 휴대폰 번호를 입력해주세요.');
+      Swal.fire({
+        icon: 'error',
+        title: '입력 오류',
+        text: '이름과 휴대폰 번호를 모두 입력해주세요.'
+      });
       return;
     }
 
@@ -151,8 +156,8 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
 
         {modalType === 'failure' && (
           <div className="w-[424px] h-[635px] p-[30px] flex flex-col items-center">
-            <PiWarningCircleFill className="text-[100px] m-[30px] text-[#B3916A]" />
-            <div className="text-center p-[20px]">
+            <PiWarningCircleFill className="text-[100px] m-[50px] text-[#B3916A]" />
+            <div className="text-center p-[30px]">
               <p className="text-xl font-semibold">
                 입력하신 정보와 일치하는 <br /> 아이디가 존재하지 않습니다.
               </p>

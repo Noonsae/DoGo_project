@@ -7,7 +7,8 @@ import Swal from 'sweetalert2';
 import { browserSupabase } from '@/supabase/supabase-client';
 import KakaoSignIn from './kakao-sign-in';
 import FindIdModal from './find-id-modal';
-
+import FindPasswordModal from './find-password-modal';
+// FindPasswordModal
 const Signin = () => {
   const [activeTab, setActiveTab] = useState('user');
   const [email, setEmail] = useState('');
@@ -15,13 +16,19 @@ const Signin = () => {
   const { setUser } = useAuthStore();
   const [isFindIdModalOpen, setIsFindIdModalOpen] = useState(false);
   const [modalActiveTab, setModalActiveTab] = useState<'user' | 'business'>('user');
-
+  const [isFindPasswordOpen, setFindPasswordOpen] = useState(false);
   const openFindIdModal = (tab: 'user' | 'business') => {
     setModalActiveTab(tab);
     setIsFindIdModalOpen(true);
   };
   const closeFindIdModal = () => setIsFindIdModalOpen(false);
 
+  const openFindPasswordModal = (tab: 'user' | 'business') => {
+    setModalActiveTab(tab);
+    setFindPasswordOpen(true);
+  };
+
+  const closeFindPasswordModal = () => setFindPasswordOpen(false);
   const router = useRouter();
 
   const handleLogin = async () => {
@@ -82,9 +89,7 @@ const Signin = () => {
   };
   return (
     <div className="flex justify-center items-center min-h-screen ">
-      {/* <div className="flex justify-center items-center min-h-screen "> */}
       <div className="justify-center items-center w-[400px]">
-        {/* <div className="justify-center items-center w-[400px]"> */}
         <div className="flex justify-between mb-8">
           <button
             className={`pb-2 w-1/2 text-center ${activeTab === 'user' ? 'border-b-2 border-black' : 'text-gray-400'}`}
@@ -128,7 +133,7 @@ const Signin = () => {
                 <button type="button" onClick={() => openFindIdModal('user')} className="hover:underline">
                   아이디 찾기
                 </button>
-                <button type="button" onClick={findPassword} className="hover:underline">
+                <button type="button" onClick={() => openFindPasswordModal('user')} className="hover:underline">
                   비밀번호 찾기
                 </button>
               </div>
@@ -143,6 +148,7 @@ const Signin = () => {
               </div>
             </form>
             {isFindIdModalOpen && <FindIdModal onClose={closeFindIdModal} />}
+            {isFindPasswordOpen && <FindPasswordModal onClose={closeFindPasswordModal} />}
             {/* 간편 로그인 버튼 (form 태그 바깥) */}
             <div className="text-center mt-8 w-[400px]">
               <div className="flex items-center my-4">
@@ -187,7 +193,7 @@ const Signin = () => {
                 <button type="button" onClick={() => openFindIdModal('business')} className="hover:underline">
                   아이디 찾기
                 </button>
-                <button type="button" onClick={findPassword} className="hover:underline">
+                <button type="button" onClick={() => openFindPasswordModal('business')} className="hover:underline">
                   비밀번호 찾기
                 </button>
               </div>
