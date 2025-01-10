@@ -1,79 +1,103 @@
+'use client';
 import React, { useState } from 'react';
 
 interface FilterProps {
-  onFilterChange: (filters: { grade?: number; view?: string; bedType?: string }) => void;
+  onFilterChange: (filters: {
+    grade?: number[];
+    facilities?: string[];
+    services?: string[];
+  }) => void;
 }
 
 const AsideFilter = ({ onFilterChange }: FilterProps) => {
-  const [selectedGrade, setSelectedGrade] = useState<number | null>(null);
-  const [selectedView, setSelectedView] = useState<string | null>(null);
-  const [selectedBedType, setSelectedBedType] = useState<string | null>(null);
+  const [selectedGrade, setSelectedGrade] = useState<number[]>([]);
+  const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
+  const [selectedServices, setSelectedServices] = useState<string[]>([]);
+
+  const toggleArrayItem = <T,>(array: T[], value: T): T[] => {
+    return array.includes(value) ? array.filter((item) => item !== value) : [...array, value];
+  };
+
+  const updateFilters = () => {
+    onFilterChange({
+      grade: selectedGrade,
+      facilities: selectedFacilities,
+      services: selectedServices,
+    });
+  };
 
   const handleHotelGradeChange = (grade: number) => {
-    setSelectedGrade(grade);
-    onFilterChange({ grade, view: selectedView, bedType: selectedBedType });
+    const updatedGrades = toggleArrayItem(selectedGrade, grade);
+    setSelectedGrade(updatedGrades);
+    updateFilters();
   };
 
-  const handleViewChange = (view: string) => {
-    setSelectedView(view);
-    onFilterChange({ grade: selectedGrade, view, bedType: selectedBedType });
+  const handleFacilityChange = (facility: string) => {
+    const updatedFacilities = toggleArrayItem(selectedFacilities, facility);
+    setSelectedFacilities(updatedFacilities);
+    updateFilters();
   };
 
-  const handleBedTypeChange = (bedType: string) => {
-    setSelectedBedType(bedType);
-    onFilterChange({ grade: selectedGrade, view: selectedView, bedType });
+  const handleServiceChange = (service: string) => {
+    const updatedServices = toggleArrayItem(selectedServices, service);
+    setSelectedServices(updatedServices);
+    updateFilters();
   };
 
   return (
     <aside className="w-[266px] p-4 border border-gray-300 rounded-md bg-gray-50">
       <h2 className="text-lg font-bold mb-4">필터</h2>
 
-      {/* 호텔 성급 필터 */}
-      <div className="mb-6">
-        <h3 className="text-md font-semibold mb-1">호텔 성급</h3>
-        <ul>
-          <li>
+      <h3 className="text-md font-semibold mb-1">호텔 성급</h3>
+      <ul>
+        {[5, 4].map((grade) => (
+          <li key={grade}>
             <input
-              type="radio"
-              id="rating-5"
-              name="rating"
-              onChange={() => handleHotelGradeChange(5)}
-              checked={selectedGrade === 5}
+              type="checkbox"
+              id={`rating-${grade}`}
+              onChange={() => handleHotelGradeChange(grade)}
+              checked={selectedGrade.includes(grade)}
             />
-            <label htmlFor="rating-5" className="ml-2">
-              5성
+            <label htmlFor={`rating-${grade}`} className="ml-2">
+              {grade}성
             </label>
           </li>
-          <li>
-            <input
-              type="radio"
-              id="rating-4"
-              name="rating"
-              onChange={() => handleHotelGradeChange(4)}
-              checked={selectedGrade === 4}
-            />
-            <label htmlFor="rating-4" className="ml-2">
-              4성
-            </label>
+        ))}
+      </ul>
+
+      <h3 className="text-md font-semibold mb-1">호텔 시설</h3>
+      <ul>
+        {['사우나', '수영장', '골프장', '바베큐', '피트니스'].map((facility) => (
+          <li key={facility}>
+            <button
+              type="button"
+              onClick={() => handleFacilityChange(facility)}
+              className={`px-4 py-2 rounded-md border ${
+                selectedFacilities.includes(facility) ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
+              }`}
+            >
+              {facility}
+            </button>
           </li>
-        </ul>
-        <h3 className="text-md font-semibold mb-2">View</h3>
-        <ul>
-          {['시티', '마운틴', '리버', '오션'].map((view) => (
-            <li key={view}>
-              <button onClick={() => handleViewChange(view)}>{view}</button>
-            </li>
-          ))}
-        </ul>
-        <h3 className="text-md font-semibold mb-1 ">침대 종류</h3>
-        <ul>
-          {['싱글', '더블', '트윈'].map((bedType) => (
-            <li key={bedType} className="">
-              <button onClick={() => handleBedTypeChange(bedType)}>{bedType}</button>
-            </li>
-          ))}
-        </ul>
-      </div>
+        ))}
+      </ul>
+
+      <h3 className="text-md font-semibold mb-1">서비스</h3>
+      <ul>
+        {['조식제공', '무료주차', '발렛'].map((service) => (
+          <li key={service}>
+            <button
+              type="button"
+              onClick={() => handleServiceChange(service)}
+              className={`px-4 py-2 rounded-md border ${
+                selectedServices.includes(service) ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
+              }`}
+            >
+              {service}
+            </button>
+          </li>
+        ))}
+      </ul>
     </aside>
   );
 };
