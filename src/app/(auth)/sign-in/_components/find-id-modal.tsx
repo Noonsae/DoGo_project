@@ -1,16 +1,17 @@
 'use client';
 
 import React, { useState } from 'react';
-import Swal from 'sweetalert2';
 import { IoIosCheckmark } from 'react-icons/io';
 import { IoClose } from 'react-icons/io5';
+import { PiWarningCircleFill } from 'react-icons/pi';
 const FindIdModal = ({ onClose }: { onClose: () => void }) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'user' | 'business'>('user');
-  const [isResultVisible, setIsResultVisible] = useState(false); 
-  const [resultEmail, setResultEmail] = useState(''); 
+  const [modalType, setModalType] = useState<'input' | 'success' | 'failure'>('input'); // 모달 상태 구분
+  const [resultEmail, setResultEmail] = useState('');
+
   const maskEmail = (email: string): string => {
     if (!email.includes('@')) {
       console.error('Invalid email format:', email);
@@ -24,11 +25,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
 
   const handleFindId = async () => {
     if (!name || !phone) {
-      Swal.fire({
-        icon: 'warning',
-        title: '입력 오류',
-        text: '이름과 휴대폰 번호를 입력해주세요.'
-      });
+      alert('이름과 휴대폰 번호를 입력해주세요.');
       return;
     }
 
@@ -43,29 +40,20 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
 
       if (response.ok && result.email) {
         setResultEmail(maskEmail(result.email));
-        setIsResultVisible(true); 
+        setModalType('success');
       } else {
-        Swal.fire({
-          icon: 'error',
-          title: '아이디 찾기 실패',
-          text: '입력한 정보와 일치하는 이메일을 찾을 수 없습니다.'
-        });
+        setModalType('failure'); // 실패 모달로 전환
       }
     } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        title: '서버 오류',
-        text: '아이디 찾기 중 문제가 발생했습니다. 다시 시도해주세요.'
-      });
+      console.error('아이디 찾기 실패:', error);
+      setModalType('failure');
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleTabChange = (tab: 'user' | 'business') => {
-    if (activeTab !== tab) {
-      setActiveTab(tab);
-    }
+    setActiveTab(tab);
   };
 
   return (
@@ -73,10 +61,10 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
       <div className="w-[424px] h-[635px] bg-white rounded-lg shadow-lg relative">
         <IoClose
           onClick={onClose}
-          className="text-[30px] absolute top-3 right-3 text-gray-500 hover:text-black font-bold"
+          className="text-[30px] absolute top-3 right-3 text-gray-500 hover:text-black font-bold cursor-pointer"
         />
 
-        {!isResultVisible ? (
+        {modalType === 'input' && (
           <div className="m-10 flex flex-col h-full">
             <h1 className="text-2xl font-bold mt-[50px] mb-[50px]">
               DoGo 가입 정보로 <br /> 아이디를 확인하세요.
@@ -138,33 +126,45 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
               </div>
             </form>
           </div>
-        ) : (
-          <>
-            <div className="w-[424px] h-[635px] p-[35px] flex flex-col">
-              <IoIosCheckmark className="w-full text-[150px] items-center text-[#B3916A]" />
+        )}
 
-              <div className="flex flex-col p-[20px]">
-                <p className="text-xl font-semibold">
-                  <span style={{ color: '#B3916A' }}>{name}</span>님의 아이디는
-                </p>
-                <p className="text-xl font-semibold">
-                  <span style={{ color: '#B3916A' }}>{resultEmail}</span>입니다.
-                </p>
-                <p className="text-[15px] text-gray-500 mt-2">정보 보호를 위해 아이디의 일부만 보여집니다.</p>
-              </div>
-
-              <div className="flex-grow"></div>
-
-              <div>
-                <button
-                  onClick={onClose}
-                  className="w-full bg-[#B3916A] font-bold text-white py-[15px] rounded-xl hover:bg-[#a37e5f] transition"
-                >
-                  확인
-                </button>
-              </div>
+        {modalType === 'success' && (
+          <div className="w-[424px] h-[635px] p-[35px] flex flex-col items-center">
+            <IoIosCheckmark className="text-[150px] text-[#B3916A]" />
+            <div className="text-center">
+              <p className="text-xl font-semibold">
+                <span style={{ color: '#B3916A' }}>{name}</span>님의 아이디는
+              </p>
+              <p className="text-xl font-semibold">
+                <span style={{ color: '#B3916A' }}>{resultEmail}</span>입니다.
+              </p>
+              <p className="text-[15px] text-gray-500 mt-2">정보 보호를 위해 아이디의 일부만 보여집니다.</p>
             </div>
-          </>
+            <button
+              onClick={onClose}
+              className="w-full mt-auto bg-[#B3916A] font-bold text-white py-[15px] rounded-xl hover:bg-[#a37e5f] transition"
+            >
+              확인
+            </button>
+          </div>
+        )}
+
+        {modalType === 'failure' && (
+          <div className="w-[424px] h-[635px] p-[30px] flex flex-col items-center">
+            <PiWarningCircleFill className="text-[100px] m-[30px] text-[#B3916A]" />
+            <div className="text-center p-[20px]">
+              <p className="text-xl font-semibold">
+                입력하신 정보와 일치하는 <br /> 아이디가 존재하지 않습니다.
+              </p>
+              <p className="text-[15px] text-gray-500 mt-3">입력하신 가입 정보를 다시 한 번 확인해 주세요.</p>
+            </div>
+            <button
+              onClick={onClose}
+              className="w-full mt-auto bg-[#B3916A] font-bold text-white py-[15px] rounded-xl hover:bg-[#a37e5f] transition"
+            >
+              확인
+            </button>
+          </div>
         )}
       </div>
     </div>

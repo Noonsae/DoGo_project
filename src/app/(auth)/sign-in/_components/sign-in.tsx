@@ -77,9 +77,6 @@ const Signin = () => {
     }
   };
 
-  const findId = () => {
-    router.push('/find-id');
-  };
   const findPassword = () => {
     router.push('/find-password');
   };
@@ -128,7 +125,7 @@ const Signin = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
               <div className="flex justify-between text-sm text-gray-500 mb-4">
-                <button type="button" onClick={openFindIdModal} className="hover:underline">
+                <button type="button" onClick={() => openFindIdModal('user')} className="hover:underline">
                   아이디 찾기
                 </button>
                 <button type="button" onClick={findPassword} className="hover:underline">
@@ -187,7 +184,7 @@ const Signin = () => {
                 className="w-[400px] p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-black"
               />
               <div className="flex justify-between text-sm text-gray-500 mb-4">
-                <button type="button" onClick={openFindIdModal} className="hover:underline">
+                <button type="button" onClick={() => openFindIdModal('business')} className="hover:underline">
                   아이디 찾기
                 </button>
                 <button type="button" onClick={findPassword} className="hover:underline">
