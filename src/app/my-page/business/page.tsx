@@ -1,6 +1,6 @@
-// //사업자용 마이페이지
+//사업자용 마이페이지
 // import React, { useState } from 'react';
-// import SidebarWrapper from '@/app/my-page/_components/SidebarWrapper' 
+// import SidebarWrapper from '@/app/my-page/_components/SidebarWrapper' ;
 
 // const BusinessPage = ({ userId }: { userId: string }) => {
 //   const [currentTab, setCurrentTab] = useState('hotel'); // 기본 탭 설정
