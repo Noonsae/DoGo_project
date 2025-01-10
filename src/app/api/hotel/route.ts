@@ -5,6 +5,7 @@ export const GET = async (req: Request) => {
     const supabase = await serverSupabase();
     const url = new URL(req.url);
     const grade = url.searchParams.get('grade'); // 호텔 등급 필터 (옵션)
+    const sortOrder = url.searchParams.get('sortOrder'); // 가격 정렬
 
     // 모든 필드 선택
     let query = supabase
@@ -16,9 +17,7 @@ export const GET = async (req: Request) => {
     if (grade) {
       query = query.eq('stars', Number(grade));
     }
-
     const { data, error } = await query;
-
     if (error) {
       console.error('Supabase Query Error:', error.message);
       return new Response(JSON.stringify({ error: error.message }), {

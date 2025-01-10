@@ -20,7 +20,7 @@ export const useHotels = () => {
   return useQuery<HotelType[], Error>({
     queryKey: ['hotels'],
     queryFn: () => fetchHotels(),
-    staleTime: Infinity, // 5분 동안 데이터 캐시 유지
+    staleTime: Infinity,
     refetchOnWindowFocus: false, // 창 포커스 시 리패치 방지
   });
 };
