@@ -8,6 +8,7 @@ import { browserSupabase } from '@/supabase/supabase-client';
 import KakaoSignIn from './kakao-sign-in';
 import FindIdModal from './find-id-modal';
 import FindPasswordModal from './find-password-modal';
+import { isLogined } from '@/utils/isLogin';
 // FindPasswordModal
 const Signin = () => {
   const [activeTab, setActiveTab] = useState('user');
@@ -58,11 +59,13 @@ const Signin = () => {
 
       setUser(data.user);
       document.cookie = `user=${encodeURIComponent(JSON.stringify(data.user))}; path=/;`;
+      isLogined(true);
 
       Swal.fire({
         icon: 'success',
         title: '로그인 성공',
-        text: `${data.user.email}님 환영합니다!`
+        text: `${data.user.email}님 환영합니다!`,
+        useAuthStore: true
       });
 
       router.push('/');
@@ -84,9 +87,6 @@ const Signin = () => {
     }
   };
 
-  const findPassword = () => {
-    router.push('/find-password');
-  };
   return (
     <div className="flex justify-center items-center min-h-screen ">
       <div className="justify-center items-center w-[400px]">
