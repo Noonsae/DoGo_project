@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 
 export async function logout() {
   try {
-    localStorage.removeItem('user'); // localStorage에서 유저 정보 삭제
+    localStorage.removeItem('user');
     console.log('User logged out');
     redirect('/sign-in');
   } catch (error) {

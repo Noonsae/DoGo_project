@@ -7,17 +7,29 @@ import Swal from 'sweetalert2';
 import { browserSupabase } from '@/supabase/supabase-client';
 import KakaoSignIn from './kakao-sign-in';
 import FindIdModal from './find-id-modal';
-
+import FindPasswordModal from './find-password-modal';
+import { isLogined } from '@/utils/isLogin';
+// FindPasswordModal
 const Signin = () => {
   const [activeTab, setActiveTab] = useState('user');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { setUser } = useAuthStore();
   const [isFindIdModalOpen, setIsFindIdModalOpen] = useState(false);
-
-  const openFindIdModal = () => setIsFindIdModalOpen(true);
+  const [modalActiveTab, setModalActiveTab] = useState<'user' | 'business'>('user');
+  const [isFindPasswordOpen, setFindPasswordOpen] = useState(false);
+  const openFindIdModal = (tab: 'user' | 'business') => {
+    setModalActiveTab(tab);
+    setIsFindIdModalOpen(true);
+  };
   const closeFindIdModal = () => setIsFindIdModalOpen(false);
 
+  const openFindPasswordModal = (tab: 'user' | 'business') => {
+    setModalActiveTab(tab);
+    setFindPasswordOpen(true);
+  };
+
+  const closeFindPasswordModal = () => setFindPasswordOpen(false);
   const router = useRouter();
 
   const handleLogin = async () => {
@@ -47,11 +59,12 @@ const Signin = () => {
 
       setUser(data.user);
       document.cookie = `user=${encodeURIComponent(JSON.stringify(data.user))}; path=/;`;
-      
+
       Swal.fire({
         icon: 'success',
         title: '로그인 성공',
-        text: `${data.user.email}님 환영합니다!`
+        text: `${data.user.email}님 환영합니다!`,
+        useAuthStore: true
       });
 
       // 로그인 성공했을 때 유저의 정보를 주스탠드에 담아주는 로직이 필요할 것 같습니다.
@@ -79,13 +92,12 @@ const Signin = () => {
   const findId = () => {
     router.push('/find-id');
   };
-  
   const findPassword = () => {
     router.push('/find-password');
   };
   return (
     <div className="flex justify-center items-center min-h-screen ">
-      <div className="p-8 bg-white  rounded-lg w-[400px]">
+      <div className="justify-center items-center w-[400px]">
         <div className="flex justify-between mb-8">
           <button
             className={`pb-2 w-1/2 text-center ${activeTab === 'user' ? 'border-b-2 border-black' : 'text-gray-400'}`}
@@ -115,28 +127,28 @@ const Signin = () => {
                 type="email"
                 placeholder="이메일"
                 value={email}
-                className="w-[378px] p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-[400px] p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-black"
                 onChange={(e) => setEmail(e.target.value)}
               />
               <input
                 type="password"
                 placeholder="비밀번호"
                 value={password}
-                className="w-[378px] p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-[400px] p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-black"
                 onChange={(e) => setPassword(e.target.value)}
               />
               <div className="flex justify-between text-sm text-gray-500 mb-4">
-                <button type="button" onClick={openFindIdModal} className="hover:underline">
+                <button type="button" onClick={() => openFindIdModal('user')} className="hover:underline">
                   아이디 찾기
                 </button>
-                <button type="button" onClick={findPassword} className="hover:underline">
+                <button type="button" onClick={() => openFindPasswordModal('user')} className="hover:underline">
                   비밀번호 찾기
                 </button>
               </div>
-              <button className="w-[378px] bg-[#7C7C7C] text-white py-2 rounded-lg hover:bg-[#a0a0a0] transition">
+              <button className="w-[400px] bg-[#B3916A] font-bold text-white py-[15px] rounded-xl hover:bg-[#a37e5f] transition">
                 로그인
               </button>
-              <div className="text-center mt-4 w-[378px]">
+              <div className="text-center mt-4 w-[400px]">
                 <span className="text-gray-500">계정이 없으신가요? </span>
                 <button className="text-black font-semibold underline" onClick={handleSignUpRoute}>
                   회원가입
@@ -144,8 +156,9 @@ const Signin = () => {
               </div>
             </form>
             {isFindIdModalOpen && <FindIdModal onClose={closeFindIdModal} />}
+            {isFindPasswordOpen && <FindPasswordModal onClose={closeFindPasswordModal} />}
             {/* 간편 로그인 버튼 (form 태그 바깥) */}
-            <div className="text-center mt-8 w-[378px]">
+            <div className="text-center mt-8 w-[400px]">
               <div className="flex items-center my-4">
                 <hr className="flex-grow border-t border-gray-300" />
                 <span className="px-4 text-gray-500">간편 로그인</span>
@@ -153,7 +166,7 @@ const Signin = () => {
               </div>
               <KakaoSignIn />
             </div>
-            <div className="w-[378px] text-center mt-4 text-sm text-gray-400">
+            <div className="w-[400px] text-center mt-4 text-sm text-gray-400">
               <button>개인정보처리방침</button>
               <span className="mx-2">|</span>
               <button>이용약관</button>
@@ -175,39 +188,39 @@ const Signin = () => {
                 placeholder="사업자 이메일"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-[378px] p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-[400px] p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-black"
               />
               <input
                 type="password"
                 placeholder="비밀번호"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-[378px] p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-[400px] p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-black"
               />
               <div className="flex justify-between text-sm text-gray-500 mb-4">
-                <button type="button" onClick={openFindIdModal} className="hover:underline">
+                <button type="button" onClick={() => openFindIdModal('business')} className="hover:underline">
                   아이디 찾기
                 </button>
-                <button type="button" onClick={findPassword} className="hover:underline">
+                <button type="button" onClick={() => openFindPasswordModal('business')} className="hover:underline">
                   비밀번호 찾기
                 </button>
               </div>
               <button
                 type="submit"
-                className="w-[378px] bg-[#7C7C7C] text-white py-2 rounded-lg hover:bg-[#a0a0a0] transition"
+                className="w-[400px] bg-[#B3916A] font-bold text-white py-[15px] rounded-xl hover:bg-[#a37e5f] transition"
               >
                 로그인
               </button>
-              <div className="text-center mt-4 w-[378px]">
+              <div className="text-center mt-4 w-[400px]">
                 <span className="text-gray-500">계정이 없으신가요? </span>
                 <button type="button" className="text-black font-semibold underline" onClick={handleSignUpRoute}>
                   회원가입
                 </button>
               </div>
             </form>
-
+            {isFindIdModalOpen && <FindIdModal onClose={closeFindIdModal} />}
             {/* 간편 로그인 버튼 (form 태그 바깥) */}
-            <div className="text-center mt-8 w-[378px]">
+            <div className="text-center mt-8 w-[400px]">
               <div className="flex items-center my-4">
                 <hr className="flex-grow border-t border-gray-300" />
                 <span className="px-4 text-gray-500">간편 로그인</span>
@@ -215,7 +228,7 @@ const Signin = () => {
               </div>
               <KakaoSignIn />
             </div>
-            <div className="w-[378px] text-center mt-4 text-sm text-gray-400">
+            <div className="w-[400px] text-center mt-4 text-sm text-gray-400">
               <button type="button">개인정보처리방침</button>
               <span className="mx-2">|</span>
               <button type="button">이용약관</button>

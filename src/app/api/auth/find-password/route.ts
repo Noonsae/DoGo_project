@@ -1,24 +1,21 @@
 import { NextResponse } from 'next/server';
-
-import { cookies } from 'next/headers';
-import { browserSupabase } from '@/supabase/supabase-client';
+import { createClient } from '@supabase/supabase-js';
 
 export async function POST(request: Request) {
   try {
-    const { email, name } = await request.json();
+    const { email, phone } = await request.json();
 
-    if (!email || !name) {
-      return NextResponse.json({ error: '이메일과 이름은 필수입니다.' }, { status: 400 });
+    if (!email || !phone) {
+      return NextResponse.json({ error: '이메일과 휴대폰 번호는 필수입니다.' }, { status: 400 });
     }
 
-    const supabase = browserSupabase({ headers: request.headers, cookies });
+    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
 
-    // 사용자 확인
     const { data, error } = await supabase
-      .from('users') // 'users' 테이블
-      .select('id') // 사용자 ID만 반환
+      .from('users')
+      .select('id')
       .eq('email', email)
-      .eq('name', name)
+      .eq('phone_number', phone)
       .single();
 
     if (error || !data) {
@@ -26,8 +23,8 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ userId: data.id }, { status: 200 });
-  } catch (err) {
-    console.error('비밀번호 찾기 오류:', err);
+  } catch (error) {
+    console.error('서버 오류:', error);
     return NextResponse.json({ error: '서버 오류가 발생했습니다.' }, { status: 500 });
   }
 }

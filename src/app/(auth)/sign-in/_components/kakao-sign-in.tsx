@@ -21,7 +21,7 @@ const KakaoSignIn = () => {
   return (
     <button
       onClick={kakaoLogin}
-      className="w-full bg-[#FEE500] text-black py-2 rounded-lg flex justify-center items-center gap-2 hover:text-gray-500 transition"
+      className="w-[400px] bg-[#FEE500] text-black py-1 rounded-lg flex justify-center items-center gap-2 hover:text-gray-500 transition"
     >
       <span className="flex items-center">
         <svg width="40" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
