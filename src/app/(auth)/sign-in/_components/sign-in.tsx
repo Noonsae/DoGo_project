@@ -47,15 +47,18 @@ const Signin = () => {
 
       setUser(data.user);
       document.cookie = `user=${encodeURIComponent(JSON.stringify(data.user))}; path=/;`;
-
+      
       Swal.fire({
         icon: 'success',
         title: '로그인 성공',
         text: `${data.user.email}님 환영합니다!`
       });
 
+      // 로그인 성공했을 때 유저의 정보를 주스탠드에 담아주는 로직이 필요할 것 같습니다.
+      // 쿠키에 담긴 유저의 정보를 판단해주는 로직 ??
       router.push('/');
-    } catch (err) {
+
+    } catch (err: any) {
       console.error('로그인 실패:', err.message);
       Swal.fire({
         icon: 'error',
@@ -76,6 +79,7 @@ const Signin = () => {
   const findId = () => {
     router.push('/find-id');
   };
+  
   const findPassword = () => {
     router.push('/find-password');
   };
