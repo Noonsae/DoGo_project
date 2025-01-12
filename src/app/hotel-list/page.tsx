@@ -189,7 +189,7 @@ const HotelList = () => {
           {!hasNextPage &&
             Array.isArray(data?.pages) &&
             data.pages.reduce((acc, page) => acc + page.items.length, 0) > 0 ? (
-            <p className="text-center mt-4">모든 데이터를 로드했습니다.</p>
+            <p className="text-center mt-4">모든 호텔 데이터를 불러왔습니다.</p>
           ) : null}
 
           {error && <p className="text-center mt-4 text-red-500">데이터를 불러오는 중 문제가 발생했습니다.</p>}
