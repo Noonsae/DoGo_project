@@ -2,26 +2,27 @@
 import React, { useEffect, useRef, useState } from 'react';
 import AsideFilter from './_components/AsideFilter';
 import { HotelType } from '@/types/supabase/hotel-type';
-import Swal from 'sweetalert2';
-import useAuthStore from '@/store/useAuth';
 import HotelCardList from './_components/HotelsCardList';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import Swal from 'sweetalert2';
+import useAuthStore from '@/store/useAuth';
 
 // 호텔 데이터를 가져오는 비동기 함수
 const fetchHotels = async ({
   pageParam = 0,
-  filters,
-  sortOrder,
+  filters = { grade: [] },
+  sortOrder = '',
 }: {
-  pageParam: number;
-  filters: { grade: number[] };
-  sortOrder: 'asc' | 'desc' | '';
+  pageParam?: number;
+  filters?: { grade: number[] };
+  sortOrder?: 'asc' | 'desc' | '';
 }) => {
-  const gradeQuery = filters.grade.length > 0 ? `&grade=in.(${filters.grade.join(',')})` : '';
+  const gradeQuery =
+    filters.grade.length > 0
+      ? `&grade=in.(${filters.grade.filter((g) => Number.isInteger(g)).join(',')})`
+      : '';
   const sortQuery = sortOrder ? `&sortOrder=${sortOrder}` : '';
   const url = `/api/hotel?offset=${pageParam}&limit=8${gradeQuery}${sortQuery}`;
-  console.log('Request URL:', url);
-
   const res = await fetch(url);
 
   if (!res.ok) {
@@ -29,24 +30,26 @@ const fetchHotels = async ({
   }
 
   const data = await res.json();
-  console.log('Fetched Data:', data);
-
-  if (data?.items && Array.isArray(data.items)) {
-    return {
-      items: data.items,
-      totalCount: data.totalCount || data.items.length,
-    };
-  } else {
-    throw new Error('Unexpected data structure');
-  }
+  return {
+    items: data.items,
+    totalCount: data.totalCount,
+  };
 };
 
 const HotelList = () => {
   const [filters, setFilters] = useState<{ grade: number[] }>({ grade: [] });
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | ''>(''); 
   const observerRef = useRef<HTMLDivElement | null>(null);
-  const user = useAuthStore((state) => state.user);
+
+  // 유저 정보 관련 로직
+  const loadUserFromCookie = useAuthStore((state) => state.loadUserFromCookie); // 쿠키에서 유저 정보 로드
+  const user = useAuthStore((state) => state.user); // 유저 정보
   const [favoriteStatus, setFavoriteStatus] = useState<{ [key: string]: boolean }>({}); // 찜 상태 관리
+
+  // 컴포넌트 마운트 시 유저 정보 로드
+  useEffect(() => {
+    loadUserFromCookie(); // 쿠키에서 유저 정보 가져오기
+  }, [loadUserFromCookie]);
 
   const {
     data,
@@ -193,7 +196,7 @@ const HotelList = () => {
           ) : null}
 
           {error && <p className="text-center mt-4 text-red-500">데이터를 불러오는 중 문제가 발생했습니다.</p>}
-        </div>
+        </div> 
       </div>
     </div>
   );
