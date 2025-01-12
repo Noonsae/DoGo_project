@@ -23,7 +23,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
     const maskedLocal = localPart.slice(0, 3) + '***';
     return `${maskedLocal}@${domain}`;
   };
-
+  const role = activeTab === 'user' ? 'user' : 'business';
   const handleFindId = async () => {
     if (!name || !phone) {
       Swal.fire({
@@ -39,7 +39,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
       const response = await fetch('/api/auth/find-id', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, phone, type: activeTab })
+        body: JSON.stringify({ name, phone, role, type: activeTab })
       });
       const result = await response.json();
 
