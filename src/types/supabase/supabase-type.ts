@@ -176,8 +176,7 @@ export type Database = {
           name: string;
           stars: number;
           user_id: string;
-          facilities: Record<string, boolean> | null; // 추가된 JSONB 칼럼
-          services: Record<string, boolean> | null; // 추가된 JSONB 칼럼
+          location: string
         };
         Insert: {
           address: string;
@@ -193,8 +192,7 @@ export type Database = {
           name: string;
           stars: number;
           user_id?: string;
-          facilities?: Record<string, null> | null; // 추가된 JSONB 칼럼
-          services?: Record<string, null> | null; // 추가된 JSONB 칼럼
+          location?: string
         };
         Update: {
           address?: string;
@@ -210,9 +208,8 @@ export type Database = {
           name?: string;
           stars?: number;
           user_id?: string;
-          facilities?: Record<string, boolean> | null; // 추가된 JSONB 칼럼
-          services?: Record<string, boolean> | null; // 추가된 JSONB 칼럼
-        };
+          location?: string
+        }
         Relationships: [
           {
             foreignKeyName: 'hotels_user_id_fkey';
