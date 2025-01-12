@@ -215,6 +215,7 @@ const Signin = () => {
               </div>
             </form>
             {isFindIdModalOpen && <FindIdModal onClose={closeFindIdModal} />}
+            {isFindPasswordOpen && <FindPasswordModal onClose={closeFindPasswordModal} />}
             {/* 간편 로그인 버튼 (form 태그 바깥) */}
             <div className="text-center mt-8 w-[400px]">
               <div className="flex items-center my-4">
