@@ -1,101 +1,97 @@
 'use client';
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import AsideFilter from './_components/AsideFilter';
 import { HotelType } from '@/types/supabase/hotel-type';
 import Swal from 'sweetalert2';
 import useAuthStore from '@/store/useAuth';
 import HotelCardList from './_components/HotelsCardList';
+import { useInfiniteQuery } from '@tanstack/react-query';
+
+// 호텔 데이터를 가져오는 비동기 함수
+const fetchHotels = async ({
+  pageParam = 0,
+  filters,
+  sortOrder,
+}: {
+  pageParam: number;
+  filters: { grade: number[] };
+  sortOrder: 'asc' | 'desc' | '';
+}) => {
+  const gradeQuery = filters.grade.length > 0 ? `&grade=in.(${filters.grade.join(',')})` : '';
+  const sortQuery = sortOrder ? `&sortOrder=${sortOrder}` : '';
+  const url = `/api/hotel?offset=${pageParam}&limit=8${gradeQuery}${sortQuery}`;
+  console.log('Request URL:', url);
+
+  const res = await fetch(url);
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch hotels: ${res.status}`);
+  }
+
+  const data = await res.json();
+  console.log('Fetched Data:', data);
+
+  if (data?.items && Array.isArray(data.items)) {
+    return {
+      items: data.items,
+      totalCount: data.totalCount || data.items.length,
+    };
+  } else {
+    throw new Error('Unexpected data structure');
+  }
+};
 
 const HotelList = () => {
-  const [allHotels, setAllHotels] = useState<HotelType[]>([]);
-  const [filteredHotels, setFilteredHotels] = useState<HotelType[]>([]);
-  const [filters, setFilters] = useState<{
-    grade: number[];
-    facilities: string[];
-    services: string[];
-  }>({
-    grade: [],
-    facilities: [],
-    services: [],
-  });
-  const [favoriteStatus, setFavoriteStatus] = useState<{ [key: string]: boolean }>({});
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | ''>('');
-
-  const loadUserFromCookie = useAuthStore((state) => state.loadUserFromCookie);
+  const [filters, setFilters] = useState<{ grade: number[] }>({ grade: [] });
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | ''>(''); 
+  const observerRef = useRef<HTMLDivElement | null>(null);
   const user = useAuthStore((state) => state.user);
+  const [favoriteStatus, setFavoriteStatus] = useState<{ [key: string]: boolean }>({}); // 찜 상태 관리
+
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    error,
+  } = useInfiniteQuery({
+    queryKey: ['hotels', filters, sortOrder],
+    queryFn: async ({ pageParam = 0 }) =>
+      fetchHotels({ pageParam, filters, sortOrder }),
+    getNextPageParam: (lastPage, allPages) => {
+      const totalLoaded = allPages.flatMap((page) => page.items).length;
+      const totalAvailable = lastPage.totalCount;
+
+      if (totalLoaded >= totalAvailable) {
+        console.log('No more data to load.');
+        return undefined;
+      }
+
+      return totalLoaded; // 다음 offset
+    },
+    initialPageParam: 0,
+  });
 
   useEffect(() => {
-    loadUserFromCookie();
-  }, []);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 1.0 }
+    );
 
-  useEffect(() => {
-    loadHotels();
-  }, []);
-
-  const loadHotels = async () => {
-    try {
-      const response = await fetch('/api/hotel');
-      if (!response.ok) throw new Error('Failed to fetch hotels');
-      const hotelsData: HotelType[] = await response.json();
-      setAllHotels(hotelsData);
-      setFilteredHotels(hotelsData);
-    } catch (error) {
-      console.error('Error loading hotels:', error);
-    }
-  };
-
-  // 필터 상태가 변경될 때마다 필터를 적용
-  useEffect(() => {
-    applyFilters(filters);
-  }, [filters]);
-
-  const applyFilters = (currentFilters: typeof filters) => {
-    const filtered = allHotels.filter((hotel) => {
-      const gradeMatch =
-        currentFilters.grade.length > 0 ? currentFilters.grade.includes(hotel.stars) : true;
-
-      const facilitiesMatch =
-        currentFilters.facilities.length > 0
-          ? currentFilters.facilities.every((facility) => hotel.facilities?.[facility])
-          : true;
-
-      const servicesMatch =
-        currentFilters.services.length > 0
-          ? currentFilters.services.every((service) => hotel.services?.[service])
-          : true;
-
-      return gradeMatch && facilitiesMatch && servicesMatch;
-    });
-
-    setFilteredHotels(filtered);
-  };
-
-  const handleFilterChange = (newFilters: Partial<typeof filters>) => {
-    setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
-  };
-
-  const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedOrder = event.target.value as 'asc' | 'desc' | '';
-    setSortOrder(selectedOrder);
-
-    const sortedHotels = [...filteredHotels];
-    if (selectedOrder === 'asc') {
-      sortedHotels.sort((a, b) => (a.min_price ?? Infinity) - (b.min_price ?? Infinity));
-    } else if (selectedOrder === 'desc') {
-      sortedHotels.sort((a, b) => (b.min_price ?? 0) - (a.min_price ?? 0));
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
     }
 
-    setFilteredHotels(sortedHotels);
-  };
-
-  const getAppliedFilters = () => {
-    const appliedFilters: string[] = [];
-    if (filters.grade.length > 0) appliedFilters.push(`성급: ${filters.grade.join(', ')}`);
-    if (filters.facilities.length > 0) appliedFilters.push(`시설: ${filters.facilities.join(', ')}`);
-    if (filters.services.length > 0) appliedFilters.push(`서비스: ${filters.services.join(', ')}`);
-    return appliedFilters.join(' | ');
-  };
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current);
+      }
+    };
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   const toggleFavorite = async (hotelId: string) => {
     if (!user) {
@@ -108,8 +104,7 @@ const HotelList = () => {
     }
 
     try {
-      const action = favoriteStatus[hotelId] ? 'remove' : 'add';
-
+      const action = favoriteStatus[hotelId] ? 'remove' : 'add'; // 상태에 따라 추가/제거
       const res = await fetch('/api/favorites', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -120,7 +115,16 @@ const HotelList = () => {
         throw new Error('Failed to update favorite status');
       }
 
-      setFavoriteStatus((prev) => ({ ...prev, [hotelId]: !prev[hotelId] }));
+      setFavoriteStatus((prev) => ({
+        ...prev,
+        [hotelId]: !prev[hotelId],
+      }));
+
+      Swal.fire({
+        title: '성공',
+        text: `즐겨찾기 상태가 ${favoriteStatus[hotelId] ? '제거' : '추가'}되었습니다.`,
+        confirmButtonText: '확인',
+      });
     } catch (error) {
       Swal.fire({
         title: '오류 발생',
@@ -130,6 +134,15 @@ const HotelList = () => {
     }
   };
 
+  const handleFilterChange = (newFilters: { grade: number[] }) => {
+    setFilters(newFilters);
+  };
+
+  const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedOrder = event.target.value as 'asc' | 'desc' | '';
+    setSortOrder(selectedOrder);
+  };
+
   return (
     <div className="mx-[360px]">
       <div>
@@ -137,30 +150,49 @@ const HotelList = () => {
       </div>
 
       <div className="flex gap-8 mt-16">
-        <AsideFilter onFilterChange={handleFilterChange} />
+        <AsideFilter onFilterChange={(newFilters) => handleFilterChange(newFilters)} />
 
         <div className="flex-1">
-          <span>적용필터 : {getAppliedFilters()}</span>
-          <select
-            value={sortOrder}
-            onChange={handleSortChange}
-            id="sortOrder"
-            className="h-[50px] w-[150px] border rounded-md ml-14"
-          >
-            <option value="">가격 정렬</option>
-            <option value="asc">낮은 가격 순</option>
-            <option value="desc">높은 가격 순</option>
-          </select>
+          <div className="flex items-center mb-4">
+            <span className="block">
+              적용된 필터: {filters.grade.length > 0 ? `${filters.grade.join(', ')}성` : '전체'}
+            </span>
+            <select
+              value={sortOrder}
+              onChange={handleSortChange}
+              id="sortOrder"
+              className="h-[50px] w-[150px] border rounded-md ml-14"
+            >
+              <option value="">가격 정렬</option>
+              <option value="asc">낮은 가격 순</option>
+              <option value="desc">높은 가격 순</option>
+            </select>
+          </div>
           <ul>
-            {filteredHotels.map((hotel) => (
-              <HotelCardList
-                key={hotel.id}
-                hotel={hotel}
-                isFavorite={favoriteStatus[hotel.id] || false}
-                onToggleFavorite={() => toggleFavorite(hotel.id)}
-              />
-            ))}
+            {data?.pages
+              ?.flatMap((page, pageIndex) =>
+                page.items.map((hotel: HotelType, index: number) => (
+                  <HotelCardList
+                    key={`${hotel.id}-${pageIndex}-${index}`}
+                    hotel={hotel}
+                    isFavorite={favoriteStatus[hotel.id] || false}
+                    onToggleFavorite={() => toggleFavorite(hotel.id)}
+                  />
+                ))
+              ) || <p>데이터가 없습니다.</p>}
           </ul>
+
+          <div ref={observerRef} className="h-4"></div>
+
+          {isFetchingNextPage && <p>Loading more...</p>}
+
+          {!hasNextPage &&
+            Array.isArray(data?.pages) &&
+            data.pages.reduce((acc, page) => acc + page.items.length, 0) > 0 ? (
+            <p className="text-center mt-4">모든 데이터를 로드했습니다.</p>
+          ) : null}
+
+          {error && <p className="text-center mt-4 text-red-500">데이터를 불러오는 중 문제가 발생했습니다.</p>}
         </div>
       </div>
     </div>

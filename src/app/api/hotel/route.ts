@@ -5,28 +5,21 @@ export const GET = async (req: Request) => {
     const supabase = await serverSupabase();
     const url = new URL(req.url);
 
-    const gradeRaw = url.searchParams.get('grade');
-    const grade = gradeRaw ? JSON.parse(gradeRaw) : [];
-    const facilitiesRaw = url.searchParams.get('facilities');
-    const facilities = facilitiesRaw ? JSON.parse(facilitiesRaw) : [];
-    const servicesRaw = url.searchParams.get('services');
-    const services = servicesRaw ? JSON.parse(servicesRaw) : [];
+    const offset = parseInt(url.searchParams.get('offset') || '0', 10); // 기본값: 0
+    const limit = parseInt(url.searchParams.get('limit') || '8', 10); // 기본값: 8
+    const grade = url.searchParams.get('grade'); // 성급 필터
 
-    let query = supabase.from('hotels').select('*, rooms(price)').order('name', { ascending: true });
+    let query = supabase
+      .from('hotels')
+      .select('*, rooms(price)', { count: 'exact' }) // count('exact')로 전체 개수 가져오기
+      .order('name', { ascending: true })
+      .range(offset, offset + limit - 1); // 페이지네이션 처리
 
-    if (grade.length > 0) {
-      query = query.in('stars', grade);
+    if (grade) {
+      query = query.eq('stars', parseInt(grade, 10));
     }
 
-    if (facilities.length > 0) {
-      query = query.contains('facilities', facilities);
-    }
-
-    if (services.length > 0) {
-      query = query.contains('services', services);
-    }
-
-    const { data, error } = await query;
+    const { data, error, count } = await query;
 
     if (error) {
       console.error('Supabase Query Error:', error.message);
@@ -47,10 +40,16 @@ export const GET = async (req: Request) => {
         : null,
     }));
 
-    return new Response(JSON.stringify(hotels), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({
+        items: hotels || [],
+        totalCount: count || 0, // 전체 데이터 개수 반환
+      }),
+      {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
   } catch (err: any) {
     console.error('Server Error:', err.message);
     return new Response(JSON.stringify({ error: 'Internal Server Error' }), {
