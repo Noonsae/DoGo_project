@@ -9,7 +9,7 @@ import KakaoSignIn from './kakao-sign-in';
 import FindIdModal from './find-id-modal';
 import FindPasswordModal from './find-password-modal';
 import { isLogined } from '@/utils/isLogin';
-// FindPasswordModal
+
 const Signin = () => {
   const [activeTab, setActiveTab] = useState('user');
   const [email, setEmail] = useState('');
@@ -18,10 +18,12 @@ const Signin = () => {
   const [isFindIdModalOpen, setIsFindIdModalOpen] = useState(false);
   const [modalActiveTab, setModalActiveTab] = useState<'user' | 'business'>('user');
   const [isFindPasswordOpen, setFindPasswordOpen] = useState(false);
+
   const openFindIdModal = (tab: 'user' | 'business') => {
     setModalActiveTab(tab);
     setIsFindIdModalOpen(true);
   };
+
   const closeFindIdModal = () => setIsFindIdModalOpen(false);
 
   const openFindPasswordModal = (tab: 'user' | 'business') => {
@@ -30,6 +32,7 @@ const Signin = () => {
   };
 
   const closeFindPasswordModal = () => setFindPasswordOpen(false);
+
   const router = useRouter();
 
   const handleLogin = async () => {
@@ -71,6 +74,7 @@ const Signin = () => {
       router.push('/');
     } catch (err) {
       console.error('로그인 실패:', err.message);
+
       Swal.fire({
         icon: 'error',
         title: '서버 오류',

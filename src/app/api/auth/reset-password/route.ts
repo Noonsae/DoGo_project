@@ -3,27 +3,38 @@ import { createClient } from '@supabase/supabase-js';
 
 export async function POST(request: Request) {
   try {
-    const { email, password } = await request.json();
+    const { otp, newPassword } = await request.json();
 
-    if (!email || !password) {
-      return NextResponse.json({ error: '이메일과 비밀번호는 필수입니다.' }, { status: 400 });
-    }
-    console.log('email', email);
-    console.log('password', password);
-    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
-
-    const { data: user, error: fetchError } = await supabase.from('users').select('id').eq('email', email).single();
-    console.log('fetchError', fetchError);
-    if (fetchError || !user) {
-      return NextResponse.json({ error: '입력한 정보와 일치하는 계정을 찾을 수 없습니다.' }, { status: 404 });
+    if (!otp || !newPassword) {
+      return NextResponse.json({ error: 'OTP와 새 비밀번호는 필수입니다.' }, { status: 400 });
     }
 
-    // const { error: updateError } = await supabase.auth.admin.updateUser(user.id, { password });
-    const { data: updateError, error } = await supabase.auth.updateUser({
-      password: new_password
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY! // 서비스 역할 키 사용
+    );
+
+    // OTP 검증
+    const { data: resetRequest, error: otpError } = await supabase
+      .from('password_reset_requests')
+      .select('user_id, expires_at')
+      .eq('otp', otp)
+      .single();
+
+    if (otpError || !resetRequest) {
+      return NextResponse.json({ error: '유효하지 않은 OTP입니다.' }, { status: 404 });
+    }
+
+    // 로그 추가
+    console.log('resetRequest.user_id:', resetRequest.user_id); // x
+
+    // 비밀번호 업데이트
+    const { error: updateError } = await supabase.auth.admin.updateUserById(resetRequest.user_id, {
+      password: newPassword
     });
+
     if (updateError) {
-      console.error('Supabase 비밀번호 재설정 오류:', updateError.message);
+      console.error('비밀번호 재설정 오류:', updateError);
       return NextResponse.json({ error: '비밀번호 재설정에 실패했습니다.' }, { status: 500 });
     }
 
