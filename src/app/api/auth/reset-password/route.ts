@@ -9,10 +9,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'OTP와 새 비밀번호는 필수입니다.' }, { status: 400 });
     }
 
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY! // 서비스 역할 키 사용
-    );
+    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
 
     // OTP 검증
     const { data: resetRequest, error: otpError } = await supabase
@@ -22,11 +19,9 @@ export async function POST(request: Request) {
       .single();
 
     if (otpError || !resetRequest) {
+      console.error('OTP 검증 오류:', otpError);
       return NextResponse.json({ error: '유효하지 않은 OTP입니다.' }, { status: 404 });
     }
-
-    // 로그 추가
-    console.log('resetRequest.user_id:', resetRequest.user_id); // x
 
     // 비밀번호 업데이트
     const { error: updateError } = await supabase.auth.admin.updateUserById(resetRequest.user_id, {
