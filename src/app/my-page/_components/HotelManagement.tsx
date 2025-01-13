@@ -124,6 +124,7 @@ const HotelManagement: React.FC = () => {
             required
           />
         </div>
+        
         {/* 최소 가격 입력 */}
         <div>
           <label className="block text-sm font-medium">최소 가격 (1박 기준)</label>
