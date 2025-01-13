@@ -56,6 +56,12 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
     fetchHotelData();
   }, [hotelId]);
 
+  const scrollToSection = (id: string) => {
+    const section = document.getElementById(id);
+    section?.scrollIntoView({ behavior: 'smooth' });
+    setActiveTab(id);
+  };
+
   if (loading) {
     return <p className="text-center mt-10">로딩 중...</p>;
   }
@@ -74,6 +80,7 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
           <ul className="flex space-x-6 py-4">
             {[
               { id: 'overview', label: '개요' },
+              { id: 'rooms', label: '객실 선택'},
               { id: 'reviews', label: '이용 후기' },
               { id: 'services', label: '시설/서비스' },
               { id: 'policies', label: '숙소 정책' },
@@ -90,7 +97,7 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
                   }`}
                   onClick={(e) => {
                     e.preventDefault();
-                    setActiveTab(tab.id);
+                    scrollToSection(tab.id);
                   }}
                 >
                   {tab.label}
@@ -149,11 +156,25 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
           </div>
         </section>
 
+                {/* 객실실 섹션 */}
+                <section id="rooms" className="scroll-mt-20">
+          <h2 className="text-2xl font-bold mb-4">객실 선택</h2>
+          <p>이곳은 호텔의 객실을을 보여주는 콘텐츠 영역입니다.</p>
+        </section>
+
         {/* 이용 후기 섹션 */}
         <section id="reviews" className="scroll-mt-20">
-          <h2 className="text-2xl font-bold mb-4">이용 후기</h2>
-          <p>이곳은 이용 후기를 보여주는 콘텐츠 영역입니다.</p>
-        </section>
+  <h2 className="text-2xl font-bold mb-4">이용 후기</h2>
+  <div className='flex gap-[30px]'>
+    <p className='w-[585px] h-[368px] bg-slate-400'>이곳은 이용 후기를 보여주는 콘텐츠 영역입니다.</p>
+    <p className='w-[585px] h-[368px] bg-slate-400'>이곳은 이용 후기를 보여주는 콘텐츠 영역입니다.</p>
+  </div>
+  <div className="flex justify-center mt-4">
+    <button className="px-6 py-2 bg-[#B3916A] text-white rounded-lg shadow-md hover:bg-brown-500">
+      전체 후기 보러가기
+    </button>
+  </div>
+</section>
 
         {/* 시설/서비스 섹션 */}
         <section id="services" className="scroll-mt-20">
