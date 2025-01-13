@@ -33,7 +33,7 @@ const HotelCardList: React.FC<HotelListItemProps> = ({ hotel, isFavorite, onTogg
       </div>
       <div className="ml-[16px] h-[245px] flex flex-col justify-between">
         <h3 className="text-lg font-semibold leading-none">{hotel.name}</h3>
-        <p className="bg-[#E8E8E8] py-1 px-2 flex rounded-sm w-full">{renderStars(hotel.stars)}</p>
+        <p className="bg-[#E8E8E8] py-1 px-2 flex rounded-sm ">{renderStars(hotel.stars)}</p>
         <button onClick={() => onToggleFavorite(Number(hotel.id))} className="ml-auto p-2" aria-label="찜하기 버튼">
           <svg
             width="20"
