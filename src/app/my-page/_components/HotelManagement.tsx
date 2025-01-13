@@ -1,9 +1,15 @@
 'use client';
+
 import React, { useState } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 
-const HotelManagement: React.FC = () => {
-  // 상태 변수들: 입력 필드를 관리
+// Props 타입 정의
+interface HotelManagementProps {
+  userId: string; // 사용자 ID
+}
+
+// HotelManagement 컴포넌트
+const HotelManagement: React.FC<HotelManagementProps> = ({ userId }) => {
   const [hotelName, setHotelName] = useState(''); // 호텔 이름
   const [description, setDescription] = useState(''); // 호텔 설명
   const [address, setAddress] = useState(''); // 호텔 주소
@@ -18,29 +24,29 @@ const HotelManagement: React.FC = () => {
 
   // 폼 제출 핸들러
   const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault(); // 기본 폼 제출 동작 방지
-    setLoading(true); // 로딩 상태 활성화
-    setMessage(null); // 메시지 초기화
+    event.preventDefault();
+    setLoading(true);
+    setMessage(null);
 
     try {
       // Supabase의 hotels 테이블에 데이터 삽입
       const { error } = await browserSupabase().from('hotels').insert([
         {
-          name: hotelName, // 호텔 이름
-          description, // 호텔 설명
-          address, // 호텔 주소
-          main_img_url: mainImgUrl, // 메인 이미지 URL
-          stars, // 호텔 등급
-          min_price: minPrice, // 최소 가격
-          check_in: checkIn, // 체크인 시간
-          check_out: checkOut, // 체크아웃 시간
-          location, // 위치 정보
+          name: hotelName,
+          description,
+          address,
+          main_img_url: mainImgUrl,
+          stars,
+          min_price: minPrice,
+          check_in: checkIn,
+          check_out: checkOut,
+          location,
+          user_id: userId, // 사용자 ID 저장
         },
       ]);
 
-      if (error) throw error; // 오류가 발생하면 예외 처리
+      if (error) throw error;
 
-      // 성공 시 상태 초기화 및 메시지 설정
       setMessage('호텔이 성공적으로 저장되었습니다!');
       setHotelName('');
       setDescription('');
@@ -52,19 +58,17 @@ const HotelManagement: React.FC = () => {
       setCheckOut('');
       setLocation('');
     } catch (err) {
-      console.error('Error saving hotel:', err); // 오류 콘솔 출력
-      setMessage('호텔 저장 중 오류가 발생했습니다.'); // 오류 메시지 설정
+      console.error('Error saving hotel:', err);
+      setMessage('호텔 저장 중 오류가 발생했습니다.');
     } finally {
-      setLoading(false); // 로딩 상태 해제
+      setLoading(false);
     }
   };
 
   return (
     <div>
       <h2 className="text-xl font-bold mb-4">호텔 관리</h2>
-      {/* 호텔 등록 폼 */}
       <form className="space-y-4" onSubmit={handleSubmit}>
-        {/* 호텔 이름 입력 */}
         <div>
           <label className="block text-sm font-medium">호텔 이름</label>
           <input
@@ -76,7 +80,6 @@ const HotelManagement: React.FC = () => {
             required
           />
         </div>
-        {/* 호텔 설명 입력 */}
         <div>
           <label className="block text-sm font-medium">호텔 설명</label>
           <textarea
@@ -87,7 +90,6 @@ const HotelManagement: React.FC = () => {
             required
           />
         </div>
-        {/* 호텔 주소 입력 */}
         <div>
           <label className="block text-sm font-medium">주소</label>
           <input
@@ -99,7 +101,6 @@ const HotelManagement: React.FC = () => {
             required
           />
         </div>
-        {/* 메인 이미지 URL 입력 */}
         <div>
           <label className="block text-sm font-medium">메인 이미지 URL</label>
           <input
@@ -110,7 +111,6 @@ const HotelManagement: React.FC = () => {
             className="mt-1 block w-full border-gray-300 rounded-md"
           />
         </div>
-        {/* 호텔 등급 입력 */}
         <div>
           <label className="block text-sm font-medium">호텔 등급 (별 개수)</label>
           <input
@@ -124,8 +124,6 @@ const HotelManagement: React.FC = () => {
             required
           />
         </div>
-        
-        {/* 최소 가격 입력 */}
         <div>
           <label className="block text-sm font-medium">최소 가격 (1박 기준)</label>
           <input
@@ -137,7 +135,6 @@ const HotelManagement: React.FC = () => {
             required
           />
         </div>
-        {/* 체크인 시간 입력 */}
         <div>
           <label className="block text-sm font-medium">체크인 시간</label>
           <input
@@ -148,7 +145,6 @@ const HotelManagement: React.FC = () => {
             required
           />
         </div>
-        {/* 체크아웃 시간 입력 */}
         <div>
           <label className="block text-sm font-medium">체크아웃 시간</label>
           <input
@@ -159,7 +155,6 @@ const HotelManagement: React.FC = () => {
             required
           />
         </div>
-        {/* 위치 입력 */}
         <div>
           <label className="block text-sm font-medium">위치</label>
           <input
@@ -170,7 +165,6 @@ const HotelManagement: React.FC = () => {
             className="mt-1 block w-full border-gray-300 rounded-md"
           />
         </div>
-        {/* 저장 버튼 */}
         <button
           type="submit"
           className={`px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 ${
@@ -181,7 +175,6 @@ const HotelManagement: React.FC = () => {
           {loading ? '저장 중...' : '저장하기'}
         </button>
       </form>
-      {/* 메시지 표시 */}
       {message && <p className="mt-4 text-center text-sm">{message}</p>}
     </div>
   );

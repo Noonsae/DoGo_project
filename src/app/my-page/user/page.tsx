@@ -3,7 +3,7 @@
 // import { createClient } from '@supabase/supabase-js';
 // import { useEffect, useState } from 'react';
 
-// import UserSidebar from '@/app/my-page/_components/UserSidebar';
+// import UserSidebar from '@/app/my-page/_components/Usersidebar';
 // import ProfileContent from '@/app/my-page/_components/ProfileContent';
 // import BookingsContent from '@/app/my-page/_components/BookingsContent';
 // import FavoritesContent from '@/app/my-page/_components/FavoritesContent';

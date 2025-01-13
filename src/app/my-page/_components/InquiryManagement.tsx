@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useEffect, useState } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 
@@ -13,7 +14,12 @@ interface Inquiry {
   created_at: string; // 작성 일자 (ISO 포맷)
 }
 
-const InquiryManagement: React.FC = () => {
+// Props 타입 정의
+interface InquiryManagementProps {
+  userId: string; // 사용자 ID
+}
+
+const InquiryManagement: React.FC<InquiryManagementProps> = ({ userId }) => {
   // 상태 변수 정의
   const [inquiries, setInquiries] = useState<Inquiry[]>([]); // 문의 데이터 리스트
   const [loading, setLoading] = useState(true); // 로딩 상태
@@ -34,7 +40,8 @@ const InquiryManagement: React.FC = () => {
             hotel_id,
             booking_id,
             created_at
-          `); // 필요한 필드만 선택
+          `)
+          .eq('user_id', userId); // userId로 필터링
 
         // 오류 발생 시 예외 처리
         if (error) throw error;
@@ -42,15 +49,15 @@ const InquiryManagement: React.FC = () => {
         // 문의 데이터를 상태에 저장 (data가 null일 경우 빈 배열로 대체)
         setInquiries(data || []);
       } catch (err) {
-        console.error('Error fetching inquiries:', err); // 오류를 콘솔에 출력
-        setError('문의 데이터를 불러오는 중 오류가 발생했습니다.'); // 사용자에게 표시할 오류 메시지 설정
+        console.error('Error fetching inquiries:', err);
+        setError('문의 데이터를 불러오는 중 오류가 발생했습니다.');
       } finally {
-        setLoading(false); // 로딩 상태 해제
+        setLoading(false);
       }
     };
 
     fetchInquiries(); // 데이터 가져오기 함수 호출
-  }, []); // 빈 배열로 설정해 컴포넌트가 처음 마운트될 때 한 번만 실행
+  }, [userId]); // userId가 변경될 때마다 실행
 
   // 로딩 중일 때 표시되는 UI
   if (loading) return <p className="text-center text-gray-600">Loading...</p>;
@@ -66,7 +73,6 @@ const InquiryManagement: React.FC = () => {
   return (
     <div>
       <h2 className="text-xl font-bold mb-4">문의 관리</h2>
-      {/* 문의 데이터를 표로 렌더링 */}
       <table className="w-full border-collapse border border-gray-300">
         <thead className="bg-gray-200">
           <tr>
@@ -81,17 +87,11 @@ const InquiryManagement: React.FC = () => {
         <tbody>
           {inquiries.map((inquiry) => (
             <tr key={inquiry.id}>
-              {/* 문의 제목 */}
               <td className="border p-2">{inquiry.title}</td>
-              {/* 문의 내용 */}
               <td className="border p-2">{inquiry.content}</td>
-              {/* 작성자 ID */}
               <td className="border p-2">{inquiry.user_id || 'N/A'}</td>
-              {/* 호텔 ID */}
               <td className="border p-2">{inquiry.hotel_id || 'N/A'}</td>
-              {/* 예약 ID */}
               <td className="border p-2">{inquiry.booking_id || 'N/A'}</td>
-              {/* 작성일 */}
               <td className="border p-2">
                 {new Date(inquiry.created_at).toLocaleDateString()}
               </td>

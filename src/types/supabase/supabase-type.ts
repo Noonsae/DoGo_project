@@ -160,21 +160,21 @@ export type Database = {
           created_at: string
           hotel_id: string
           id: string
-          room_id: string
+          is_favorite: boolean | null
           user_id: string
         }
         Insert: {
           created_at?: string
           hotel_id?: string
           id?: string
-          room_id?: string
+          is_favorite?: boolean | null
           user_id?: string
         }
         Update: {
           created_at?: string
           hotel_id?: string
           id?: string
-          room_id?: string
+          is_favorite?: boolean | null
           user_id?: string
         }
         Relationships: [
@@ -192,16 +192,9 @@ export type Database = {
             referencedRelation: "users"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "favorites_room_id_fkey"
-            columns: ["room_id"]
-            isOneToOne: false
-            referencedRelation: "rooms"
-            referencedColumns: ["id"]
-          },
         ]
       }
-      Hotel_facilitiy: {
+      Hotel_facility: {
         Row: {
           created_at: string
           hotel_id: string
@@ -344,22 +337,22 @@ export type Database = {
       policies: {
         Row: {
           created_at: string
-          description: string
-          hotel_id: string
+          description: string | null
+          hotel_id: string | null
           id: string
           policy_name: string
         }
         Insert: {
           created_at?: string
-          description: string
-          hotel_id?: string
+          description?: string | null
+          hotel_id?: string | null
           id?: string
           policy_name: string
         }
         Update: {
           created_at?: string
-          description?: string
-          hotel_id?: string
+          description?: string | null
+          hotel_id?: string | null
           id?: string
           policy_name?: string
         }
