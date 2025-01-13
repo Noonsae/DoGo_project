@@ -4,6 +4,7 @@ import useAuthStore from '@/store/useAuth';
 import Image from 'next/image';
 import useFavoriteStore from '@/store/favorite/useFavoriteStore';
 import { HotelType } from '@/types/supabase/hotel-type';
+import { RoomType } from '@/types/supabase/room-type';
 
 const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const hotelId = params?.id;
@@ -11,6 +12,7 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const [hotelData, setHotelData] = useState<HotelType | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
+  const [roomsData, setRoomsData] = useState<RoomType | null>(null);
 
   const loadUserFromCookie = useAuthStore((state) => state.loadUserFromCookie);
   const user = useAuthStore((state) => state.user);
@@ -56,6 +58,26 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
     };
 
     fetchHotelData();
+  }, [hotelId]);
+
+  useEffect(() => {
+    const fetchRoomsData = async () => {
+      if (!hotelId) return;
+
+      try {
+        const response = await fetch(`/api/rooms?hotelId=${hotelId}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch rooms data');
+        }
+
+        const data = await response.json();
+        setRoomsData(data);
+      } catch (error) {
+        console.error('Error fetching rooms data:', error);
+      }
+    };
+
+    fetchRoomsData();
   }, [hotelId]);
 
   const scrollToSection = (id: string) => {
