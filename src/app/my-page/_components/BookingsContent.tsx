@@ -1,3 +1,4 @@
+'use client';
 import React, { useState, useEffect } from 'react'; // React와 필요한 훅을 import
 import { browserSupabase } from '@/supabase/supabase-client'; // Supabase 클라이언트 import
 
