@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 
@@ -10,7 +12,13 @@ interface BusinessUser {
   business_number: string | null; // 사업자 번호 (string 형식, null 가능)
 }
 
-const CompanyList: React.FC = () => {
+// CompanyListProps 인터페이스 정의
+interface CompanyListProps {
+  currentTab: string;
+  setCurrentTab: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const CompanyList: React.FC<CompanyListProps> = ({ currentTab, setCurrentTab }) => {
   // 업체 데이터를 저장하는 상태
   const [companies, setCompanies] = useState<BusinessUser[]>([]);
   // 로딩 상태 관리
@@ -73,6 +81,17 @@ const CompanyList: React.FC = () => {
 
   return (
     <div>
+      {/* 현재 탭 이름과 탭 변경 버튼 */}
+      <div className="mb-6">
+        <p className="text-lg font-bold mb-2">현재 선택된 탭: {currentTab}</p>
+        <button
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          onClick={() => setCurrentTab('requests')}
+        >
+          요청 탭으로 변경
+        </button>
+      </div>
+
       {/* 업체 리스트 제목 */}
       <h2 className="text-xl font-bold mb-4">업체 리스트</h2>
       {/* 업체 데이터를 표시하는 테이블 */}
