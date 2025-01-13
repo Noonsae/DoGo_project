@@ -15,6 +15,23 @@ export type Json = string | number | boolean | null | { [key: string]: Json | un
 export type Database = {
   public: {
     Tables: {
+      password_reset_requests: {
+        Row: {
+          user_id: string;
+          expires_at: string;
+          otp: string;
+        };
+        Insert: {
+          user_id: string;
+          expires_at: string;
+          otp: string;
+        };
+        Update: {
+          user_id?: string;
+          expires_at?: string;
+          otp?: string;
+        };
+      };
       answers: {
         Row: {
           contact_id: string;
@@ -30,6 +47,7 @@ export type Database = {
           id?: string;
           user_id?: string;
         };
+
         Update: {
           contact_id?: string;
           content?: string;

@@ -23,7 +23,7 @@ const KakaoSignIn = () => {
       onClick={kakaoLogin}
       className="w-[400px] bg-[#FEE500] text-black py-1 rounded-lg flex justify-center items-center gap-2 hover:text-gray-500 transition"
     >
-      <span className="flex items-center">
+      <div className="flex items-center">
         <svg width="40" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="48" height="48" rx="24" fill="#FEE500" />
           <g opacity="0.9">
@@ -36,7 +36,7 @@ const KakaoSignIn = () => {
           </g>
         </svg>
         카카오톡으로 시작하기
-      </span>
+      </div>
     </button>
   );
 };
