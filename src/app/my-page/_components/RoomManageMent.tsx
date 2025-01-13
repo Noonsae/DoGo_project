@@ -10,17 +10,21 @@ interface Room {
   price: number; // 1박 가격
   room_img_url: string | null; // 객실 이미지 URL (null 가능)
   hotel_id: string; // 관련된 호텔 ID
+  room_name: string; // 객실 이름
+  view: string; // 뷰 정보
 }
 
 const RoomManagement: React.FC = () => {
   // 상태 정의
   const [rooms, setRooms] = useState<Room[]>([]); // 객실 리스트
   const [newRoom, setNewRoom] = useState({
-    room_type: '', // 새 객실 유형
-    bed_type: '', // 새 객실 침대 유형
-    price: '', // 새 객실 가격
-    room_img_url: '', // 새 객실 이미지 URL
-    hotel_id: '', // 새 객실 호텔 ID
+    room_type: '', // 객실 유형
+    bed_type: '', // 침대 유형
+    price: 0, // 가격 (숫자)
+    room_img_url: '', // 객실 이미지 URL
+    hotel_id: '', // 호텔 ID
+    room_name: '', // 객실 이름
+    view: '' // 뷰 정보
   });
   const [loading, setLoading] = useState(true); // 로딩 상태
   const [error, setError] = useState<string | null>(null); // 오류 메시지
@@ -33,14 +37,19 @@ const RoomManagement: React.FC = () => {
         // Supabase에서 데이터 가져오기
         const { data, error } = await browserSupabase()
           .from('rooms')
-          .select('id, room_type, bed_type, price, room_img_url, hotel_id');
+          .select('id, room_type, bed_type, price, room_img_url, hotel_id, room_name, view');
 
         if (error) throw error;
 
-        // `room_img_url`을 JSON에서 string | null로 변환
+        // `room_img_url` JSON에서 string | null로 변환
         const formattedData = data?.map((room) => ({
           ...room,
-          room_img_url: typeof room.room_img_url === 'string' ? room.room_img_url : null,
+          room_img_url:
+            typeof room.room_img_url === 'string'
+              ? room.room_img_url
+              : room.room_img_url
+              ? JSON.stringify(room.room_img_url)
+              : null
         }));
 
         setRooms(formattedData || []);
@@ -61,6 +70,18 @@ const RoomManagement: React.FC = () => {
       setError(null);
       setSuccessMessage(null);
 
+      // 필드 검증
+      if (
+        !newRoom.room_type ||
+        !newRoom.bed_type ||
+        !newRoom.hotel_id ||
+        !newRoom.room_name ||
+        newRoom.price <= 0
+      ) {
+        setError('모든 필드를 올바르게 입력해주세요.');
+        return;
+      }
+
       // Supabase에 새로운 객실 추가
       const { error } = await browserSupabase()
         .from('rooms')
@@ -68,10 +89,12 @@ const RoomManagement: React.FC = () => {
           {
             room_type: newRoom.room_type,
             bed_type: newRoom.bed_type,
-            price: parseInt(newRoom.price, 10), // 가격을 정수로 변환
+            price: newRoom.price, // 숫자 상태 유지
             room_img_url: newRoom.room_img_url || null,
             hotel_id: newRoom.hotel_id,
-          },
+            room_name: newRoom.room_name,
+            view: newRoom.view
+          }
         ]);
 
       if (error) throw error;
@@ -80,21 +103,26 @@ const RoomManagement: React.FC = () => {
       setNewRoom({
         room_type: '',
         bed_type: '',
-        price: '',
+        price: 0,
         room_img_url: '',
         hotel_id: '',
+        room_name: '',
+        view: ''
       });
 
       // 데이터 다시 가져오기
       const { data } = await browserSupabase()
         .from('rooms')
-        .select('id, room_type, bed_type, price, room_img_url, hotel_id');
-
+        .select('id, room_type, bed_type, price, room_img_url, hotel_id, room_name, view');
       const formattedData = data?.map((room) => ({
         ...room,
-        room_img_url: typeof room.room_img_url === 'string' ? room.room_img_url : null,
+        room_img_url:
+          typeof room.room_img_url === 'string'
+            ? room.room_img_url
+            : room.room_img_url
+            ? JSON.stringify(room.room_img_url)
+            : null
       }));
-
       setRooms(formattedData || []);
     } catch (err) {
       console.error('Error adding room:', err);
@@ -139,7 +167,7 @@ const RoomManagement: React.FC = () => {
             <input
               type="number"
               value={newRoom.price}
-              onChange={(e) => setNewRoom({ ...newRoom, price: e.target.value })}
+              onChange={(e) => setNewRoom({ ...newRoom, price: Number(e.target.value) })}
               placeholder="가격을 입력하세요"
               className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
             />
@@ -193,11 +221,7 @@ const RoomManagement: React.FC = () => {
               <td className="border p-2">{room.price.toLocaleString()}원</td>
               <td className="border p-2">
                 {room.room_img_url ? (
-                  <img
-                    src={room.room_img_url}
-                    alt="Room"
-                    className="w-16 h-16 object-cover rounded"
-                  />
+                  <img src={room.room_img_url} alt="Room" className="w-16 h-16 object-cover rounded" />
                 ) : (
                   '이미지 없음'
                 )}
