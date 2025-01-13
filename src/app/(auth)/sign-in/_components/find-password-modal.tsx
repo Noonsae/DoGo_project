@@ -6,6 +6,7 @@ import { IoIosCheckmark } from 'react-icons/io';
 import Swal from 'sweetalert2';
 
 const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState('');
@@ -22,7 +23,7 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, phone })
       });
-
+      // 서버액션으로 빼고 실행이후에 탄스택으로가져와서
       const { otp } = await response.json();
       if (response.ok) {
         Swal.fire({
@@ -92,9 +93,9 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
             <h1 className="text-2xl font-bold mt-[50px] mb-[50px]">
               비밀번호를 찾기 위해 <br /> 가입 정보를 입력해 주세요.
             </h1>
-            <div className="flex mb-4 border-b-2">
+            <div className="flex mb-4">
               <form
-                className="flex-grow flex flex-col justify-between"
+                className="flex-grow flex flex-col justify-between "
                 onSubmit={(e) => {
                   e.preventDefault();
                   handleFindPassword();
@@ -121,7 +122,7 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
                 {/* <div className="flex flex-col"> */}
                 <button
                   type="submit"
-                  className="w-full m-[50px] bg-[#B3916A] font-bold text-white py-[15px] rounded-xl hover:bg-[#a37e5f] transition"
+                  className="w-full mt-[150px]  bg-[#B3916A] font-bold text-white py-[15px] rounded-xl hover:bg-[#a37e5f]"
                   disabled={isLoading}
                 >
                   {isLoading ? '조회 중...' : '다음'}
@@ -184,12 +185,12 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
 
         {/* 세 번째 모달: 성공 메시지 */}
         {modalType === 'success' && (
-          <div className="w-[424px] h-[635px] flex flex-col items-center justify-center p-[30px]">
+          <div className="w-[424px] mt-[50px] h-[635px] flex flex-col items-center justify-center p-[30px]">
             <IoIosCheckmark className="text-[150px] text-[#B3916A]" />
-            <p className="text-xl font-semibold mt-4 text-center">비밀번호가 성공적으로 재설정되었습니다!</p>
+            <span className="text-xl  font-semibold  text-center">비밀번호가 재설정 되었습니다.</span>
             <button
               onClick={onClose}
-              className="w-full mt-10 bg-[#B3916A] font-bold text-white py-[15px] rounded-xl hover:bg-[#a37e5f] transition"
+              className="w-full mt-[180px] bg-[#B3916A] font-bold text-white py-[15px] rounded-xl hover:bg-[#a37e5f] transition"
             >
               확인
             </button>
