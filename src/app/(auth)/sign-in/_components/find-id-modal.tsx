@@ -5,6 +5,7 @@ import { IoIosCheckmark } from 'react-icons/io';
 import { IoClose } from 'react-icons/io5';
 import { PiWarningCircleFill } from 'react-icons/pi';
 import Swal from 'sweetalert2';
+
 const FindIdModal = ({ onClose }: { onClose: () => void }) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
