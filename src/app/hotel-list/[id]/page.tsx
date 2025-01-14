@@ -6,6 +6,8 @@ import useFavoriteStore from '@/store/favorite/useFavoriteStore';
 import { HotelType } from '@/types/supabase/hotel-type';
 import { RoomType } from '@/types/supabase/room-type';
 import Modal from './_components/Modal';
+import useFormatCurrency from '@/hooks/formatCurrency/useFormatCurrency';
+import { FacilityType } from '@/types/supabase/facility-type';
 
 const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const hotelId = params?.id;
@@ -14,11 +16,13 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
   const [roomsData, setRoomsData] = useState<RoomType[]>([]);
+  const [facilityData, setFacilityData] = useState<FacilityType[]>([]);
 
   const loadUserFromCookie = useAuthStore((state) => state.loadUserFromCookie);
   const user = useAuthStore((state) => state.user);
 
   const { favoriteStatus, toggleFavorite, initializeFavorites } = useFavoriteStore();
+  const formatKoreanCurrency = useFormatCurrency();
 
   useEffect(() => {
     loadUserFromCookie();
@@ -81,6 +85,25 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
     fetchRoomsData();
   }, [hotelId]);
 
+  useEffect(() => {
+    const fetchFacilityData = async () => {
+      try {
+        const response = await fetch(`/api/hotel-facility?hotel_id=${hotelId}`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch facilities. Status: ${response.status}`);
+        }
+        const data = await response.json();
+        setFacilityData(data); // 상태에 데이터 저장
+      } catch (error) {
+        console.error('Error fetching facilities:', error);
+      }
+    };
+
+    if (hotelId) {
+      fetchFacilityData();
+    }
+  }, [hotelId]);
+
   const getValidImageUrl = (imageData: Json): string => {
     if (Array.isArray(imageData) && imageData.length > 0) {
       const firstImage = imageData[0];
@@ -117,11 +140,10 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   return (
     <div className="bg-gray-100 min-h-screen">
       <div className="h-[60px]"></div>
-
       {/* 네비게이션 탭 */}
       <div className="sticky top-0 z-10 bg-white border-b shadow-sm">
         <div className="mx-[360px]">
-          <ul className="flex space-x-6 py-4">
+          <ul className="flex  space-x-6 py-4">
             {[
               { id: 'overview', label: '개요' },
               { id: 'rooms', label: '객실 선택' },
@@ -146,6 +168,7 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
                 </a>
               </li>
             ))}
+            <button className="flex ml-auto">문의하기</button>
           </ul>
         </div>
       </div>
@@ -154,8 +177,6 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
       <div className="mx-[360px] py-6 space-y-16">
         {/* 개요 섹션 */}
         <section id="overview" className="scroll-mt-20">
-          <h2 className="text-2xl font-bold mb-4">{hotelData.name}</h2>
-          <p className="mb-6">{hotelData.description}</p>
           <div className="flex gap-4">
             <div className="rounded-lg shadow-md overflow-hidden relative">
               <Image
@@ -169,9 +190,7 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
                 onClick={() => {
                   toggleFavorite(hotelId); // 즐겨찾기 버튼 클릭 시 상태 토글
                 }}
-                className={`absolute top-4 right-4 p-2 rounded-full shadow-md ${
-                  favoriteStatus[hotelId] ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-600'
-                }`}
+                className="absolute top-4 right-4 p-2 rounded-full shadow-md bg-white text-gray-600"
               >
                 {favoriteStatus[hotelId] ? '❤️' : '🤍'}
               </button>
@@ -183,17 +202,58 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
                   <div
                     key={index}
                     className="relative bg-gray-200 rounded-lg shadow-md overflow-hidden"
-                    style={{ width: '291px', height: '175.5px' }}
+                    style={{ width: '291px', height: '190px' }}
                   >
                     <Image
                       src={image as string}
                       alt={`Image ${index + 1}`}
                       width={291}
-                      height={175.5}
+                      height={180}
                       className="object-cover w-full h-full rounded-md"
                     />
                   </div>
                 ))}
+            </div>
+          </div>
+          <div className="flex items-center">
+            <h2 className="text-2xl font-bold mr-2">{hotelData.name}</h2>
+            <div className="flex items-center">
+              {/* 별 개수를 렌더링 */}
+              {Array.from({ length: hotelData.stars }, (_, index) => (
+                <svg
+                  key={index}
+                  width="20"
+                  height="18"
+                  viewBox="0 0 20 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M15.3907 17.7501C15.2591 17.7506 15.1308 17.7096 15.0239 17.6329L10.0001 13.9907L4.97624 17.6329C4.86891 17.7108 4.7396 17.7525 4.60701 17.752C4.47442 17.7515 4.34542 17.7089 4.23866 17.6302C4.1319 17.5516 4.05291 17.4411 4.01311 17.3146C3.97331 17.1881 3.97476 17.0523 4.01725 16.9267L5.97663 11.1232L0.898504 7.64073C0.788508 7.56539 0.70549 7.45684 0.661579 7.33095C0.617668 7.20506 0.615165 7.06843 0.654436 6.94102C0.693707 6.8136 0.772694 6.70209 0.879856 6.62276C0.987018 6.54344 1.11674 6.50046 1.25007 6.50011H7.51491L9.40554 0.681749C9.44626 0.556132 9.52573 0.446644 9.63254 0.368991C9.73935 0.291338 9.86801 0.249512 10.0001 0.249512C10.1321 0.249512 10.2608 0.291338 10.3676 0.368991C10.4744 0.446644 10.5539 0.556132 10.5946 0.681749L12.4852 6.50206H18.7501C18.8836 6.502 19.0136 6.54467 19.121 6.62385C19.2285 6.70302 19.3078 6.81453 19.3474 6.94204C19.3869 7.06955 19.3845 7.20636 19.3407 7.33244C19.2968 7.45852 19.2137 7.56724 19.1036 7.64269L14.0235 11.1232L15.9817 16.9251C16.0134 17.019 16.0224 17.1192 16.0077 17.2172C15.9931 17.3153 15.9554 17.4085 15.8976 17.4891C15.8399 17.5697 15.7638 17.6354 15.6757 17.6808C15.5875 17.7262 15.4898 17.7499 15.3907 17.7501Z"
+                    fill="#EEC18D"
+                  />
+                </svg>
+              ))}
+            </div>
+          </div>
+          <p className="mb-6">{hotelData.description}</p>
+          <div className="grid grid-cols-3 gap-7 mt-8 w-[1180px] h-[148px]">
+            {/* 첫 번째 박스 */}
+            <div className="bg-white  rounded-lg p-4 border">
+              <h3 className="text-lg font-bold mb-2">박스 1</h3>
+              <p className="text-sm text-gray-600">여기에 베스트 리뷰 정보를 입력하세요.</p>
+            </div>
+
+            {/* 두 번째 박스 */}
+            <div className="bg-white  rounded-lg p-4 border">
+              <h3 className="text-lg font-bold mb-2">박스 2</h3>
+              <p className="text-sm text-gray-600">여기에 시설/서비스 정보를 입력하세요.</p>
+            </div>
+
+            {/* 세 번째 박스 */}
+            <div className="bg-white  rounded-lg p-4 border">
+              <h3 className="text-lg font-bold mb-2">박스 3</h3>
+              <p className="text-sm text-gray-600">여기에 위치 정보를 입력하세요.</p>
             </div>
           </div>
         </section>
@@ -244,7 +304,9 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
                     <p className="text-sm text-gray-700 mb-4">체크아웃: 00:00</p>
 
                     {/* 가격 */}
-                    <p className="text-lg font-bold text-gray-900 mb-4 flex justify-end">₩{room.price} / 1박</p>
+                    <p className="text-lg font-bold text-gray-900 mb-4 flex justify-end">
+                      {formatKoreanCurrency(room.price)} / 1박
+                    </p>
 
                     {/* 예약 버튼 */}
                     <div className="flex justify-end">
@@ -276,7 +338,24 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
         {/* 시설/서비스 섹션 */}
         <section id="services" className="scroll-mt-20">
           <h2 className="text-2xl font-bold mb-4">시설/서비스</h2>
-          <p>이곳은 호텔의 시설 및 서비스를 보여주는 콘텐츠 영역입니다.</p>
+          <div>
+            <h3 className="text-lg font-semibold mb-2">공용 시설</h3>
+
+            {/* 시설 데이터가 있을 경우에만 표시 */}
+            {facilityData && facilityData.length > 0 && (
+              <ul>
+                {facilityData.map((facility, index) => {
+                  return (
+                    <li key={index} className="flex items-center gap-2 text-gray-700">
+                      {roomOption}
+                      {facility.name}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+          <h2 className="text-lg font-semibold mt-2">서비스 시설</h2>
         </section>
 
         {/* 숙소 정책 섹션 */}
