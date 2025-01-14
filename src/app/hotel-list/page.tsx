@@ -12,7 +12,7 @@ import { HotelType } from '@/types/supabase/hotel-type'; // HotelType 추가
 const fetchHotels = async ({
   pageParam = 0,
   filters = { grade: [] },
-  sortOrder = '',
+  sortOrder = ''
 }: {
   pageParam?: number;
   filters?: { grade: number[] };
@@ -33,13 +33,13 @@ const fetchHotels = async ({
   const data = await res.json();
   return {
     items: data.items,
-    totalCount: data.totalCount,
+    totalCount: data.totalCount
   };
 };
 
 const HotelList = () => {
   const [filters, setFilters] = useState<{ grade: number[] }>({ grade: [] });
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | ''>(''); 
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | ''>('');
   const observerRef = useRef<HTMLDivElement | null>(null);
 
   // 유저 정보 로드
@@ -80,7 +80,7 @@ const HotelList = () => {
 
       return totalLoaded;
     },
-    initialPageParam: 0,
+    initialPageParam: 0
   });
 
   useEffect(() => {
@@ -129,18 +129,22 @@ const HotelList = () => {
           </div>
           <ul>
             {data?.pages?.flatMap((page) =>
-              page.items.map((hotel: HotelType) => ( // HotelType을 명시적으로 지정
-                <li key={hotel.id}>
-                  <HotelCardList
-                    hotel={hotel}
-                    isFavorite={favoriteStatus[hotel.id] || false} // 즐겨찾기 상태
-                    onToggleFavorite={() => handleToggleFavorite(hotel.id)} // 즐겨찾기 토글
-                  />
-                  <Link href={`/hotel-list/${hotel.id}`}>
-                    <p>객실 상세 페이지로 이동하기 / 테스트 용입니다.</p>
-                  </Link>
-                </li>
-              ))
+              page.items.map(
+                (
+                  hotel: HotelType // HotelType을 명시적으로 지정
+                ) => (
+                  <li key={hotel.id}>
+                    <HotelCardList
+                      hotel={hotel}
+                      isFavorite={favoriteStatus[hotel.id] || false} // 즐겨찾기 상태
+                      onToggleFavorite={() => handleToggleFavorite(hotel.id)} // 즐겨찾기 토글
+                    />
+                    <Link href={`/hotel-list/${hotel.id}`}>
+                      <p>객실 상세 페이지로 이동하기 / 테스트 용입니다.</p>
+                    </Link>
+                  </li>
+                )
+              )
             )}
           </ul>
           <div ref={observerRef} className="h-4"></div>
