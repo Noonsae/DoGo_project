@@ -17,7 +17,7 @@ interface BusinessUser {
   created_at: string; // 가입일
 }
 
-// 통합된 BusinessSidebar 컴포넌트
+// BusinessSidebar 컴포넌트
 const BusinessSidebar: React.FC<BusinessSidebarProps> = ({
   userId,
   currentTab,
@@ -76,19 +76,21 @@ const BusinessSidebar: React.FC<BusinessSidebarProps> = ({
       </div>
 
       {/* 메뉴 목록 */}
-      <ul className="space-y-2">
-        {menus.map((menu) => (
-          <li
-            key={menu.id}
-            className={`p-2 cursor-pointer rounded ${
-              currentTab === menu.id ? 'bg-gray-300 font-semibold' : 'hover:bg-gray-200'
-            }`}
-            onClick={() => setCurrentTab(menu.id)}
-          >
-            {menu.label}
-          </li>
-        ))}
-      </ul>
+      <nav className="p-4">
+        <ul className="space-y-2">
+          {menus.map((menu) => (
+            <li
+              key={menu.id}
+              className={`p-2 rounded cursor-pointer ${
+                currentTab === menu.id ? 'bg-gray-300 font-semibold' : 'hover:bg-gray-200'
+              }`}
+              onClick={() => setCurrentTab(menu.id)}
+            >
+              {menu.label}
+            </li>
+          ))}
+        </ul>
+      </nav>
     </aside>
   );
 };

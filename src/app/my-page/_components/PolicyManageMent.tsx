@@ -7,16 +7,9 @@
 // interface Policy {
 //   id: string; // 정책 ID
 //   policy_name: string; // 정책 이름
-//   description?: string; // 정책 설명 (nullable)
-//   hotel_id?: string; // 관련된 호텔 ID (nullable)
-//   created_at: string; // 정책 생성 날짜
-// }
-
-// // 새로운 정책 데이터를 나타내는 타입
-// interface NewPolicy {
-//   policy_name: string;
-//   description?: string;
-//   hotel_id?: string;
+//   description?: string; // 정책 설명
+//   hotel_id?: string; // 호텔 ID
+//   created_at: string; // 생성 날짜
 // }
 
 // // Props 타입 정의
@@ -26,25 +19,21 @@
 
 // // PolicyManagement 컴포넌트
 // const PolicyManagement: React.FC<PolicyManagementProps> = ({ userId }) => {
-//   // 상태 정의
 //   const [policies, setPolicies] = useState<Policy[]>([]); // 정책 리스트
-//   const [newPolicy, setNewPolicy] = useState<NewPolicy>({
-//     policy_name: '',
-//     description: undefined,
-//     hotel_id: undefined,
-//   });
 //   const [loading, setLoading] = useState(true); // 로딩 상태
-//   const [error, setError] = useState<string | null>(null); // 에러 메시지 상태
-//   const [successMessage, setSuccessMessage] = useState<string | null>(null); // 성공 메시지 상태
+//   const [error, setError] = useState<string | null>(null); // 에러 메시지
+//   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
+//   const [modalType, setModalType] = useState<'add' | 'edit'>('add'); // 모달 타입 ('add' 또는 'edit')
+//   const [selectedPolicy, setSelectedPolicy] = useState<Policy | null>(null); // 선택된 정책 데이터
 
-//   // 정책 데이터를 가져오는 함수
+//   // 정책 데이터 가져오기
 //   useEffect(() => {
 //     const fetchPolicies = async () => {
 //       try {
 //         const { data, error } = await browserSupabase()
 //           .from('policies')
 //           .select('id, policy_name, description, hotel_id, created_at')
-//           .eq('user_id', userId); // 사용자 ID에 맞는 데이터 필터링
+//           .eq('user_id', userId);
 
 //         if (error) throw error;
 
@@ -58,38 +47,47 @@
 //     };
 
 //     fetchPolicies();
-//   }, [userId]); // 사용자 ID 변경 시 다시 호출
+//   }, [userId]);
 
-//   // 새로운 정책 추가 함수
-//   const handleAddPolicy = async () => {
+//   // 모달 열기
+//   const openModal = (type: 'add' | 'edit', policy?: Policy) => {
+//     setModalType(type);
+//     setSelectedPolicy(policy || null);
+//     setIsModalOpen(true);
+//   };
+
+//   // 모달 닫기
+//   const closeModal = () => {
+//     setIsModalOpen(false);
+//     setSelectedPolicy(null);
+//   };
+
+//   // 정책 추가 또는 수정 처리
+//   const handleSavePolicy = async (policyName: string, description: string) => {
 //     try {
-//       setSuccessMessage(null);
-//       setError(null);
+//       if (modalType === 'add') {
+//         // 새 정책 추가
+//         await browserSupabase().from('policies').insert([
+//           { policy_name: policyName, description, user_id: userId },
+//         ]);
+//       } else if (modalType === 'edit' && selectedPolicy) {
+//         // 기존 정책 수정
+//         await browserSupabase()
+//           .from('policies')
+//           .update({ policy_name: policyName, description })
+//           .eq('id', selectedPolicy.id);
+//       }
 
-//       const { error } = await browserSupabase().from('policies').insert([
-//         {
-//           policy_name: newPolicy.policy_name,
-//           description: newPolicy.description,
-//           hotel_id: newPolicy.hotel_id,
-//           user_id: userId, // 사용자 ID 추가
-//         },
-//       ]);
-
-//       if (error) throw error;
-
-//       setSuccessMessage('정책이 성공적으로 추가되었습니다.');
-//       setNewPolicy({ policy_name: '', description: undefined, hotel_id: undefined });
-
-//       // 새 데이터를 다시 가져오기
+//       // 데이터 새로고침
 //       const { data } = await browserSupabase()
 //         .from('policies')
 //         .select('id, policy_name, description, hotel_id, created_at')
 //         .eq('user_id', userId);
-
 //       setPolicies(data || []);
+//       closeModal();
 //     } catch (err) {
-//       console.error('Error adding policy:', err);
-//       setError('정책 추가 중 오류가 발생했습니다.');
+//       console.error('Error saving policy:', err);
+//       setError('정책 저장 중 오류가 발생했습니다.');
 //     }
 //   };
 
@@ -100,71 +98,101 @@
 //   if (error) return <p className="text-center text-red-500">{error}</p>;
 
 //   return (
-//     <div>
-//       <h2 className="text-xl font-bold mb-4">정책 관리 페이지 - 사용자 ID: {userId}</h2>
-//       <div className="mb-6">
-//         <h3 className="text-lg font-semibold mb-2">새 정책 추가</h3>
-//         <div className="space-y-4">
-//           <div>
-//             <label className="block text-sm font-medium">정책 이름</label>
-//             <input
-//               type="text"
-//               value={newPolicy.policy_name}
-//               onChange={(e) => setNewPolicy({ ...newPolicy, policy_name: e.target.value })}
-//               placeholder="정책 이름을 입력하세요"
-//               className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-//             />
-//           </div>
-//           <div>
-//             <label className="block text-sm font-medium">정책 설명</label>
-//             <textarea
-//               value={newPolicy.description || ''}
-//               onChange={(e) => setNewPolicy({ ...newPolicy, description: e.target.value || undefined })}
-//               placeholder="정책 설명을 입력하세요"
-//               className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-//             ></textarea>
-//           </div>
-//           <div>
-//             <label className="block text-sm font-medium">호텔 ID</label>
-//             <input
-//               type="text"
-//               value={newPolicy.hotel_id || ''}
-//               onChange={(e) => setNewPolicy({ ...newPolicy, hotel_id: e.target.value || undefined })}
-//               placeholder="관련 호텔 ID를 입력하세요"
-//               className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-//             />
-//           </div>
+//     <div className="flex flex-col min-h-screen bg-gray-50 p-8">
+//       <h2 className="text-2xl font-bold mb-6">정책 관리</h2>
+
+//       {/* 정책 목록 */}
+//       <div className="bg-white shadow rounded-lg p-6">
+//         <div className="flex justify-between items-center mb-4">
+//           <p className="text-lg font-semibold">정책 목록</p>
 //           <button
-//             onClick={handleAddPolicy}
-//             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+//             onClick={() => openModal('add')}
+//             className="px-4 py-2 bg-brown-500 text-white rounded hover:bg-brown-600"
 //           >
-//             정책 추가
+//             정책 추가하기
 //           </button>
-//           {successMessage && <p className="text-green-500 mt-2">{successMessage}</p>}
-//           {error && <p className="text-red-500 mt-2">{error}</p>}
 //         </div>
+//         {policies.length === 0 ? (
+//           <p className="text-gray-600">등록된 정책이 없습니다.</p>
+//         ) : (
+//           <ul className="space-y-4">
+//             {policies.map((policy) => (
+//               <li
+//                 key={policy.id}
+//                 className="p-4 border border-gray-300 rounded-lg bg-white flex justify-between items-center"
+//               >
+//                 <div>
+//                   <p className="text-lg font-semibold">{policy.policy_name}</p>
+//                   <p className="text-sm text-gray-600">{policy.description || '설명이 없습니다.'}</p>
+//                 </div>
+//                 <div className="flex items-center space-x-4">
+//                   <button
+//                     onClick={() => openModal('edit', policy)}
+//                     className="text-blue-500 hover:underline"
+//                   >
+//                     수정하기
+//                   </button>
+//                   <button className="text-red-500 hover:underline">삭제하기</button>
+//                 </div>
+//               </li>
+//             ))}
+//           </ul>
+//         )}
 //       </div>
-//       <h3 className="text-lg font-semibold mb-2">정책 목록</h3>
-//       <table className="w-full border-collapse border border-gray-300">
-//         <thead className="bg-gray-200">
-//           <tr>
-//             <th className="border p-2">정책 이름</th>
-//             <th className="border p-2">설명</th>
-//             <th className="border p-2">호텔 ID</th>
-//             <th className="border p-2">등록일</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {policies.map((policy) => (
-//             <tr key={policy.id}>
-//               <td className="border p-2">{policy.policy_name}</td>
-//               <td className="border p-2">{policy.description || 'N/A'}</td>
-//               <td className="border p-2">{policy.hotel_id || 'N/A'}</td>
-//               <td className="border p-2">{new Date(policy.created_at).toLocaleDateString()}</td>
-//             </tr>
-//           ))}
-//         </tbody>
-//       </table>
+
+//       {/* 모달 */}
+//       {isModalOpen && (
+//         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+//           <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+//             <h3 className="text-xl font-semibold mb-4">
+//               {modalType === 'add' ? '정책 추가하기' : '정책 수정하기'}
+//             </h3>
+//             <form
+//               onSubmit={(e) => {
+//                 e.preventDefault();
+//                 const formData = new FormData(e.currentTarget);
+//                 const policyName = formData.get('policy_name') as string;
+//                 const description = formData.get('description') as string;
+//                 handleSavePolicy(policyName, description);
+//               }}
+//             >
+//               <div className="mb-4">
+//                 <label className="block text-sm font-medium">정책 이름</label>
+//                 <input
+//                   type="text"
+//                   name="policy_name"
+//                   defaultValue={selectedPolicy?.policy_name || ''}
+//                   required
+//                   className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+//                 />
+//               </div>
+//               <div className="mb-4">
+//                 <label className="block text-sm font-medium">정책 설명</label>
+//                 <textarea
+//                   name="description"
+//                   defaultValue={selectedPolicy?.description || ''}
+//                   className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+//                 ></textarea>
+//               </div>
+//               <div className="flex justify-end space-x-4">
+//                 <button
+//                   type="button"
+//                   onClick={closeModal}
+//                   className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+//                 >
+//                   취소
+//                 </button>
+//                 <button
+//                   type="submit"
+//                   className="px-4 py-2 bg-brown-500 text-white rounded hover:bg-brown-600"
+//                 >
+//                   저장하기
+//                 </button>
+//               </div>
+//             </form>
+//           </div>
+//         </div>
+//       )}
 //     </div>
 //   );
 // };
