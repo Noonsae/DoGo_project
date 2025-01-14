@@ -17,7 +17,7 @@ export default function SignUpUserPage() {
   const [error, setError] = useState('');
   const [nickname, setNickname] = useState('');
   const setUser = useAuthStore((state) => state.setUser);
-
+  //
   const router = useRouter();
   const handleSignup = async () => {
     try {
