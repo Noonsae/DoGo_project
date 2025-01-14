@@ -130,7 +130,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, room }) => {
           {/* 객실 편의 시설 */}
           <section id="amenities" className="space-y-4">
             <h3 className="text-lg font-semibold">객실 편의 시설</h3>
-            <ul className="grid grid-cols-2 gap-4 text-gray-700">
+            <ul className="grid grid-cols-4 gap-4 text-gray-700">
               {Array.isArray(room.option) && room.option.length > 0 ? (
                 room.option.map((item, index) => (
                   <li key={index} className="flex items-center space-x-2 p-2">
