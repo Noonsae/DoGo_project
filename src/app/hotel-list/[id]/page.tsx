@@ -5,7 +5,7 @@ import Image from 'next/image';
 import useFavoriteStore from '@/store/favorite/useFavoriteStore';
 import { HotelType } from '@/types/supabase/hotel-type';
 import { RoomType } from '@/types/supabase/room-type';
-import Modal from '@/components/ui/hotel-room/Modal';
+import Modal from './_components/Modal';
 
 const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const hotelId = params?.id;
@@ -14,26 +14,12 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
   const [roomsData, setRoomsData] = useState<RoomType[]>([]);
-  const [isOpen, setIsOpen] = useState(false); //모달관련된 상태관리 추가
+
   const loadUserFromCookie = useAuthStore((state) => state.loadUserFromCookie);
   const user = useAuthStore((state) => state.user);
 
   const { favoriteStatus, toggleFavorite, initializeFavorites } = useFavoriteStore();
-  // 객체모달 여기서부터 ~
-  const [selectedRoom, setSelectedRoom] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openModal = (room) => {
-    console.log('Opening modal for room:', room); // 확인용 로그
-    setSelectedRoom(room);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setSelectedRoom(null);
-    setIsModalOpen(false);
-  };
-  // 객체모달 여기까지!
   useEffect(() => {
     loadUserFromCookie();
   }, [loadUserFromCookie]);
@@ -232,21 +218,16 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
 
                   {/* 객실 정보 */}
                   <div className="ml-6 flex flex-col w-[824px] bg-white p-6 rounded-lg shadow-lg">
+                    {/* 객실 제목 */}
                     <div className="flex justify-between items-start mb-4">
                       <h2 className="text-xl font-semibold text-gray-800">{room.room_name}</h2>
-                      {/* 자세히 보기 버튼 */}
-                      <button
-                        className="text-sm text-gray-500 hover:text-gray-800 hover:underline"
-                        onClick={() => openModal(room)} // 클릭 시 모달 열기
-                      >
-                        자세히 보기 &gt;
-                      </button>
+                      <Modal>
+                        <button className="text-sm text-gray-500 hover:text-gray-800 hover:underline">
+                          자세히 보기 &gt;
+                        </button>
+                      </Modal>
                     </div>
 
-                    {/* 모달 렌더링 */}
-                    {isModalOpen && selectedRoom && (
-                      <Modal isOpen={isModalOpen} onClose={closeModal} room={selectedRoom} />
-                    )}
                     {/* 옵션 리스트 */}
                     <p className="grid grid-cols-4 gap-4 mb-4 text-sm">
                       {(Array.isArray(room.option) ? room.option : []).slice(0, 8).map((opt, idx) => (
