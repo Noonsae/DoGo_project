@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { IoClose } from 'react-icons/io5';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { IoCheckmarkCircle } from 'react-icons/io5';
-
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -40,12 +39,13 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, room }) => {
   if (!isOpen) return null;
 
   const scrollToSection = (id: string) => {
-    const modalContent = document.querySelector('.modal-content'); // 스크롤 가능한 컨테이너 선택
     const section = document.getElementById(id);
-    if (modalContent && section) {
-      const topOffset = section.offsetTop - modalContent.offsetTop; // 컨테이너 내 스크롤 위치 계산
-      modalContent.scrollTo({ top: topOffset, behavior: 'smooth' });
+    console.log(`섹션 ID: ${id}`, section); // 섹션 ID와 DOM 확인
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
       setActiveTab(id); // 활성 탭 설정
+    } else {
+      console.error(`섹션을 찾을 수 없습니다: ${id}`);
     }
   };
 
