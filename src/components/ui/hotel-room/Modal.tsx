@@ -1,56 +1,76 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
+import { IoClose } from 'react-icons/io5';
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { IoCheckmarkCircle } from 'react-icons/io5';
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   room: {
     room_name: string;
-    room_img_url: string;
-    options: string[];
+    room_img_url: string[];
+    view: string;
+    room_type: string;
+    option: string[];
     price: number;
-    detailed_info: string[];
+    bed_type: string;
+    tax_and_fee: number;
+    is_breakfast_included: string; // 조식 포함 여부 ("포함" 또는 "불포함")
   };
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, room }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeTab, setActiveTab] = useState('info');
-  // 모달이 열릴 때 배경 스크롤 비활성화
+
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden'; // 스크롤 비활성화
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = ''; // 스크롤 복원
+      document.body.style.overflow = '';
     }
 
     return () => {
-      document.body.style.overflow = ''; // 컴포넌트 언마운트 시 복원
+      document.body.style.overflow = '';
     };
   }, [isOpen]);
 
   if (!isOpen) return null;
 
   const scrollToSection = (id: string) => {
+    const modalContent = document.querySelector('.modal-content'); // 스크롤 가능한 컨테이너 선택
     const section = document.getElementById(id);
-    section?.scrollIntoView({ behavior: 'smooth' });
-    setActiveTab(id);
+    if (modalContent && section) {
+      const topOffset = section.offsetTop - modalContent.offsetTop; // 컨테이너 내 스크롤 위치 계산
+      modalContent.scrollTo({ top: topOffset, behavior: 'smooth' });
+      setActiveTab(id); // 활성 탭 설정
+    }
   };
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-6 rounded shadow-lg w-full max-w-4xl relative h-[90vh] overflow-y-auto scrollbar-hide">
-        {/* 닫기 버튼 */}
-        <button onClick={onClose} className="absolute top-4 right-4 text-gray-500 hover:text-black">
-          ×
-        </button>
+  const showNextImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % room.room_img_url.length);
+  };
 
-        {/* 모달 헤더 */}
-        <h2 className="text-2xl font-bold text-center mb-6">{room.room_name}</h2>
+  const showPreviousImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex === 0 ? room.room_img_url.length - 1 : prevIndex - 1));
+  };
+
+  const totalPrice = room.price - room.tax_and_fee;
+  const finalPrice = totalPrice;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+      <div className="bg-white rounded shadow-lg w-[600px] max-w-4xl relative h-[700px] overflow-y-auto scrollbar-hide">
+        {/* 닫기 버튼 */}
+        <div className="sticky top-0 z-10 bg-[#221A1A] text-white">
+          <h2 className="text-xl font-bold p-4 text-center">{room.room_name}</h2>
+          <IoClose onClick={onClose} className="absolute top-4 right-4 text-2xl cursor-pointer" />
+        </div>
 
         {/* 네비게이션 탭 */}
-        <nav className="flex justify-center space-x-6 mb-4 border-b">
+        <nav className="bg-white flex justify-center border-b sticky top-0 z-10">
           {[
             { id: 'info', label: '객실 정보' },
             { id: 'amenities', label: '객실 편의 시설' },
@@ -58,10 +78,10 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, room }) => {
           ].map((tab) => (
             <button
               key={tab.id}
-              className={`pb-2 ${
-                activeTab === tab.id ? 'border-b-2 border-black text-black font-semibold' : 'text-gray-600'
-              }`}
               onClick={() => scrollToSection(tab.id)}
+              className={`px-6 py-4 text-sm font-medium ${
+                activeTab === tab.id ? 'text-black border-b-2 border-black' : 'text-gray-500 hover:text-black'
+              }`}
             >
               {tab.label}
             </button>
@@ -69,71 +89,81 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, room }) => {
         </nav>
 
         {/* 콘텐츠 */}
-        <div className="space-y-6">
+        <div className="p-6 space-y-6">
           {/* 객실 정보 */}
           <section id="info" className="space-y-4">
-            <div className="flex items-center space-x-4">
-              <p className="object-cover rounded-md">이미지위치</p>
-              <p className="object-cover rounded-md">이미지위치</p>
-              <p className="object-cover rounded-md">이미지위치</p>
-              <p className="object-cover rounded-md">이미지위치</p>
-              <p className="object-cover rounded-md">이미지위치</p>
-              <p className="object-cover rounded-md">이미지위치</p>
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold">객실 정보</h3>
-                <ul className="text-gray-700 list-disc pl-5 space-y-2">
-                  {Array.isArray(room.detailed_info) && // 배열인지 확인
-                    room.detailed_info.map((info, index) => <li key={index}>{info}</li>)}
-                </ul>
-                <p>객실정보</p>
-                <p>객실정보</p>
-                <p>객실정보</p>
-                <p>객실정보</p>
-                <p>객실정보</p>
-                <p>객실정보</p>
-                <p>객실정보</p>
-                <p>객실정보</p>
-                <p>객실정보</p>
-                <p>객실정보</p>
-              </div>
+            <div className="relative w-full h-64 bg-gray-100 rounded-md">
+              {room.room_img_url.length > 0 ? (
+                <>
+                  <img
+                    src={room.room_img_url[currentImageIndex]}
+                    alt="Room"
+                    className="object-cover w-full h-full rounded-md"
+                  />
+                  <button
+                    onClick={showPreviousImage}
+                    className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
+                  >
+                    <FiChevronLeft />
+                  </button>
+                  <button
+                    onClick={showNextImage}
+                    className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
+                  >
+                    <FiChevronRight />
+                  </button>
+                </>
+              ) : (
+                <p className="flex items-center justify-center w-full h-full text-gray-500">
+                  이미지를 불러올 수 없습니다.
+                </p>
+              )}
             </div>
+            <h3 className="text-lg font-semibold">객실 정보</h3>
+            <ul className="list-disc pl-6 text-gray-700">
+              <li>{room.bed_type}</li>
+              <li>{room.view}</li>
+              <li>{room.is_breakfast_included === '포함' ? '조식 포함' : '조식 불포함'}</li>
+            </ul>
           </section>
 
           {/* 객실 편의 시설 */}
           <section id="amenities" className="space-y-4">
             <h3 className="text-lg font-semibold">객실 편의 시설</h3>
             <ul className="grid grid-cols-2 gap-4 text-gray-700">
-              {Array.isArray(room.options) && // 배열인지 확인
-                room.options.map((option, index) => (
-                  <li key={index} className="flex items-center space-x-2 border p-2 rounded-md">
-                    <span>✔️</span>
-                    <span>{option}</span>
+              {Array.isArray(room.option) && room.option.length > 0 ? (
+                room.option.map((item, index) => (
+                  <li key={index} className="flex items-center space-x-2 p-2">
+                    <IoCheckmarkCircle />
+                    <span>{item}</span>
                   </li>
-                ))}
-              <p>편의시설</p>
-              <p>편의시설</p>
-              <p>편의시설</p>
-              <p>편의시설</p>
-              <p>편의시설</p>
-              <p>편의시설</p>
-              <p>편의시설</p>
-              <p>편의시설</p>
-              <p>편의시설</p>
-              <p>편의시설</p>
-              <p>편의시설</p>
-              <p>편의시설</p>
-              <p>편의시설</p>
-              <p>편의시설</p>
-              <p>편의시설</p>
+                ))
+              ) : (
+                <p className="col-span-2 text-gray-500">객실 편의 시설 정보가 없습니다.</p>
+              )}
             </ul>
           </section>
 
           {/* 가격 상세 정보 */}
           <section id="price" className="space-y-4">
             <h3 className="text-lg font-semibold">가격 상세 정보</h3>
-            <p className="text-gray-700">₩{room.price.toLocaleString()} / 1박</p>
-            <button className="w-full bg-[#B3916A] text-white py-2 rounded-md hover:bg-[#8B5E3C]">예약하기</button>
+            <ul className="space-y-2 text-gray-700">
+              <li className="flex justify-between">
+                <span>객실 1개 x 1박</span>
+                <span>{room.price.toLocaleString()}원</span>
+              </li>
+              <li className="flex justify-between">
+                <span>세금 및 수수료</span>
+                <span>{room.tax_and_fee.toLocaleString()}원</span>
+              </li>
+            </ul>
           </section>
+        </div>
+
+        {/* 하단 고정 버튼과 가격 */}
+        <div className="sticky bottom-0 left-0 w-full bg-white border-t p-4 flex justify-between items-center">
+          <p className="text-xl font-bold">{finalPrice.toLocaleString()}원 / 1박</p>
+          <button className="bg-[#B3916A] text-white py-2 px-6 rounded-md hover:bg-[#8B5E3C]">예약하기</button>
         </div>
       </div>
     </div>
