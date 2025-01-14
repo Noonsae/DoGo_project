@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 interface ModalProps {
@@ -17,6 +17,18 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, room }) => {
   const [activeTab, setActiveTab] = useState('info');
+  // 모달이 열릴 때 배경 스크롤 비활성화
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'; // 스크롤 비활성화
+    } else {
+      document.body.style.overflow = ''; // 스크롤 복원
+    }
+
+    return () => {
+      document.body.style.overflow = ''; // 컴포넌트 언마운트 시 복원
+    };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
