@@ -4,14 +4,11 @@ interface FilterProps {
   onFilterChange: (filters: { grade: number[] }) => void; // 객체 형태로 전달
 }
 
-
-
 const AsideFilter = ({ onFilterChange }: FilterProps) => {
   const [selectedGrade, setSelectedGrade] = useState<number[]>([]);
   const [minPrice, setMinPrice] = useState(0); // 최소값 상태
   const [maxPrice, setMaxPrice] = useState(10000000); // 최대값 상태
   const priceStep = 10000; // 슬라이더 단계
-
 
   const toggleArrayItem = <T,>(array: T[], value: T): T[] => {
     return array.includes(value) ? array.filter((item) => item !== value) : [...array, value];
