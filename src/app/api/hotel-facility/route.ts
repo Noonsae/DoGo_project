@@ -1,4 +1,3 @@
-// /app/api/facility/route.ts
 import { serverSupabase } from '@/supabase/supabase-server';
 import { NextResponse } from 'next/server';
 
@@ -13,17 +12,32 @@ export async function GET(req: Request) {
 
     const supabase = await serverSupabase();
 
+    // Join 쿼리로 facilities 테이블과 연결
     const { data, error } = await supabase
-      .from('hotel_facility') // 테이블 이름
-      .select('*') // 필요한 컬럼 선택 (필요시 특정 컬럼만 선택)
-      .eq('hotel_id', hotelId); // hotel_id로 필터링
+      .from('hotel_facility')
+      .select(
+        `
+        id,
+        hotel_id,
+        facilities ( id, name )
+      `
+      )
+      .eq('hotel_id', hotelId);
 
     if (error) {
       console.error('Error fetching facilities:', error);
       return NextResponse.json({ error: error.message || '시설 데이터를 가져오는 중 오류 발생' }, { status: 500 });
     }
 
-    return NextResponse.json(data || []);
+    if (!data || data.length === 0) {
+      return NextResponse.json([]);
+    }
+
+    const facilitiesWithIdAndName = data.map((item: any) => ({
+      id: item.facilities?.id,
+      name: item.facilities?.name
+    }));
+    return NextResponse.json(facilitiesWithIdAndName || []);
   } catch (error: any) {
     console.error('Unhandled error:', error);
     return NextResponse.json(
