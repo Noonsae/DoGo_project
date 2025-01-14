@@ -213,7 +213,7 @@ export type Database = {
           }
         ];
       };
-      Hotel_facilitiy: {
+      hotel_facility: {
         Row: {
           created_at: string;
           hotel_id: string;
@@ -242,7 +242,7 @@ export type Database = {
           }
         ];
       };
-      Hotel_service: {
+      hotel_service: {
         Row: {
           created_at: string;
           hotel_id: string;
