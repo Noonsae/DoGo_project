@@ -7,7 +7,13 @@ import { HotelType } from '@/types/supabase/hotel-type';
 import { RoomType } from '@/types/supabase/room-type';
 import Modal from './_components/Modal';
 import useFormatCurrency from '@/hooks/formatCurrency/useFormatCurrency';
-import { FacilityType } from '@/types/supabase/facility-type';
+import { FacilitiesType } from '@/types/supabase/facilities-type';
+import HotelPolicies from './_components/HotelPolicies';
+import HotelLocation from './_components/HotelLocation';
+import HotelReviews from './_components/HotelReviews';
+import HotelRoom from './_components/HotelRoom';
+import HotelBox from './_components/HotelBox';
+import { Json } from '@/types/supabase/supabase-type';
 
 const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const hotelId = params?.id;
@@ -16,8 +22,7 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
   const [roomsData, setRoomsData] = useState<RoomType[]>([]);
-  const [facilityData, setFacilityData] = useState<FacilityType[]>([]);
-
+  const [facilityData, setFacilityData] = useState<FacilitiesType[]>([]);
   const loadUserFromCookie = useAuthStore((state) => state.loadUserFromCookie);
   const user = useAuthStore((state) => state.user);
 
@@ -93,6 +98,7 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
           throw new Error(`Failed to fetch facilities. Status: ${response.status}`);
         }
         const data = await response.json();
+        console.log('Facility Data:', data); // 여기서 데이터를 확인하세요.
         setFacilityData(data); // 상태에 데이터 저장
       } catch (error) {
         console.error('Error fetching facilities:', error);
@@ -237,138 +243,49 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
             </div>
           </div>
           <p className="mb-6">{hotelData.description}</p>
-          <div className="grid grid-cols-3 gap-7 mt-8 w-[1180px] h-[148px]">
-            {/* 첫 번째 박스 */}
-            <div className="bg-white  rounded-lg p-4 border">
-              <h3 className="text-lg font-bold mb-2">박스 1</h3>
-              <p className="text-sm text-gray-600">여기에 베스트 리뷰 정보를 입력하세요.</p>
-            </div>
-
-            {/* 두 번째 박스 */}
-            <div className="bg-white  rounded-lg p-4 border">
-              <h3 className="text-lg font-bold mb-2">박스 2</h3>
-              <p className="text-sm text-gray-600">여기에 시설/서비스 정보를 입력하세요.</p>
-            </div>
-
-            {/* 세 번째 박스 */}
-            <div className="bg-white  rounded-lg p-4 border">
-              <h3 className="text-lg font-bold mb-2">박스 3</h3>
-              <p className="text-sm text-gray-600">여기에 위치 정보를 입력하세요.</p>
-            </div>
-          </div>
+          <HotelBox roomOption={roomOption} facilityData={facilityData} />
         </section>
 
         {/* 객실 섹션 */}
-        <section id="rooms" className="scroll-mt-20">
-          <h2 className="text-2xl font-bold mb-4">객실 선택</h2>
-          <div className="w-[1200px] h-full">
-            <ul className="space-y-6">
-              {roomsData.map((room) => (
-                <li key={room.id} className="flex items-center bg-[#FAF4EF] p-6 rounded-lg shadow-md">
-                  {/* 객실 이미지 */}
-                  <div className="w-[280px] h-[280px] bg-gray-200 rounded-lg overflow-hidden">
-                    <Image
-                      src={getValidImageUrl(room.room_img_url)}
-                      alt={room.room_name || 'Default Image'}
-                      width={280}
-                      height={280}
-                      className="object-cover w-[280px] h-[280px]"
-                    />
-                  </div>
-
-                  {/* 객실 정보 */}
-                  <div className="ml-6 flex flex-col w-[824px] bg-white p-6 rounded-lg shadow-lg">
-                    {/* 객실 제목 */}
-                    <div className="flex justify-between items-start mb-4">
-                      <h2 className="text-xl font-semibold text-gray-800">{room.room_name}</h2>
-                      <Modal>
-                        <button className="text-sm text-gray-500 hover:text-gray-800 hover:underline">
-                          자세히 보기 &gt;
-                        </button>
-                      </Modal>
-                    </div>
-
-                    {/* 옵션 리스트 */}
-                    <p className="grid grid-cols-4 gap-4 mb-4 text-sm">
-                      {(Array.isArray(room.option) ? room.option : []).slice(0, 8).map((opt, idx) => (
-                        <span key={idx} className="flex items-center gap-2 text-gray-600">
-                          {roomOption} {/* SVG 아이콘 */}
-                          {String(opt)}
-                        </span>
-                      ))}
-                    </p>
-
-                    {/* 기타 정보 */}
-                    <p className="text-sm text-gray-700 mb-2">숙박 가능 인원: 기준 2인 ~ 최대 4인</p>
-                    <p className="text-sm text-gray-700 mb-2">체크인: 00:00</p>
-                    <p className="text-sm text-gray-700 mb-4">체크아웃: 00:00</p>
-
-                    {/* 가격 */}
-                    <p className="text-lg font-bold text-gray-900 mb-4 flex justify-end">
-                      {formatKoreanCurrency(room.price)} / 1박
-                    </p>
-
-                    {/* 예약 버튼 */}
-                    <div className="flex justify-end">
-                      <button className="w-[124px] h-[44px] bg-[#B3916A] text-white rounded-lg shadow-md hover:bg-[#8B5E3C]">
-                        예약하기
-                      </button>
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
+        <HotelRoom
+          roomsData={roomsData}
+          getValidImageUrl={getValidImageUrl}
+          roomOption={roomOption}
+          formatKoreanCurrency={formatKoreanCurrency}
+          Modal={Modal}
+        />
 
         {/* 이용 후기 섹션 */}
-        <section id="reviews" className="scroll-mt-20">
-          <h2 className="text-2xl font-bold mb-4">이용 후기</h2>
-          <div className="flex gap-[30px]">
-            <p className="w-[585px] h-[368px] bg-slate-400">이곳은 이용 후기를 보여주는 콘텐츠 영역입니다.</p>
-            <p className="w-[585px] h-[368px] bg-slate-400">이곳은 이용 후기를 보여주는 콘텐츠 영역입니다.</p>
-          </div>
-          <div className="flex justify-center mt-4">
-            <button className="px-6 py-2 bg-[#B3916A] text-white rounded-lg shadow-md hover:bg-brown-500">
-              전체 후기 보러가기
-            </button>
-          </div>
-        </section>
+        <HotelReviews />
 
         {/* 시설/서비스 섹션 */}
         <section id="services" className="scroll-mt-20">
           <h2 className="text-2xl font-bold mb-4">시설/서비스</h2>
           <div>
-            <h3 className="text-lg font-semibold mb-2">공용 시설</h3>
-
+            <h3 className="text-lg font-semibold mb-4">공용 시설</h3>
             {/* 시설 데이터가 있을 경우에만 표시 */}
             {facilityData && facilityData.length > 0 && (
-              <ul>
+              <div className="grid grid-cols-4 gap-y-4 gap-x-6">
                 {facilityData.map((facility, index) => {
                   return (
-                    <li key={index} className="flex items-center gap-2 text-gray-700">
+                    <div key={facility.id} className="flex items-center gap-2 text-gray-700">
                       {roomOption}
-                      {facility.name}
-                    </li>
+                      {/* facility 객체의 name 속성을 출력 */}
+                      <span className="text-sm">{facility.name}</span>
+                    </div>
                   );
                 })}
-              </ul>
+              </div>
             )}
           </div>
-          <h2 className="text-lg font-semibold mt-2">서비스 시설</h2>
+          <h2 className="text-lg font-semibold mt-8">서비스 시설</h2>
         </section>
 
         {/* 숙소 정책 섹션 */}
-        <section id="policies" className="scroll-mt-20">
-          <h2 className="text-2xl font-bold mb-4">숙소 정책</h2>
-          <p>이곳은 숙소 정책을 보여주는 콘텐츠 영역입니다.</p>
-        </section>
+        <HotelPolicies />
 
         {/* 위치 섹션 */}
-        <section id="location" className="scroll-mt-20">
-          <h2 className="text-2xl font-bold mb-4">위치</h2>
-          <p>이곳은 숙소의 위치를 보여주는 콘텐츠 영역입니다.</p>
-        </section>
+        <HotelLocation />
 
         {/* 호텔 주변 명소 섹션 */}
         <section id="nearby" className="scroll-mt-20">
