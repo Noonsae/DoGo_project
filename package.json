@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "server": "json-server --watch --port 5432 db.json",
-    "genTypes": "supabase gen types typescript --project-id dsggwbvtcrwuopwelpxy --schema public > src/types/supabase/supabase-type.ts"
+    "genTypes": "npx supabase login && npx supabase gen types typescript --project-id dsggwbvtcrwuopwelpxy --schema public > src/types/supabase/supabase-type.ts"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.1.15",
@@ -20,6 +20,7 @@
     "@supabase/supabase-js": "^2.47.10",
     "@tanstack/react-query": "^5.62.11",
     "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
     "next": "14.2.21",
     "react": "^18",
     "react-dom": "^18",
