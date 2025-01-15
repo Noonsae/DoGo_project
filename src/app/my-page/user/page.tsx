@@ -1,23 +1,27 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 
 import UserSidebar from '@/app/my-page/_components/Usersidebar';
 import ProfileContent from '@/app/my-page/_components/ProfileContent';
 import BookingsContent from '@/app/my-page/_components/BookingsContent';
 import FavoritesContent from '@/app/my-page/_components/FavoritesContent';
 import ReviewsContent from '@/app/my-page/_components/ReviewsContent';
+import InquiryContent from '@/app/my-page/_components/InquiryManagement';
 
-// 타입 정의
-type TabType = 'profile' | 'bookings' | 'favorites' | 'reviews';
+type TabType = 'profile' | 'bookings' | 'favorites' | 'reviews' | 'inquiries';
 
 export default function UserPage() {
-  const [currentTab, setCurrentTab] = useState<TabType>('profile');
   const [userData, setUserData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // 사용자 데이터 가져오기
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const currentTab: TabType = (pathname.split('/').pop() as TabType) || 'profile';
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -52,6 +56,8 @@ export default function UserPage() {
         return <FavoritesContent userId={userData.id} />;
       case 'reviews':
         return <ReviewsContent userId={userData.id} />;
+      case 'inquiries':
+        return <InquiryContent userId={userData.id} />;
       default:
         return <p className="text-center text-gray-500">유효하지 않은 탭입니다.</p>;
     }
@@ -62,11 +68,12 @@ export default function UserPage() {
 
   return (
     <div className="flex">
-      {/* Sidebar */}
-      <UserSidebar currentTab={currentTab} 
-      setCurrentTab={(tab: TabType) => setCurrentTab(tab)} />
+      <UserSidebar
+        userId={userData?.id}
+        currentTab={currentTab}
+        setCurrentTab={(tab) => router.push(`/my-page/${tab}`)} // TabType과 라우팅 처리
+      />
 
-      {/* Main Content */}
       <main className="flex-1 p-6">{renderContent()}</main>
     </div>
   );

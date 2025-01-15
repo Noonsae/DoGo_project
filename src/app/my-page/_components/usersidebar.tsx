@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { browserSupabase } from '@/supabase/supabase-client';
 
 interface UserSidebarProps {
@@ -10,12 +11,12 @@ interface UserSidebarProps {
 }
 
 const UserSidebar: React.FC<UserSidebarProps> = ({ userId, currentTab, setCurrentTab }) => {
-  // 상태 변수 선언
-  const [userName, setUserName] = useState<string | null>(null); // 사용자 이름
-  const [createdAt, setCreatedAt] = useState<string | null>(null); // 가입일
-  const [loading, setLoading] = useState(true); // 로딩 상태
+  const [userName, setUserName] = useState<string | null>(null);
+  const [createdAt, setCreatedAt] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  // 사용자 데이터 가져오기
+  const router = useRouter();
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -40,12 +41,23 @@ const UserSidebar: React.FC<UserSidebarProps> = ({ userId, currentTab, setCurren
   }, [userId]);
 
   if (loading) {
-    return <p className="text-center text-gray-600">Loading...</p>;
+    return (
+      <aside className="w-64 bg-gray-100 h-screen p-4">
+        <p className="text-center text-gray-600">Loading...</p>
+      </aside>
+    );
   }
 
+  const tabs = [
+    { id: 'profile', label: '프로필 관리' },
+    { id: 'bookings', label: '예약 목록' },
+    { id: 'favorites', label: '찜 목록' },
+    { id: 'reviews', label: '작성한 후기' },
+    { id: 'inquiries', label: '1:1 문의' },
+  ];
+
   return (
-    <aside className="w-64 bg-gray-100 p-4 h-screen fixed top-0 left-0 shadow">
-      {/* 사용자 정보 섹션 */}
+    <aside className="w-64 bg-gray-100 h-screen p-4 shadow-lg fixed top-0 left-0">
       <div className="mb-6">
         <div className="rounded-full bg-gray-200 w-16 h-16 mx-auto"></div>
         <p className="text-center mt-2 font-bold">{userName}</p>
@@ -54,24 +66,19 @@ const UserSidebar: React.FC<UserSidebarProps> = ({ userId, currentTab, setCurren
         </p>
       </div>
 
-      {/* 메뉴 목록 */}
       <ul className="space-y-2">
-        {[
-          { key: 'profile', label: '프로필 관리' },
-          { key: 'bookings', label: '예약 목록' },
-          { key: 'favorites', label: '찜 목록' },
-          { key: 'reviews', label: '작성한 후기' },
-        ].map((menu) => (
+        {tabs.map((tab) => (
           <li
-            key={menu.key}
+            key={tab.id}
             className={`p-2 cursor-pointer rounded ${
-              currentTab === menu.key
-                ? 'bg-gray-300 font-semibold text-brown-600'
-                : 'hover:bg-gray-200'
+              currentTab === tab.id ? 'bg-gray-300 font-semibold text-brown-600' : 'hover:bg-gray-200'
             }`}
-            onClick={() => setCurrentTab(menu.key)}
+            onClick={() => {
+              setCurrentTab(tab.id); // 탭 변경
+              router.push(`/my-page/${tab.id}`); // 라우팅 처리
+            }}
           >
-            {menu.label}
+            {tab.label}
           </li>
         ))}
       </ul>

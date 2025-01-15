@@ -5,33 +5,27 @@ import { browserSupabase } from '@/supabase/supabase-client';
 
 // CooperationRequest 데이터 타입 정의
 interface CooperationRequest {
-  id: string;
-  user_id: string | null;
-  hotel_id: string | null;
-  title: string;
-  content: string;
-  created_at: string;
+  id: string; // 요청 ID
+  user_id: string | null; // 요청자 ID
+  hotel_id: string | null; // 호텔 ID
+  title: string; // 요청 제목
+  content: string; // 요청 내용
+  created_at: string; // 요청일
+  company_name?: string; // 회사 이름 (선택적)
+  status?: string; // 요청 상태 (선택적)
 }
 
-// CooperationRequests 컴포넌트 Props 타입 정의
-interface CooperationRequestsProps {
-  currentTab: string;
-  setCurrentTab: React.Dispatch<React.SetStateAction<string>>;
-}
+// CooperationRequests 컴포넌트 정의
+const CooperationRequests: React.FC = () => {
+  const [requests, setRequests] = useState<CooperationRequest[]>([]); // 협력 요청 데이터 상태
+  const [loading, setLoading] = useState(true); // 로딩 상태
+  const [error, setError] = useState<string | null>(null); // 에러 상태
 
-const CooperationRequests: React.FC<CooperationRequestsProps> = ({ currentTab, setCurrentTab }) => {
-  // 협력 요청 데이터를 저장하는 상태
-  const [requests, setRequests] = useState<CooperationRequest[]>([]);
-  // 로딩 상태 관리
-  const [loading, setLoading] = useState(true);
-  // 오류 메시지 상태 관리
-  const [error, setError] = useState<string | null>(null);
-
-  // 협력 요청 데이터를 가져오는 useEffect
+  // 데이터 가져오기
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        // Supabase에서 `contacts` 테이블에서 데이터를 가져옴
+        // Supabase에서 협력 요청 데이터 가져오기
         const { data, error } = await browserSupabase()
           .from('contacts')
           .select(`
@@ -40,13 +34,29 @@ const CooperationRequests: React.FC<CooperationRequestsProps> = ({ currentTab, s
             hotel_id,
             title,
             content,
-            created_at
+            created_at,
+            hotels (
+              name
+            )
           `)
-          .eq('title', '협력 요청'); // 제목이 '협력 요청'인 항목만 필터링
+          .eq('title', '협력 요청'); // '협력 요청'만 가져오기
 
-        if (error) throw error; // 데이터베이스 호출 오류 처리
+        if (error) throw error;
 
-        setRequests(data || []); // 데이터를 상태에 저장
+        // 데이터를 CooperationRequest 타입으로 매핑
+        const formattedData: CooperationRequest[] =
+          data?.map((request) => ({
+            id: request.id,
+            user_id: request.user_id,
+            hotel_id: request.hotel_id,
+            title: request.title,
+            content: request.content,
+            created_at: request.created_at,
+            company_name: request.hotels?.name || 'N/A', // 호텔 이름을 추가
+            status: 'pending', // 기본 상태 (필요 시 동적 변경 가능)
+          })) || [];
+
+        setRequests(formattedData); // 상태 업데이트
       } catch (err) {
         console.error('Error fetching cooperation requests:', err);
         setError('협력 요청 데이터를 불러오는 중 오류가 발생했습니다.');
@@ -55,64 +65,48 @@ const CooperationRequests: React.FC<CooperationRequestsProps> = ({ currentTab, s
       }
     };
 
-    fetchRequests(); // 데이터 가져오기 호출
+    fetchRequests();
   }, []);
 
-  // 로딩 중일 때 렌더링되는 메시지
+  // 로딩 중 메시지
   if (loading) return <p className="text-center text-gray-600">Loading...</p>;
 
-  // 오류가 발생했을 때 렌더링되는 메시지
+  // 에러 발생 시 메시지
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
-  // 협력 요청 데이터가 없을 때 렌더링되는 메시지
+  // 데이터가 없을 때 메시지
   if (requests.length === 0)
     return <p className="text-center text-gray-600">등록된 협력 요청이 없습니다.</p>;
 
   return (
     <div>
-      {/* 현재 탭 정보 및 탭 변경 버튼 */}
-      <div className="mb-6">
-        <p className="text-lg font-bold mb-2">현재 선택된 탭: {currentTab}</p>
-        <button
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          onClick={() => setCurrentTab('bookings')}
-        >
-          예약 목록 탭으로 변경
-        </button>
-      </div>
-
-      {/* 협력 요청 리스트 제목 */}
       <h2 className="text-xl font-bold mb-4">협력 요청</h2>
-
-      {/* 협력 요청 데이터를 테이블로 표시 */}
       <table className="w-full border-collapse border border-gray-300">
+        {/* 테이블 헤더 */}
         <thead className="bg-gray-200">
           <tr>
             <th className="border p-2">요청 ID</th>
             <th className="border p-2">요청자 ID</th>
-            <th className="border p-2">호텔 ID</th>
+            <th className="border p-2">호텔명</th>
             <th className="border p-2">요청 제목</th>
             <th className="border p-2">내용</th>
             <th className="border p-2">요청일</th>
+            <th className="border p-2">상태</th>
           </tr>
         </thead>
+        {/* 테이블 바디 */}
         <tbody>
           {requests.map((request) => (
             <tr key={request.id}>
-              {/* 요청 ID */}
               <td className="border p-2">{request.id}</td>
-              {/* 요청자 ID */}
               <td className="border p-2">{request.user_id || 'N/A'}</td>
-              {/* 호텔 ID */}
-              <td className="border p-2">{request.hotel_id || 'N/A'}</td>
-              {/* 요청 제목 */}
+              <td className="border p-2">{request.company_name || 'N/A'}</td>
               <td className="border p-2">{request.title}</td>
-              {/* 요청 내용 */}
               <td className="border p-2">{request.content}</td>
-              {/* 요청일 */}
               <td className="border p-2">
                 {new Date(request.created_at).toLocaleDateString()}
               </td>
+              <td className="border p-2">{request.status || 'N/A'}</td>
             </tr>
           ))}
         </tbody>
