@@ -25,6 +25,8 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const [facilityData, setFacilityData] = useState<FacilitiesType[]>([]);
   const loadUserFromCookie = useAuthStore((state) => state.loadUserFromCookie);
   const user = useAuthStore((state) => state.user);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const { favoriteStatus, toggleFavorite, initializeFavorites } = useFavoriteStore();
   const formatKoreanCurrency = useFormatCurrency();
@@ -120,6 +122,17 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
     return '/placeholder.png';
   };
 
+  const openModal = (image: string) => {
+    console.log('openModal 호출됨, 이미지:', image); // 이미지 URL 출력
+    setSelectedImage(image);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedImage(null);
+  };
+
   const scrollToSection = (id: string) => {
     const section = document.getElementById(id);
     section?.scrollIntoView({ behavior: 'smooth' });
@@ -191,6 +204,7 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
                 width={594}
                 height={363}
                 className="object-cover block rounded-md"
+                onClick={() => openModal(hotelData.main_img_url)}
               />
               <button
                 onClick={() => {
@@ -209,6 +223,7 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
                     key={index}
                     className="relative bg-gray-200 rounded-lg shadow-md overflow-hidden"
                     style={{ width: '291px', height: '190px' }}
+                    onClick={() => openModal(image as string)}
                   >
                     <Image
                       src={image as string}
@@ -252,7 +267,6 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
           getValidImageUrl={getValidImageUrl}
           roomOption={roomOption}
           formatKoreanCurrency={formatKoreanCurrency}
-          Modal={Modal}
         />
 
         {/* 이용 후기 섹션 */}
@@ -285,7 +299,7 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
         <HotelPolicies />
 
         {/* 위치 섹션 */}
-        <HotelLocation />
+        <HotelLocation id={hotelId} />
 
         {/* 호텔 주변 명소 섹션 */}
         <section id="nearby" className="scroll-mt-20">
