@@ -49,7 +49,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, room }) => {
     setCurrentImageIndex((prevIndex) => (prevIndex === 0 ? room.room_img_url.length - 1 : prevIndex - 1));
   };
 
-  const totalPrice = room.price - room.tax_and_fee;
+  const totalPrice = room.price + room.tax_and_fee;
   const finalPrice = totalPrice;
 
   return (
