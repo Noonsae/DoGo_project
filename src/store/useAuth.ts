@@ -21,6 +21,18 @@ const useAuthStore = create<AuthStateFace>((set) => ({
       set({ user: null });
     }
   },
+  
+  // 유저 정보 설정 및 쿠키 동기화
+  signInUser: (user) => {
+    set({ user });
+    
+    try {
+      document.cookie = `user=${encodeURIComponent(JSON.stringify(user))}; path=/; SameSite=Lax`;
+      console.log('user 쿠키 설정 완료:', document.cookie);
+    } catch (error) {
+      console.error('쿠키 설정 실패:', error);
+    }
+  },
 
   // 유저 정보 설정 및 쿠키 동기화
   signInUser: (user) => {
