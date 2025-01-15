@@ -2,10 +2,18 @@ import type { Metadata } from 'next';
 
 import MyProvider from './_provider/provider';
 
+import localFont from 'next/font/local';
+
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
 import '../styles/globals.css';
+
+const pretendard = localFont({
+  src: '../fonts/PretendardVariable.woff2',
+  variable: '--font-pretendard',
+  display: 'swap'
+});
 
 export const metadata: Metadata = {
   title: 'DoGo',
@@ -28,15 +36,15 @@ export const metadata: Metadata = {
   }
 };
 
-export default function RootLayout({
+const RootLayout = ({
   children
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   return (
-    <html lang="ko">
+    <html lang="ko" className={`${pretendard.variable}`}>
       <MyProvider>
-        <body>
+        <body className="font-pretendard">
           <Header />
           {children}
           <Footer />
@@ -45,3 +53,4 @@ export default function RootLayout({
     </html>
   );
 }
+  export default RootLayout;
