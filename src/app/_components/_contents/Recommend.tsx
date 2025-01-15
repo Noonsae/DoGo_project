@@ -1,10 +1,11 @@
 'use client';
 
+// import Image from 'next/image';
+
 import { useHotels } from '@/hooks/useHotels';
 
-import RecommendSkeletonUI from '../../../components/ui/skeleton/RecommedSkeletonUI';
+import RecommendSkeletonUI from '@/components/ui/skeleton/RecommendSkeletonUI';
 
-// import Image from 'next/image';
 
 const Recommend = () => {
   // React Query 훅 사용
@@ -30,7 +31,7 @@ const Recommend = () => {
 
       {/* 슬라이드로 구현될 예정 */}
 
-      <div className="w-full max-w-[1200px] mx-auto h-[484px] flex flex-row justify-center items-center gap-8 mt-8 border-2 border-[#221A1A]">
+      <div className="w-full max-w-[1200px] mx-auto h-[484px] flex flex-row justify-center items-center gap-8 mt-8 border-2 border-[#ccc]">
         <p className="text-center text-[20px] text-[#636363] leading-[1.5]">
           최근에 본 상품이 없으시다니까요? <br /> 제발 뭐라도 좀 보고오시죠?
         </p>
