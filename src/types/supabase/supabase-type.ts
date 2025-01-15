@@ -9,23 +9,6 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      password_reset_requests: {
-        Row: {
-          user_id: string;
-          expires_at: string;
-          otp: string;
-        };
-        Insert: {
-          user_id: string;
-          expires_at: string;
-          otp: string;
-        };
-        Update: {
-          user_id?: string;
-          expires_at?: string;
-          otp?: string;
-        };
-      };
       answers: {
         Row: {
           contact_id: string
@@ -41,7 +24,6 @@ export type Database = {
           id?: string
           user_id?: string
         }
-
         Update: {
           contact_id?: string
           content?: string
@@ -173,28 +155,45 @@ export type Database = {
           },
         ]
       }
+      facilities: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
       favorites: {
         Row: {
           created_at: string
           hotel_id: string
           id: string
-          room_id: string
+          is_favorite: boolean | null
           user_id: string
         }
         Insert: {
           created_at?: string
           hotel_id?: string
           id?: string
-          room_id?: string
+          is_favorite?: boolean | null
           user_id?: string
         }
         Update: {
           created_at?: string
           hotel_id?: string
           id?: string
-          room_id?: string
+          is_favorite?: boolean | null
           user_id?: string
-
         }
         Relationships: [
           {
@@ -211,33 +210,26 @@ export type Database = {
             referencedRelation: "users"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "favorites_room_id_fkey"
-            columns: ["room_id"]
-            isOneToOne: false
-            referencedRelation: "rooms"
-            referencedColumns: ["id"]
-          },
         ]
       }
-      Hotel_facilitiy: {
+      hotel_facility: {
         Row: {
           created_at: string
+          facility_id: string
           hotel_id: string
           id: string
-          name: string
         }
         Insert: {
           created_at?: string
-          hotel_id?: string
+          facility_id: string
+          hotel_id: string
           id?: string
-          name?: string
         }
         Update: {
           created_at?: string
+          facility_id?: string
           hotel_id?: string
           id?: string
-          name?: string
         }
         Relationships: [
           {
@@ -247,26 +239,33 @@ export type Database = {
             referencedRelation: "hotels"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "hotel_facility_facility_id_fkey"
+            columns: ["facility_id"]
+            isOneToOne: false
+            referencedRelation: "facilities"
+            referencedColumns: ["id"]
+          },
         ]
       }
-      Hotel_service: {
+      hotel_service: {
         Row: {
           created_at: string
           hotel_id: string
-          id: number
-          name: string
+          id: string
+          service_id: string
         }
         Insert: {
           created_at?: string
-          hotel_id?: string
-          id?: number
-          name: string
+          hotel_id: string
+          id?: string
+          service_id: string
         }
         Update: {
           created_at?: string
           hotel_id?: string
-          id?: number
-          name?: string
+          id?: string
+          service_id?: string
         }
         Relationships: [
           {
@@ -274,6 +273,13 @@ export type Database = {
             columns: ["hotel_id"]
             isOneToOne: false
             referencedRelation: "hotels"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "hotel_service_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
             referencedColumns: ["id"]
           },
         ]
@@ -363,22 +369,22 @@ export type Database = {
       policies: {
         Row: {
           created_at: string
-          description: string
-          hotel_id: string
+          description: string | null
+          hotel_id: string | null
           id: string
           policy_name: string
         }
         Insert: {
           created_at?: string
-          description: string
-          hotel_id?: string
+          description?: string | null
+          hotel_id?: string | null
           id?: string
           policy_name: string
         }
         Update: {
           created_at?: string
-          description?: string
-          hotel_id?: string
+          description?: string | null
+          hotel_id?: string | null
           id?: string
           policy_name?: string
         }
@@ -442,6 +448,7 @@ export type Database = {
           bed_type: string
           hotel_id: string
           id: string
+          option: Json | null
           price: number
           room_img_url: Json | null
           room_name: string
@@ -452,6 +459,7 @@ export type Database = {
           bed_type: string
           hotel_id?: string
           id?: string
+          option?: Json | null
           price: number
           room_img_url?: Json | null
           room_name: string
@@ -462,6 +470,7 @@ export type Database = {
           bed_type?: string
           hotel_id?: string
           id?: string
+          option?: Json | null
           price?: number
           room_img_url?: Json | null
           room_name?: string
@@ -477,6 +486,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      services: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
       }
       users: {
         Row: {

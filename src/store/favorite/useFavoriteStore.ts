@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import useAuthStore from '../useAuth';
+import Swal from 'sweetalert2'; // SweetAlert2 import
 
 interface FavoriteState {
   favoriteStatus: Record<string, boolean>;
@@ -14,23 +15,32 @@ const useFavoriteStore = create<FavoriteState>((set, get) => ({
   setFavoriteStatus: (hotelId: string, isFavorite: boolean) => {
     console.log(`Setting favorite for hotelId: ${hotelId} to ${isFavorite}`);
     set((state) => ({
-      favoriteStatus: { ...state.favoriteStatus, [hotelId]: isFavorite },
+      favoriteStatus: { ...state.favoriteStatus, [hotelId]: isFavorite }
     }));
   },
 
   toggleFavorite: async (hotelId: string) => {
     const { favoriteStatus } = get();
     const userId = useAuthStore.getState().user?.id;
+
+  
     if (!userId) {
-      console.error('User ID is missing');
+      Swal.fire({
+        icon: 'warning',
+        title: '로그인이 필요합니다',
+        text: '즐겨찾기 기능을 사용하려면 로그인해주세요.',
+        confirmButtonText: '로그인하기'
+      }).then(() => {
+        window.location.href = '/sign-in'; 
+      });
       return;
     }
-  
-    const isFavorite = favoriteStatus[hotelId]; // if the hotel is in favorites, it's marked as favorite
+
+    const isFavorite = favoriteStatus[hotelId];
     const action = isFavorite ? 'remove' : 'add';
-  
+
     console.log(`Toggling favorite for hotelId: ${hotelId}, current status: ${isFavorite}`);
-  
+
     try {
       const response = await fetch('/api/favorites', {
         method: 'POST',
@@ -38,66 +48,74 @@ const useFavoriteStore = create<FavoriteState>((set, get) => ({
         body: JSON.stringify({
           action,
           hotelId,
-          userId,
-        }),
+          userId
+        })
       });
-  
+
       if (!response.ok) {
         const error = await response.json();
         console.error('Error toggling favorite:', error);
         throw new Error(error.message || 'Failed to toggle favorite');
       }
-  
+
       console.log(`Successfully toggled favorite for hotelId: ${hotelId}`);
       set((state) => ({
         favoriteStatus: {
           ...state.favoriteStatus,
-          [hotelId]: !isFavorite, // Toggle the favorite status
-        },
+          [hotelId]: !isFavorite
+        }
       }));
+
+      // 성공 알림
+      Swal.fire({
+        icon: 'success',
+        title: action === 'add' ? '즐겨찾기 추가' : '즐겨찾기 제거',
+        text: action === 'add' ? '숙소가 즐겨찾기에 추가되었습니다.' : '숙소가 즐겨찾기에서 제거되었습니다.'
+      });
     } catch (error) {
       console.error('Error toggling favorite:', error);
+      Swal.fire({
+        icon: 'error',
+        title: '오류 발생',
+        text: '즐겨찾기 상태를 변경하는 중 문제가 발생했습니다.'
+      });
     }
   },
+
   initializeFavorites: async (userId: string) => {
-    if (!userId) {
-      console.error('User ID is missing');
-      return;
-    }
-  
     console.log(`Initializing favorites for userId: ${userId}`);
-  
+
     try {
       const response = await fetch(`/api/favorites?userId=${userId}`, {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' }
       });
-  
+
       if (!response.ok) {
         const error = await response.json();
         console.error('Error fetching favorites:', error);
         throw new Error(error.message || 'Failed to fetch favorite status');
       }
-  
+
       const favorites = await response.json();
-      console.log('Fetched favorites: ', favorites); // Debug log
-  
-      // Create favoriteStatus object based on existing favorites
-      const favoriteStatus = favorites.reduce(
-        (acc: Record<string, boolean>, { hotel_id }: any) => {
-          acc[hotel_id] = true; // hotel_id exists in favorites
-          return acc;
-        },
-        {}
-      );
-  
-      console.log('Updated favoriteStatus: ', favoriteStatus); // Debug log
-  
-      set({ favoriteStatus }); // Update global state
+      console.log('Fetched favorites: ', favorites);
+
+      const favoriteStatus = favorites.reduce((acc: Record<string, boolean>, { hotel_id }: any) => {
+        acc[hotel_id] = true;
+        return acc;
+      }, {});
+
+      console.log('Updated favoriteStatus: ', favoriteStatus);
+      set({ favoriteStatus });
     } catch (error) {
       console.error('Error initializing favorites:', error);
+      Swal.fire({
+        icon: 'error',
+        title: '오류 발생',
+        text: '즐겨찾기 상태를 불러오는 중 문제가 발생했습니다.'
+      });
     }
-  },
+  }
 }));
 
 export default useFavoriteStore;
