@@ -6,11 +6,19 @@ export const GET = async (req: Request) => {
     const url = new URL(req.url);
 
     // 쿼리 파라미터에서 필터 조건 추출
+    const hotelId = url.searchParams.get('hotelId');
     const view = url.searchParams.get('view');
     const bedType = url.searchParams.get('bedType');
 
+    if (!hotelId) {
+      return new Response(JSON.stringify({ error: 'hotelId is required' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
     // 기본 쿼리: rooms 테이블 참조
-    let query = supabase.from('rooms').select('*');
+    let query = supabase.from('rooms').select('*').eq('hotel_id', hotelId);
 
     // 일반 필드 조건 추가
     if (view) {
