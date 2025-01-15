@@ -25,7 +25,6 @@ const useAuthStore = create<AuthStateFace>((set) => ({
   // 유저 정보 설정 및 쿠키 동기화
   signInUser: (user) => {
     set({ user });
-
     try {
       document.cookie = `user=${encodeURIComponent(JSON.stringify(user))}; path=/; SameSite=Lax`;
       console.log('user 쿠키 설정 완료:', document.cookie);
@@ -37,7 +36,7 @@ const useAuthStore = create<AuthStateFace>((set) => ({
   // 유저 정보 초기화 및 쿠키 제거
   signOutUser: () => {
     set({ user: null });
-    document.cookie = 'user=; Max-Age=0; path=/;';
+    // document.cookie = 'user=; Max-Age=0; path=/;';
   }
 }));
 
