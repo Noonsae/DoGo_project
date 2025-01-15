@@ -1,27 +1,24 @@
 import React, { useState } from 'react';
+import Image from 'next/image';
 import Modal from '@/components/ui/hotel-room/Modal';
 import { RoomType } from '@/types/supabase/room-type';
-import Image from 'next/image';
 
 type HotelRoomProps = {
-  roomsData: RoomType[]; // Supabase의 rooms 타입
-  getValidImageUrl: (roomImgUrls: RoomType['room_img_url']) => string; // 이미지 처리 함수
-  roomOption: React.ReactNode; // SVG 또는 JSX 노드
-  formatKoreanCurrency: (price: number) => string; // 가격 포맷 함수
+  roomsData: RoomType[];
+  getValidImageUrl: (roomImgUrls: RoomType['room_img_url']) => string;
+  roomOption: React.ReactNode;
+  formatKoreanCurrency: (price: number) => string;
 };
 
 const HotelRoom = ({ roomsData, getValidImageUrl, roomOption, formatKoreanCurrency }: HotelRoomProps) => {
-  // 상태 관리
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState<RoomType | null>(null);
 
-  // 모달 열기
   const openModal = (room: RoomType) => {
     setSelectedRoom(room);
     setIsModalOpen(true);
   };
 
-  // 모달 닫기
   const closeModal = () => {
     setSelectedRoom(null);
     setIsModalOpen(false);
@@ -35,7 +32,6 @@ const HotelRoom = ({ roomsData, getValidImageUrl, roomOption, formatKoreanCurren
           <ul className="space-y-6">
             {roomsData.map((room) => (
               <li key={room.id} className="flex items-center bg-[#FAF4EF] p-6 rounded-lg shadow-md">
-                {/* 객실 이미지 */}
                 <div className="w-[280px] h-[280px] bg-gray-200 rounded-lg overflow-hidden">
                   <Image
                     src={getValidImageUrl(room.room_img_url)}
@@ -50,7 +46,7 @@ const HotelRoom = ({ roomsData, getValidImageUrl, roomOption, formatKoreanCurren
                     <h2 className="text-xl font-semibold text-gray-800">{room.room_name}</h2>
                     <button
                       className="text-sm text-gray-500 hover:text-gray-800 hover:underline"
-                      onClick={() => openModal(room)} // 모달 열기
+                      onClick={() => openModal(room)}
                     >
                       자세히 보기 &gt;
                     </button>
@@ -58,7 +54,7 @@ const HotelRoom = ({ roomsData, getValidImageUrl, roomOption, formatKoreanCurren
                   <p className="grid grid-cols-4 gap-4 mb-4 text-sm">
                     {(Array.isArray(room.option) ? room.option : []).slice(0, 8).map((opt, idx) => (
                       <span key={idx} className="flex items-center gap-2 text-gray-600">
-                        {roomOption} {/* SVG 아이콘 */}
+                        {roomOption}
                         {String(opt)}
                       </span>
                     ))}
@@ -81,7 +77,6 @@ const HotelRoom = ({ roomsData, getValidImageUrl, roomOption, formatKoreanCurren
         </div>
       </section>
 
-      {/* Modal 컴포넌트 */}
       {isModalOpen && selectedRoom && <Modal isOpen={isModalOpen} onClose={closeModal} room={selectedRoom} />}
     </div>
   );
