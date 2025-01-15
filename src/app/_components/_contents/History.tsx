@@ -2,7 +2,7 @@
 
 import { useHotels } from '@/hooks/useHotels';
 
-import RecommendSkeletonUI from '../../../components/ui/skeleton/RecommedSkeletonUI';
+import RecommendSkeletonUI from '@/components/ui/skeleton/RecommendSkeletonUI';
 
 const History = () => {
   // React Query 훅 사용
@@ -24,7 +24,7 @@ const History = () => {
 
       {/* 슬라이드로 구현될 예정 */}
 
-      <div className="w-full max-w-[1200px] mx-auto h-[484px] flex flex-row justify-center items-center gap-8 mt-8 border-2 border-[#221A1A]">
+      <div className="w-full max-w-[1200px] mx-auto h-[484px] flex flex-row justify-center items-center gap-8 mt-8 border-2 border-[#ccc]">
         <p className="text-center text-[20px] text-[#636363] leading-[1.5]">
           뭘 보여달라는건가요? <br />
           고객님께서는 최근에 본 상품 기록이 없으신데요?
