@@ -167,8 +167,7 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
                 className="object-cover block rounded-md"
                
               />
-             
-     
+
               <button
                 onClick={() => {
                   toggleFavorite(hotelId); // 즐겨찾기 버튼 클릭 시 상태 토글
