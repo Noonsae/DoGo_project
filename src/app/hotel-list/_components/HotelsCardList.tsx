@@ -1,3 +1,4 @@
+import useFormatCurrency from '@/hooks/formatCurrency/useFormatCurrency';
 import { HotelType } from '@/types/supabase/hotel-type';
 import Image from 'next/image';
 
@@ -8,6 +9,7 @@ interface HotelListItemProps {
 }
 
 const HotelCardList: React.FC<HotelListItemProps> = ({ hotel, isFavorite, onToggleFavorite }) => {
+  const formatKoreanCurrency = useFormatCurrency();
   // 별 렌더링 함수
   const renderStars = (stars: number) => {
     return Array.from({ length: stars }, (_, index) => (
@@ -34,16 +36,12 @@ const HotelCardList: React.FC<HotelListItemProps> = ({ hotel, isFavorite, onTogg
       <div className="ml-[16px] h-[245px] flex flex-col justify-between">
         <h3 className="text-lg font-semibold leading-none">{hotel.name}</h3>
         <p className="bg-[#E8E8E8] py-1 px-2 flex rounded-sm">{renderStars(hotel.stars)}</p>
-        <button
-          onClick={() => onToggleFavorite(hotel.id)}
-          className="ml-auto p-2 text-2xl"
-          aria-label="찜하기 버튼"
-        >
+        <button onClick={() => onToggleFavorite(hotel.id)} className="ml-auto p-2 text-2xl" aria-label="찜하기 버튼">
           {isFavorite ? '❤️' : '🤍'}
         </button>
         <p className="text-gray-600">{hotel.description}</p>
         <p className="text-gray-600">{hotel.address}</p>
-        <p className="text-lg font-bold text-gray-800">{hotel.min_price}원</p>
+        <p className="text-lg font-bold text-gray-800">{formatKoreanCurrency(hotel.min_price)}원</p>
       </div>
     </li>
   );
