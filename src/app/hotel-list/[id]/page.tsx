@@ -6,14 +6,6 @@ import useFavoriteStore from '@/store/favorite/useFavoriteStore';
 import { HotelType } from '@/types/supabase/hotel-type';
 import { RoomType } from '@/types/supabase/room-type';
 import Modal from './_components/Modal';
-import useFormatCurrency from '@/hooks/formatCurrency/useFormatCurrency';
-import { FacilitiesType } from '@/types/supabase/facilities-type';
-import HotelPolicies from './_components/HotelPolicies';
-import HotelLocation from './_components/HotelLocation';
-import HotelReviews from './_components/HotelReviews';
-import HotelRoom from './_components/HotelRoom';
-import HotelBox from './_components/HotelBox';
-import { Json } from '@/types/supabase/supabase-type';
 
 const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const hotelId = params?.id;
@@ -22,14 +14,13 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
   const [roomsData, setRoomsData] = useState<RoomType[]>([]);
-  const [facilityData, setFacilityData] = useState<FacilitiesType[]>([]);
+
   const loadUserFromCookie = useAuthStore((state) => state.loadUserFromCookie);
   const user = useAuthStore((state) => state.user);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const { favoriteStatus, toggleFavorite, initializeFavorites } = useFavoriteStore();
-  const formatKoreanCurrency = useFormatCurrency();
 
   useEffect(() => {
     loadUserFromCookie();
@@ -92,26 +83,6 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
     fetchRoomsData();
   }, [hotelId]);
 
-  useEffect(() => {
-    const fetchFacilityData = async () => {
-      try {
-        const response = await fetch(`/api/hotel-facility?hotel_id=${hotelId}`);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch facilities. Status: ${response.status}`);
-        }
-        const data = await response.json();
-        console.log('Facility Data:', data); // 여기서 데이터를 확인하세요.
-        setFacilityData(data); // 상태에 데이터 저장
-      } catch (error) {
-        console.error('Error fetching facilities:', error);
-      }
-    };
-
-    if (hotelId) {
-      fetchFacilityData();
-    }
-  }, [hotelId]);
-
   const getValidImageUrl = (imageData: Json): string => {
     if (Array.isArray(imageData) && imageData.length > 0) {
       const firstImage = imageData[0];
@@ -159,10 +130,11 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   return (
     <div className="bg-gray-100 min-h-screen">
       <div className="h-[60px]"></div>
+
       {/* 네비게이션 탭 */}
       <div className="sticky top-0 z-10 bg-white border-b shadow-sm">
         <div className="mx-[360px]">
-          <ul className="flex  space-x-6 py-4">
+          <ul className="flex space-x-6 py-4">
             {[
               { id: 'overview', label: '개요' },
               { id: 'rooms', label: '객실 선택' },
@@ -187,7 +159,6 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
                 </a>
               </li>
             ))}
-            <button className="flex ml-auto">문의하기</button>
           </ul>
         </div>
       </div>
@@ -196,6 +167,8 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
       <div className="mx-[360px] py-6 space-y-16">
         {/* 개요 섹션 */}
         <section id="overview" className="scroll-mt-20">
+          <h2 className="text-2xl font-bold mb-4">{hotelData.name}</h2>
+          <p className="mb-6">{hotelData.description}</p>
           <div className="flex gap-4">
             <div className="rounded-lg shadow-md overflow-hidden relative">
               <Image
@@ -206,11 +179,14 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
                 className="object-cover block rounded-md"
                 onClick={() => openModal(hotelData.main_img_url)}
               />
+
               <button
                 onClick={() => {
                   toggleFavorite(hotelId); // 즐겨찾기 버튼 클릭 시 상태 토글
                 }}
-                className="absolute top-4 right-4 p-2 rounded-full shadow-md bg-white text-gray-600"
+                className={`absolute top-4 right-4 p-2 rounded-full shadow-md ${
+                  favoriteStatus[hotelId] ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-600'
+                }`}
               >
                 {favoriteStatus[hotelId] ? '❤️' : '🤍'}
               </button>
@@ -222,43 +198,81 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
                   <div
                     key={index}
                     className="relative bg-gray-200 rounded-lg shadow-md overflow-hidden"
-                    style={{ width: '291px', height: '190px' }}
+                    style={{ width: '291px', height: '175.5px' }}
                     onClick={() => openModal(image as string)}
                   >
                     <Image
                       src={image as string}
                       alt={`Image ${index + 1}`}
                       width={291}
-                      height={180}
+                      height={175.5}
                       className="object-cover w-full h-full rounded-md"
                     />
                   </div>
                 ))}
             </div>
           </div>
-          <div className="flex items-center">
-            <h2 className="text-2xl font-bold mr-2">{hotelData.name}</h2>
-            <div className="flex items-center">
-              {/* 별 개수를 렌더링 */}
-              {Array.from({ length: hotelData.stars }, (_, index) => (
-                <svg
-                  key={index}
-                  width="20"
-                  height="18"
-                  viewBox="0 0 20 18"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M15.3907 17.7501C15.2591 17.7506 15.1308 17.7096 15.0239 17.6329L10.0001 13.9907L4.97624 17.6329C4.86891 17.7108 4.7396 17.7525 4.60701 17.752C4.47442 17.7515 4.34542 17.7089 4.23866 17.6302C4.1319 17.5516 4.05291 17.4411 4.01311 17.3146C3.97331 17.1881 3.97476 17.0523 4.01725 16.9267L5.97663 11.1232L0.898504 7.64073C0.788508 7.56539 0.70549 7.45684 0.661579 7.33095C0.617668 7.20506 0.615165 7.06843 0.654436 6.94102C0.693707 6.8136 0.772694 6.70209 0.879856 6.62276C0.987018 6.54344 1.11674 6.50046 1.25007 6.50011H7.51491L9.40554 0.681749C9.44626 0.556132 9.52573 0.446644 9.63254 0.368991C9.73935 0.291338 9.86801 0.249512 10.0001 0.249512C10.1321 0.249512 10.2608 0.291338 10.3676 0.368991C10.4744 0.446644 10.5539 0.556132 10.5946 0.681749L12.4852 6.50206H18.7501C18.8836 6.502 19.0136 6.54467 19.121 6.62385C19.2285 6.70302 19.3078 6.81453 19.3474 6.94204C19.3869 7.06955 19.3845 7.20636 19.3407 7.33244C19.2968 7.45852 19.2137 7.56724 19.1036 7.64269L14.0235 11.1232L15.9817 16.9251C16.0134 17.019 16.0224 17.1192 16.0077 17.2172C15.9931 17.3153 15.9554 17.4085 15.8976 17.4891C15.8399 17.5697 15.7638 17.6354 15.6757 17.6808C15.5875 17.7262 15.4898 17.7499 15.3907 17.7501Z"
-                    fill="#EEC18D"
-                  />
-                </svg>
+        </section>
+
+        {/* 객실 섹션 */}
+        <section id="rooms" className="scroll-mt-20">
+          <h2 className="text-2xl font-bold mb-4">객실 선택</h2>
+          <div className="w-[1200px] h-full">
+            <ul className="space-y-6">
+              {roomsData.map((room) => (
+                <li key={room.id} className="flex items-center bg-[#FAF4EF] p-6 rounded-lg shadow-md">
+                  {/* 객실 이미지 */}
+                  <div className="w-[280px] h-[280px] bg-gray-200 rounded-lg overflow-hidden">
+                    <Image
+                      src={getValidImageUrl(room.room_img_url)}
+                      alt={room.room_name || 'Default Image'}
+                      width={280}
+                      height={280}
+                      className="object-cover w-[280px] h-[280px]"
+                    />
+                  </div>
+
+                  {/* 객실 정보 */}
+                  <div className="ml-6 flex flex-col w-[824px] bg-white p-6 rounded-lg shadow-lg">
+                    {/* 객실 제목 */}
+                    <div className="flex justify-between items-start mb-4">
+                      <h2 className="text-xl font-semibold text-gray-800">{room.room_name}</h2>
+                      <Modal>
+                        <button className="text-sm text-gray-500 hover:text-gray-800 hover:underline">
+                          자세히 보기 &gt;
+                        </button>
+                      </Modal>
+                    </div>
+
+                    {/* 옵션 리스트 */}
+                    <p className="grid grid-cols-4 gap-4 mb-4 text-sm">
+                      {(Array.isArray(room.option) ? room.option : []).slice(0, 8).map((opt, idx) => (
+                        <span key={idx} className="flex items-center gap-2 text-gray-600">
+                          {roomOption} {/* SVG 아이콘 */}
+                          {String(opt)}
+                        </span>
+                      ))}
+                    </p>
+
+                    {/* 기타 정보 */}
+                    <p className="text-sm text-gray-700 mb-2">숙박 가능 인원: 기준 2인 ~ 최대 4인</p>
+                    <p className="text-sm text-gray-700 mb-2">체크인: 00:00</p>
+                    <p className="text-sm text-gray-700 mb-4">체크아웃: 00:00</p>
+
+                    {/* 가격 */}
+                    <p className="text-lg font-bold text-gray-900 mb-4 flex justify-end">₩{room.price} / 1박</p>
+
+                    {/* 예약 버튼 */}
+                    <div className="flex justify-end">
+                      <button className="w-[124px] h-[44px] bg-[#B3916A] text-white rounded-lg shadow-md hover:bg-[#8B5E3C]">
+                        예약하기
+                      </button>
+                    </div>
+                  </div>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
-          <p className="mb-6">{hotelData.description}</p>
-          <HotelBox roomOption={roomOption} facilityData={facilityData} />
         </section>
 
         {/* 객실 섹션 */}
@@ -270,33 +284,30 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
         />
 
         {/* 이용 후기 섹션 */}
-        <HotelReviews />
+        <section id="reviews" className="scroll-mt-20">
+          <h2 className="text-2xl font-bold mb-4">이용 후기</h2>
+          <div className="flex gap-[30px]">
+            <p className="w-[585px] h-[368px] bg-slate-400">이곳은 이용 후기를 보여주는 콘텐츠 영역입니다.</p>
+            <p className="w-[585px] h-[368px] bg-slate-400">이곳은 이용 후기를 보여주는 콘텐츠 영역입니다.</p>
+          </div>
+          <div className="flex justify-center mt-4">
+            <button className="px-6 py-2 bg-[#B3916A] text-white rounded-lg shadow-md hover:bg-brown-500">
+              전체 후기 보러가기
+            </button>
+          </div>
+        </section>
 
         {/* 시설/서비스 섹션 */}
         <section id="services" className="scroll-mt-20">
           <h2 className="text-2xl font-bold mb-4">시설/서비스</h2>
-          <div>
-            <h3 className="text-lg font-semibold mb-4">공용 시설</h3>
-            {/* 시설 데이터가 있을 경우에만 표시 */}
-            {facilityData && facilityData.length > 0 && (
-              <div className="grid grid-cols-4 gap-y-4 gap-x-6">
-                {facilityData.map((facility, index) => {
-                  return (
-                    <div key={facility.id} className="flex items-center gap-2 text-gray-700">
-                      {roomOption}
-                      {/* facility 객체의 name 속성을 출력 */}
-                      <span className="text-sm">{facility.name}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-          <h2 className="text-lg font-semibold mt-8">서비스 시설</h2>
+          <p>이곳은 호텔의 시설 및 서비스를 보여주는 콘텐츠 영역입니다.</p>
         </section>
 
         {/* 숙소 정책 섹션 */}
-        <HotelPolicies />
+        <section id="policies" className="scroll-mt-20">
+          <h2 className="text-2xl font-bold mb-4">숙소 정책</h2>
+          <p>이곳은 숙소 정책을 보여주는 콘텐츠 영역입니다.</p>
+        </section>
 
         {/* 위치 섹션 */}
         <HotelLocation id={hotelId} />

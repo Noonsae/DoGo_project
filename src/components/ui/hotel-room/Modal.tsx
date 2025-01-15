@@ -4,20 +4,12 @@ import { useEffect, useState } from 'react';
 import { IoClose } from 'react-icons/io5';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { IoCheckmarkCircle } from 'react-icons/io5';
+import { Database } from '@/types/supabase/supabase-type';
+type RoomType = Database['public']['Tables']['rooms']['Row'];
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  room: {
-    room_name: string;
-    room_img_url: string[];
-    view: string;
-    room_type: string;
-    option: string[];
-    price: number;
-    bed_type: string;
-    tax_and_fee: number;
-    is_breakfast_included: string; // 조식 포함 여부 ("포함" 또는 "불포함")
-  };
+  room: RoomType;
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, room }) => {
@@ -57,7 +49,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, room }) => {
     setCurrentImageIndex((prevIndex) => (prevIndex === 0 ? room.room_img_url.length - 1 : prevIndex - 1));
   };
 
-  const totalPrice = room.price - room.tax_and_fee;
+  const totalPrice = room.price + room.tax_and_fee;
   const finalPrice = totalPrice;
 
   return (
