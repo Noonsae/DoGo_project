@@ -1,30 +1,28 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { browserSupabase } from '@/supabase/supabase-client'; // Supabase 클라이언트 가져오기
 
 // Props 타입 정의
 interface BusinessSidebarProps {
   userId: string; // 현재 사용자 ID
   currentTab: string; // 현재 선택된 탭
-  setCurrentTab: (tab: string) => void; // 탭 변경 함수
+  setCurrentTab?: (tab: string) => void; // 탭 변경 함수 (필요하지 않음)
 }
 
 // 사업자 정보 타입 정의
 interface BusinessUser {
-  id: string; // 사업자 ID
-  user_name: string; // 사업자 이름
-  created_at: string; // 가입일
-  business_number: string | null; // 사업자 번호 (null 가능)
+  id: string;
+  user_name: string;
+  created_at: string;
+  business_number: string | null;
 }
 
-const BusinessSidebar: React.FC<BusinessSidebarProps> = ({
-  userId,
-  currentTab,
-  setCurrentTab,
-}) => {
+const BusinessSidebar: React.FC<BusinessSidebarProps> = ({ userId, currentTab }) => {
   const [businessInfo, setBusinessInfo] = useState<BusinessUser | null>(null); // 사업자 정보 상태
   const [loading, setLoading] = useState(true); // 로딩 상태
+  const router = useRouter(); // Next.js 라우터 사용
 
   // Supabase에서 사업자 데이터 가져오기
   useEffect(() => {
@@ -32,9 +30,9 @@ const BusinessSidebar: React.FC<BusinessSidebarProps> = ({
       try {
         const { data, error } = await browserSupabase()
           .from('users')
-          .select('id, user_name, created_at, business_number') // 사업자 번호 포함
-          .eq('id', userId) // 사용자 ID로 필터링
-          .maybeSingle(); // 단일 결과 반환
+          .select('id, user_name, created_at, business_number')
+          .eq('id', userId)
+          .maybeSingle();
 
         if (error) throw error;
 
@@ -47,7 +45,7 @@ const BusinessSidebar: React.FC<BusinessSidebarProps> = ({
     };
 
     fetchBusinessInfo();
-  }, [userId]); // userId가 변경될 때마다 실행
+  }, [userId]);
 
   // 메뉴 정의
   const menus = [
@@ -63,17 +61,17 @@ const BusinessSidebar: React.FC<BusinessSidebarProps> = ({
   if (loading) return <p className="text-center text-gray-600">로딩 중...</p>;
 
   return (
-    <aside className="w-64 bg-gray-100 h-screen overflow-auto">
+    <aside className="w-64 bg-gray-100 h-screen p-4">
       {/* 사업자 정보 표시 */}
       <div className="mb-6">
-        <div className="rounded-full bg-gray-200 w-16 h-16 mx-auto"></div>
+        <div className="rounded-full bg-gray-300 w-16 h-16 mx-auto" />
         <p className="text-center mt-2 font-bold">
-          {businessInfo ? businessInfo.user_name : '사업자 이름'}
+          {businessInfo ? businessInfo.user_name : '사업자'}
         </p>
         <p className="text-center text-sm text-gray-600">
           가입일: {businessInfo ? new Date(businessInfo.created_at).toLocaleDateString() : 'N/A'}
         </p>
-        <p className="text-center text-sm text-gray-500">
+        <p className="text-center text-sm">
           사업자 번호: {businessInfo?.business_number || '없음'}
         </p>
       </div>
@@ -87,7 +85,7 @@ const BusinessSidebar: React.FC<BusinessSidebarProps> = ({
               className={`p-2 rounded cursor-pointer ${
                 currentTab === menu.id ? 'bg-gray-300 font-semibold' : 'hover:bg-gray-200'
               }`}
-              onClick={() => setCurrentTab(menu.id)}
+              onClick={() => router.push(`/my-page/business/${menu.id}`)} // 경로 변경
             >
               {menu.label}
             </li>
