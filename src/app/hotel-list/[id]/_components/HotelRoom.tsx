@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Modal from '@/components/ui/hotel-room/Modal';
+import Modal from '@/components/ui/hotel-room/Modal-hotel-room';
 import { RoomType } from '@/types/supabase/room-type';
 import Image from 'next/image';
 
