@@ -20,6 +20,7 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
 
   const { favoriteStatus, toggleFavorite, initializeFavorites } = useFavoriteStore();
 
+
   useEffect(() => {
     loadUserFromCookie();
   }, [loadUserFromCookie]);
@@ -164,6 +165,7 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
                 width={594}
                 height={363}
                 className="object-cover block rounded-md"
+               
               />
 
               <button
