@@ -2,7 +2,7 @@
 
 import useAuthStore from '@/store/useAuth';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import KakaoSignIn from './kakao-sign-in';
 import FindIdModal from './find-id-modal';
@@ -17,9 +17,24 @@ const Signin = () => {
   const { setUser } = useAuthStore();
   const [isFindIdModalOpen, setIsFindIdModalOpen] = useState(false);
   const [isFindPasswordOpen, setFindPasswordOpen] = useState(false);
-
+  const loadUserFromCookie = useAuthStore((state) => state.loadUserFromCookie);
   const router = useRouter();
+  // 세션 동기화 및 유효성 검사
+  useEffect(() => {
+    console.log('Zustand loadUserFromCookie 호출');
+    // 쿠키에서 사용자 상태를 로드
+    loadUserFromCookie();
 
+    // 세션 유효성 확인
+    const checkSession = async () => {
+      const session = await browserSupabase().auth.getSession();
+      if (!session.data.session) {
+        console.log('세션이 만료되었습니다.');
+        setUser(null); // 세션이 만료되었으면 상태 초기화
+      }
+    };
+    checkSession();
+  }, [loadUserFromCookie, setUser]);
   const handleLogin = async () => {
     try {
       if (!email || !password) {

@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
 import { serverSupabase } from '@/supabase/supabase-server';
+import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
@@ -8,7 +8,9 @@ export async function GET(request: Request) {
 
   if (code) {
     const supabase = await serverSupabase();
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+    console.log('exchangeCodeForSession 결과:', data, error); // 추가 로그
+
     if (!error) {
       const forwardedHost = request.headers.get('x-forwarded-host');
       const isLocalEnv = process.env.NODE_ENV === 'development';

@@ -19,7 +19,7 @@ export const useAuthState = create<AuthState>((set) => ({
     })
 }));
 
-// 로그인 상태 확인 함수
+// 로그인 상태 확인 함수 isLoggedIn 바꾸기 잊지말기기⭐
 export const isLogined = (): boolean => {
   const { isAuthenticated } = useAuthState.getState();
   return isAuthenticated;
