@@ -1,6 +1,9 @@
 'use client';
 
 import { useHotels } from '@/hooks/useHotels';
+
+import RecommendSkeletonUI from './_skeletonUI/RecommedSkeletonUI';
+
 // import Image from 'next/image';
 
 const Recommend = () => {
@@ -9,7 +12,7 @@ const Recommend = () => {
 
   // 로딩 중 상태 처리
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <RecommendSkeletonUI />;
   }
 
   // 오류 발생 시 처리
