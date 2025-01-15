@@ -1,3 +1,5 @@
+// store/useAuth.ts
+
 import { browserSupabase } from '@/supabase/supabase-client';
 import { AuthStateFace } from '@/types/zustand/auth-state-type';
 import { create } from 'zustand';
@@ -5,24 +7,6 @@ import { create } from 'zustand';
 // Zustand store 생성
 const useAuthStore = create<AuthStateFace>((set) => ({
   user: null,
-
-  // 유저 정보 설정 및 쿠키 동기화
-  setUser: (user) => {
-    set({ user });
-
-    if (user) {
-      try {
-        document.cookie = `user=${encodeURIComponent(JSON.stringify(user))}; path=/; SameSite=Lax`;
-        console.log('user 쿠키 설정 완료:', document.cookie);
-      } catch (error) {
-        console.error('쿠키 설정 실패:', error);
-      }
-    } else {
-      document.cookie = 'user=; Max-Age=0; path=/;';
-      console.log('user 쿠키 삭제 완료');
-      // ⭐ 꼭 한솔님한테 말하기!
-    }
-  },
 
   // 쿠키에서 유저 정보 로드
   loadUserFromCookie: async () => {
@@ -38,8 +22,21 @@ const useAuthStore = create<AuthStateFace>((set) => ({
     }
   },
 
+  // 유저 정보 설정 및 쿠키 동기화
+  signInUser: (user) => {
+    set({ user });
+
+    try {
+      document.cookie = `user=${encodeURIComponent(JSON.stringify(user))}; path=/; SameSite=Lax`;
+      console.log('user 쿠키 설정 완료:', document.cookie);
+    } catch (error) {
+      console.error('쿠키 설정 실패:', error);
+    }
+  },
+
   // 유저 정보 초기화 및 쿠키 제거
   signOutUser: () => {
+    set({ user: null });
     document.cookie = 'user=; Max-Age=0; path=/;';
   }
 }));
