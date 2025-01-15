@@ -44,7 +44,7 @@ const HamburgerBtn: React.FC = () => {
     <div className="relative" ref={menuRef}>
       {/* 햄버거 버튼 */}
       <div
-        className="flex flex-col justify-between w-[24px] h-[24px] cursor-pointer"
+        className="box-content flex flex-col justify-between w-[24px] h-[24px] p-[10px] cursor-pointer"
         onClick={toggleMenu}
         aria-label="Toggle menu"
       >
@@ -57,7 +57,7 @@ const HamburgerBtn: React.FC = () => {
 
       {/* 토글 메뉴 */}
       {isOpen && (
-        <div className="absolute top-8 left-0 w-[200px] px-[8px] py-[12px] bg-white shadow-lg rounded-[8px]">
+        <div className="absolute top-[42px] left-0 w-[200px] h-[216px] p-[8px] bg-white shadow-lg rounded-[8px]">
           <ul>
             {isLoggedIn ? (
               <>
@@ -66,7 +66,7 @@ const HamburgerBtn: React.FC = () => {
                   <Link
                     href="#"
                     onClick={handleLogout}
-                    className="px-[16px] py-[12px] w-full h-[43px] flex items-center text-base text-[#2c2c2c] font-normal rounded-[8px] hover:bg-[#f8f8f8]"
+                    className="px-[16px] py-[12px] w-full h-[50px] flex items-center text-base text-[#2c2c2c] font-normal rounded-[8px] hover:bg-[#f8f8f8]"
                   >
                     로그아웃
                   </Link>
@@ -78,7 +78,7 @@ const HamburgerBtn: React.FC = () => {
                 <li>
                   <Link
                     href="/sign-in"
-                    className="px-[16px] py-[12px] w-full h-[43px] flex items-center text-base text-[#2c2c2c] font-normal rounded-[8px] hover:bg-[#f8f8f8]"
+                    className="px-[16px] py-[12px] w-full h-[50px] flex items-center text-base text-[#2c2c2c] font-normal rounded-[8px] hover:bg-[#f8f8f8]"
                   >
                     로그인
                   </Link>
@@ -86,8 +86,8 @@ const HamburgerBtn: React.FC = () => {
                 {/* 회원가입 메뉴 */}
                 <li>
                   <Link
-                    href="/sign-up"
-                    className="px-[16px] py-[12px] w-full h-[43px] flex items-center text-base text-[#2c2c2c] font-normal rounded-[8px] hover:bg-[#f8f8f8]"
+                    href="/sign-up/user"
+                    className="px-[16px] py-[12px] w-full h-[50px] flex items-center text-base text-[#2c2c2c] font-normal rounded-[8px] hover:bg-[#f8f8f8]"
                   >
                     회원가입
                   </Link>
@@ -99,7 +99,7 @@ const HamburgerBtn: React.FC = () => {
             <li>
               <Link
                 href="/event"
-                className="px-[16px] py-[12px] w-full h-[43px] flex items-center text-base text-[#2c2c2c] font-normal rounded-[8px] hover:bg-[#f8f8f8]"
+                className="px-[16px] py-[12px] w-full h-[50px] flex items-center text-base text-[#2c2c2c] font-normal rounded-[8px] hover:bg-[#f8f8f8]"
               >
                 EVENT
               </Link>
@@ -108,7 +108,7 @@ const HamburgerBtn: React.FC = () => {
             <li>
               <Link
                 href="/contact"
-                className="px-[16px] py-[12px] w-full h-[43px] flex items-center text-base text-[#2c2c2c] font-normal rounded-[8px] hover:bg-[#f8f8f8]"
+                className="px-[16px] py-[12px] w-full h-[50px] flex items-center text-base text-[#2c2c2c] font-normal rounded-[8px] hover:bg-[#f8f8f8]"
               >
                 고객센터
               </Link>
