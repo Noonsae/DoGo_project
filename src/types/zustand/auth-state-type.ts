@@ -8,7 +8,7 @@
 
 export interface AuthStateFace {
   user: object | null;
-  setUser: (user: object) => void;
+  signInUser: (user: object) => void;
   signOutUser: (user: null) => void;
   loadUserFromCookie: () => void;
 }
