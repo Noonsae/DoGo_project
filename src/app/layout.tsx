@@ -42,7 +42,7 @@ const RootLayout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <html lang="ko" className={`${pretendard.variable}`}>
+    <html lang="ko" className={`${pretendard.variable} leading-[1.35]`}>
       <MyProvider>
         <body className="font-pretendard">
           <Header />
