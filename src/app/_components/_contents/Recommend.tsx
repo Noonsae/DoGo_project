@@ -2,7 +2,7 @@
 
 import { useHotels } from '@/hooks/useHotels';
 
-import RecommendSkeletonUI from './_skeletonUI/RecommedSkeletonUI';
+import RecommendSkeletonUI from '../../../components/ui/skeleton/RecommedSkeletonUI';
 
 // import Image from 'next/image';
 

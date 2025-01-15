@@ -1,8 +1,8 @@
 'use client';
 
-import { useHotels } from "@/hooks/useHotels";
-  
-import RecommendSkeletonUI from "./_skeletonUI/RecommedSkeletonUI";
+import { useHotels } from '@/hooks/useHotels';
+
+import RecommendSkeletonUI from '../../../components/ui/skeleton/RecommedSkeletonUI';
 
 const History = () => {
   // React Query 훅 사용

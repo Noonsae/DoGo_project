@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 import { useHotels } from '@/hooks/useHotels';
 
-import HotelByViewSkeletonUI from './_skeletonUI/HotelByViewSkeletonUI';
+import HotelByViewSkeletonUI from '../../../components/ui/skeleton/HotelByViewSkeletonUI';
 
 const HotelByView = () => {
   const [selectedViews, setSelectedViews] = useState<string | null>(`all`);

@@ -5,8 +5,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 
 import { useHotels } from '@/hooks/useHotels';
-import HotelByRegionSkeletonUI from './_skeletonUI/HotelByRegionSkeletonUI';
-
+import HotelByRegionSkeletonUI from '../../../components/ui/skeleton/HotelByRegionSkeletonUI';
 
 const HotelByRegion = () => {
   const [selectedRegions, setSelectedRegions] = useState<string | null>(`all`);
