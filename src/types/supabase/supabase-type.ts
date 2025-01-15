@@ -1,612 +1,655 @@
-export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
 
 export type Database = {
   public: {
     Tables: {
-      password_reset_requests: {
-        Row: {
-          user_id: string;
-          expires_at: string;
-          otp: string;
-        };
-        Insert: {
-          user_id: string;
-          expires_at: string;
-          otp: string;
-        };
-        Update: {
-          user_id?: string;
-          expires_at?: string;
-          otp?: string;
-        };
-      };
       answers: {
         Row: {
-          contact_id: string;
-          content: string;
-          created_at: string;
-          id: string;
-          user_id: string;
-        };
+          contact_id: string
+          content: string
+          created_at: string
+          id: string
+          user_id: string
+        }
         Insert: {
-          contact_id?: string;
-          content: string;
-          created_at?: string;
-          id?: string;
-          user_id?: string;
-        };
-
+          contact_id?: string
+          content: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
         Update: {
-          contact_id?: string;
-          content?: string;
-          created_at?: string;
-          id?: string;
-          user_id?: string;
-        };
+          contact_id?: string
+          content?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
         Relationships: [
           {
-            foreignKeyName: 'answers_contact_id_fkey';
-            columns: ['contact_id'];
-            isOneToOne: false;
-            referencedRelation: 'contacts';
-            referencedColumns: ['id'];
+            foreignKeyName: "answers_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'answers_user_id_fkey';
-            columns: ['user_id'];
-            isOneToOne: false;
-            referencedRelation: 'users';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "answers_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       bookings: {
         Row: {
-          check_in_date: string;
-          check_out_date: string;
-          created_at: string;
-          id: string;
-          room_id: string;
-          status: string;
-          user_id: string;
-        };
+          check_in_date: string
+          check_out_date: string
+          created_at: string
+          id: string
+          room_id: string
+          status: string
+          user_id: string
+        }
         Insert: {
-          check_in_date: string;
-          check_out_date: string;
-          created_at?: string;
-          id?: string;
-          room_id?: string;
-          status: string;
-          user_id?: string;
-        };
+          check_in_date: string
+          check_out_date: string
+          created_at?: string
+          id?: string
+          room_id?: string
+          status: string
+          user_id?: string
+        }
         Update: {
-          check_in_date?: string;
-          check_out_date?: string;
-          created_at?: string;
-          id?: string;
-          room_id?: string;
-          status?: string;
-          user_id?: string;
-        };
+          check_in_date?: string
+          check_out_date?: string
+          created_at?: string
+          id?: string
+          room_id?: string
+          status?: string
+          user_id?: string
+        }
         Relationships: [
           {
-            foreignKeyName: 'bookings_room_id_fkey';
-            columns: ['room_id'];
-            isOneToOne: false;
-            referencedRelation: 'rooms';
-            referencedColumns: ['id'];
+            foreignKeyName: "bookings_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "rooms"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'bookings_user_id_fkey';
-            columns: ['user_id'];
-            isOneToOne: false;
-            referencedRelation: 'users';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "bookings_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contacts: {
         Row: {
-          booking_id: string | null;
-          content: string;
-          created_at: string;
-          hotel_id: string | null;
-          id: string;
-          room_id: string | null;
-          title: string;
-          user_id: string | null;
-        };
+          booking_id: string | null
+          content: string
+          created_at: string
+          hotel_id: string | null
+          id: string
+          room_id: string | null
+          title: string
+          user_id: string | null
+        }
         Insert: {
-          booking_id?: string | null;
-          content: string;
-          created_at: string;
-          hotel_id?: string | null;
-          id?: string;
-          room_id?: string | null;
-          title: string;
-          user_id?: string | null;
-        };
+          booking_id?: string | null
+          content: string
+          created_at: string
+          hotel_id?: string | null
+          id?: string
+          room_id?: string | null
+          title: string
+          user_id?: string | null
+        }
         Update: {
-          booking_id?: string | null;
-          content?: string;
-          created_at?: string;
-          hotel_id?: string | null;
-          id?: string;
-          room_id?: string | null;
-          title?: string;
-          user_id?: string | null;
-        };
+          booking_id?: string | null
+          content?: string
+          created_at?: string
+          hotel_id?: string | null
+          id?: string
+          room_id?: string | null
+          title?: string
+          user_id?: string | null
+        }
         Relationships: [
           {
-            foreignKeyName: 'contacts_booking_id_fkey';
-            columns: ['booking_id'];
-            isOneToOne: false;
-            referencedRelation: 'bookings';
-            referencedColumns: ['id'];
+            foreignKeyName: "contacts_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'contacts_hotel_id_fkey';
-            columns: ['hotel_id'];
-            isOneToOne: false;
-            referencedRelation: 'hotels';
-            referencedColumns: ['id'];
+            foreignKeyName: "contacts_hotel_id_fkey"
+            columns: ["hotel_id"]
+            isOneToOne: false
+            referencedRelation: "hotels"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'contacts_room_id_fkey';
-            columns: ['room_id'];
-            isOneToOne: false;
-            referencedRelation: 'rooms';
-            referencedColumns: ['id'];
+            foreignKeyName: "contacts_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "rooms"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'contacts_user_id_fkey';
-            columns: ['user_id'];
-            isOneToOne: false;
-            referencedRelation: 'users';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "contacts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      facilities: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
       favorites: {
         Row: {
-          created_at: string;
-          hotel_id: string;
-          id: string;
-          room_id: string;
-          user_id: string;
-        };
+          created_at: string
+          hotel_id: string
+          id: string
+          is_favorite: boolean | null
+          user_id: string
+        }
         Insert: {
-          created_at?: string;
-          hotel_id?: string;
-          id?: string;
-          room_id?: string;
-          user_id?: string;
-        };
+          created_at?: string
+          hotel_id?: string
+          id?: string
+          is_favorite?: boolean | null
+          user_id?: string
+        }
         Update: {
-          created_at?: string;
-          hotel_id?: string;
-          id?: string;
-          room_id?: string;
-          user_id?: string;
-        };
+          created_at?: string
+          hotel_id?: string
+          id?: string
+          is_favorite?: boolean | null
+          user_id?: string
+        }
         Relationships: [
           {
-            foreignKeyName: 'farvorites_hotel_id_fkey';
-            columns: ['hotel_id'];
-            isOneToOne: false;
-            referencedRelation: 'hotels';
-            referencedColumns: ['id'];
+            foreignKeyName: "farvorites_hotel_id_fkey"
+            columns: ["hotel_id"]
+            isOneToOne: false
+            referencedRelation: "hotels"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'farvorites_user_id_fkey';
-            columns: ['user_id'];
-            isOneToOne: false;
-            referencedRelation: 'users';
-            referencedColumns: ['id'];
+            foreignKeyName: "farvorites_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      hotel_facility: {
+        Row: {
+          created_at: string
+          facility_id: string
+          hotel_id: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          facility_id: string
+          hotel_id: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          facility_id?: string
+          hotel_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Hotel_facilitiy_hotel_id_fkey"
+            columns: ["hotel_id"]
+            isOneToOne: false
+            referencedRelation: "hotels"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'favorites_room_id_fkey';
-            columns: ['room_id'];
-            isOneToOne: false;
-            referencedRelation: 'rooms';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
-      Hotel_facilitiy: {
+            foreignKeyName: "hotel_facility_facility_id_fkey"
+            columns: ["facility_id"]
+            isOneToOne: false
+            referencedRelation: "facilities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      hotel_service: {
         Row: {
-          created_at: string;
-          hotel_id: string;
-          id: string;
-          name: string;
-        };
+          created_at: string
+          hotel_id: string
+          id: string
+          service_id: string
+        }
         Insert: {
-          created_at?: string;
-          hotel_id?: string;
-          id?: string;
-          name?: string;
-        };
+          created_at?: string
+          hotel_id: string
+          id?: string
+          service_id: string
+        }
         Update: {
-          created_at?: string;
-          hotel_id?: string;
-          id?: string;
-          name?: string;
-        };
+          created_at?: string
+          hotel_id?: string
+          id?: string
+          service_id?: string
+        }
         Relationships: [
           {
-            foreignKeyName: 'Hotel_facilitiy_hotel_id_fkey';
-            columns: ['hotel_id'];
-            isOneToOne: false;
-            referencedRelation: 'hotels';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
-      Hotel_service: {
-        Row: {
-          created_at: string;
-          hotel_id: string;
-          id: number;
-          name: string;
-        };
-        Insert: {
-          created_at?: string;
-          hotel_id?: string;
-          id?: number;
-          name: string;
-        };
-        Update: {
-          created_at?: string;
-          hotel_id?: string;
-          id?: number;
-          name?: string;
-        };
-        Relationships: [
+            foreignKeyName: "Hotel_service_hotel_id_fkey"
+            columns: ["hotel_id"]
+            isOneToOne: false
+            referencedRelation: "hotels"
+            referencedColumns: ["id"]
+          },
           {
-            foreignKeyName: 'Hotel_service_hotel_id_fkey';
-            columns: ['hotel_id'];
-            isOneToOne: false;
-            referencedRelation: 'hotels';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "hotel_service_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       hotels: {
         Row: {
-          address: string;
-          check_in: string;
-          check_out: string;
-          description: string;
-          hotel_img_urls: Json | null;
-          id: string;
-          location: string;
-          main_img_url: string;
-          name: string;
-          stars: number;
-          user_id: string;
-        };
+          address: string
+          check_in: string
+          check_out: string
+          description: string
+          hotel_img_urls: Json | null
+          id: string
+          location: string
+          main_img_url: string
+          name: string
+          stars: number
+          user_id: string
+        }
         Insert: {
-          address: string;
-          check_in: string;
-          check_out: string;
-          description: string;
-          hotel_img_urls?: Json | null;
-          id?: string;
-          location: string;
-          main_img_url: string;
-          name: string;
-          stars: number;
-          user_id?: string;
-        };
+          address: string
+          check_in: string
+          check_out: string
+          description: string
+          hotel_img_urls?: Json | null
+          id?: string
+          location: string
+          main_img_url: string
+          name: string
+          stars: number
+          user_id?: string
+        }
         Update: {
-          address?: string;
-          check_in?: string;
-          check_out?: string;
-          description?: string;
-          hotel_img_urls?: Json | null;
-          id?: string;
-          location?: string;
-          main_img_url?: string;
-          name?: string;
-          stars?: number;
-          user_id?: string;
-        };
+          address?: string
+          check_in?: string
+          check_out?: string
+          description?: string
+          hotel_img_urls?: Json | null
+          id?: string
+          location?: string
+          main_img_url?: string
+          name?: string
+          stars?: number
+          user_id?: string
+        }
         Relationships: [
           {
-            foreignKeyName: 'hotels_user_id_fkey';
-            columns: ['user_id'];
-            isOneToOne: false;
-            referencedRelation: 'users';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "hotels_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       password_reset_requests: {
         Row: {
-          created_at: string;
-          expires_at: string;
-          id: string;
-          otp: string;
-          user_id: string | null;
-        };
+          created_at: string
+          expires_at: string
+          id: string
+          otp: string
+          user_id: string | null
+        }
         Insert: {
-          created_at?: string;
-          expires_at?: string;
-          id?: string;
-          otp: string;
-          user_id?: string | null;
-        };
+          created_at?: string
+          expires_at?: string
+          id?: string
+          otp: string
+          user_id?: string | null
+        }
         Update: {
-          created_at?: string;
-          expires_at?: string;
-          id?: string;
-          otp?: string;
-          user_id?: string | null;
-        };
+          created_at?: string
+          expires_at?: string
+          id?: string
+          otp?: string
+          user_id?: string | null
+        }
         Relationships: [
           {
-            foreignKeyName: 'password_reset_requests_user_id_fkey';
-            columns: ['user_id'];
-            isOneToOne: false;
-            referencedRelation: 'users';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "password_reset_requests_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       policies: {
         Row: {
-          created_at: string;
-          description: string;
-          hotel_id: string;
-          id: string;
-          policy_name: string;
-        };
+          created_at: string
+          description: string | null
+          hotel_id: string | null
+          id: string
+          policy_name: string
+        }
         Insert: {
-          created_at?: string;
-          description: string;
-          hotel_id?: string;
-          id?: string;
-          policy_name: string;
-        };
+          created_at?: string
+          description?: string | null
+          hotel_id?: string | null
+          id?: string
+          policy_name: string
+        }
         Update: {
-          created_at?: string;
-          description?: string;
-          hotel_id?: string;
-          id?: string;
-          policy_name?: string;
-        };
+          created_at?: string
+          description?: string | null
+          hotel_id?: string | null
+          id?: string
+          policy_name?: string
+        }
         Relationships: [
           {
-            foreignKeyName: 'policies_hotel_id_fkey';
-            columns: ['hotel_id'];
-            isOneToOne: false;
-            referencedRelation: 'hotels';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "policies_hotel_id_fkey"
+            columns: ["hotel_id"]
+            isOneToOne: false
+            referencedRelation: "hotels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reviews: {
         Row: {
-          comment: string;
-          created_at: string;
-          id: string;
-          rating: number;
-          review_img_url: Json | null;
-          room_id: string;
-          user_id: string;
-        };
+          comment: string
+          created_at: string
+          id: string
+          rating: number
+          review_img_url: Json | null
+          room_id: string
+          user_id: string
+        }
         Insert: {
-          comment: string;
-          created_at?: string;
-          id?: string;
-          rating: number;
-          review_img_url?: Json | null;
-          room_id?: string;
-          user_id?: string;
-        };
+          comment: string
+          created_at?: string
+          id?: string
+          rating: number
+          review_img_url?: Json | null
+          room_id?: string
+          user_id?: string
+        }
         Update: {
-          comment?: string;
-          created_at?: string;
-          id?: string;
-          rating?: number;
-          review_img_url?: Json | null;
-          room_id?: string;
-          user_id?: string;
-        };
+          comment?: string
+          created_at?: string
+          id?: string
+          rating?: number
+          review_img_url?: Json | null
+          room_id?: string
+          user_id?: string
+        }
         Relationships: [
           {
-            foreignKeyName: 'reviews_room_id_fkey';
-            columns: ['room_id'];
-            isOneToOne: false;
-            referencedRelation: 'rooms';
-            referencedColumns: ['id'];
+            foreignKeyName: "reviews_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "rooms"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'reviews_user_id_fkey';
-            columns: ['user_id'];
-            isOneToOne: false;
-            referencedRelation: 'users';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "reviews_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       rooms: {
         Row: {
-          bed_type: string;
-          hotel_id: string;
-          id: string;
-          price: number;
-          room_img_url: Json | null;
-          room_name: string | null;
-          room_type: string;
-          view: string;
-          option: Json;
-        };
+          bed_type: string
+          hotel_id: string
+          id: string
+          option: Json | null
+          price: number
+          room_img_url: Json | null
+          room_name: string
+          room_type: string
+          view: string
+        }
         Insert: {
-          bed_type: string;
-          hotel_id?: string;
-          id?: string;
-          price: number;
-          room_img_url?: Json;
-          room_name: string;
-          room_type: string;
-          view: string;
-          option: Json;
-        };
+          bed_type: string
+          hotel_id?: string
+          id?: string
+          option?: Json | null
+          price: number
+          room_img_url?: Json | null
+          room_name: string
+          room_type: string
+          view: string
+        }
         Update: {
-          bed_type?: string;
-          hotel_id?: string;
-          id?: string;
-          price?: number;
-          room_img_url?: Json;
-          room_name?: string;
-          room_type?: string;
-          view?: string;
-          option: Json;
-        };
+          bed_type?: string
+          hotel_id?: string
+          id?: string
+          option?: Json | null
+          price?: number
+          room_img_url?: Json | null
+          room_name?: string
+          room_type?: string
+          view?: string
+        }
         Relationships: [
           {
-            foreignKeyName: 'rooms_hotel_id_fkey';
-            columns: ['hotel_id'];
-            isOneToOne: false;
-            referencedRelation: 'hotels';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "rooms_hotel_id_fkey"
+            columns: ["hotel_id"]
+            isOneToOne: false
+            referencedRelation: "hotels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      services: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
       users: {
         Row: {
-          business_number: string | null;
-          created_at: string;
-          email: string;
-          id: string;
-          nickname: string | null;
-          phone_number: string;
-          role: string;
-          user_info: Json | null;
-          user_name: string;
-        };
+          business_number: string | null
+          created_at: string
+          email: string
+          id: string
+          nickname: string | null
+          phone_number: string
+          role: string
+          user_info: Json | null
+          user_name: string
+        }
         Insert: {
-          business_number?: string | null;
-          created_at?: string;
-          email: string;
-          id?: string;
-          nickname?: string | null;
-          phone_number: string;
-          role: string;
-          user_info?: Json | null;
-          user_name: string;
-        };
+          business_number?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          nickname?: string | null
+          phone_number: string
+          role: string
+          user_info?: Json | null
+          user_name: string
+        }
         Update: {
-          business_number?: string | null;
-          created_at?: string;
-          email?: string;
-          id?: string;
-          nickname?: string | null;
-          phone_number?: string;
-          role?: string;
-          user_info?: Json | null;
-          user_name?: string;
-        };
-        Relationships: [];
-      };
-    };
+          business_number?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          nickname?: string | null
+          phone_number?: string
+          role?: string
+          user_info?: Json | null
+          user_name?: string
+        }
+        Relationships: []
+      }
+    }
     Views: {
-      [_ in never]: never;
-    };
+      [_ in never]: never
+    }
     Functions: {
-      [_ in never]: never;
-    };
+      [_ in never]: never
+    }
     Enums: {
-      [_ in never]: never;
-    };
+      [_ in never]: never
+    }
     CompositeTypes: {
-      [_ in never]: never;
-    };
-  };
-};
+      [_ in never]: never
+    }
+  }
+}
 
-type PublicSchema = Database[Extract<keyof Database, 'public'>];
+type PublicSchema = Database[Extract<keyof Database, "public">]
 
 export type Tables<
-  PublicTableNameOrOptions extends keyof (PublicSchema['Tables'] & PublicSchema['Views']) | { schema: keyof Database },
+  PublicTableNameOrOptions extends
+    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
+    | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof (Database[PublicTableNameOrOptions['schema']]['Tables'] &
-        Database[PublicTableNameOrOptions['schema']]['Views'])
-    : never = never
+    ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
+        Database[PublicTableNameOrOptions["schema"]]["Views"])
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? (Database[PublicTableNameOrOptions['schema']]['Tables'] &
-      Database[PublicTableNameOrOptions['schema']]['Views'])[TableName] extends {
-      Row: infer R;
+  ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
+      Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      Row: infer R
     }
     ? R
     : never
-  : PublicTableNameOrOptions extends keyof (PublicSchema['Tables'] & PublicSchema['Views'])
-  ? (PublicSchema['Tables'] & PublicSchema['Views'])[PublicTableNameOrOptions] extends {
-      Row: infer R;
-    }
-    ? R
+  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
+        PublicSchema["Views"])
+    ? (PublicSchema["Tables"] &
+        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
     : never
-  : never;
 
 export type TablesInsert<
-  PublicTableNameOrOptions extends keyof PublicSchema['Tables'] | { schema: keyof Database },
+  PublicTableNameOrOptions extends
+    | keyof PublicSchema["Tables"]
+    | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions['schema']]['Tables']
-    : never = never
+    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions['schema']]['Tables'][TableName] extends {
-      Insert: infer I;
+  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Insert: infer I
     }
     ? I
     : never
-  : PublicTableNameOrOptions extends keyof PublicSchema['Tables']
-  ? PublicSchema['Tables'][PublicTableNameOrOptions] extends {
-      Insert: infer I;
-    }
-    ? I
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
     : never
-  : never;
 
 export type TablesUpdate<
-  PublicTableNameOrOptions extends keyof PublicSchema['Tables'] | { schema: keyof Database },
+  PublicTableNameOrOptions extends
+    | keyof PublicSchema["Tables"]
+    | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions['schema']]['Tables']
-    : never = never
+    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions['schema']]['Tables'][TableName] extends {
-      Update: infer U;
+  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Update: infer U
     }
     ? U
     : never
-  : PublicTableNameOrOptions extends keyof PublicSchema['Tables']
-  ? PublicSchema['Tables'][PublicTableNameOrOptions] extends {
-      Update: infer U;
-    }
-    ? U
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
     : never
-  : never;
 
 export type Enums<
-  PublicEnumNameOrOptions extends keyof PublicSchema['Enums'] | { schema: keyof Database },
+  PublicEnumNameOrOptions extends
+    | keyof PublicSchema["Enums"]
+    | { schema: keyof Database },
   EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicEnumNameOrOptions['schema']]['Enums']
-    : never = never
+    ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
+    : never = never,
 > = PublicEnumNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicEnumNameOrOptions['schema']]['Enums'][EnumName]
-  : PublicEnumNameOrOptions extends keyof PublicSchema['Enums']
-  ? PublicSchema['Enums'][PublicEnumNameOrOptions]
-  : never;
+  ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
+    ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never
 
 export type CompositeTypes<
-  PublicCompositeTypeNameOrOptions extends keyof PublicSchema['CompositeTypes'] | { schema: keyof Database },
+  PublicCompositeTypeNameOrOptions extends
+    | keyof PublicSchema["CompositeTypes"]
+    | { schema: keyof Database },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
-    schema: keyof Database;
+    schema: keyof Database
   }
-    ? keyof Database[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes']
-    : never = never
+    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
 > = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes'][CompositeTypeName]
-  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema['CompositeTypes']
-  ? PublicSchema['CompositeTypes'][PublicCompositeTypeNameOrOptions]
-  : never;
+  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
+    ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+    : never
