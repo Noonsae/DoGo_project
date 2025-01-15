@@ -1,18 +1,15 @@
-"use client";
+'use client';
 
 import { createClient } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
 
-import UserSidebar from '@/app/my-page/_components/UserSidebar';
+import UserSidebar from '@/app/my-page/_components/Usersidebar';
 import ProfileContent from '@/app/my-page/_components/ProfileContent';
 import BookingsContent from '@/app/my-page/_components/BookingsContent';
 import FavoritesContent from '@/app/my-page/_components/FavoritesContent';
 import ReviewsContent from '@/app/my-page/_components/ReviewsContent';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
 
 export default function UserPage() {
   const [currentTab, setCurrentTab] = useState<'profile' | 'bookings' | 'favorites' | 'reviews'>('profile');

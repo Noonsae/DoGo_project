@@ -22,11 +22,7 @@ const SidebarWrapper: React.FC<SidebarWrapperProps> = ({ userId, currentTab, set
   useEffect(() => {
     const fetchUserRole = async () => {
       try {
-        const { data, error } = await browserSupabase()
-          .from('users')
-          .select('role')
-          .eq('id', userId)
-          .single();
+        const { data, error } = await browserSupabase().from('users').select('role').eq('id', userId).single();
 
         if (error) throw error;
 
@@ -51,15 +47,14 @@ const SidebarWrapper: React.FC<SidebarWrapperProps> = ({ userId, currentTab, set
   // 역할에 따른 Sidebar 렌더링
   return (
     <aside className="w-64 bg-gray-100 h-screen fixed top-0 left-0">
-  {role === 'customer' ? (
-    <UserSidebar userId={userId} currentTab={currentTab} setCurrentTab={setCurrentTab} />
-  ) : role === 'business' ? (
-    <BusinessSidebar userId={userId} currentTab={currentTab} setCurrentTab={setCurrentTab} />
-  ) : (
-    <p className="text-center text-gray-600">유효하지 않은 사용자 역할입니다.</p>
-  )}
-</aside>
-
+      {role === 'customer' ? (
+        <UserSidebar userId={userId} currentTab={currentTab} setCurrentTab={setCurrentTab} />
+      ) : role === 'business' ? (
+        <BusinessSidebar userId={userId} currentTab={currentTab} setCurrentTab={setCurrentTab} />
+      ) : (
+        <p className="text-center text-gray-600">유효하지 않은 사용자 역할입니다.</p>
+      )}
+    </aside>
   );
 };
 

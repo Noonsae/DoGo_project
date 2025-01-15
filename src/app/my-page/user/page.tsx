@@ -68,12 +68,14 @@ export default function UserPage() {
 
   return (
     <div className="flex">
+      {/* Sidebar */}
       <UserSidebar
         userId={userData?.id}
         currentTab={currentTab}
         setCurrentTab={(tab) => router.push(`/my-page/${tab}`)} // TabType과 라우팅 처리
       />
 
+      {/* Main Content */}
       <main className="flex-1 p-6">{renderContent()}</main>
     </div>
   );
