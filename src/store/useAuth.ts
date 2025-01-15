@@ -1,15 +1,9 @@
 import { browserSupabase } from '@/supabase/supabase-client';
+import { AuthStateFace } from '@/types/zustand/auth-state-type';
 import { create } from 'zustand';
 
-interface AuthState {
-  user: object | null;
-  setUser: (user: object | null) => void;
-  loadUserFromCookie: () => void;
-  clearUser: () => void;
-}
-
 // Zustand store 생성
-const useAuthStore = create<AuthState>((set) => ({
+const useAuthStore = create<AuthStateFace>((set) => ({
   user: null,
 
   // 유저 정보 설정 및 쿠키 동기화
@@ -26,6 +20,7 @@ const useAuthStore = create<AuthState>((set) => ({
     } else {
       document.cookie = 'user=; Max-Age=0; path=/;';
       console.log('user 쿠키 삭제 완료');
+      // ⭐ 꼭 한솔님한테 말하기!
     }
   },
 
@@ -44,8 +39,7 @@ const useAuthStore = create<AuthState>((set) => ({
   },
 
   // 유저 정보 초기화 및 쿠키 제거
-  clearUser: () => {
-    set({ user: null });
+  signOutUser: () => {
     document.cookie = 'user=; Max-Age=0; path=/;';
   }
 }));
