@@ -1,9 +1,9 @@
-"use client"
+'use client';
 
 import { useHotels } from '@/hooks/useHotels';
 import Image from 'next/image';
 
-const TopPicksSection = () => {
+const TopPicks = () => {
   // React Query 훅 사용
   const { data: hotels, isLoading, isError, error } = useHotels();
 
@@ -73,7 +73,7 @@ const TopPicksSection = () => {
             </p>
             <p className="w-full mt-[24px] text-right text-[24px]-black font-semibold">
               <span className="text-base text-[#5b5b5b] font-medium mr-1">Sale%</span>
-              {(hotel.min_price ?? 0).toLocaleString()}원
+              
             </p>
           </div>
         ))}
@@ -82,4 +82,4 @@ const TopPicksSection = () => {
   );
 };
 
-export default TopPicksSection;
+export default TopPicks;

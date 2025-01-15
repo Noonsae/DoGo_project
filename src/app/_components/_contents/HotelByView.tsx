@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Discover = () => {
+const HotelByView = () => {
   return (
     <section className="w-full max-w-[1200px] mx-auto h-[828px] py-[80px] pb-[120px]">
       <h3 className="text-[24px] font-semibold">이런 상품은 어떠세요? /title</h3>
@@ -84,4 +84,4 @@ const Discover = () => {
   );
 };
 
-export default Discover;
+export default HotelByView;
