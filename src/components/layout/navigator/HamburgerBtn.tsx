@@ -62,7 +62,7 @@ const HamburgerBtn: React.FC = () => {
                   <Link
                     href="#"
                     onClick={handleLogout}
-                    className="px-[16px] py-[12px] w-full h-[43px] flex items-center text-base text-[#2c2c2c] font-normal hover:text-blue-500 rounded-[8px] hover:bg-[#f8f8f8]"
+                    className="px-[16px] py-[12px] w-full h-[43px] flex items-center text-base text-[#2c2c2c] font-normal rounded-[8px] hover:bg-[#f8f8f8]"
                   >
                     로그아웃
                   </Link>
@@ -74,7 +74,7 @@ const HamburgerBtn: React.FC = () => {
                 <li>
                   <Link
                     href="/sign-in"
-                    className="px-[16px] py-[12px] w-full h-[43px] flex items-center text-base text-[#2c2c2c] font-normal hover:text-blue-500 rounded-[8px] hover:bg-[#f8f8f8]"
+                    className="px-[16px] py-[12px] w-full h-[43px] flex items-center text-base text-[#2c2c2c] font-normal rounded-[8px] hover:bg-[#f8f8f8]"
                   >
                     로그인
                   </Link>
@@ -83,7 +83,7 @@ const HamburgerBtn: React.FC = () => {
                 <li>
                   <Link
                     href="/sign-up"
-                    className="px-[16px] py-[12px] w-full h-[43px] flex items-center text-base text-[#2c2c2c] font-normal hover:text-blue-500 rounded-[8px] hover:bg-[#f8f8f8]"
+                    className="px-[16px] py-[12px] w-full h-[43px] flex items-center text-base text-[#2c2c2c] font-normal rounded-[8px] hover:bg-[#f8f8f8]"
                   >
                     회원가입
                   </Link>
@@ -95,7 +95,7 @@ const HamburgerBtn: React.FC = () => {
             <li>
               <Link
                 href="/event"
-                className="px-[16px] py-[12px] w-full h-[43px] flex items-center text-base text-[#2c2c2c] font-normal hover:text-blue-500 rounded-[8px] hover:bg-[#f8f8f8]"
+                className="px-[16px] py-[12px] w-full h-[43px] flex items-center text-base text-[#2c2c2c] font-normal rounded-[8px] hover:bg-[#f8f8f8]"
               >
                 EVENT
               </Link>
@@ -104,7 +104,7 @@ const HamburgerBtn: React.FC = () => {
             <li>
               <Link
                 href="/contact"
-                className="px-[16px] py-[12px] w-full h-[43px] flex items-center text-base text-[#2c2c2c] font-normal hover:text-blue-500 rounded-[8px] hover:bg-[#f8f8f8]"
+                className="px-[16px] py-[12px] w-full h-[43px] flex items-center text-base text-[#2c2c2c] font-normal rounded-[8px] hover:bg-[#f8f8f8]"
               >
                 고객센터
               </Link>
