@@ -15,9 +15,9 @@ interface BusinessUser {
   id: string; // 사업자 ID
   user_name: string; // 사업자 이름
   created_at: string; // 가입일
+  business_number: string | null; // 사업자 번호 (null 가능)
 }
 
-// BusinessSidebar 컴포넌트
 const BusinessSidebar: React.FC<BusinessSidebarProps> = ({
   userId,
   currentTab,
@@ -32,7 +32,7 @@ const BusinessSidebar: React.FC<BusinessSidebarProps> = ({
       try {
         const { data, error } = await browserSupabase()
           .from('users')
-          .select('id, user_name, created_at')
+          .select('id, user_name, created_at, business_number') // 사업자 번호 포함
           .eq('id', userId) // 사용자 ID로 필터링
           .maybeSingle(); // 단일 결과 반환
 
@@ -60,7 +60,7 @@ const BusinessSidebar: React.FC<BusinessSidebarProps> = ({
   ];
 
   // 로딩 중일 때 출력
-  if (loading) return <p className="text-center text-gray-600">Loading...</p>;
+  if (loading) return <p className="text-center text-gray-600">로딩 중...</p>;
 
   return (
     <aside className="w-64 bg-gray-100 h-screen overflow-auto">
@@ -72,6 +72,9 @@ const BusinessSidebar: React.FC<BusinessSidebarProps> = ({
         </p>
         <p className="text-center text-sm text-gray-600">
           가입일: {businessInfo ? new Date(businessInfo.created_at).toLocaleDateString() : 'N/A'}
+        </p>
+        <p className="text-center text-sm text-gray-500">
+          사업자 번호: {businessInfo?.business_number || '없음'}
         </p>
       </div>
 

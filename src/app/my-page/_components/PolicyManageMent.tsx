@@ -15,10 +15,11 @@ interface Policy {
 // Props 타입 정의
 interface PolicyManagementProps {
   userId: string; // 사용자 ID
+  hotelId: string; // 현재 관리 중인 호텔 ID
 }
 
 // PolicyManagement 컴포넌트
-const PolicyManagement: React.FC<PolicyManagementProps> = ({ userId }) => {
+const PolicyManagement: React.FC<PolicyManagementProps> = ({ userId, hotelId }) => {
   const [policies, setPolicies] = useState<Policy[]>([]); // 정책 리스트
   const [loading, setLoading] = useState(true); // 로딩 상태
   const [error, setError] = useState<string | null>(null); // 에러 메시지
@@ -29,11 +30,14 @@ const PolicyManagement: React.FC<PolicyManagementProps> = ({ userId }) => {
   // 정책 데이터 가져오기
   useEffect(() => {
     const fetchPolicies = async () => {
+      setLoading(true);
+      setError(null);
+
       try {
         const { data, error } = await browserSupabase()
           .from('policies')
-          .select('id, policy_name, description, hotel_id, created_at')
-          .eq('user_id', userId);
+          .select('*')
+          .eq('hotel_id', hotelId);
 
         if (error) throw error;
 
@@ -47,7 +51,54 @@ const PolicyManagement: React.FC<PolicyManagementProps> = ({ userId }) => {
     };
 
     fetchPolicies();
-  }, [userId]);
+  }, [hotelId]);
+
+  // 정책 추가 또는 수정 처리
+  const handleSavePolicy = async (policyName: string, description: string | null) => {
+    try {
+      if (modalType === 'add') {
+        // 새 정책 추가
+        await browserSupabase().from('policies').insert([
+          {
+            policy_name: policyName,
+            description,
+            hotel_id: hotelId,
+          },
+        ]);
+      } else if (modalType === 'edit' && selectedPolicy) {
+        // 기존 정책 수정
+        await browserSupabase()
+          .from('policies')
+          .update({ policy_name: policyName, description })
+          .eq('id', selectedPolicy.id);
+      }
+
+      // 데이터 새로고침
+      const { data } = await browserSupabase()
+        .from('policies')
+        .select('*')
+        .eq('hotel_id', hotelId);
+
+      setPolicies(data as Policy[] || []);
+      closeModal();
+    } catch (err) {
+      console.error('Error saving policy:', err);
+      setError('정책 저장 중 오류가 발생했습니다.');
+    }
+  };
+
+  // 정책 삭제
+  const handleDeletePolicy = async (policyId: string) => {
+    try {
+      await browserSupabase().from('policies').delete().eq('id', policyId);
+
+      // 데이터 새로고침
+      setPolicies((prevPolicies) => prevPolicies.filter((policy) => policy.id !== policyId));
+    } catch (err) {
+      console.error('Error deleting policy:', err);
+      setError('정책 삭제 중 오류가 발생했습니다.');
+    }
+  };
 
   // 모달 열기
   const openModal = (type: 'add' | 'edit', policy?: Policy) => {
@@ -61,41 +112,6 @@ const PolicyManagement: React.FC<PolicyManagementProps> = ({ userId }) => {
     setIsModalOpen(false);
     setSelectedPolicy(null);
   };
-
-  // 정책 추가 또는 수정 처리
-  const handleSavePolicy = async (policyName: string, description: string | null) => {
-    try {
-      if (modalType === 'add') {
-        // 새 정책 추가
-        await browserSupabase().from('policies').insert([
-          { policy_name: policyName, description, user_id: userId },
-        ]);
-      } else if (modalType === 'edit' && selectedPolicy) {
-        // 기존 정책 수정
-        await browserSupabase()
-          .from('policies')
-          .update({ policy_name: policyName, description })
-          .eq('id', selectedPolicy.id);
-      }
-
-      // 데이터 새로고침
-      const { data } = await browserSupabase()
-        .from('policies')
-        .select('id, policy_name, description, hotel_id, created_at')
-        .eq('user_id', userId);
-      setPolicies(data as Policy[] || []);
-      closeModal();
-    } catch (err) {
-      console.error('Error saving policy:', err);
-      setError('정책 저장 중 오류가 발생했습니다.');
-    }
-  };
-
-  // 로딩 중일 때 표시
-  if (loading) return <p className="text-center text-gray-600">Loading...</p>;
-
-  // 에러 발생 시 표시
-  if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 p-8">
@@ -112,7 +128,9 @@ const PolicyManagement: React.FC<PolicyManagementProps> = ({ userId }) => {
             정책 추가하기
           </button>
         </div>
-        {policies.length === 0 ? (
+        {loading ? (
+          <p className="text-gray-600">로딩 중...</p>
+        ) : policies.length === 0 ? (
           <p className="text-gray-600">등록된 정책이 없습니다.</p>
         ) : (
           <ul className="space-y-4">
@@ -123,9 +141,7 @@ const PolicyManagement: React.FC<PolicyManagementProps> = ({ userId }) => {
               >
                 <div>
                   <p className="text-lg font-semibold">{policy.policy_name}</p>
-                  <p className="text-sm text-gray-600">
-                    {policy.description || '설명이 없습니다.'}
-                  </p>
+                  <p className="text-sm text-gray-600">{policy.description || '설명이 없습니다.'}</p>
                 </div>
                 <div className="flex items-center space-x-4">
                   <button
@@ -134,7 +150,12 @@ const PolicyManagement: React.FC<PolicyManagementProps> = ({ userId }) => {
                   >
                     수정하기
                   </button>
-                  <button className="text-red-500 hover:underline">삭제하기</button>
+                  <button
+                    onClick={() => handleDeletePolicy(policy.id)}
+                    className="text-red-500 hover:underline"
+                  >
+                    삭제하기
+                  </button>
                 </div>
               </li>
             ))}

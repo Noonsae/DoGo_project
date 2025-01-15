@@ -18,6 +18,7 @@ const CompanyList: React.FC = () => {
   const [companies, setCompanies] = useState<BusinessUser[]>([]); // 업체 리스트 상태
   const [loading, setLoading] = useState(true); // 로딩 상태
   const [error, setError] = useState<string | null>(null); // 에러 상태
+  const [searchQuery, setSearchQuery] = useState(''); // 검색 쿼리
 
   // 데이터 가져오기
   useEffect(() => {
@@ -51,19 +52,35 @@ const CompanyList: React.FC = () => {
     fetchCompanies();
   }, []);
 
+  // 검색 결과 필터링
+  const filteredCompanies = companies.filter((company) =>
+    company.user_name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   // 로딩 중 메시지
-  if (loading) return <p className="text-center text-gray-600">Loading...</p>;
+  if (loading) return <p className="text-center text-gray-600">로딩 중...</p>;
 
   // 에러 발생 시 메시지
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   // 데이터가 없을 때 메시지
-  if (companies.length === 0)
+  if (filteredCompanies.length === 0)
     return <p className="text-center text-gray-600">등록된 업체가 없습니다.</p>;
 
   return (
     <div>
       <h2 className="text-xl font-bold mb-4">업체 리스트</h2>
+      {/* 검색 바 */}
+      <div className="mb-6">
+        <input
+          type="text"
+          placeholder="업체명을 검색하세요"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full p-2 border rounded-md"
+        />
+      </div>
+
       <table className="w-full border-collapse border border-gray-300">
         {/* 테이블 헤더 */}
         <thead className="bg-gray-200">
@@ -77,14 +94,14 @@ const CompanyList: React.FC = () => {
         </thead>
         {/* 테이블 바디 */}
         <tbody>
-          {companies.map((company) => (
+          {filteredCompanies.map((company) => (
             <tr key={company.id}>
               <td className="border p-2">{company.user_name}</td>
               <td className="border p-2">{company.email}</td>
               <td className="border p-2">{company.phone_number}</td>
               <td className="border p-2">{company.business_number || 'N/A'}</td>
               <td className="border p-2">
-                {new Date(company.created_at).toLocaleDateString()}
+                {new Date(company.created_at).toLocaleDateString('ko-KR')}
               </td>
             </tr>
           ))}

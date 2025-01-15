@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { createClient } from '@supabase/supabase-js';
 
 import UserSidebar from '@/app/my-page/_components/Usersidebar';
 import ProfileContent from '@/app/my-page/_components/ProfileContent';
@@ -12,23 +13,38 @@ import InquiryContent from '@/app/my-page/_components/InquiryManagement';
 
 type TabType = 'profile' | 'bookings' | 'favorites' | 'reviews' | 'inquiries';
 
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+
 export default function UserPage() {
+  const [currentTab, setCurrentTab] = useState<TabType>('profile');
   const [userData, setUserData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const router = useRouter();
-  const pathname = usePathname();
-
-  const currentTab: TabType = (pathname.split('/').pop() as TabType) || 'profile';
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch('/api/auth/user');
-        const data = await response.json();
+        // Fetch authenticated user
+        const {
+          data: { user },
+          error: authError,
+        } = await supabase.auth.getUser();
 
-        if (!response.ok) throw new Error(data.message || '사용자 정보를 가져올 수 없습니다.');
+        if (authError || !user) throw new Error('로그인된 사용자가 없습니다.');
+
+        // Fetch additional user details
+        const { data, error: userError } = await supabase
+          .from('users')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+
+        if (userError) throw userError;
 
         setUserData(data);
       } catch (err) {
@@ -68,12 +84,14 @@ export default function UserPage() {
 
   return (
     <div className="flex">
+      {/* Sidebar */}
       <UserSidebar
-        userId={userData?.id}
+        userId={userData.id}
         currentTab={currentTab}
-        setCurrentTab={(tab) => router.push(`/my-page/${tab}`)} // TabType과 라우팅 처리
+        setCurrentTab={(tab) => setCurrentTab(tab as TabType)} // TabType을 명시적으로 설정
       />
 
+      {/* Main Content */}
       <main className="flex-1 p-6">{renderContent()}</main>
     </div>
   );

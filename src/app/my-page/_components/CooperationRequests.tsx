@@ -11,11 +11,10 @@ interface CooperationRequest {
   title: string; // 요청 제목
   content: string; // 요청 내용
   created_at: string; // 요청일
-  company_name?: string; // 회사 이름 (선택적)
-  status?: string; // 요청 상태 (선택적)
+  hotel_name?: string; // 호텔 이름 (optional)
+  status?: string; // 요청 상태 (optional)
 }
 
-// CooperationRequests 컴포넌트 정의
 const CooperationRequests: React.FC = () => {
   const [requests, setRequests] = useState<CooperationRequest[]>([]); // 협력 요청 데이터 상태
   const [loading, setLoading] = useState(true); // 로딩 상태
@@ -35,11 +34,8 @@ const CooperationRequests: React.FC = () => {
             title,
             content,
             created_at,
-            hotels (
-              name
-            )
-          `)
-          .eq('title', '협력 요청'); // '협력 요청'만 가져오기
+            hotels (name) 
+          `);
 
         if (error) throw error;
 
@@ -52,8 +48,8 @@ const CooperationRequests: React.FC = () => {
             title: request.title,
             content: request.content,
             created_at: request.created_at,
-            company_name: request.hotels?.name || 'N/A', // 호텔 이름을 추가
-            status: 'pending', // 기본 상태 (필요 시 동적 변경 가능)
+            hotel_name: request.hotels?.name || 'N/A', // 호텔 이름을 추가
+            status: 'Pending', // 기본 상태 (필요 시 동적 변경 가능)
           })) || [];
 
         setRequests(formattedData); // 상태 업데이트
@@ -69,7 +65,7 @@ const CooperationRequests: React.FC = () => {
   }, []);
 
   // 로딩 중 메시지
-  if (loading) return <p className="text-center text-gray-600">Loading...</p>;
+  if (loading) return <p className="text-center text-gray-600">로딩 중...</p>;
 
   // 에러 발생 시 메시지
   if (error) return <p className="text-center text-red-500">{error}</p>;
@@ -79,34 +75,38 @@ const CooperationRequests: React.FC = () => {
     return <p className="text-center text-gray-600">등록된 협력 요청이 없습니다.</p>;
 
   return (
-    <div>
+    <div className="max-w-6xl mx-auto bg-white shadow rounded-lg p-6">
       <h2 className="text-xl font-bold mb-4">협력 요청</h2>
       <table className="w-full border-collapse border border-gray-300">
         {/* 테이블 헤더 */}
         <thead className="bg-gray-200">
           <tr>
-            <th className="border p-2">요청 ID</th>
-            <th className="border p-2">요청자 ID</th>
-            <th className="border p-2">호텔명</th>
-            <th className="border p-2">요청 제목</th>
-            <th className="border p-2">내용</th>
-            <th className="border p-2">요청일</th>
-            <th className="border p-2">상태</th>
+            <th className="border p-2 text-left">요청 ID</th>
+            <th className="border p-2 text-left">요청자 ID</th>
+            <th className="border p-2 text-left">호텔명</th>
+            <th className="border p-2 text-left">요청 제목</th>
+            <th className="border p-2 text-left">내용</th>
+            <th className="border p-2 text-left">요청일</th>
+            <th className="border p-2 text-left">상태</th>
           </tr>
         </thead>
         {/* 테이블 바디 */}
         <tbody>
           {requests.map((request) => (
-            <tr key={request.id}>
+            <tr key={request.id} className="hover:bg-gray-100">
               <td className="border p-2">{request.id}</td>
               <td className="border p-2">{request.user_id || 'N/A'}</td>
-              <td className="border p-2">{request.company_name || 'N/A'}</td>
+              <td className="border p-2">{request.hotel_name || 'N/A'}</td>
               <td className="border p-2">{request.title}</td>
               <td className="border p-2">{request.content}</td>
               <td className="border p-2">
                 {new Date(request.created_at).toLocaleDateString()}
               </td>
-              <td className="border p-2">{request.status || 'N/A'}</td>
+              <td className="border p-2">
+                <span className="px-2 py-1 text-sm rounded bg-yellow-100 text-yellow-800">
+                  {request.status || 'Pending'}
+                </span>
+              </td>
             </tr>
           ))}
         </tbody>

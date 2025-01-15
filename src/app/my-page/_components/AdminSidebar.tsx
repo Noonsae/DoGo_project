@@ -32,7 +32,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ currentTab, setCurrentTab }
             key={menu.id} // 각 메뉴 항목의 고유 ID
             className={`p-3 text-center cursor-pointer rounded ${
               currentTab === menu.id
-                ? 'bg-gray-300 font-semibold text-gray-800'
+                ? 'bg-brown-500 text-gray font-semibold'
                 : 'hover:bg-gray-200 text-gray-600'
             }`}
             onClick={() => setCurrentTab(menu.id as 'company' | 'requests' | 'bookings')} // 클릭 시 탭 변경

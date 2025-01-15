@@ -72,7 +72,7 @@ const BookingList: React.FC = () => {
   }, []);
 
   // 로딩 중 표시
-  if (loading) return <p className="text-center text-gray-600">Loading...</p>;
+  if (loading) return <p className="text-center text-gray-600">로딩 중...</p>;
 
   // 에러 발생 시 표시
   if (error) return <p className="text-center text-red-500">{error}</p>;
@@ -113,7 +113,19 @@ const BookingList: React.FC = () => {
               <td className="border p-2">
                 {new Date(booking.check_out_date).toLocaleDateString()}
               </td>
-              <td className="border p-2">{booking.status}</td>
+              <td className="border p-2 capitalize">
+                <span
+                  className={`px-2 py-1 rounded ${
+                    booking.status === 'confirmed'
+                      ? 'bg-green-100 text-green-800'
+                      : booking.status === 'pending'
+                      ? 'bg-yellow-100 text-yellow-800'
+                      : 'bg-red-100 text-red-800'
+                  }`}
+                >
+                  {booking.status}
+                </span>
+              </td>
             </tr>
           ))}
         </tbody>
