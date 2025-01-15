@@ -1,12 +1,21 @@
+import Link from 'next/link';
 import React from 'react';
 
 const Footer = () => {
   return (
     <div className="w-full h-[180px] py-[10px] bg-[#F9F9F9]">
       <p className="sr-only">Footer</p>
-      <div className="w-full max-w-[1200px] mx-auto px-[12px] text-base text-[#666] font-normal">
+      <div className="w-full max-w-[1300px] px-[50px] mx-auto px-[12px] text-base text-[#666] font-normal">
         <div className="w-full h-[70px] flex flex-row justify-between items-center">
-          <p>@ 2024 DoGo dev. 두게더</p>
+          <p>
+            @ 2024 DoGo dev.
+            <Link
+              href={`https://www.notion.so/teamsparta/2-Do-Get-Us-16b2dc3ef5148055bfa9c5bcab3fbbc8`}
+              target="_blank"
+            >
+              두게더
+            </Link>
+          </p>
           <ul className="flex flex-row justify-between items-center gap-8">
             <li>
               <a href="#">개인정보 처리방침</a>
