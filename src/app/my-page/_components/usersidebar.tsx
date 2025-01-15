@@ -6,7 +6,7 @@ import { browserSupabase } from '@/supabase/supabase-client';
 
 interface UserSidebarProps {
   userId: string; // 사용자 ID
-  currentTab: string; // 현재 활성화된 탭
+  currentTab: string; // 현재 활성화된 탭 이름
   setCurrentTab: (tab: string) => void; // 탭 변경 함수
 }
 
@@ -74,7 +74,7 @@ const UserSidebar: React.FC<UserSidebarProps> = ({ userId, currentTab, setCurren
               currentTab === tab.id ? 'bg-gray-300 font-semibold text-brown-600' : 'hover:bg-gray-200'
             }`}
             onClick={() => {
-              setCurrentTab(tab.id); // 부모 컴포넌트에서 탭 상태 변경
+              setCurrentTab(tab.id); // 탭 변경
               router.push(`/my-page/${tab.id}`); // 라우팅 처리
             }}
           >

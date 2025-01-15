@@ -1,23 +1,25 @@
 'use client';
-
 import React, { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 
 // Booking 데이터 타입 정의
 interface Booking {
-  id: string;
-  created_at: string;
-  room_id: string;
-  check_in_date: string;
-  check_out_date: string;
-  status: string;
-  room_name: string; // 객실 이름
-  price: number; // 객실 가격
+  id: string; // 예약 ID
+  created_at: string; // 예약 생성일
+  room_id: string; // 객실 ID
+  check_in_date: string; // 체크인 날짜
+  check_out_date: string; // 체크아웃 날짜
+  status: string; // 예약 상태
+  rooms: {
+    room_name: string; // 객실 이름
+    price: number; // 객실 가격
+    room_img_url: string | null; // 객실 이미지 URL
+  };
 }
 
-// BookingsContentProps 인터페이스 정의
+// BookingsContent Props 타입 정의
 interface BookingsContentProps {
-  userId: string;
+  userId: string; // 사용자 ID
 }
 
 const BookingsContent: React.FC<BookingsContentProps> = ({ userId }) => {
@@ -28,7 +30,7 @@ const BookingsContent: React.FC<BookingsContentProps> = ({ userId }) => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        // Supabase에서 예약 데이터와 객실 정보를 가져옴
+        // Supabase에서 예약 데이터와 객실 데이터를 조인
         const { data, error } = await browserSupabase()
           .from('bookings')
           .select(`
@@ -40,26 +42,26 @@ const BookingsContent: React.FC<BookingsContentProps> = ({ userId }) => {
             status,
             rooms (
               room_name,
-              price
+              price,
+              room_img_url
             )
           `)
           .eq('user_id', userId);
 
         if (error) throw error;
 
-        // 데이터 형식 변환
-        const formattedBookings = data?.map((booking) => ({
-          id: booking.id,
-          created_at: booking.created_at,
-          room_id: booking.room_id,
-          check_in_date: booking.check_in_date,
-          check_out_date: booking.check_out_date,
-          status: booking.status,
-          room_name: booking.rooms?.room_name || 'N/A',
-          price: booking.rooms?.price || 0,
+        // 데이터 형식 변환: room_img_url을 string | null로 처리
+        const formattedData = data?.map((booking) => ({
+          ...booking,
+          rooms: {
+            ...booking.rooms,
+            room_img_url: typeof booking.rooms.room_img_url === 'string'
+              ? booking.rooms.room_img_url
+              : null,
+          },
         })) || [];
 
-        setBookings(formattedBookings);
+        setBookings(formattedData);
       } catch (err) {
         console.error('Error fetching bookings:', err);
         setError('예약 데이터를 불러오는 중 오류가 발생했습니다.');
@@ -71,15 +73,9 @@ const BookingsContent: React.FC<BookingsContentProps> = ({ userId }) => {
     fetchBookings();
   }, [userId]);
 
-  // 로딩 상태
-  if (loading) return <p className="text-center text-gray-600">로딩 중...</p>;
-
-  // 오류 상태
+  if (loading) return <p className="text-center text-gray-600">Loading...</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>;
-
-  // 예약 데이터가 없는 경우
-  if (!bookings.length)
-    return <p className="text-center text-gray-600">등록된 예약이 없습니다.</p>;
+  if (!bookings.length) return <p className="text-center text-gray-600">예약이 없습니다.</p>;
 
   return (
     <div className="p-4 bg-white rounded shadow">
@@ -87,22 +83,52 @@ const BookingsContent: React.FC<BookingsContentProps> = ({ userId }) => {
       <ul className="space-y-4">
         {bookings.map((booking) => (
           <li key={booking.id} className="p-4 border rounded shadow">
-            <div className="flex justify-between items-center mb-2">
-              <h3 className="font-bold text-lg">{booking.room_name}</h3>
-              <p className="text-sm text-gray-500">
-                예약 상태: <span className="font-medium">{booking.status}</span>
+            <div className="flex items-center space-x-4">
+              {/* 객실 이미지 */}
+              {booking.rooms.room_img_url && (
+                <img
+                  src={booking.rooms.room_img_url}
+                  alt={booking.rooms.room_name}
+                  className="w-24 h-24 object-cover rounded"
+                />
+              )}
+              <div className="flex-1">
+                {/* 객실 이름 */}
+                <h3 className="font-bold text-lg">{booking.rooms.room_name}</h3>
+                {/* 체크인/체크아웃 날짜 */}
+                <p>
+                  체크인: {new Date(booking.check_in_date).toLocaleDateString()} <br />
+                  체크아웃: {new Date(booking.check_out_date).toLocaleDateString()}
+                </p>
+                {/* 예약 상태 */}
+                <p className={`font-semibold mt-2 ${getStatusClass(booking.status)}`}>
+                  상태: {booking.status}
+                </p>
+              </div>
+              {/* 객실 가격 */}
+              <p className="text-right font-bold">
+                {booking.rooms.price.toLocaleString()}원/박
               </p>
             </div>
-            <p>체크인: {new Date(booking.check_in_date).toLocaleDateString()}</p>
-            <p>체크아웃: {new Date(booking.check_out_date).toLocaleDateString()}</p>
-            <p className="text-right font-bold text-brown-600">
-              {booking.price.toLocaleString()}원/박
-            </p>
           </li>
         ))}
       </ul>
     </div>
   );
+};
+
+// 예약 상태에 따른 스타일 클래스 반환 함수
+const getStatusClass = (status: string) => {
+  switch (status) {
+    case 'confirmed':
+      return 'text-green-500';
+    case 'pending':
+      return 'text-yellow-500';
+    case 'cancelled':
+      return 'text-red-500';
+    default:
+      return 'text-gray-500';
+  }
 };
 
 export default BookingsContent;
