@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Modal from '@/components/ui/hotel-room/Modal';
 import { RoomType } from '@/types/supabase/room-type';
+import useFormatCurrency from '@/hooks/formatCurrency/useFormatCurrency';
 
 type HotelRoomProps = {
   roomsData: RoomType[];
   getValidImageUrl: (roomImgUrls: RoomType['room_img_url']) => string;
   roomOption: React.ReactNode;
-  formatKoreanCurrency: (price: number) => string;
 };
 
-const HotelRoom = ({ roomsData, getValidImageUrl, roomOption, formatKoreanCurrency }: HotelRoomProps) => {
+const HotelRoom = ({ roomsData, getValidImageUrl, roomOption }: HotelRoomProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState<RoomType | null>(null);
+  const formatKoreanCurrency = useFormatCurrency();
 
   const openModal = (room: RoomType) => {
     setSelectedRoom(room);
