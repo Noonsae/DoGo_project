@@ -2,19 +2,26 @@
 
 import React from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
+import useAuthStore from '@/store/useAuth';
 
 const KakaoSignIn = () => {
+  const setUser = useAuthStore((state) => state.setUser);
+
   const kakaoLogin = async () => {
     try {
-      await browserSupabase().auth.signInWithOAuth({
+      const { data, error } = await browserSupabase().auth.signInWithOAuth({
         provider: 'kakao',
-        options: {
-          redirectTo: `http://localhost:3000/api/auth/kakao`
-        }
+        options: { redirectTo: 'http://localhost:3000/api/auth/kakao' }
       });
-    } catch (error) {
-      console.error('카카오 로그인 실패:', error);
-      alert('카카오 로그인 중 문제가 발생했습니다. 다시 시도해주세요.');
+
+      if (data?.user) {
+        console.log('소셜 로그인 성공, 사용자 데이터:', data.user);
+        setUser(data.user);
+      } else {
+        console.error('소셜 로그인 실패:', error);
+      }
+    } catch (err) {
+      console.error('예기치 않은 오류:', err);
     }
   };
 

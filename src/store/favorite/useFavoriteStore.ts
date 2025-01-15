@@ -23,7 +23,7 @@ const useFavoriteStore = create<FavoriteState>((set, get) => ({
     const { favoriteStatus } = get();
     const userId = useAuthStore.getState().user?.id;
 
-    // 로그인 여부 확인
+  
     if (!userId) {
       Swal.fire({
         icon: 'warning',
@@ -31,7 +31,7 @@ const useFavoriteStore = create<FavoriteState>((set, get) => ({
         text: '즐겨찾기 기능을 사용하려면 로그인해주세요.',
         confirmButtonText: '로그인하기'
       }).then(() => {
-        window.location.href = '/sign-in'; // 로그인 페이지로 이동
+        window.location.href = '/sign-in'; 
       });
       return;
     }

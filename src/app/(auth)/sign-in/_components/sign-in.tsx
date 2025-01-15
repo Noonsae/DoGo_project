@@ -7,19 +7,18 @@ import Swal from 'sweetalert2';
 import KakaoSignIn from './kakao-sign-in';
 import FindIdModal from './find-id-modal';
 import FindPasswordModal from './find-password-modal';
-import { isLogined } from '@/utils/isLogin';
 import { browserSupabase } from '@/supabase/supabase-client';
 
 const Signin = () => {
   const [activeTab, setActiveTab] = useState<'user' | 'business'>('user');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { setUser } = useAuthStore();
+  // const { setUser } = useAuthStore();
   const [isFindIdModalOpen, setIsFindIdModalOpen] = useState(false);
   const [isFindPasswordOpen, setFindPasswordOpen] = useState(false);
-
+  // zustand 가져오기
   const router = useRouter();
-
+  const setUser = useAuthStore((state) => state.setUser);
   const handleLogin = async () => {
     try {
       if (!email || !password) {
@@ -62,27 +61,27 @@ const Signin = () => {
 
       setUser(data.user);
       document.cookie = `user=${encodeURIComponent(JSON.stringify(data.user))}; path=/;`;
-      isLogined(true);
-
-      Swal.fire({
-        icon: 'success',
-        title: '로그인 성공',
-        text: `${data.user.email}님 환영합니다!`,
-        useAuthStore: true
-      });
-
-      // 로그인 성공했을 때 유저의 정보를 주스탠드에 담아주는 로직이 필요할 것 같습니다.
-      // 쿠키에 담긴 유저의 정보를 판단해주는 로직 ??
-      router.push('/');
+      if (data?.user) {
+        console.log('소셜 로그인 성공, 사용자 데이터:', data.user);
+        setUser(data.user);
+        Swal.fire({
+          icon: 'success',
+          title: '로그인 성공',
+          text: `${data.user.email}님 환영합니다!`
+        });
+      } else {
+        console.error('소셜 로그인 실패:', error);
+        Swal.fire({
+          icon: 'error',
+          title: '서버 오류',
+          text: '로그인에 실패했습니다. 다시 시도해주세요.'
+        });
+      }
     } catch (err) {
-      console.error('로그인 실패:', err);
-
-      Swal.fire({
-        icon: 'error',
-        title: '서버 오류',
-        text: '로그인에 실패했습니다. 다시 시도해주세요.'
-      });
+      console.error('예기치 않은 오류:', err);
     }
+
+    router.push('/');
   };
 
   return (
