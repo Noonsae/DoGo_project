@@ -21,7 +21,9 @@ const Page = () => {
       alert('회원 유형을 선택해주세요!'); // 선택 안 했을 경우 경고
     }
   };
-
+  const handleSignIn = () => {
+    router.push('/sign-in');
+  };
   return (
     <div className="flex justify-center items-center min-h-screen bg-white">
       <div className="p-8 h-[693px] w-[400px]">
@@ -65,7 +67,13 @@ const Page = () => {
         >
           다음
         </button>
-
+        <p className="w-[400px] flex justify-center text-neutral-600">
+          이미 계정이 있으신가요?
+          <button onClick={handleSignIn} className="text-[#534431] ml-3">
+            {' '}
+            로그인
+          </button>
+        </p>
         {/* 간편 회원가입 구분선 */}
         <div className="w-[400px] flex items-center my-6">
           <hr className="flex-grow border-gray-300" />
