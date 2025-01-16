@@ -2,14 +2,14 @@ import React from 'react';
 import Recommend from './Recommend';
 import History from './History';
 import HotelByView from './HotelByView';
-import HotelByRegion from './HotelByRegion';
+import HotelByLocation from './HotelByLocation';
 
 const ContentsList = () => {
   return (
     <>
       <History />
       <Recommend />
-      <HotelByRegion />
+      <HotelByLocation />
       <HotelByView />
     </>
   );
