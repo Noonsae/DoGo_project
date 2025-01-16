@@ -1,12 +1,10 @@
 'use client';
 
-import useAuthStore from '@/store/useAuth';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React, { useState } from 'react';
 
 export default function MyProvider({ children }: { children: React.ReactNode }) {
-  const { loadUserFromCookie } = useAuthStore((state) => state);
-  loadUserFromCookie();
+
   const [queryClient] = useState(
     () =>
       new QueryClient({
