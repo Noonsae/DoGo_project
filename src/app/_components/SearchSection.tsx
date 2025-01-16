@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { useClickAway } from 'react-use';
 
@@ -15,7 +15,8 @@ const SearchSection = () => {
   const [isStayDurationClicked, setIsStayDurationClicked] = useState(false);
   const [isStayDetailsClicked, setIsStayDetailsClicked] = useState(false);
   const clickLabelRef = useRef<HTMLLabelElement>(null);
-  const clickDivRef = useRef<HTMLDivElement>(null);
+  const clickStayDurationRef = useRef<HTMLDivElement>(null);
+  const clickStayDetailsRef = useRef<HTMLDivElement>(null);
 
   const handleSearch = () => {
     console.log('Search with:', { location, checkIn, checkOut, guests });
@@ -23,8 +24,21 @@ const SearchSection = () => {
   };
 
   // 라벨 요소를 클릭하면 테두리 색상을 변경
-  const handleLabelClick = () => {
+  const handleLabelClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setIsLabelClicked(true);
+  };
+
+  // 체크인/체크아웃 박스를 클릭하면 테두리 색상을 변경
+  const handleStayDurationClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsStayDurationClicked(true);
+  };
+
+  // 객실 및 인원 박스를 클릭하면 테두리 색상을 변경
+  const handleStayDetailsClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsStayDetailsClicked(true);
   };
 
   // 외부 클릭 감지
@@ -32,23 +46,13 @@ const SearchSection = () => {
     setIsLabelClicked(false);
   });
 
-  // 체크인/체크아웃 박스를 클릭하면 테두리 색상을 변경
-  const handleStayDurationClick = () => {
-    setIsStayDurationClicked(true);
-  };
-
   // 외부 클릭 감지
-  useClickAway(clickDivRef, () => {
+  useClickAway(clickStayDurationRef, () => {
     setIsStayDurationClicked(false);
   });
 
-  // 객실 및 인원 박스를 클릭하면 테두리 색상을 변경
-  const handleStayDetailsClick = () => {
-    setIsStayDetailsClicked(true);
-  };
-
   // 외부 클릭 감지
-  useClickAway(clickDivRef, () => {
+  useClickAway(clickStayDetailsRef, () => {
     setIsStayDetailsClicked(false);
   });
 
@@ -79,8 +83,8 @@ const SearchSection = () => {
           {/* 체크인과 체크아웃 */}
           <div
             onClick={handleStayDurationClick}
-            ref={clickDivRef}
-            className={`w-[35%] max-w-[400px] h-full flex flex-row px-[16px] py-[12px] border border-[#BFBFBF] rounded-[8px] cursor-pointer ${
+            ref={clickStayDurationRef}
+            className={`w-[35%] max-w-[400px] h-full flex flex-row px-[16px] py-[12px] border rounded-[8px] cursor-pointer ${
               isStayDurationClicked ? 'border-[#B3916A]' : 'border-[#BFBFBF]'
             }`}
           >
@@ -97,8 +101,8 @@ const SearchSection = () => {
           {/* 객실 및 인원 */}
           <div
             onClick={handleStayDetailsClick}
-            ref={clickDivRef}
-            className={`w-[25%] max-w-[288px] h-full px-[16px] py-[12px] border border-[#BFBFBF] rounded-[8px] ${
+            ref={clickStayDetailsRef}
+            className={`w-[25%] max-w-[288px] h-full px-[16px] py-[12px] border rounded-[8px] ${
               isStayDetailsClicked ? 'border-[#B3916A]' : 'border-[#BFBFBF]'
             }`}
           >
