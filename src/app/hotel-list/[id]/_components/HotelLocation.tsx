@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import KakaoMap from '@/hooks/map/kakaomap';
 import { HotelType } from '@/types/supabase/hotel-type';
+import KakaoTest from '@/hooks/map/kakaomap';
 
 interface HotelLocationProps {
-  id: string; // URL에서 전달받은 hotelId
+  id: string;
 }
 
 const HotelLocation = ({ id: hotelId }: HotelLocationProps) => {
@@ -12,22 +12,11 @@ const HotelLocation = ({ id: hotelId }: HotelLocationProps) => {
 
   useEffect(() => {
     const fetchHotel = async () => {
-      if (!hotelId) {
-        // console.error('No hotelId provided');
-        return;
-      }
-
-      // console.log(`Fetching hotel data for ID: ${hotelId}`);
-
       try {
         const response = await fetch(`/api/hotel/${hotelId}`);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch hotel. Status: ${response.status}`);
-        }
-
         const data = await response.json();
-        // console.log('Fetched hotel data:', data); // 응답 데이터 확인
-        setHotel(data); // 단일 호텔 데이터 저장
+        console.log('Hotel data:', data);
+        setHotel(data);
       } catch (error) {
         console.error('Error fetching hotel:', error);
       } finally {
@@ -38,23 +27,14 @@ const HotelLocation = ({ id: hotelId }: HotelLocationProps) => {
     fetchHotel();
   }, [hotelId]);
 
-  if (loading) {
-    // console.log('Hotel data is loading...');
-    return <div>Loading...</div>;
-  }
-
-  if (!hotel) {
-    // console.log('No hotel data found.');
-    return <div>No hotel found</div>;
-  }
-
-  // console.log('Hotel data loaded successfully:', hotel);
+  if (loading) return <div>Loading...</div>;
+  if (!hotel || !hotel.address) return <div>호텔 정보를 불러올 수 없습니다.</div>;
 
   return (
     <div>
       <section id="location" className="scroll-mt-20">
         <h2 className="text-2xl font-bold mb-4">위치</h2>
-        <KakaoMap address={hotel.address} name={hotel.name} description={hotel.description} />
+        <KakaoTest address={hotel.address} />
       </section>
     </div>
   );

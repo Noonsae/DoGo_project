@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import useAuthStore from '../useAuth';
 import Swal from 'sweetalert2'; // SweetAlert2 import
+import useAuthStore from '@/store/useAuth';
 
 interface FavoriteState {
   favoriteStatus: Record<string, boolean>;
@@ -13,7 +13,6 @@ const useFavoriteStore = create<FavoriteState>((set, get) => ({
   favoriteStatus: {},
 
   setFavoriteStatus: (hotelId: string, isFavorite: boolean) => {
-    console.log(`Setting favorite for hotelId: ${hotelId} to ${isFavorite}`);
     set((state) => ({
       favoriteStatus: { ...state.favoriteStatus, [hotelId]: isFavorite }
     }));
@@ -23,7 +22,6 @@ const useFavoriteStore = create<FavoriteState>((set, get) => ({
     const { favoriteStatus } = get();
     const userId = useAuthStore.getState().user?.id;
 
-  
     if (!userId) {
       Swal.fire({
         icon: 'warning',
@@ -31,15 +29,13 @@ const useFavoriteStore = create<FavoriteState>((set, get) => ({
         text: '즐겨찾기 기능을 사용하려면 로그인해주세요.',
         confirmButtonText: '로그인하기'
       }).then(() => {
-        window.location.href = '/sign-in'; 
+        window.location.href = '/sign-in';
       });
       return;
     }
 
     const isFavorite = favoriteStatus[hotelId];
     const action = isFavorite ? 'remove' : 'add';
-
-    console.log(`Toggling favorite for hotelId: ${hotelId}, current status: ${isFavorite}`);
 
     try {
       const response = await fetch('/api/favorites', {
@@ -58,7 +54,6 @@ const useFavoriteStore = create<FavoriteState>((set, get) => ({
         throw new Error(error.message || 'Failed to toggle favorite');
       }
 
-      console.log(`Successfully toggled favorite for hotelId: ${hotelId}`);
       set((state) => ({
         favoriteStatus: {
           ...state.favoriteStatus,
@@ -83,8 +78,6 @@ const useFavoriteStore = create<FavoriteState>((set, get) => ({
   },
 
   initializeFavorites: async (userId: string) => {
-    console.log(`Initializing favorites for userId: ${userId}`);
-
     try {
       const response = await fetch(`/api/favorites?userId=${userId}`, {
         method: 'GET',
@@ -98,14 +91,12 @@ const useFavoriteStore = create<FavoriteState>((set, get) => ({
       }
 
       const favorites = await response.json();
-      console.log('Fetched favorites: ', favorites);
 
       const favoriteStatus = favorites.reduce((acc: Record<string, boolean>, { hotel_id }: any) => {
         acc[hotel_id] = true;
         return acc;
       }, {});
 
-      console.log('Updated favoriteStatus: ', favoriteStatus);
       set({ favoriteStatus });
     } catch (error) {
       console.error('Error initializing favorites:', error);
