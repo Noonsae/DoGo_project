@@ -1,13 +1,13 @@
-import React from 'react';
-import Recommend from './Recommend';
-import History from './History';
-import HotelByView from './HotelByView';
-import HotelByLocation from './HotelByLocation';
+import History from "./_contents/History";
+import HotelByLocation from "./_contents/HotelByLocation";
+import HotelByView from "./_contents/HotelByView";
+import Recommend from "./_contents/Recommend";
+
 
 const ContentsList = () => {
   return (
     <>
-      <History />
+      <History   />
       <Recommend />
       <HotelByLocation />
       <HotelByView />
