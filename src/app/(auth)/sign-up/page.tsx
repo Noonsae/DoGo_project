@@ -1,7 +1,9 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import KakaoSignIn from '../sign-in/_components/kakao-sign-in';
+
+import KakaoSignIn from '../sign-in/_components/KakaoSignIn';
+
 import { HiBuildingOffice } from 'react-icons/hi2';
 import { MdPerson } from 'react-icons/md';
 const Page = () => {
