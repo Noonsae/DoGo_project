@@ -14,9 +14,10 @@ export interface SignUpProps {
   // setAdminName: React.Dispatch<React.SetStateAction<string>>;
   // setCustomer_name: React.Dispatch<React.SetStateAction<string>>;
   // customer_name: string;
-  businessNumber: string; // 사업자 번호 추가 (optional)
-  setBusinessNumber: React.Dispatch<React.SetStateAction<string>>;
+  businessNumber?: string; // 사업자 번호 추가 (optional)
+  setBusinessNumber?: React.Dispatch<React.SetStateAction<string>>;
   error: string;
   setError: React.Dispatch<React.SetStateAction<string>>;
   handleSignup: () => void;
 }
+// 옵셔널
