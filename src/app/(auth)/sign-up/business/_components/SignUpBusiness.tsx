@@ -1,20 +1,24 @@
+'use client';
+
 import React, { useState } from 'react';
 import { SignUpProps } from '@/types/supabase/supabase-sign-up-type';
 import Error from '../error';
-import { useRouter } from 'next/navigation';
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
+import { useRouter } from 'next/navigation';
+//서버사이드에서 사용자 역할에 따라 라우팅 되게 하려고 했던 방식을
+// 클라이언트 사이드에서 동적 시그먼트를 생성하여 라우팅되게 바꾸신 것 같습니다 -민석님
 
-const SignUpUser: React.FC<SignUpProps> = ({
+const SignUpBusiness: React.FC<SignUpProps> = ({
   email,
   setEmail,
   password,
   setPassword,
   phone,
   setPhone,
-  nickname,
-  setNickname,
   name,
   setName,
+  businessNumber,
+  setBusinessNumber,
   error,
   setError,
   handleSignup
@@ -48,23 +52,23 @@ const SignUpUser: React.FC<SignUpProps> = ({
   };
 
   return (
-    <div className="flex justify-center items-center">
-      <div className="p-12  w-[500px]">
+    <div className="flex justify-center items-center ">
+      <div className="p-12 w-[500px]">
         <h1 className="text-4xl font-bold mb-8 text-center mt-[65px]">DoGo</h1>
-        <h6 className="text-[18px] font-bold mb-8 ">일반 회원 회원가입</h6>
-        <p className="mb-1 font-semibold text-gray-700">이메일</p>
+        <h6 className="text-[18px] font-bold mb-8 ">사업자 회원 회원가입</h6>
+        <p className="mb-1 font-semibold text-gray-700">사업자 이메일</p>
         <input
           type="email"
-          placeholder="이메일을 입력해 주세요."
+          placeholder="이메일을 입력해주세요"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
           className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#B3916A] mb-4"
+          onChange={(e) => setEmail(e.target.value)}
         />
-        <p className="mb-1 font-semibold text-gray-700">비밀번호</p>
+        <p className="mb-2 font-semibold text-gray-700">비밀번호</p>
         <div className="relative">
           <input
             type={showPassword ? 'text' : 'password'}
-            placeholder="비밀번호를 입력해 주세요."
+            placeholder="비밀번호를 입력해주세요"
             value={password}
             onChange={(e) => handlePasswordChange(e.target.value)}
             className="w-full p-3 border border-gray-300 rounded-md pr-12 focus:outline-none focus:ring-2 focus:ring-[#B3916A] mb-4"
@@ -81,7 +85,7 @@ const SignUpUser: React.FC<SignUpProps> = ({
         <div className="relative">
           <input
             type={showConfirmPassword ? 'text' : 'password'}
-            placeholder="비밀번호를 다시 입력해 주세요."
+            placeholder="비밀번호를 다시 입력해주세요"
             value={confirmPassword}
             onChange={(e) => handleConfirmPasswordChange(e.target.value)}
             className={`w-full p-3 border rounded-md pr-12 mb-4 ${
@@ -99,29 +103,29 @@ const SignUpUser: React.FC<SignUpProps> = ({
           </button>
         </div>
         {error && <Error message={error} />}
-        <p className="mb-2 font-semibold text-gray-700">휴대폰 번호</p>
+        <p className="mb-2 font-semibold text-gray-700">담당자 이름</p>
+        <input
+          type="text"
+          placeholder="이름을 입력해주세요"
+          value={name}
+          className="w-full p-3 border border-gray-300 rounded-md pr-12 focus:outline-none focus:ring-2 focus:ring-[#B3916A] mb-4"
+          onChange={(e) => setName(e.target.value)}
+        />
+        <p className="mb-2">담당자 번호</p>
         <input
           type="tel"
-          placeholder="휴대폰 번호를 입력해 주세요."
+          placeholder="휴대폰 번호를 입력해주세요"
           value={phone}
+          className="w-full p-3 border border-gray-300 rounded-md pr-12 focus:outline-none focus:ring-2 focus:ring-[#B3916A] mb-4"
           onChange={(e) => setPhone(e.target.value)}
-          className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#B3916A] mb-4"
         />
-        <p className="mb-2 font-semibold text-gray-700">이름</p>
+        <p className="mb-2">사업자 번호</p>
         <input
           type="text"
-          placeholder="이름을 입력해 주세요."
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          placeholder="사업자 번호를 입력해주세요"
+          value={businessNumber}
           className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#B3916A] mb-4"
-        />
-        <p className="mb-2 font-semibold text-gray-700">닉네임</p>
-        <input
-          type="text"
-          placeholder="닉네임을 입력해 주세요."
-          value={nickname}
-          onChange={(e) => setNickname(e.target.value)}
-          className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#B3916A] mb-6"
+          onChange={(e) => setBusinessNumber(e.target.value)}
         />
         <button
           onClick={handleSignup}
@@ -129,15 +133,13 @@ const SignUpUser: React.FC<SignUpProps> = ({
         >
           완료
         </button>
-        <div className="text-center text-gray-500">
-          이미 계정이 있으신가요?{' '}
-          <button onClick={handelSignIn} className="text-[#B3916A] font-semibold underline">
-            로그인
-          </button>
-        </div>
+        <span className="text-center text-gray-500">이미 계정이 있으신가요?</span>
+        <button onClick={handelSignIn} className="text-[#B3916A] font-semibold underline">
+          로그인
+        </button>
       </div>
     </div>
   );
 };
 
-export default SignUpUser;
+export default SignUpBusiness;

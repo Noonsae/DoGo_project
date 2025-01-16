@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import useAuthStore from '@/store/useAuth';
 import Swal from 'sweetalert2';
-import SignUpUser from './_components/sign-up-user';
+import SignUpUser from './_components/SignUpUser';
 import handleSignupAction from '../actions/handleSignupAction';
 import { browserSupabase } from '@/supabase/supabase-client';
 import { useRouter } from 'next/navigation';
@@ -17,7 +17,7 @@ export default function SignUpUserPage() {
   const [error, setError] = useState('');
   const [nickname, setNickname] = useState('');
   const setUser = useAuthStore((state) => state.setUser);
-
+  //
   const router = useRouter();
   const handleSignup = async () => {
     try {
@@ -27,6 +27,7 @@ export default function SignUpUserPage() {
         email,
         password,
         name,
+        nickname,
         phone,
         role: 'user' // 역할 지정
       });
