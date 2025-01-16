@@ -4,9 +4,9 @@ import useAuthStore from '@/store/useAuth';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
-import KakaoSignIn from './kakao-sign-in';
-import FindIdModal from './find-id-modal';
-import FindPasswordModal from './find-password-modal';
+import KakaoSignIn from './KakaoSignIn';
+import FindIdModal from './FindIdModal';
+import FindPasswordModal from './FindPasswordModal';
 import { browserSupabase } from '@/supabase/supabase-client';
 
 const Signin = () => {
