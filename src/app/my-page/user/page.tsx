@@ -33,16 +33,19 @@ export default function UserPage() {
         const {
           data: { user },
           error: authError,
+          // TODO: supabase -> browserSupabase 로 바꿔보기 
         } = await supabase.auth.getUser();
 
         if (authError || !user) throw new Error('로그인된 사용자가 없습니다.');
 
         // Fetch additional user details
+        // supabase에서 user 정보가 없는다. 
+        // users 테이블에 없는 것???
         const { data, error: userError } = await supabase
           .from('users')
           .select('*')
           .eq('id', user.id)
-          .single();
+          .single(); // -> 없으면 에러 남 
 
         if (userError) throw userError;
 

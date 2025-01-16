@@ -25,18 +25,20 @@ const CompanyList: React.FC = () => {
     const fetchCompanies = async () => {
       try {
         // Supabase에서 데이터 가져오기
+        // TODO: 일부만 (최근 10개 ~ 20개)
         const { data, error } = await browserSupabase()
           .from('users')
-          .select(`
+          .select(
+            `
             id,
             user_name,
             email,
             phone_number,
             business_number,
             created_at
-          `)
+          `
+          )
           .eq('role', 'business'); // role이 'business'인 데이터만 필터링
-
         if (error) throw error;
 
         // 데이터를 상태에 저장
@@ -64,8 +66,7 @@ const CompanyList: React.FC = () => {
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   // 데이터가 없을 때 메시지
-  if (filteredCompanies.length === 0)
-    return <p className="text-center text-gray-600">등록된 업체가 없습니다.</p>;
+  // if (filteredCompanies.length === 0) return <p className="text-center text-gray-600">등록된 업체가 없습니다.</p>;
 
   return (
     <div>
@@ -94,15 +95,14 @@ const CompanyList: React.FC = () => {
         </thead>
         {/* 테이블 바디 */}
         <tbody>
+          {filteredCompanies.length === 0 && <p className="text-center text-gray-600">등록된 업체가 없습니다.</p>}
           {filteredCompanies.map((company) => (
             <tr key={company.id}>
               <td className="border p-2">{company.user_name}</td>
               <td className="border p-2">{company.email}</td>
               <td className="border p-2">{company.phone_number}</td>
               <td className="border p-2">{company.business_number || 'N/A'}</td>
-              <td className="border p-2">
-                {new Date(company.created_at).toLocaleDateString('ko-KR')}
-              </td>
+              <td className="border p-2">{new Date(company.created_at).toLocaleDateString('ko-KR')}</td>
             </tr>
           ))}
         </tbody>
