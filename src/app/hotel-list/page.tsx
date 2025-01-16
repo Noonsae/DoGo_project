@@ -1,12 +1,12 @@
 'use client';
 import React, { useEffect, useState, useRef } from 'react';
 import useAuthStore from '@/store/useAuth';
-import useFavoriteStore from '@/store/favorite/useFavoriteStore';
 import HotelCardList from './_components/HotelsCardList';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import AsideFilter from './_components/AsideFilter';
 import { HotelType } from '@/types/supabase/hotel-type'; // HotelType 추가
+import useFavoriteStore from '@/hooks/favorite/useFavoriteStore';
 
 // 호텔 데이터를 가져오는 비동기 함수
 const fetchHotels = async ({

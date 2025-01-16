@@ -1,7 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import useAuthStore from '@/store/useAuth';
-import useFavoriteStore from '@/store/favorite/useFavoriteStore';
 import { HotelType } from '@/types/supabase/hotel-type';
 import { RoomType } from '@/types/supabase/room-type';
 import HotelRoom from './_components/HotelRoom';
@@ -14,6 +13,7 @@ import Navigation from './_components/Navigation';
 import HotelOverview from './_components/HotelOverview';
 import HotelFacility from './_components/HotelFacility';
 import { ServicesType } from '@/types/supabase/services-type';
+import useFavoriteStore from '@/hooks/favorite/useFavoriteStore';
 
 const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const hotelId = params?.id;
