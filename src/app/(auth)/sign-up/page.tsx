@@ -42,7 +42,7 @@ const Page = () => {
               userType === 'user' ? 'border-[#B3916A] bg-[#FAF8F6]' : 'border-gray-300'
             }`}
           >
-            <MdPerson className="text-4xl mb-2 text-gray-600" />
+            <MdPerson className="w-[48px] h-[52px] text-4xl mb-2 text-gray-600" />
             <p className="font-medium text-sm">일반 회원가입</p>
             <p className="text-xs text-gray-500 mt-1">만 19세 이상의 일반 회원</p>
           </div>
@@ -54,7 +54,7 @@ const Page = () => {
               userType === 'business' ? 'border-[#B3916A] bg-[#FAF8F6]' : 'border-gray-300'
             }`}
           >
-            <HiBuildingOffice className="text-4xl mb-2 text-gray-600" />
+            <HiBuildingOffice className="w-[48px] h-[52px] text-4xl mb-2 text-gray-600" />
             <p className="font-medium text-sm">사업자 회원가입</p>
             <p className="text-xs text-gray-500 mt-1">사업체를 소지한 회원</p>
           </div>
