@@ -6,7 +6,7 @@ import { HiBuildingOffice } from 'react-icons/hi2';
 import { MdPerson } from 'react-icons/md';
 const Page = () => {
   const router = useRouter();
-  const [userType, setUserType] = useState<string | null>(null); // 선택된 회원 유형 상태
+  const [userType, setUserType] = useState<string | null>(null);
 
   const handleSelect = (type: string) => {
     setUserType(type);
@@ -18,7 +18,7 @@ const Page = () => {
     } else if (userType === 'user') {
       router.push('/sign-up/user');
     } else {
-      alert('회원 유형을 선택해주세요!'); // 선택 안 했을 경우 경고
+      alert('회원 유형을 선택해주세요!');
     }
   };
   const handleSignIn = () => {
@@ -27,10 +27,9 @@ const Page = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-white">
       <div className="p-8 h-[693px] w-[400px]">
-        {/* 로고와 상단 텍스트 */}
         <div>
           <h1 className="text-4xl font-bold mb-8 text-center mt-[65px]">DoGo</h1>
-          <p className=" text-lg font-semibold mb-6">회원 유형 선택</p>
+          <p className=" text-[25px] text-neutral-800 font-semibold mb-6">회원 유형 선택</p>
         </div>
 
         {/* 회원 유형 선택 */}
@@ -43,8 +42,10 @@ const Page = () => {
             }`}
           >
             <MdPerson className="w-[48px] h-[52px] text-4xl mb-2 text-gray-600" />
-            <p className="font-medium text-sm">일반 회원가입</p>
-            <p className="text-xs text-gray-500 mt-1">만 19세 이상의 일반 회원</p>
+            <p className="font-medium text-neutral-800 text-[24xp]">일반 회원가입</p>
+            <p className={`text-xs mt-1 ${userType === 'user' ? 'text-[#B3916A]' : 'text-gray-500'}`}>
+              만 19세 이상의 일반 회원
+            </p>
           </div>
 
           {/* 사업자 회원가입 */}
@@ -55,8 +56,10 @@ const Page = () => {
             }`}
           >
             <HiBuildingOffice className="w-[48px] h-[52px] text-4xl mb-2 text-gray-600" />
-            <p className="font-medium text-sm">사업자 회원가입</p>
-            <p className="text-xs text-gray-500 mt-1">사업체를 소지한 회원</p>
+            <p className="font-medium text-neutral-800 text-[24xp]">사업자 회원가입</p>
+            <p className={`text-xs mt-1 ${userType === 'business' ? 'text-[#B3916A]' : 'text-gray-500'}`}>
+              사업체를 소지한 회원
+            </p>
           </div>
         </div>
 
@@ -77,7 +80,7 @@ const Page = () => {
         {/* 간편 회원가입 구분선 */}
         <div className="w-[400px] flex items-center my-6">
           <hr className="flex-grow border-gray-300" />
-          <span className="px-4 text-sm text-gray-500">간편 회원가입</span>
+          <span className="px-4 text-sm text-neutral-400">간편 회원가입</span>
           <hr className="flex-grow border-gray-300" />
         </div>
 
@@ -86,7 +89,7 @@ const Page = () => {
 
         {/* 하단 링크 */}
         <div className="w-[400px] mt-6 text-center text-sm text-gray-500">
-          <button className="underline">개인정보처리방침</button> | <button className="underline">이용약관</button>
+          <button className=" text-neutral-600">개인정보처리방침</button> | <button className="">이용약관</button>
         </div>
       </div>
     </div>
