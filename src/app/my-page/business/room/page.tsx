@@ -9,8 +9,9 @@ interface Room {
   room_type: string;
   price: number;
   bed_type: string;
-  is_breakfast_included: string | null; // 스키마에 맞게 수정
-  created_at: string | null; // null 가능성을 반영
+  is_breakfast_included: string | null; // string 타입으로 수정
+  view: string; // view 속성 추가
+  created_at: string | null;
 }
 
 interface RoomPageProps {
@@ -26,7 +27,8 @@ const RoomPage: React.FC<RoomPageProps> = ({ hotelId }) => {
     room_type: '',
     price: 0,
     bed_type: '',
-    is_breakfast_included: 'false', // string으로 변경
+    is_breakfast_included: 'false', // string 타입으로 유지
+    view: '', // view 속성 초기화
   });
 
   // 방 목록 가져오기
@@ -35,8 +37,8 @@ const RoomPage: React.FC<RoomPageProps> = ({ hotelId }) => {
       try {
         const { data, error } = await browserSupabase()
           .from('rooms')
-          .select('id, room_name, room_type, price, bed_type, is_breakfast_included, created_at')
-          .eq('hotel_id', hotelId); // 스키마에 맞게 수정
+          .select('id, room_name, room_type, price, bed_type, is_breakfast_included, view, created_at')
+          .eq('hotel_id', hotelId);
 
         if (error) throw error;
 
@@ -55,12 +57,10 @@ const RoomPage: React.FC<RoomPageProps> = ({ hotelId }) => {
   // 방 추가하기
   const handleAddRoom = async () => {
     try {
-      const { data, error } = await browserSupabase().from('rooms').insert([
-        {
-          ...newRoom,
-          hotel_id: hotelId, // 스키마에 맞게 수정
-        },
-      ]);
+      const { data, error } = await browserSupabase().from('rooms').insert([{
+        ...newRoom,
+        hotel_id: hotelId, // hotel_id 추가
+      }]);
 
       if (error) throw error;
 
@@ -72,7 +72,8 @@ const RoomPage: React.FC<RoomPageProps> = ({ hotelId }) => {
         room_type: '',
         price: 0,
         bed_type: '',
-        is_breakfast_included: 'false', // 초기화
+        is_breakfast_included: 'false',
+        view: '',
       });
     } catch (err) {
       console.error('Error adding room:', err);
@@ -133,6 +134,13 @@ const RoomPage: React.FC<RoomPageProps> = ({ hotelId }) => {
             onChange={(e) => setNewRoom({ ...newRoom, bed_type: e.target.value })}
             className="border p-2 rounded"
           />
+          <input
+            type="text"
+            placeholder="뷰"
+            value={newRoom.view}
+            onChange={(e) => setNewRoom({ ...newRoom, view: e.target.value })}
+            className="border p-2 rounded"
+          />
           <label className="flex items-center gap-2">
             <input
               type="checkbox"
@@ -152,7 +160,7 @@ const RoomPage: React.FC<RoomPageProps> = ({ hotelId }) => {
         </div>
       </div>
 
-      {/* 객실 리스트 */}
+      {/* 객실 목록 */}
       <h3 className="font-semibold mb-2">객실 목록</h3>
       {rooms.length === 0 ? (
         <p className="text-center text-gray-600">등록된 객실이 없습니다.</p>
@@ -165,6 +173,7 @@ const RoomPage: React.FC<RoomPageProps> = ({ hotelId }) => {
               <th className="border p-2">가격</th>
               <th className="border p-2">침대 타입</th>
               <th className="border p-2">조식 포함</th>
+              <th className="border p-2">뷰</th>
               <th className="border p-2">작업</th>
             </tr>
           </thead>
@@ -176,6 +185,7 @@ const RoomPage: React.FC<RoomPageProps> = ({ hotelId }) => {
                 <td className="border p-2">{room.price.toLocaleString()}원</td>
                 <td className="border p-2">{room.bed_type}</td>
                 <td className="border p-2">{room.is_breakfast_included === 'true' ? '포함' : '미포함'}</td>
+                <td className="border p-2">{room.view}</td>
                 <td className="border p-2">
                   <button
                     onClick={() => handleDeleteRoom(room.id)}
