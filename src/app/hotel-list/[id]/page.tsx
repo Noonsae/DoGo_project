@@ -1,11 +1,19 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import useAuthStore from '@/store/useAuth';
-import Image from 'next/image';
-import useFavoriteStore from '@/store/favorite/useFavoriteStore';
 import { HotelType } from '@/types/supabase/hotel-type';
 import { RoomType } from '@/types/supabase/room-type';
-import Modal from './_components/Modal';
+import HotelRoom from './_components/HotelRoom';
+import HotelLocation from './_components/HotelLocation';
+import HotelBox from './_components/HotelBox';
+import { FacilitiesType } from '@/types/supabase/facilities-type';
+import { Json } from '@/types/supabase/supabase-type';
+import { UserType } from '@/types/supabase/user-type';
+import Navigation from './_components/Navigation';
+import HotelOverview from './_components/HotelOverview';
+import HotelFacility from './_components/HotelFacility';
+import { ServicesType } from '@/types/supabase/services-type';
+import useFavoriteStore from '@/hooks/favorite/useFavoriteStore';
 
 const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const hotelId = params?.id;
@@ -14,13 +22,12 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
   const [roomsData, setRoomsData] = useState<RoomType[]>([]);
+  const [facilityData, setFacilityData] = useState<FacilitiesType[]>([]);
+  const user = useAuthStore((state) => state.user) as UserType | null;
+  const [servicesData, setServicesData] = useState<ServicesType[]>([]);
 
   const loadUserFromCookie = useAuthStore((state) => state.loadUserFromCookie);
-  const user = useAuthStore((state) => state.user);
-
   const { favoriteStatus, toggleFavorite, initializeFavorites } = useFavoriteStore();
-
-
   useEffect(() => {
     loadUserFromCookie();
   }, [loadUserFromCookie]);
@@ -120,147 +127,21 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
       <div className="h-[60px]"></div>
 
       {/* 네비게이션 탭 */}
-      <div className="sticky top-0 z-10 bg-white border-b shadow-sm">
-        <div className="mx-[360px]">
-          <ul className="flex space-x-6 py-4">
-            {[
-              { id: 'overview', label: '개요' },
-              { id: 'rooms', label: '객실 선택' },
-              { id: 'reviews', label: '이용 후기' },
-              { id: 'services', label: '시설/서비스' },
-              { id: 'policies', label: '숙소 정책' },
-              { id: 'location', label: '위치' },
-              { id: 'nearby', label: '호텔 주변 명소' }
-            ].map((tab) => (
-              <li key={tab.id}>
-                <a
-                  href={`#${tab.id}`}
-                  className={`cursor-pointer pb-2 ${
-                    activeTab === tab.id ? 'border-b-2 border-[#A0522D] text-[#8B4513] font-semibold' : 'text-gray-800'
-                  }`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollToSection(tab.id);
-                  }}
-                >
-                  {tab.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
+      <Navigation activeTab={activeTab} scrollToSection={scrollToSection} />
 
       {/* 콘텐츠 영역 */}
       <div className="mx-[360px] py-6 space-y-16">
         {/* 개요 섹션 */}
-        <section id="overview" className="scroll-mt-20">
-          <h2 className="text-2xl font-bold mb-4">{hotelData.name}</h2>
-          <p className="mb-6">{hotelData.description}</p>
-          <div className="flex gap-4">
-            <div className="rounded-lg shadow-md overflow-hidden relative">
-              <Image
-                src={hotelData.main_img_url || '/placeholder.png'}
-                alt={hotelData.name || 'Default Image'}
-                width={594}
-                height={363}
-                className="object-cover block rounded-md"
-               
-              />
-
-              <button
-                onClick={() => {
-                  toggleFavorite(hotelId); // 즐겨찾기 버튼 클릭 시 상태 토글
-                }}
-                className={`absolute top-4 right-4 p-2 rounded-full shadow-md ${
-                  favoriteStatus[hotelId] ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-600'
-                }`}
-              >
-                {favoriteStatus[hotelId] ? '❤️' : '🤍'}
-              </button>
-            </div>
-            <div className="grid grid-cols-2 gap-2 w-[594px] h-[363px]">
-              {/* hotel_img_urls가 배열일 때만 slice를 사용 */}
-              {Array.isArray(hotelData.hotel_img_urls) &&
-                hotelData.hotel_img_urls.slice(1, 5).map((image, index) => (
-                  <div
-                    key={index}
-                    className="relative bg-gray-200 rounded-lg shadow-md overflow-hidden"
-                    style={{ width: '291px', height: '175.5px' }}
-                  >
-                    <Image
-                      src={image as string}
-                      alt={`Image ${index + 1}`}
-                      width={291}
-                      height={175.5}
-                      className="object-cover w-full h-full rounded-md"
-                    />
-                  </div>
-                ))}
-            </div>
-          </div>
-        </section>
+        <HotelOverview
+          hotelData={hotelData}
+          toggleFavorite={toggleFavorite}
+          hotelId={hotelId}
+          favoriteStatus={favoriteStatus}
+        />
+        <HotelBox facilityData={facilityData} roomOption={roomOption} />
 
         {/* 객실 섹션 */}
-        <section id="rooms" className="scroll-mt-20">
-          <h2 className="text-2xl font-bold mb-4">객실 선택</h2>
-          <div className="w-[1200px] h-full">
-            <ul className="space-y-6">
-              {roomsData.map((room) => (
-                <li key={room.id} className="flex items-center bg-[#FAF4EF] p-6 rounded-lg shadow-md">
-                  {/* 객실 이미지 */}
-                  <div className="w-[280px] h-[280px] bg-gray-200 rounded-lg overflow-hidden">
-                    <Image
-                      src={getValidImageUrl(room.room_img_url)}
-                      alt={room.room_name || 'Default Image'}
-                      width={280}
-                      height={280}
-                      className="object-cover w-[280px] h-[280px]"
-                    />
-                  </div>
-
-                  {/* 객실 정보 */}
-                  <div className="ml-6 flex flex-col w-[824px] bg-white p-6 rounded-lg shadow-lg">
-                    {/* 객실 제목 */}
-                    <div className="flex justify-between items-start mb-4">
-                      <h2 className="text-xl font-semibold text-gray-800">{room.room_name}</h2>
-                      <Modal>
-                        <button className="text-sm text-gray-500 hover:text-gray-800 hover:underline">
-                          자세히 보기 &gt;
-                        </button>
-                      </Modal>
-                    </div>
-
-                    {/* 옵션 리스트 */}
-                    <p className="grid grid-cols-4 gap-4 mb-4 text-sm">
-                      {(Array.isArray(room.option) ? room.option : []).slice(0, 8).map((opt, idx) => (
-                        <span key={idx} className="flex items-center gap-2 text-gray-600">
-                          {roomOption} {/* SVG 아이콘 */}
-                          {String(opt)}
-                        </span>
-                      ))}
-                    </p>
-
-                    {/* 기타 정보 */}
-                    <p className="text-sm text-gray-700 mb-2">숙박 가능 인원: 기준 2인 ~ 최대 4인</p>
-                    <p className="text-sm text-gray-700 mb-2">체크인: 00:00</p>
-                    <p className="text-sm text-gray-700 mb-4">체크아웃: 00:00</p>
-
-                    {/* 가격 */}
-                    <p className="text-lg font-bold text-gray-900 mb-4 flex justify-end">₩{room.price} / 1박</p>
-
-                    {/* 예약 버튼 */}
-                    <div className="flex justify-end">
-                      <button className="w-[124px] h-[44px] bg-[#B3916A] text-white rounded-lg shadow-md hover:bg-[#8B5E3C]">
-                        예약하기
-                      </button>
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
+        <HotelRoom roomsData={roomsData} getValidImageUrl={getValidImageUrl} roomOption={roomOption} />
 
         {/* 이용 후기 섹션 */}
         <section id="reviews" className="scroll-mt-20">
@@ -277,10 +158,14 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
         </section>
 
         {/* 시설/서비스 섹션 */}
-        <section id="services" className="scroll-mt-20">
-          <h2 className="text-2xl font-bold mb-4">시설/서비스</h2>
-          <p>이곳은 호텔의 시설 및 서비스를 보여주는 콘텐츠 영역입니다.</p>
-        </section>
+        <HotelFacility
+          facilityData={facilityData}
+          roomOption={roomOption}
+          setFacilityData={setFacilityData}
+          hotelId={hotelId}
+          setServicesData={setServicesData}
+          serviceData={servicesData}
+        />
 
         {/* 숙소 정책 섹션 */}
         <section id="policies" className="scroll-mt-20">
@@ -289,10 +174,7 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
         </section>
 
         {/* 위치 섹션 */}
-        <section id="location" className="scroll-mt-20">
-          <h2 className="text-2xl font-bold mb-4">위치</h2>
-          <p>이곳은 숙소의 위치를 보여주는 콘텐츠 영역입니다.</p>
-        </section>
+        <HotelLocation id={hotelId} />
 
         {/* 호텔 주변 명소 섹션 */}
         <section id="nearby" className="scroll-mt-20">
