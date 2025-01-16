@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+
 import Image from 'next/image';
 import Modal from '@/components/ui/hotel-room/Modal';
+
 import { RoomType } from '@/types/supabase/room-type';
 import useFormatCurrency from '@/hooks/formatCurrency/useFormatCurrency';
 
