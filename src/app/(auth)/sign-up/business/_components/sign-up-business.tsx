@@ -5,6 +5,8 @@ import { SignUpProps } from '@/types/supabase/supabase-sign-up-type';
 import Error from '../error';
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
 import { useRouter } from 'next/navigation';
+//서버사이드에서 사용자 역할에 따라 라우팅 되게 하려고 했던 방식을
+// 클라이언트 사이드에서 동적 시그먼트를 생성하여 라우팅되게 바꾸신 것 같습니다 -민석님
 
 const SignUpBusiness: React.FC<SignUpProps> = ({
   email,

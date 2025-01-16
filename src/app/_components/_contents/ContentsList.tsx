@@ -1,16 +1,16 @@
 import React from 'react';
-import TopPicksSection from './TopPicksSection';
-import SuggestionsForYouSection from './SuggestionsForYouSection';
-import Discover from './Discover';
-import RecommendedSection from './RecommendedSection';
+import Recommend from './Recommend';
+import History from './History';
+import HotelByView from './HotelByView';
+import HotelByRegion from './HotelByRegion';
 
 const ContentsList = () => {
   return (
     <>
-      <TopPicksSection />
-      <SuggestionsForYouSection />
-      <RecommendedSection />
-      <Discover />
+      <History />
+      <Recommend />
+      <HotelByRegion />
+      <HotelByView />
     </>
   );
 };
