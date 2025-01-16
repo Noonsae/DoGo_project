@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import useAuthStore from '@/store/useAuth';
 import Swal from 'sweetalert2';
-import SignUpUser from './_components/sign-up-user';
+import SignUpUser from './_components/SignUpUser';
 import handleSignupAction from '../actions/handleSignupAction';
 import { browserSupabase } from '@/supabase/supabase-client';
 import { useRouter } from 'next/navigation';

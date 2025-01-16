@@ -71,7 +71,7 @@ export default async function handleSignupAction({
     }
 
     console.log('Step 4: Successfully inserted data');
-    return { success: true, message: `${role} 회원가입 성공` };
+    return { success: true, message: `${name} 회원가입 성공` };
   } catch (error: any) {
     console.error('Signup Error:', error.message);
     return { success: false, message: error.message };
