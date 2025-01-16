@@ -7,7 +7,6 @@ import Swal from 'sweetalert2';
 import KakaoSignIn from './kakao-sign-in';
 import FindIdModal from './find-id-modal';
 import FindPasswordModal from './find-password-modal';
-import { isLogined } from '@/utils/isLogin';
 import { browserSupabase } from '@/supabase/supabase-client';
 
 const Signin = () => {

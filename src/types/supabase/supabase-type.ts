@@ -448,33 +448,39 @@ export type Database = {
           bed_type: string
           hotel_id: string
           id: string
+          is_breakfast_included: string | null
           option: Json | null
           price: number
           room_img_url: Json | null
           room_name: string
           room_type: string
+          tax_and_fee: number
           view: string
         }
         Insert: {
           bed_type: string
           hotel_id?: string
           id?: string
+          is_breakfast_included?: string | null
           option?: Json | null
           price: number
           room_img_url?: Json | null
           room_name: string
           room_type: string
+          tax_and_fee?: number
           view: string
         }
         Update: {
           bed_type?: string
           hotel_id?: string
           id?: string
+          is_breakfast_included?: string | null
           option?: Json | null
           price?: number
           room_img_url?: Json | null
           room_name?: string
           room_type?: string
+          tax_and_fee?: number
           view?: string
         }
         Relationships: [

@@ -39,7 +39,7 @@ const HotelBox = ({ facilityData, roomOption }: HotelBoxProps) => {
             {facilityData.slice(0, 6).map((facility) => (
               <div key={facility.id} className="flex items-center gap-2 text-gray-700">
                 {roomOption}
-                <span className="text-sm">{facility.name}</span> {/* 올바른 데이터 출력 */}
+                <p className="text-sm">{facility.name}</p> {/* 올바른 데이터 출력 */}
               </div>
             ))}
           </div>
