@@ -34,7 +34,7 @@ const Signin = () => {
         email,
         password
       });
-
+      // 다들 로그인 안된다해서 pull안된 modal merge진행중인 주석입니다.
       if (error || !data.user) {
         Swal.fire({
           icon: 'error',
