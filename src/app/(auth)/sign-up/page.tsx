@@ -25,10 +25,10 @@ const Page = () => {
     router.push('/sign-in');
   };
   return (
-    <div className="flex justify-center items-center min-h-screen bg-white">
-      <div className="p-8 h-[693px] w-[400px]">
+    <div className="flex justify-center items-center min-h-screen">
+      <div className="p-8 h-[693px] w-[400px] ">
         <div>
-          <h1 className="text-4xl font-bold mb-8 text-center mt-[65px]">DoGo</h1>
+          <h1 className=" w-[400px] text-[40px] font-bold mb-8 text-center">DoGo</h1>
           <p className=" text-[25px] text-neutral-800 font-semibold mb-6">회원 유형 선택</p>
         </div>
 
@@ -38,7 +38,7 @@ const Page = () => {
           <div
             onClick={() => handleSelect('user')}
             className={`flex flex-col items-center p-6 rounded-lg border w-full cursor-pointer ${
-              userType === 'user' ? 'border-[#B3916A] bg-[#FAF8F6]' : 'border-gray-300'
+              userType === 'user' ? 'border-[#B3916A] bg-[#FDF9F4]' : 'border-gray-300'
             }`}
           >
             <MdPerson className="w-[48px] h-[52px] text-4xl mb-2 text-gray-600" />
@@ -52,7 +52,7 @@ const Page = () => {
           <div
             onClick={() => handleSelect('business')}
             className={`flex flex-col items-center p-6 rounded-lg border w-full cursor-pointer ${
-              userType === 'business' ? 'border-[#B3916A] bg-[#FAF8F6]' : 'border-gray-300'
+              userType === 'business' ? 'border-[#B3916A] bg-[#FDF9F4]' : 'border-gray-300'
             }`}
           >
             <HiBuildingOffice className="w-[48px] h-[52px] text-4xl mb-2 text-gray-600" />
