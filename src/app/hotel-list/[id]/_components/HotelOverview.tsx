@@ -25,11 +25,17 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
     setSelectedImage(null);
   };
 
+  const renderStars = (rating: number) => {
+    return Array.from({ length: 5 }).map((_, index) => (
+      <span key={index} className={`text-lg ${index < rating ? 'text-yellow-500' : 'text-gray-300'}`}>
+        ★
+      </span>
+    ));
+  };
+
   return (
     <div>
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-2xl font-bold mb-4">{hotelData.name}</h2>
-        <p className="mb-6">{hotelData.description}</p>
         <div className="flex gap-4">
           <div className="rounded-lg shadow-md overflow-hidden relative">
             <Image
@@ -73,6 +79,11 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
               ))}
           </div>
         </div>
+        <div className="flex">
+          <h2 className="text-2xl font-bold mb-4 mt-2">{hotelData.name}</h2>
+          <h3 className="mt-3">{renderStars(hotelData.stars)}</h3>
+        </div>
+        <p className="mb-6">{hotelData.description}</p>
         <UpModal
           isOpen={isModalOpen}
           onClose={closeModal}
