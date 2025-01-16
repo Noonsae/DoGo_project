@@ -19,7 +19,7 @@ const BookingPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1); // 페이지네이션용
   const [hasMore, setHasMore] = useState(true); // 무한 스크롤용
-  const PAGE_SIZE = 10; // 한 번에 가져올 데이터 크기
+  const PAGE_SIZE = 5; // 한 번에 가져올 데이터 크기
 
   // 권한 확인 (관리자 또는 특정 사용자만 접근 가능)
   const checkPermissions = async () => {
@@ -30,7 +30,7 @@ const BookingPage: React.FC = () => {
     }
 
     // 권한 체크 예: 관리자만 접근 가능하도록 설정
-    if (data.user.role !== 'admin') {
+    if (data.user.role !== 'admin','business') {
       setError('접근 권한이 없습니다.');
       throw new Error('Unauthorized');
     }
