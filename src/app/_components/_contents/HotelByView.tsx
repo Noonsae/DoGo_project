@@ -4,25 +4,32 @@ import { useState } from 'react';
 
 import Image from 'next/image';
 
-import { useHotels } from '@/hooks/useHotels';
+import useHotelsByView from '@/hooks/hotel/useHotelsByView';
 
 import HotelByViewSkeletonUI from '@/components/ui/skeleton/HotelByViewSkeletonUI';
 
 const HotelByView = () => {
-  const [selectedViews, setSelectedViews] = useState<string | null>(`all`);
+  const [selectedViews, setSelectedViews] = useState<string>(`all`);
 
   // React Query 훅 사용
-  const { data: hotels, isLoading, isError, error } = useHotels();
+  const { data: hotels, isLoading, isError, error } = useHotelsByView(selectedViews);
 
   // 로딩 중 상태 처리
   if (isLoading) {
     return <HotelByViewSkeletonUI />;
   }
+  
+  // 에러 처리
+  if (isError) {
+    console.error('Error fetching hotels:', error);
+    return <div className="text-red-500">호텔 데이터를 불러오는 중 오류가 발생했습니다. {error.message}</div>;
+  }
+
   const handleBtnClick = (id: string) => {
     setSelectedViews(id);
   };
 
-  const Views = [
+  const Views = [    
     { id: `all`, label: `전체` },
     { id: `city`, label: `시티뷰` },
     { id: `ocean`, label: `오션뷰` },
@@ -73,12 +80,12 @@ const HotelByView = () => {
             <p className="text-gray-600">{hotel.address}</p>
 
             <p className="mt-[11px] text-[#D9D9D9]">
-              ⭐ {hotel.stars}
-              <span className="text-[#9E9E9E]"> (3,222) </span>
+              {'⭐'.repeat(hotel.stars)}
+              {/* <span className="text-[#9E9E9E]"> (3,222) </span> */}
             </p>
             <p className="w-full mt-[24px] text-right text-[24px]-black font-semibold">
               <span className="text-base text-[#5b5b5b] font-medium mr-1">Sale%</span>
-              <span>최솟값 구하는 함수 만들어야 함</span>
+              <span>{hotel.minPrice.toLocaleString('en-US')}원</span>
             </p>
           </div>
         ))}

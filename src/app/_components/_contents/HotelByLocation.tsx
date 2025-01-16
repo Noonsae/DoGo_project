@@ -4,33 +4,40 @@ import { useState } from 'react';
 
 import Image from 'next/image';
 
-import { useHotels } from '@/hooks/useHotels';
+import useHotelsByLocation from '@/hooks/hotel/useHotelsByRegion';
 
-import HotelByRegionSkeletonUI from '@/components/ui/skeleton/HotelByRegionSkeletonUI';
+import HotelByLocationSkeletonUI from '@/components/ui/skeleton/HotelByLocationSkeletonUI';
 
-const HotelByRegion = () => {
-  const [selectedRegions, setSelectedRegions] = useState<string | null>(`all`);
+const HotelByLocation = () => {
+  const [selectedLocations, setSelectedLocations] = useState<string>(`all`);
 
   // React Query 훅 사용
-  const { data: hotels, isLoading, isError, error } = useHotels();
+  const { data: hotels, isLoading, isError, error } = useHotelsByLocation(selectedLocations);
 
   // 로딩 중 상태 처리
   if (isLoading) {
-    return <HotelByRegionSkeletonUI />;
+    return <HotelByLocationSkeletonUI />;
+  }
+
+  // 에러 처리
+  if (isError) {
+    console.error('Error fetching hotels:', error);
+    return <div className="text-red-500">호텔 데이터를 불러오는 중 오류가 발생했습니다. {error.message}</div>;
   }
 
   const handleBtnClick = (id: string) => {
-    setSelectedRegions(id);
+    setSelectedLocations(id);
   };
 
-  const regions = [
+  const locations = [
     { id: `all`, label: `전체` },
     { id: `seoul`, label: `서울` },
     { id: `incheon`, label: `인천` },
-    { id: `Gwangju`, label: `광주` },
+    { id: `gwangju`, label: `광주` },
     { id: `daegu`, label: `대구` },
     { id: `daejeon`, label: `대전` },
     { id: `busan`, label: `부산` },
+    { id: `ulsan`, label: `울산` },
     { id: `jeju`, label: `제주` }
   ];
 
@@ -43,13 +50,13 @@ const HotelByRegion = () => {
 
       {/* 슬라이드로 구현될 예정 */}
       <div className="flex flex-row gap-2">
-        {regions.map((select) => (
+        {locations.map((select) => (
           <button
             key={select.id}
             type="button"
             onClick={() => handleBtnClick(select.id)}
             className={`w-[80px] h-[44px] mr-[12px] mt-[28px] border border-[#CDCDCD] rounded-[8px] text-[18px] font-semibold outline-none transition duration-200 ${
-              selectedRegions === select.id
+              selectedLocations === select.id
                 ? 'bg-[#B3916A] text-white'
                 : 'bg-[#fff] text-[#777] font-medium hover:bg-[#8F7455] hover:text-[#fff] active:bg-[#6B573F]'
             }`}
@@ -76,12 +83,16 @@ const HotelByRegion = () => {
             <p className="text-gray-600">{hotel.address}</p>
 
             <p className="mt-[11px] text-[#D9D9D9]">
-              ⭐ {hotel.stars}
+              {'⭐'.repeat(hotel.stars)}
               <span className="text-[#9E9E9E]"> (3,222) </span>
             </p>
             <p className="w-full mt-[24px] text-right text-[24px]-black font-semibold">
               <span className="text-base text-[#5b5b5b] font-medium mr-1">Sale%</span>
-              <span>최솟값 구하는 함수 만들어야 함</span>
+              {/* 가격이 없는 객실 데이터가 존재해서 현재는 ∞ 도 출력되고 있음.. */}
+              {/* <span>{hotel.min_price.toLocaleString('en-US')}원</span> */}
+              <span>
+                {isFinite(hotel.min_price) ? `${hotel.min_price.toLocaleString('en-US')}원` : '가격 정보 없음'}
+              </span>
             </p>
           </div>
         ))}
@@ -90,4 +101,4 @@ const HotelByRegion = () => {
   );
 };
 
-export default HotelByRegion;
+export default HotelByLocation;

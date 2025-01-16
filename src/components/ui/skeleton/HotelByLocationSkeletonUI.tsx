@@ -1,6 +1,16 @@
-const HotelByRegionSkeletonUI = ({ buttonCount = 9, cardCount = 3 }) => {
-
-  const buttonClass = 'w-[80px] h-[44px] bg-gray-300 animate-pulse';
+const HotelByLocationSkeletonUI = ({ buttonCount = 9, cardCount = 3 }) => {
+  
+  const locations = [
+    { id: `all`, label: `전체` },
+    { id: `seoul`, label: `서울` },
+    { id: `incheon`, label: `인천` },
+    { id: `gwangju`, label: `광주` },
+    { id: `daegu`, label: `대구` },
+    { id: `daejeon`, label: `대전` },
+    { id: `busan`, label: `부산` },
+    { id: `ulsan`, label: `울산` },
+    { id: `jeju`, label: `제주` }
+  ];
 
   return (
     <section className="w-full max-w-[1300px] px-[50px] mx-auto h-[850px] py-[80px] pb-[120px]">
@@ -9,9 +19,14 @@ const HotelByRegionSkeletonUI = ({ buttonCount = 9, cardCount = 3 }) => {
         지역별로 인기가 가장 많았던 호텔을 추천해 드릴게요.
       </p>
 
-      <div className="w-full max-w-[1200px] flex flex-wrap items-center gap-3 mt-[28px] rounded-[8px]">
-        {[...Array(buttonCount)].map((_, idx) => (
-          <div key={idx} className={buttonClass}></div>
+      <div className="flex flex-row gap-2">
+        {locations.map((select) => (
+          <div
+            key={select.id}
+            className={`w-[80px] h-[44px] mr-[12px] mt-[28px] items-center flex flex-col justify-center bg-[#fff] text-[#777] border border-[#CDCDCD] rounded-[8px] text-[18px] text-center font-medium outline-none `}
+          >
+            {select.label}
+          </div>
         ))}
       </div>
 
@@ -33,4 +48,4 @@ const HotelByRegionSkeletonUI = ({ buttonCount = 9, cardCount = 3 }) => {
   );
 };
 
-export default HotelByRegionSkeletonUI;
+export default HotelByLocationSkeletonUI;
