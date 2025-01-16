@@ -5,7 +5,7 @@ import useAuthStore from '@/store/useAuth';
 import Swal from 'sweetalert2';
 import handleSignupAction from '../actions/handleSignupAction';
 import { useRouter } from 'next/navigation';
-import SignUpBusiness from './_components/sign-up-business';
+import SignUpBusiness from './_components/SignUpBusiness';
 import { browserSupabase } from '@/supabase/supabase-client';
 export default function SignUpBusinessPage() {
   const [email, setEmail] = useState('');
