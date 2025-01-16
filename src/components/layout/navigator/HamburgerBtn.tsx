@@ -18,7 +18,7 @@ const HamburgerBtn: React.FC = () => {
   // 컴포넌트 마운트 시 쿠키에서 유저 정보 로드
   useEffect(() => {
     loadUserFromCookie();
-  }, [loadUserFromCookie]);
+  }, []);
 
   // 로그인 상태 확인
   const isLoggedIn = user !== null;

@@ -31,7 +31,7 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const { favoriteStatus, toggleFavorite, initializeFavorites } = useFavoriteStore();
   useEffect(() => {
     loadUserFromCookie();
-  }, [loadUserFromCookie]);
+  }, []);
 
   useEffect(() => {
     if (user?.id && hotelId) {

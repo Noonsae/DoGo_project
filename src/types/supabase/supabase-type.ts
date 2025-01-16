@@ -446,9 +446,10 @@ export type Database = {
       rooms: {
         Row: {
           bed_type: string
+          created_at: string
           hotel_id: string
           id: string
-          is_breakfast_included: string | null
+          is_breakfast_included: string
           option: Json | null
           price: number
           room_img_url: Json | null
@@ -459,9 +460,10 @@ export type Database = {
         }
         Insert: {
           bed_type: string
+          created_at?: string
           hotel_id?: string
           id?: string
-          is_breakfast_included?: string | null
+          is_breakfast_included: string
           option?: Json | null
           price: number
           room_img_url?: Json | null
@@ -472,9 +474,10 @@ export type Database = {
         }
         Update: {
           bed_type?: string
+          created_at?: string
           hotel_id?: string
           id?: string
-          is_breakfast_included?: string | null
+          is_breakfast_included?: string
           option?: Json | null
           price?: number
           room_img_url?: Json | null
