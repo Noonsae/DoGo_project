@@ -12,7 +12,6 @@ const KakaoMap: React.FC<KakaoMapProps> = ({ address }) => {
       const scriptUrl = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&autoload=false&libraries=services`;
 
       if (document.querySelector(`script[src="${scriptUrl}"]`)) {
-        console.log('Kakao Maps 스크립트가 이미 로드되었습니다.');
         initializeKakaoMap();
         return;
       }
@@ -21,7 +20,6 @@ const KakaoMap: React.FC<KakaoMapProps> = ({ address }) => {
       script.src = scriptUrl;
       script.async = true;
       script.onload = () => {
-        console.log('Kakao Maps 스크립트 로드 완료');
         if (window.kakao && window.kakao.maps) {
           window.kakao.maps.load(() => initializeKakaoMap());
         }
@@ -34,7 +32,6 @@ const KakaoMap: React.FC<KakaoMapProps> = ({ address }) => {
 
     const initializeKakaoMap = () => {
       if (!window.kakao || !window.kakao.maps || !mapContainerRef.current) {
-        console.error('Kakao Maps 초기화 실패: 필요한 객체 또는 컨테이너가 없습니다.');
         return;
       }
 
@@ -58,8 +55,6 @@ const KakaoMap: React.FC<KakaoMapProps> = ({ address }) => {
               position: new window.kakao.maps.LatLng(lat, lng)
             });
             marker.setMap(map);
-
-            console.log(`지도 초기화 완료: ${lat}, ${lng}`);
           }
         } else {
           console.error('주소 검색 실패:', status);
