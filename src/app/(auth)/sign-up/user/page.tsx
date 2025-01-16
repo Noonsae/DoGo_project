@@ -27,6 +27,7 @@ export default function SignUpUserPage() {
         email,
         password,
         name,
+        nickname,
         phone,
         role: 'user' // 역할 지정
       });

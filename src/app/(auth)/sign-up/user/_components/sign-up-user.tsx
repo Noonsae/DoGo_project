@@ -69,15 +69,18 @@ const SignUpUser: React.FC<SignUpProps> = ({
             onChange={(e) => handlePasswordChange(e.target.value)}
             className="w-full p-3 border border-gray-300 rounded-md pr-12 focus:outline-none focus:ring-2 focus:ring-[#B3916A] mb-4"
           />
+          <p className="text-[13px] pb-[4px] text-gray-700">
+            영문 대•소문자/숫자/특수문자 중 2가지 이상 조합, 8자~32자
+          </p>
           <button
             type="button"
             onClick={() => setShowPassword((prev) => !prev)}
             className="absolute right-3 top-3 text-gray-600 hover:text-black"
           >
-            {showPassword ? <IoMdEyeOff size={24} /> : <IoMdEye size={24} />}
+            {showPassword ? <IoMdEye size={24} /> : <IoMdEyeOff size={24} />}
           </button>
         </div>
-        <p className="mb-2 font-semibold text-gray-700">비밀번호 확인</p>
+        <p className="mt-[20px] font-semibold text-gray-700">비밀번호 확인</p>
         <div className="relative">
           <input
             type={showConfirmPassword ? 'text' : 'password'}
@@ -95,7 +98,7 @@ const SignUpUser: React.FC<SignUpProps> = ({
             onClick={() => setShowConfirmPassword((prev) => !prev)}
             className="absolute right-3 top-3 text-gray-600 hover:text-black"
           >
-            {showConfirmPassword ? <IoMdEyeOff size={24} /> : <IoMdEye size={24} />}
+            {showConfirmPassword ? <IoMdEye size={24} /> : <IoMdEyeOff size={24} />}
           </button>
         </div>
         {error && <Error message={error} />}
