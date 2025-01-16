@@ -5,6 +5,7 @@ import { create } from 'zustand';
 // Zustand store 생성
 const useAuthStore = create<AuthStateFace>((set) => ({
   user: null,
+  setUser: (user) => set({ user }),
 
   // 쿠키에서 유저 정보 로드
   loadUserFromCookie: async () => {
