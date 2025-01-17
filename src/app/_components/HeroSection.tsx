@@ -1,4 +1,4 @@
-import SearchSection from './SearchSection';
+import SearchBox from '../../components/ui/search/SearchBox';
 
 const HeroSection = () => {
   return (
@@ -7,7 +7,7 @@ const HeroSection = () => {
         <h2 className="mb-[12px] text-[40px] font-semibold ">TITLE</h2>
         <h3 className="text-[24px] font-normal leading-[1.45]">sub title</h3>
       </div>
-      <SearchSection />
+      <SearchBox />
     </section>
   );
 };

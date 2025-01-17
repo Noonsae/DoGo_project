@@ -6,9 +6,9 @@ import { useClickAway } from 'react-use';
 
 import { HiSearch } from 'react-icons/hi';
 
-import ScrollSearchSection from './ScrollSearchSection';
+import ScrollSearchSection from '../../../app/_components/ScrollSearchSection';
 
-const SearchSection = () => {
+const SearchBox = () => {
   const [location, setLocation] = useState('');
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
@@ -146,4 +146,4 @@ const SearchSection = () => {
   );
 };
 
-export default SearchSection;
+export default SearchBox;
