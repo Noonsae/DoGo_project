@@ -2,18 +2,28 @@ import React from 'react';
 import Slider from 'react-slick';
 import Image from 'next/image';
 
-import handleSaveHistory from '@/utils/handleSaveHistory';
+import useHistoryStore from '@/store/useHistoryStore';
 
-import { HotelWithMinPrice } from '@/types/supabase/room-type';
+import { HotelWithPriceOnly } from '@/types/supabase/hotel-type';
+
 import { CustomNextArrow, CustomPrevArrow } from '@/components/ui/slider/customArrow';
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-const HotelListSlider = ({ hotels }: { hotels: HotelWithMinPrice[] | undefined }) => {
+const HotelListSlider = ({ hotels }: { hotels: HotelWithPriceOnly[] | undefined }) => {
+  
+  const addHotel = useHistoryStore((state) => state.addHotel);
+
+  const handleSaveHistory = (hotel: HotelWithPriceOnly) => {
+    addHotel(hotel);
+  };
+
   if (!hotels || hotels.length === 0) {
-    return <div className='mt-5 text-red-600'>해당하는 조건에 맞는 호텔 데이터가 존재하지 않습니다.</div>; // 데이터가 없을 때 처리
+    return <div className="mt-5 text-red-600">해당하는 조건에 맞는 호텔 데이터가 존재하지 않습니다.</div>; // 데이터가 없을 때 처리
   }
+  
+  console.log(hotels)
 
   const settings = {
     infinite: hotels.length > 3, // 슬라이드가 3개 이상일 때만 무한 반복
@@ -47,9 +57,7 @@ const HotelListSlider = ({ hotels }: { hotels: HotelWithMinPrice[] | undefined }
         {hotels.map((hotel) => (
           <div
             key={hotel.id}
-            onClick={() =>
-              handleSaveHistory(hotel)
-            }
+            onClick={() => handleSaveHistory(hotel)}
             className="w-[380px] h-[484px] flex-shrink-0 p-[16px] rounded-[12px] shadow-[0px_8px_12px_rgba(0,0,0,0.1)] mr-[32px] cursor-pointer"
           >
             <Image
@@ -67,7 +75,6 @@ const HotelListSlider = ({ hotels }: { hotels: HotelWithMinPrice[] | undefined }
               <span className="text-[#9E9E9E]"> 리뷰 갯수 표시 </span>
             </p>
             <p className="w-full mt-[24px] text-right text-[24px]-black font-semibold">
-              <span className="text-base text-[#5b5b5b] font-medium mr-1">Sale%</span>
               {/* 가격이 없는 객실 데이터가 존재해서 현재는 ∞ 도 출력되고 있음.. */}
               {/* <span>{hotel.min_price.toLocaleString('en-US')}원</span> */}
               <span>
