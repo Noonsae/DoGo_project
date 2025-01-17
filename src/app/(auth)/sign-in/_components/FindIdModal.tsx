@@ -1,7 +1,6 @@
 'use client';
 
-import { preventDefault } from '@fullcalendar/core/internal';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IoIosCheckmark } from 'react-icons/io';
 import { IoClose } from 'react-icons/io5';
 import { PiWarningCircleFill } from 'react-icons/pi';
@@ -11,13 +10,26 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
   const [phone, setPhone] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'user' | 'business'>('user');
-  const [modalType, setModalType] = useState<'input' | 'success' | 'failure'>('input'); // 모달 상태 구분
+  const [modalType, setModalType] = useState<'input' | 'success' | 'failure'>('input');
   const [resultEmail, setResultEmail] = useState('');
-  const [errors, setErrors] = useState<{ name?: string; phone?: string }>({}); // 에러 상태 추가
+  const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
+  const maskEmail = (email: string): string => {
+    if (!email.includes('@')) {
+      return email; // 이메일 형식이 아니면 그대로 반환
+    }
+    const [localPart, domain] = email.split('@');
+    const maskedLocal = localPart.slice(0, 3) + '***';
+    return `${maskedLocal}@${domain}`;
+  };
   const handleFindId = async () => {
     const newErrors: { name?: string; phone?: string } = {};
 
-    // 입력값 검증
     if (!name) {
       newErrors.name = '이름은 필수 입력값입니다.';
     }
@@ -27,7 +39,6 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
 
     setErrors(newErrors);
 
-    // 에러가 있을 경우 요청 중단
     if (Object.keys(newErrors).length > 0) {
       return;
     }
@@ -42,7 +53,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
       const result = await response.json();
 
       if (response.ok && result.email) {
-        setResultEmail(result.email);
+        setResultEmail(maskEmail(result.email));
         setModalType('success');
       } else {
         setModalType('failure');
@@ -63,7 +74,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-[40px] flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="w-[424px] h-[635px] bg-white rounded-lg shadow-lg relative">
         <IoClose
           onClick={onClose}
