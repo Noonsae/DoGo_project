@@ -6,12 +6,17 @@ import { HotelWithMinPrice, RoomType } from '@/types/supabase/room-type';
 // Room과 연결된 데이터 타입 정의
 type RoomWithView = Pick<RoomType, 'price' | 'view'>;
 
+// TODO: 추후 supabase 기본 타입이 있으면 변경하기
+type RoomHotelsWithView = RoomWithView & {
+  hotels: Pick<HotelType, 'id' | 'name' | 'address' | 'stars' | 'location' | 'main_img_url'>
+}
+
 /**
  * Supabase에서 데이터 조회
  * @param view - 필터링할 뷰 (예: "city", "mountain", "ocean", "river")
  * @returns 조회된 rooms와 hotels 데이터를 포함한 배열
  */
-const fetchRoomDataByView = async (view: string): Promise<RoomWithView[]> => {
+const fetchRoomDataByView = async (view: string): Promise<RoomHotelsWithView[]> => {
   const supabase = browserSupabase();
 
   const { data, error } = await supabase
@@ -48,8 +53,8 @@ const fetchRoomDataByView = async (view: string): Promise<RoomWithView[]> => {
  * @param data - 조회된 rooms와 hotels 데이터를 포함한 배열
  * @returns HotelWithMinPrice 배열
  */
-const calculateMinPrice = (data: any[]): HotelWithMinPrice[] => {
-  return data.reduce<HotelWithMinPrice[]>((acc, room) => {
+const calculateMinPrice = (data: RoomHotelsWithView[]): HotelWithMinPrice[] => {
+  return data.reduce((acc: HotelWithMinPrice[], room: RoomHotelsWithView) => {
     const hotel = room.hotels as HotelType;
     if (!hotel) return acc;
 
@@ -62,9 +67,8 @@ const calculateMinPrice = (data: any[]): HotelWithMinPrice[] => {
         min_price: room.price
       });
     }
-
     return acc;
-  }, []);
+  }, [])
 };
 
 /**
