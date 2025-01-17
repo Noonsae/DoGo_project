@@ -70,19 +70,14 @@ const HotelRoom = ({ roomsData, getValidImageUrl, roomOption, hotelData }: Hotel
                         </span>
                       ))}
                     </p>
-
-                    {/* 숙박 가능 인원, 체크인/체크아웃 정보 */}
-
-                    {/* 가격 */}
-
                     {/* 예약 버튼 */}
                     <div className="flex justify-between">
-                      <div className="col">
-                        <p className="text-sm text-gray-700">숙박 가능 인원: 기준 2인 ~ 최대 4인</p>
-                        <p className="text-sm text-gray-700">체크인: {hotelData.check_in}</p>
-                        <p className="text-sm text-gray-700 mb-4">체크아웃: {hotelData.check_out}</p>
+                      <div className="col mt-10">
+                        <p className="text-sm text-gray-700 mt-1">숙박 가능 인원: 기준 2인 ~ 최대 4인</p>
+                        <p className="text-sm text-gray-700 mt-1">체크인: {hotelData.check_in}</p>
+                        <p className="text-sm text-gray-700 mt-1">체크아웃: {hotelData.check_out}</p>
                       </div>
-                      <div>
+                      <div className="mt-5">
                         <p className="text-lg font-bold text-gray-900 mb-4 flex justify-end">
                           {formatKoreanCurrency(room.price)} / 1박
                         </p>
