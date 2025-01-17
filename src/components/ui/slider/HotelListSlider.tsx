@@ -2,6 +2,8 @@ import React from 'react';
 import Slider from 'react-slick';
 import Image from 'next/image';
 
+import handleSaveHistory from '@/utils/handleSaveHistory';
+
 import { HotelWithMinPrice } from '@/types/supabase/room-type';
 import { CustomNextArrow, CustomPrevArrow } from '@/components/ui/slider/customArrow';
 
@@ -45,7 +47,10 @@ const HotelListSlider = ({ hotels }: { hotels: HotelWithMinPrice[] | undefined }
         {hotels.map((hotel) => (
           <div
             key={hotel.id}
-            className="w-[380px] h-[484px] flex-shrink-0 p-[16px] rounded-[12px] shadow-[0px_8px_12px_rgba(0,0,0,0.1)] mr-[32px]"
+            onClick={() =>
+              handleSaveHistory(hotel)
+            }
+            className="w-[380px] h-[484px] flex-shrink-0 p-[16px] rounded-[12px] shadow-[0px_8px_12px_rgba(0,0,0,0.1)] mr-[32px] cursor-pointer"
           >
             <Image
               src={hotel.main_img_url || ''}
