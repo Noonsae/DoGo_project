@@ -87,8 +87,8 @@ const Signin = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen">
-      <div className="justify-center items-center w-[400px]">
-        <h1 className=" w-[400px] text-[40px] font-bold mb-[40px] text-center">DoGo</h1>
+      <div className="justify-center items-center w-[400px] h-[637px]">
+        <h1 className="text-[40px] font-bold mb-[40px] text-center">DoGo</h1>
         <div className="flex justify-between mb-8 border-b-2">
           <button
             className={`pb-2 w-1/2 text-center ${
@@ -147,15 +147,14 @@ const Signin = () => {
           </div>
           <button
             type="submit"
-            className="w-[400px] bg-[#B3916A] font-bold text-white py-[15px] rounded-[8px] hover:bg-[#a37e5f] transition"
+            className="w-[400px]  bg-[#B3916A] font-bold text-white py-[15px] rounded-[8px] hover:bg-[#a37e5f] transition"
           >
             로그인
           </button>
         </form>
         <p className="w-[400px] p-[12px] flex justify-center text-neutral-600">
           이미 계정이 있으신가요?
-          <button onClick={handleSignUp} className="text-[#534431] ml-3">
-            {' '}
+          <button onClick={handleSignUp} className="text-[#534431] ml-3 font-semibold">
             회원가입
           </button>
         </p>
