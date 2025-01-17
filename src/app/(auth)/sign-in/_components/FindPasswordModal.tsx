@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IoClose } from 'react-icons/io5';
 import { IoIosCheckmark } from 'react-icons/io';
 import Swal from 'sweetalert2';
@@ -24,7 +24,12 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
     password?: string;
     confirmPassword?: string;
   }>({});
-
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
   // 가입 정보 확인
   const handleFindPassword = async () => {
     const newErrors: { email?: string; phone?: string } = {};
@@ -119,7 +124,7 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-[40px] flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="w-[424px] h-[635px] bg-white rounded-lg shadow-lg relative">
         <IoClose
           onClick={onClose}
