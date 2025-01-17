@@ -8,9 +8,10 @@ type HotelBoxProps = {
   roomOption: JSX.Element; // JSX 요소 타입
   hotelData: HotelType;
   reviews: ReviewType[];
+  allReviews: ReviewType[];
 };
 
-const HotelBox = ({ facilityData, roomOption, hotelData, reviews }: HotelBoxProps) => {
+const HotelBox = ({ facilityData, roomOption, hotelData, reviews, allReviews }: HotelBoxProps) => {
   const [averageRating, setAverageRating] = useState<number>(0);
   const [reviewCount, setReviewCount] = useState<number>(0);
 
@@ -75,7 +76,7 @@ const HotelBox = ({ facilityData, roomOption, hotelData, reviews }: HotelBoxProp
                 {averageRating.toFixed(1)}
               </span>
             </div>
-            <p className="text-sm text-gray-600 ml-2">{reviewCount}명의 평가</p>
+            <p className="text-sm text-gray-600 ml-2">{allReviews.length}명의 평가</p>
           </div>
           <p className="text-sm text-gray-600 mb-4">
             {reviews.length > 0 ? reviews[0].comment : '아직 리뷰가 없습니다.'}
