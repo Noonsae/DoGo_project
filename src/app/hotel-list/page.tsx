@@ -50,7 +50,7 @@ const HotelList = () => {
   // 유저 정보 초기화 및 즐겨찾기 상태 불러오기
   useEffect(() => {
     loadUserFromCookie();
-  }, [loadUserFromCookie]);
+  }, []);
 
   useEffect(() => {
     if (user?.id) {
