@@ -7,6 +7,11 @@ import Link from 'next/link';
 import AsideFilter from './_components/AsideFilter';
 import { HotelType } from '@/types/supabase/hotel-type'; // HotelType 추가
 import useFavoriteStore from '@/hooks/favorite/useFavoriteStore';
+import SortBtn from './_components/SortBtn';
+
+interface UserType {
+  id: string;
+}
 
 // 호텔 데이터를 가져오는 비동기 함수
 const fetchHotels = async ({
@@ -43,14 +48,8 @@ const HotelList = () => {
   const observerRef = useRef<HTMLDivElement | null>(null);
 
   // 유저 정보 로드
-  const loadUserFromCookie = useAuthStore((state) => state.loadUserFromCookie);
-  const user = useAuthStore((state) => state.user);
+  const user = useAuthStore((state) => state.user) as UserType | null;
   const { favoriteStatus, toggleFavorite, initializeFavorites } = useFavoriteStore();
-
-  // 유저 정보 초기화 및 즐겨찾기 상태 불러오기
-  useEffect(() => {
-    loadUserFromCookie();
-  }, []);
 
   useEffect(() => {
     if (user?.id) {
@@ -67,7 +66,7 @@ const HotelList = () => {
     toggleFavorite(hotelId); // 즐겨찾기 상태 추가 및 취소
   };
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, error } = useInfiniteQuery({
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ['hotels', filters, sortOrder],
     queryFn: ({ pageParam = 0 }) => fetchHotels({ pageParam, filters, sortOrder }),
     getNextPageParam: (lastPage, allPages) => {
@@ -116,16 +115,7 @@ const HotelList = () => {
             <span className="block">
               적용된 필터: {filters.grade.length > 0 ? `${filters.grade.join(', ')}성` : '전체'}
             </span>
-            <select
-              value={sortOrder}
-              onChange={handleSortChange}
-              id="sortOrder"
-              className="h-[50px] w-[150px] border rounded-md ml-14"
-            >
-              <option value="">가격 정렬</option>
-              <option value="asc">낮은 가격 순</option>
-              <option value="desc">높은 가격 순</option>
-            </select>
+            <SortBtn sortOrder={sortOrder} handleSortChange={handleSortChange} />
           </div>
           <ul>
             {data?.pages?.flatMap((page) =>

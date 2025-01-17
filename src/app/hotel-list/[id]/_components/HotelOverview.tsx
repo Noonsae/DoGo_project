@@ -25,11 +25,17 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
     setSelectedImage(null);
   };
 
+  const renderStars = (rating: number) => {
+    return Array.from({ length: 5 }).map((_, index) => (
+      <span key={index} className={`text-lg ${index < rating ? 'text-yellow-500' : 'text-gray-300'}`}>
+        ★
+      </span>
+    ));
+  };
+
   return (
     <div>
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-2xl font-bold mb-4">{hotelData.name}</h2>
-        <p className="mb-6">{hotelData.description}</p>
         <div className="flex gap-4">
           <div className="rounded-lg shadow-md overflow-hidden relative">
             <Image
@@ -40,17 +46,6 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
               className="object-cover block rounded-md"
               onClick={() => openModal(hotelData.main_img_url)}
             />
-
-            <button
-              onClick={() => {
-                toggleFavorite(hotelId); // 즐겨찾기 버튼 클릭 시 상태 토글
-              }}
-              className={`absolute top-4 right-4 p-2 rounded-full shadow-md ${
-                favoriteStatus[hotelId] ? 'bg-white text-white' : 'bg-gray-200 text-gray-600'
-              }`}
-            >
-              {favoriteStatus[hotelId] ? '❤️' : '🤍'}
-            </button>
           </div>
           <div className="grid grid-cols-2 gap-2 w-[594px] h-[363px]">
             {/* hotel_img_urls가 배열일 때만 slice를 사용 */}
@@ -69,10 +64,29 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
                     height={175.5}
                     className="object-cover w-full h-full rounded-md"
                   />
+                  {/* 두 번째 사진(index === 1)인 경우에만 즐겨찾기 버튼 렌더링 */}
+                  {index === 1 && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation(); // 클릭 이벤트 전파 방지
+                        toggleFavorite(hotelId); // 즐겨찾기 버튼 클릭 시 상태 토글
+                      }}
+                      className={`absolute top-4 right-4 p-2 rounded-full shadow-md ${
+                        favoriteStatus[hotelId] ? 'bg-white text-white' : 'bg-gray-200 text-gray-600'
+                      }`}
+                    >
+                      {favoriteStatus[hotelId] ? '❤️' : '🤍'}
+                    </button>
+                  )}
                 </div>
               ))}
           </div>
         </div>
+        <div className="flex">
+          <h2 className="text-2xl font-bold mb-4 mt-2">{hotelData.name}</h2>
+          <h3 className="mt-3">{renderStars(hotelData.stars)}</h3>
+        </div>
+        <p className="mb-6">{hotelData.description}</p>
         <UpModal
           isOpen={isModalOpen}
           onClose={closeModal}

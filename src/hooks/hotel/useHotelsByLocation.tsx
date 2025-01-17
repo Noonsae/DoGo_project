@@ -9,13 +9,17 @@ import fetchHotelsByLocationWithMinPrice from '@/utils/fetchHotelsByLocation';
  * @returns TanStack Query를 통한 호텔 데이터와 로딩/에러 상태
  */
 
-const useHotelsByLocation = (location: string) => {
+const useHotelsByLocation = (location: string | undefined) => {
   return useQuery<HotelWithPriceOnly[], Error>({
     queryKey: ['hotelsByLocation', location], // 캐싱 키
-    queryFn: () => fetchHotelsByLocationWithMinPrice(location), // API 호출
+    queryFn: () => {
+      if (!location) return [];
+      return fetchHotelsByLocationWithMinPrice(location);
+    }, // API 호출
     enabled: !!location, // location이 있을 때만 활성화
     staleTime: Infinity, // 데이터가 신선한 상태로 간주되는 시간 (5분)
     refetchOnWindowFocus: false // 창 포커스 시 리패치 방지
+
   });
 };
 
