@@ -17,6 +17,7 @@ import useFavoriteStore from '@/hooks/favorite/useFavoriteStore';
 import HotelAttraction from './_components/HotelAttraction';
 import { ReviewType } from '@/types/supabase/review-type';
 import HotelReviews from './_components/HotelReviews';
+import HotelPolicies from './_components/HotelPolicies';
 
 const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const hotelId = params?.id;
@@ -96,10 +97,10 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
       const data = await response.json();
 
       if (response.ok) {
-        // 최신 리뷰들을 가져오고, 최신순으로 정렬
-        const sortedReviews = data.sort((a: ReviewType, b: ReviewType) => b.created_at.localeCompare(a.created_at)); // 최신순으로 정렬
-        setReviews(sortedReviews.slice(0, 2)); // 최신 리뷰 중 2개만 저장
-        setAllReviews(sortedReviews); // 전체 리뷰 저장
+        // 리뷰를 최신순으로 정렬
+        const sortedReviews = data.sort((a: ReviewType, b: ReviewType) => b.created_at.localeCompare(a.created_at));
+        setReviews(sortedReviews.slice(0, 2)); // 최신 2개 리뷰만 상태에 저장
+        setAllReviews(sortedReviews); // 전체 리뷰 상태에 저장
       } else {
         console.error('API Error:', data.error);
       }
@@ -184,7 +185,7 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
         />
 
         {/* 이용 후기 섹션 */}
-        <HotelReviews loading={loading} reviews={reviews} />
+        <HotelReviews loading={loading} reviews={reviews} allReviews={allReviews} />
 
         {/* 시설/서비스 섹션 */}
         <HotelFacility
@@ -197,10 +198,7 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
         />
 
         {/* 숙소 정책 섹션 */}
-        <section id="policies" className="scroll-mt-20">
-          <h2 className="text-2xl font-bold mb-4">숙소 정책</h2>
-          <p>이곳은 숙소 정책을 보여주는 콘텐츠 영역입니다.</p>
-        </section>
+        <HotelPolicies hotelId={hotelId} />
 
         {/* 위치 섹션 */}
         <HotelLocation id={hotelId} />
