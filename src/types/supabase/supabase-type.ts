@@ -522,6 +522,7 @@ export type Database = {
           id: string
           nickname: string | null
           phone_number: string
+          profile_img: string | null
           role: string
           user_info: Json | null
           user_name: string
@@ -533,6 +534,7 @@ export type Database = {
           id?: string
           nickname?: string | null
           phone_number: string
+          profile_img?: string | null
           role: string
           user_info?: Json | null
           user_name: string
@@ -544,6 +546,7 @@ export type Database = {
           id?: string
           nickname?: string | null
           phone_number?: string
+          profile_img?: string | null
           role?: string
           user_info?: Json | null
           user_name?: string
@@ -555,7 +558,20 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_reviews_with_user_and_room: {
+        Args: {
+          hotel_id: string
+        }
+        Returns: {
+          review_id: string
+          user_id: string
+          content: string
+          created_at: string
+          nickname: string
+          profile_img: string
+          room_type: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
