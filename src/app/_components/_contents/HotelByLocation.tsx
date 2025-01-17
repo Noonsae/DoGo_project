@@ -2,12 +2,10 @@
 
 import { useState } from 'react';
 
-import Image from 'next/image';
-
 import useHotelsByLocation from '@/hooks/hotel/useHotelsByLocation';
 
 import HotelByLocationSkeletonUI from '@/components/ui/skeleton/HotelByLocationSkeletonUI';
-import HotelListSlider from '../../../components/ui/slider/HotelListSlider';
+import HotelListSlider from '@/components/ui/slider/HotelListSlider';
 
 const HotelByLocation = () => {
   const [selectedLocations, setSelectedLocations] = useState<string>(`all`);

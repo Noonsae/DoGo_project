@@ -17,9 +17,9 @@ const Recommend = () => {
   }
 
   // 오류 발생 시 처리
-  if (isError) {
-    return <div>Error: {error?.message}</div>;
-  }
+  // if (isError) {
+  //   return <div>Error: {error?.message}</div>;
+  // }
 
   // 데이터 렌더링
   return (

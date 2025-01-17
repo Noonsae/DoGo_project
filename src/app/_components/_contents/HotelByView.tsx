@@ -2,13 +2,11 @@
 
 import { useState } from 'react';
 
-import Image from 'next/image';
-
 import useHotelsByView from '@/hooks/hotel/useHotelsByView';
 
 import HotelByViewSkeletonUI from '@/components/ui/skeleton/HotelByViewSkeletonUI';
-import HotelListSliderByView from '../../../components/ui/slider/HotelListSlider';
-import HotelListSlider from '../../../components/ui/slider/HotelListSlider';
+
+import HotelListSlider from '@/components/ui/slider/HotelListSlider';
 
 const HotelByView = () => {
   const [selectedViews, setSelectedViews] = useState<string>(`all`);

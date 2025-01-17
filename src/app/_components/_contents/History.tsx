@@ -14,9 +14,9 @@ const History = () => {
   }
 
   // 오류 발생 시 처리
-  if (isError) {
-    return <div>Error: {error?.message}</div>;
-  }
+  // if (isError) {
+  //   return <div>Error: {error?.message}</div>;
+  // }
 
   return (
     <section className="w-full max-w-[1300px] px-[50px] pt-[80px] pb-[120px] mx-auto h-[748px]">
