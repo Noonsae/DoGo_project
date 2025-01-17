@@ -1,37 +1,45 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IoIosCheckmark } from 'react-icons/io';
 import { IoClose } from 'react-icons/io5';
 import { PiWarningCircleFill } from 'react-icons/pi';
-import Swal from 'sweetalert2';
 
 const FindIdModal = ({ onClose }: { onClose: () => void }) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'user' | 'business'>('user');
-  const [modalType, setModalType] = useState<'input' | 'success' | 'failure'>('input'); // 모달 상태 구분
+  const [modalType, setModalType] = useState<'input' | 'success' | 'failure'>('input');
   const [resultEmail, setResultEmail] = useState('');
-
+  const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
   const maskEmail = (email: string): string => {
     if (!email.includes('@')) {
-      console.error('Invalid email format:', email);
-      return '유효하지 않은 이메일';
+      return email; // 이메일 형식이 아니면 그대로 반환
     }
-
     const [localPart, domain] = email.split('@');
     const maskedLocal = localPart.slice(0, 3) + '***';
     return `${maskedLocal}@${domain}`;
   };
-
   const handleFindId = async () => {
-    if (!name || !phone) {
-      Swal.fire({
-        icon: 'error',
-        title: '입력 오류',
-        text: '이름과 휴대폰 번호를 모두 입력해주세요.'
-      });
+    const newErrors: { name?: string; phone?: string } = {};
+
+    if (!name) {
+      newErrors.name = '이름은 필수 입력값입니다.';
+    }
+    if (!phone) {
+      newErrors.phone = '휴대폰 번호는 필수 입력값입니다.';
+    }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
       return;
     }
 
@@ -40,7 +48,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
       const response = await fetch('/api/auth/find-id', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, phone, type: activeTab })
+        body: JSON.stringify({ name, phone })
       });
       const result = await response.json();
 
@@ -48,7 +56,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
         setResultEmail(maskEmail(result.email));
         setModalType('success');
       } else {
-        setModalType('failure'); // 실패 모달로 전환
+        setModalType('failure');
       }
     } catch (error) {
       console.error('아이디 찾기 실패:', error);
@@ -57,13 +65,16 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
       setIsLoading(false);
     }
   };
-  //// 커밋용 주석
+
   const handleTabChange = (tab: 'user' | 'business') => {
     setActiveTab(tab);
+    setName('');
+    setPhone('');
+    setErrors({});
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-[40px] flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="w-[424px] h-[635px] bg-white rounded-lg shadow-lg relative">
         <IoClose
           onClick={onClose}
@@ -104,21 +115,34 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
             >
               <div>
                 <label className="block text-gray-700 mb-1">이름</label>
+
                 <input
                   type="text"
                   placeholder="이름을 입력해 주세요."
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full p-[13px] border rounded-xl border-gray-300 mb-6 focus:outline-none focus:ring-2 focus:ring-black"
+                  onChange={(e) => {
+                    setName(e.target.value);
+                    setErrors((prev) => ({ ...prev, name: undefined })); // 입력 시 에러 초기화
+                  }}
+                  className={`w-full p-[13px] border rounded-xl mb-2 focus:outline-none focus:ring-2 ${
+                    errors.name ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-black'
+                  }`}
                 />
+                {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
                 <label className="block text-gray-700 mb-1">휴대폰 번호</label>
                 <input
                   type="tel"
                   placeholder="휴대폰 번호를 입력해 주세요."
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  className="w-full  p-[13px] border rounded-xl  border-gray-300 mb-6 focus:outline-none focus:ring-2 focus:ring-black"
+                  onChange={(e) => {
+                    setPhone(e.target.value);
+                    setErrors((prev) => ({ ...prev, phone: undefined })); // 입력 시 에러 초기화
+                  }}
+                  className={`w-full p-[13px] border rounded-xl mb-2 focus:outline-none focus:ring-2 ${
+                    errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-black'
+                  }`}
                 />
+                {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}
               </div>
 
               <div className="flex flex-col py-[60px] rounded mt-auto">

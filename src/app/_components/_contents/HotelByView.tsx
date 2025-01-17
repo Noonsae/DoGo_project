@@ -2,22 +2,29 @@
 
 import { useState } from 'react';
 
-import Image from 'next/image';
-
-import { useHotels } from '@/hooks/useHotels';
+import useHotelsByView from '@/hooks/hotel/useHotelsByView';
 
 import HotelByViewSkeletonUI from '@/components/ui/skeleton/HotelByViewSkeletonUI';
 
+import HotelListSlider from '@/components/ui/slider/HotelListSlider';
+
 const HotelByView = () => {
-  const [selectedViews, setSelectedViews] = useState<string | null>(`all`);
+  const [selectedViews, setSelectedViews] = useState<string>(`all`);
 
   // React Query 훅 사용
-  const { data: hotels, isLoading, isError, error } = useHotels();
+  const { data: hotels, isLoading, isError, error } = useHotelsByView(selectedViews);
 
   // 로딩 중 상태 처리
   if (isLoading) {
     return <HotelByViewSkeletonUI />;
   }
+
+  // 에러 처리
+  if (isError) {
+    console.error('Error fetching hotels:', error);
+    return <div className="text-red-500">호텔 데이터를 불러오는 중 오류가 발생했습니다. {error.message}</div>;
+  }
+
   const handleBtnClick = (id: string) => {
     setSelectedViews(id);
   };
@@ -37,8 +44,6 @@ const HotelByView = () => {
         휴식을 취하면서 바라보는 아름다운 뷰는 힐링하는데 큰 도움을 줄 수 있어요.
       </p>
 
-      {/* 슬라이드로 구현될 예정 */}
-      {/* 슬라이드로 구현될 예정 */}
       <div className="flex flex-row gap-2">
         {Views.map((select) => (
           <button
@@ -55,8 +60,7 @@ const HotelByView = () => {
           </button>
         ))}
       </div>
-
-      <div className="w-full h-[488px] overflow-hidden flex flex-row flex-wrap justify-between items-center gap-[30px] mt-8">
+      {/* <div className="w-full h-[488px] overflow-hidden flex flex-row flex-wrap justify-between items-center gap-[30px] mt-8">
         {hotels?.map((hotel) => (
           <div
             key={hotel.id}
@@ -73,16 +77,18 @@ const HotelByView = () => {
             <p className="text-gray-600">{hotel.address}</p>
 
             <p className="mt-[11px] text-[#D9D9D9]">
-              ⭐ {hotel.stars}
+              {'⭐'.repeat(hotel.stars)}
               <span className="text-[#9E9E9E]"> (3,222) </span>
             </p>
             <p className="w-full mt-[24px] text-right text-[24px]-black font-semibold">
               <span className="text-base text-[#5b5b5b] font-medium mr-1">Sale%</span>
-              <span>최솟값 구하는 함수 만들어야 함</span>
+              <span>{hotel.min_price.toLocaleString('en-US')}원</span>
             </p>
           </div>
         ))}
-      </div>
+      </div> */}
+
+      <HotelListSlider hotels={hotels} />
     </section>
   );
 };

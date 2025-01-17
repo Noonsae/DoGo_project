@@ -20,8 +20,8 @@ const SignUpUser: React.FC<SignUpProps> = ({
   handleSignup
 }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [updatePassword, setUpdagePassword] = useState(false);
+  const [checkUpdatePassword, setCheckUpdatePassword] = useState(false);
 
   const router = useRouter();
 
@@ -49,9 +49,9 @@ const SignUpUser: React.FC<SignUpProps> = ({
 
   return (
     <div className="flex justify-center items-center">
-      <div className="p-12  w-[500px]">
+      <div className="p-12 h-[899px] w-[500px]">
         <h1 className="text-4xl font-bold mb-8 text-center mt-[65px]">DoGo</h1>
-        <h6 className="text-[18px] font-bold mb-8 ">일반 회원 회원가입</h6>
+        <h6 className="font-semibold text-[24px]  mb-8 ">일반 회원 회원가입</h6>
         <p className="mb-1 font-semibold text-gray-700">이메일</p>
         <input
           type="email"
@@ -63,24 +63,29 @@ const SignUpUser: React.FC<SignUpProps> = ({
         <p className="mb-1 font-semibold text-gray-700">비밀번호</p>
         <div className="relative">
           <input
-            type={showPassword ? 'text' : 'password'}
+            type={updatePassword ? 'text' : 'password'}
             placeholder="비밀번호를 입력해 주세요."
             value={password}
             onChange={(e) => handlePasswordChange(e.target.value)}
             className="w-full p-3 border border-gray-300 rounded-md pr-12 focus:outline-none focus:ring-2 focus:ring-[#B3916A] mb-4"
           />
+          <p className="text-xs pb-[4px] text-gray-700">영문 대•소문자/숫자/특수문자 중 2가지 이상 조합, 8자~32자</p>
           <button
             type="button"
-            onClick={() => setShowPassword((prev) => !prev)}
+            onClick={() => setUpdagePassword((prev) => !prev)}
             className="absolute right-3 top-3 text-gray-600 hover:text-black"
           >
-            {showPassword ? <IoMdEyeOff size={24} /> : <IoMdEye size={24} />}
+            {updatePassword ? (
+              <IoMdEye size={24} className="text-neutral-500" />
+            ) : (
+              <IoMdEyeOff size={24} className="text-neutral-500" />
+            )}
           </button>
         </div>
-        <p className="mb-2 font-semibold text-gray-700">비밀번호 확인</p>
+        <p className="mt-[20px] font-semibold text-gray-700">비밀번호 확인</p>
         <div className="relative">
           <input
-            type={showConfirmPassword ? 'text' : 'password'}
+            type={checkUpdatePassword ? 'text' : 'password'}
             placeholder="비밀번호를 다시 입력해 주세요."
             value={confirmPassword}
             onChange={(e) => handleConfirmPasswordChange(e.target.value)}
@@ -92,10 +97,14 @@ const SignUpUser: React.FC<SignUpProps> = ({
           />
           <button
             type="button"
-            onClick={() => setShowConfirmPassword((prev) => !prev)}
+            onClick={() => setCheckUpdatePassword((prev) => !prev)}
             className="absolute right-3 top-3 text-gray-600 hover:text-black"
           >
-            {showConfirmPassword ? <IoMdEyeOff size={24} /> : <IoMdEye size={24} />}
+            {checkUpdatePassword ? (
+              <IoMdEye size={24} className="text-neutral-500" />
+            ) : (
+              <IoMdEyeOff size={24} className="text-neutral-500" />
+            )}
           </button>
         </div>
         {error && <Error message={error} />}
@@ -123,6 +132,7 @@ const SignUpUser: React.FC<SignUpProps> = ({
           onChange={(e) => setNickname(e.target.value)}
           className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#B3916A] mb-6"
         />
+        
         <button
           onClick={handleSignup}
           className="w-full bg-[#B3916A] text-white font-semibold py-3 px-4 rounded-md hover:bg-[#a37e5f] transition mb-4"
@@ -131,7 +141,7 @@ const SignUpUser: React.FC<SignUpProps> = ({
         </button>
         <div className="text-center text-gray-500">
           이미 계정이 있으신가요?{' '}
-          <button onClick={handelSignIn} className="text-[#B3916A] font-semibold underline">
+          <button onClick={handelSignIn} className="text-[#534431] font-semibold underline">
             로그인
           </button>
         </div>

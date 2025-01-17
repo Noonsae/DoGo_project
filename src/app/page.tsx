@@ -1,9 +1,8 @@
-import React from 'react';
 import { Metadata } from 'next';
 
 import EventSection from './_components/EventSection';
-import ContentsList from './_components/_contents/ContentsList';
 import HeroSection from './_components/HeroSection';
+import ContentsList from './_components/ContentsList';
 
 export const metadata: Metadata = {
   title: 'DoGo : 홈페이지',
