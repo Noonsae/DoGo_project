@@ -25,11 +25,12 @@ const ReviewsModal = ({
   const [averageRating, setAverageRating] = useState<number>(0);
   const [reviewCount, setReviewCount] = useState<number>(0);
   const [ratingCounts, setRatingCounts] = useState<{ [key: number]: number }>({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 });
+  const [sortedReviews, setSortedReviews] = useState<ReviewType[]>([]);
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [sortOption, setSortOption] = useState('최신순');
-  const [filterOption, setFilterOption] = useState('전체 후기'); // "전체 후기" 또는 "사진 후기"
-  const [sortedReviews, setSortedReviews] = useState<ReviewType[]>([]);
+  const [sortOption, setSortOption] = useState('추천순'); // 드롭다운 정렬 옵션
+
+  const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
   const handleSelectOption = (option: string) => {
     setSortOption(option);
@@ -44,47 +45,58 @@ const ReviewsModal = ({
     ));
   };
 
+  const dropDownIcon = () => {
+    return (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 9L12 15L18 9" stroke="#444444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    );
+  };
+
+  const dropUpIcon = () => {
+    return (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M18 15L12 9L6 15" stroke="#444444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    );
+  };
+
   useEffect(() => {
     if (reviews && reviews.length > 0) {
       let filteredReviews = [...reviews];
 
-      // 필터 옵션에 따른 필터링
-      if (filterOption === '사진 후기') {
-        filteredReviews = filteredReviews.filter(
-          (review) => Array.isArray(review.review_img_url) && review.review_img_url.length > 0
-        );
-      }
-
-      // 정렬 옵션에 따른 정렬
-      if (sortOption === '최신순') {
+      // 정렬 기준 적용
+      if (sortOption === '추천순' || sortOption === '최신 작성 순') {
         filteredReviews.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-      } else if (sortOption === '별점 높으순') {
+      } else if (sortOption === '평점 높은 순') {
         filteredReviews.sort((a, b) => b.rating - a.rating);
-      } else if (sortOption === '별점 낮으순') {
+      } else if (sortOption === '평점 낮은 순') {
         filteredReviews.sort((a, b) => a.rating - b.rating);
       }
 
       setSortedReviews(filteredReviews);
 
-      // 통계 계산
-      const totalRating = filteredReviews.reduce((sum, review) => sum + review.rating, 0);
-      setAverageRating(filteredReviews.length > 0 ? totalRating / filteredReviews.length : 0);
-      setReviewCount(filteredReviews.length);
+      // 별점 및 평가 통계 계산
+      const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+      const newAverageRating = reviews.length > 0 ? totalRating / reviews.length : 0;
 
       const newRatingCounts: { [key: number]: number } = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
-      filteredReviews.forEach((review) => {
+      reviews.forEach((review) => {
         if (newRatingCounts[review.rating] !== undefined) {
           newRatingCounts[review.rating] += 1;
         }
       });
+
       setRatingCounts(newRatingCounts);
+      setReviewCount(reviews.length);
+      setAverageRating(newAverageRating);
     } else {
       setSortedReviews([]);
-      setAverageRating(0);
-      setReviewCount(0);
       setRatingCounts({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 });
+      setReviewCount(0);
+      setAverageRating(0);
     }
-  }, [reviews, sortOption, filterOption]);
+  }, [reviews, sortOption]);
 
   if (!isOpen) return null;
 
@@ -99,95 +111,76 @@ const ReviewsModal = ({
           </button>
         </div>
 
-        {/* 필터 버튼 */}
-        <div className="text-base text-[#534431] flex gap-5 mb-4">
-          <h2
-            onClick={() => setFilterOption('전체 후기')}
-            className={`cursor-pointer px-4 py-2 rounded-lg font-bold ${
-              filterOption === '전체 후기' ? ' text-[#534431]' : ' text-[#777]'
-            }`}
-          >
-            전체 후기
-          </h2>
-          <h2
-            onClick={() => setFilterOption('사진 후기')}
-            className={`cursor-pointer px-4 py-2 rounded-lg font-bold ${
-              filterOption === '사진 후기' ? ' text-[#534431]' : ' text-[#777]'
-            }`}
-          >
-            사진 후기
-          </h2>
-        </div>
-        <div className="border-b border-gray-200"></div>
-
-        {/* 별점, 리뷰 수 */}
-        <div className="flex justify-between items-center mb-4">
-          <div className="flex items-center gap-4">
-            <div className="flex justify-center items-center flex-col ml-[60px]">
-              <span className="text-4xl font-black">{LikeIcon()}</span>
-              <span className="text-lg text-gray-500 ml-2 mt-1">총 {reviewCount}개의 평가</span>
+        {/* 별점 통계 */}
+        <div className="flex justify-between items-start mt-10 ml-7">
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-4">
+              <div className="flex flex-col items-center">
+                <span className="text-4xl font-black">{LikeIcon()}</span>
+              </div>
+              <span className="text-5xl font-extrabold mt-1.5 -ml-2 text-[#232527]">{averageRating.toFixed(1)}</span>
             </div>
-            <span className="text-5xl font-extrabold -mt-6 text-[#232527]">{averageRating.toFixed(1)}</span>
           </div>
-          <div>
+
+          {/* 별점 바 */}
+          <div className="flex flex-col gap-1">
             {[5, 4, 3, 2, 1].map((rating) => (
-              <div key={rating} className="flex justify-between items-center text-sm text-gray-500 mb-2">
-                <span>{rating}점</span>
-                <div className="flex items-center">
-                  <div className="bg-[#B3916A] rounded-full w-[180px] h-2 mr-2"></div>
-                  <span>{ratingCounts[rating]}</span>
+              <div key={rating} className="flex items-center gap-2">
+                <span className="text-sm text-gray-500 w-6">{rating}점</span>
+                <div className="relative w-[300px] h-2 bg-gray-200 rounded-full">
+                  <div
+                    className="absolute top-0 left-0 h-2 bg-[#B3916A] rounded-full"
+                    style={{ width: `${(ratingCounts[rating] / reviewCount) * 100}%` }}
+                  ></div>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* 정렬 드롭다운 */}
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="font-bold text-[#444]">총 {reviewCount}개의 후기</h2>
-
-          <div className="relative">
+        <div className="mt-10 flex justify-between">
+          <h2 className="text-lg font-bold text-[#444]">총 {sortedReviews.length}개의 후기</h2>
+          {/* 드롭다운 정렬 버튼 */}
+          <div className="relative mb-4">
+            {/* 드롭다운 버튼 */}
             <button
-              className="text-sm text-gray-600 border border-gray-400 px-2 py-1 w-[150px] h-[48px] rounded-md hover:bg-gray-200 flex items-center justify-between"
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              onClick={toggleDropdown}
+              className="flex justify-between items-center px-4 py-2 w-48 border border-gray-300 rounded-lg text-gray-700 text-sm focus:outline-none hover:bg-gray-200"
             >
               {sortOption}
-              <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
+              <span className="ml-2 transform transition-transform duration-300">
+                {isDropdownOpen ? dropUpIcon() : dropDownIcon()}
+              </span>
             </button>
 
+            {/* 드롭다운 리스트 */}
             {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-[160px] bg-white border border-gray-300 rounded-md shadow-md z-10">
-                <button
-                  onClick={() => handleSelectOption('최신순')}
-                  className="block w-full px-4 py-2 text-left hover:bg-gray-100"
-                >
-                  최신순
-                </button>
-                <button
-                  onClick={() => handleSelectOption('별점 높으순')}
-                  className="block w-full px-4 py-2 text-left hover:bg-gray-100"
-                >
-                  별점 높으순
-                </button>
-                <button
-                  onClick={() => handleSelectOption('별점 낮으순')}
-                  className="block w-full px-4 py-2 text-left hover:bg-gray-100"
-                >
-                  별점 낮으순
-                </button>
+              <div className="absolute top-12 left-0 w-48 bg-white border border-gray-300 shadow-md rounded-lg z-10">
+                <ul className="flex flex-col text-sm">
+                  {['추천순', '최신 작성 순', '평점 높은 순', '평점 낮은 순'].map((option) => (
+                    <li
+                      key={option}
+                      onClick={() => handleSelectOption(option)}
+                      className={`cursor-pointer px-4 py-2 hover:bg-gray-100 flex justify-between items-center ${
+                        sortOption === option ? 'font-bold text-[#B3916A]' : 'text-gray-600'
+                      }`}
+                    >
+                      {option}
+                      {sortOption === option && <span className="text-[#B3916A] font-bold ml-2">✔</span>}
+                    </li>
+                  ))}
+                </ul>
               </div>
             )}
           </div>
         </div>
 
         {/* 리뷰 리스트 */}
-        <div className="flex flex-col gap-10">
+        <div className="flex flex-col gap-10 mt-2">
           {sortedReviews.length > 0 ? (
             sortedReviews.map((review) => (
               <div key={review.id} className="p-4 border-b border-gray-200">
-                <div className="flex gap-4 mb-2 justify-center items-center">
+                <div className="flex gap-4 mb-2 items-center">
                   <img
                     src={review.users?.profile_img || '/placeholder-profile.png'}
                     alt="Profile"
@@ -198,20 +191,7 @@ const ReviewsModal = ({
                     <p className="text-sm text-gray-500">작성일: {new Date(review.created_at).toLocaleDateString()}</p>
                   </div>
                 </div>
-
                 <p>{renderStars(review.rating)}</p>
-
-                {Array.isArray(review.review_img_url) &&
-                  review.review_img_url.map((item, idx) => (
-                    <Image
-                      key={idx}
-                      src={item}
-                      alt="Review Image"
-                      width={300}
-                      height={300}
-                      className="inline-block w-24 h-24 object-cover rounded-md mr-2"
-                    />
-                  ))}
                 <div className="mt-4">
                   <p className="text-sm text-gray-700 mb-2">{review.comment}</p>
                 </div>
