@@ -1,6 +1,3 @@
-// useAuthStroe
-// setUser 선언, 중복 로직 삭제 로직입니다.
-
 import { browserSupabase } from '@/supabase/supabase-client';
 import { AuthStateFace } from '@/types/zustand/auth-state-type';
 import { create } from 'zustand';
