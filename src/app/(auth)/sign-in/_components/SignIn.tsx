@@ -22,6 +22,7 @@ const Signin = () => {
   const handleSignUp = () => {
     router.push('/sign-up');
   };
+
   const handleLogin = async () => {
     try {
       if (!email || !password) {
@@ -169,6 +170,23 @@ const Signin = () => {
 
         <div className="text-center mt-8">
           <KakaoSignIn />
+        </div>
+        <div className="flex w-[400px] justify-center text-sm text-gray-500 mt-4">
+          <button
+            type="button"
+            className="m-[2px] hover:underline"
+            onClick={() => window.open('https://www.kakao.com/policy/privacy', '_blank')}
+          >
+            개인정보처리방침
+          </button>
+          <RxDividerVertical className="text-[22px] text-neutral-400" />
+          <button
+            type="button"
+            className="hover:underline"
+            onClick={() => window.open('https://www.kakao.com/policy/terms?type=a&lang=ko', '_blank')}
+          >
+            이용약관
+          </button>
         </div>
       </div>
     </div>

@@ -6,6 +6,7 @@ import KakaoSignIn from '../sign-in/_components/KakaoSignIn';
 
 import { HiBuildingOffice } from 'react-icons/hi2';
 import { MdPerson } from 'react-icons/md';
+// import Logo from './Logo';
 const Page = () => {
   const router = useRouter();
   const [userType, setUserType] = useState<string | null>(null);
@@ -23,6 +24,7 @@ const Page = () => {
       alert('회원 유형을 선택해주세요!');
     }
   };
+
   const handleSignIn = () => {
     router.push('/sign-in');
   };
@@ -30,7 +32,8 @@ const Page = () => {
     <div className="flex justify-center items-center min-h-screen">
       <div className="p-8 h-[693px] w-[400px] ">
         <div>
-          <h1 className=" w-[400px] text-[40px] font-bold mb-8 text-center">DoGo</h1>
+          <h1 className=" w-[400px] text-[40px] font-bold mb-[40px] text-center">DoGo</h1>
+          {/* <Logo /> */}
           <p className=" text-[25px] text-neutral-800 font-semibold mb-6">회원 유형 선택</p>
         </div>
 
