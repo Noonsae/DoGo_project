@@ -12,7 +12,7 @@ const HotelPolicies = ({ hotelId }: HotelPoliciesProps) => {
   const [openSection, setOpenSection] = useState<string | null>(null);
 
   // 정책 이름 고정값
-  const sections = ['이용안내', '아동 관련 규정', '체크인 규정'];
+  const sections = ['이용 안내', '아동 관련 규정', '체크인 규정'];
 
   // 드롭다운 토글
   const toggleSection = (section: string) => {
