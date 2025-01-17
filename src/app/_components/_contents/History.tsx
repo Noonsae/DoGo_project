@@ -26,8 +26,7 @@ const History = () => {
 
       <div className="w-full max-w-[1200px] mx-auto h-[484px] flex flex-row justify-center items-center gap-8 mt-8 border-2 border-[#ccc]">
         <p className="text-center text-[20px] text-[#636363] leading-[1.5]">
-          뭘 보여달라는건가요? <br />
-          고객님께서는 최근에 본 상품 기록이 없으신데요?
+          최근에 본 상품 기록이 없습니다.
         </p>
       </div>
     </section>
