@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-
+import { RxDividerVertical } from 'react-icons/rx';
 import KakaoSignIn from '../sign-in/_components/KakaoSignIn';
 
 import { HiBuildingOffice } from 'react-icons/hi2';
@@ -93,8 +93,22 @@ const Page = () => {
         <KakaoSignIn />
 
         {/* 하단 링크 */}
-        <div className="w-[400px] mt-6 text-center text-sm text-gray-500">
-          <button className=" text-neutral-600">개인정보처리방침</button> | <button className="">이용약관</button>
+        <div className="flex w-[400px] justify-center text-sm text-gray-500 mt-4">
+          <button
+            type="button"
+            className="m-[2px] hover:underline"
+            onClick={() => window.open('https://www.kakao.com/policy/privacy', '_blank')}
+          >
+            개인정보처리방침
+          </button>
+          <RxDividerVertical className="text-[22px] text-neutral-400" />
+          <button
+            type="button"
+            className="hover:underline"
+            onClick={() => window.open('https://www.kakao.com/policy/terms?type=a&lang=ko', '_blank')}
+          >
+            이용약관
+          </button>
         </div>
       </div>
     </div>
