@@ -10,7 +10,7 @@ import 'slick-carousel/slick/slick-theme.css';
 
 const HotelListSlider = ({ hotels }: { hotels: HotelWithMinPrice[] | undefined }) => {
   if (!hotels || hotels.length === 0) {
-    return <div>호텔 데이터를 불러올 수 없습니다.</div>; // 데이터가 없을 때 처리
+    return <div className='mt-5 text-red-600'>해당하는 조건에 맞는 호텔 데이터가 존재하지 않습니다.</div>; // 데이터가 없을 때 처리
   }
 
   const settings = {
