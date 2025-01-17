@@ -1,34 +1,36 @@
 'use client';
 
-import { useHotels } from '@/hooks/useHotels';
-
+import { useState, useEffect } from 'react';
 import RecommendSkeletonUI from '@/components/ui/skeleton/RecommendSkeletonUI';
+import HotelListSlider from '@/components/ui/slider/HotelListSlider';
+import { HotelWithMinPrice } from '@/types/supabase/room-type';
 
 const History = () => {
-  // React Query 훅 사용
-  const { data: hotels, isLoading, isError, error } = useHotels();
+  const [history, setHistory] = useState<HotelWithMinPrice[]>([]);
 
+  // 로컬스토리지에서 초기 데이터 가져오기
+  useEffect(() => {
+    const storedHistory = localStorage.getItem('hotelHistory');
+    if (storedHistory) {
+      setHistory(JSON.parse(storedHistory));
+    }
+  }, []);
+
+  const transformedHistory: HotelWithMinPrice[] = history.map((hotel) => ({
+    ...hotel,
+    min_price: hotel.min_price || 0 // 기본값 추가
+  }));
+  
   // 로딩 중 상태 처리
-  if (isLoading) {
+  if (!history) {
     return <RecommendSkeletonUI />;
   }
-
-  // 오류 발생 시 처리
-  // if (isError) {
-  //   return <div>Error: {error?.message}</div>;
-  // }
 
   return (
     <section className="w-full max-w-[1300px] px-[50px] pt-[80px] pb-[120px] mx-auto h-[748px]">
       <h3 className="text-[24px] font-semibold">최근 본 호텔 상품</h3>
 
-      {/* 슬라이드로 구현될 예정 */}
-
-      <div className="w-full max-w-[1200px] mx-auto h-[484px] flex flex-row justify-center items-center gap-8 mt-8 border-2 border-[#ccc]">
-        <p className="text-center text-[20px] text-[#636363] leading-[1.5]">
-          최근에 본 상품 기록이 없습니다.
-        </p>
-      </div>
+      <HotelListSlider hotels={transformedHistory ?? []} />
     </section>
   );
 };
