@@ -17,9 +17,9 @@ const Recommend = () => {
   }
 
   // 오류 발생 시 처리
-  if (isError) {
-    return <div>Error: {error?.message}</div>;
-  }
+  // if (isError) {
+  //   return <div>Error: {error?.message}</div>;
+  // }
 
   // 데이터 렌더링
   return (
@@ -33,7 +33,7 @@ const Recommend = () => {
 
       <div className="w-full max-w-[1200px] mx-auto h-[484px] flex flex-row justify-center items-center gap-8 mt-8 border-2 border-[#ccc]">
         <p className="text-center text-[20px] text-[#636363] leading-[1.5]">
-          최근에 본 상품이 없으시다니까요? <br /> 제발 뭐라도 좀 보고오시죠?
+          최근에 본 상품이 없습니다.
         </p>
       </div>
     </section>

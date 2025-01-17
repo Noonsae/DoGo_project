@@ -55,11 +55,11 @@ const calculateMinPrice = (data: any[]): HotelWithMinPrice[] => {
 
     const existingHotel = acc.find((h) => h.id === hotel.id);
     if (existingHotel) {
-      existingHotel.minPrice = Math.min(existingHotel.minPrice, room.price);
+      existingHotel.min_price = Math.min(existingHotel.min_price, room.price);
     } else {
       acc.push({
         ...hotel,
-        minPrice: room.price
+        min_price: room.price
       });
     }
 
