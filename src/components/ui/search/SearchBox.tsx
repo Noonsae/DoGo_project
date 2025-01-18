@@ -4,15 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useClickAway } from 'react-use';
 
-import { HiSearch } from 'react-icons/hi';
+import ScrollSearchSection from '@/app/_components/ScrollSearchSection';
 
-import ScrollSearchSection from '../../../app/_components/ScrollSearchSection';
+import { HiSearch } from 'react-icons/hi';
 
 const SearchBox = () => {
   const [location, setLocation] = useState('');
-  const [checkIn, setCheckIn] = useState('');
-  const [checkOut, setCheckOut] = useState('');
-  const [guests, setGuests] = useState('');
   const [isLabelClicked, setIsLabelClicked] = useState(false);
   const [isStayDurationClicked, setIsStayDurationClicked] = useState(false);
   const [isStayDetailsClicked, setIsStayDetailsClicked] = useState(false);
@@ -22,7 +19,7 @@ const SearchBox = () => {
   const clickStayDetailsRef = useRef<HTMLDivElement>(null);
 
   const handleSearch = () => {
-    console.log('Search with:', { location, checkIn, checkOut, guests });
+    console.log('Search with:', { location });
     // 검색 로직 추가 (예: 클라이언트 측 API 호출)
   };
 
