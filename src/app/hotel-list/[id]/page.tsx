@@ -174,7 +174,13 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
           hotelId={hotelId}
           favoriteStatus={favoriteStatus}
         />
-        <HotelBox facilityData={facilityData} roomOption={roomOption} hotelData={hotelData} reviews={reviews} />
+        <HotelBox
+          facilityData={facilityData}
+          roomOption={roomOption}
+          hotelData={hotelData}
+          reviews={reviews}
+          allReviews={allReviews}
+        />
 
         {/* 객실 섹션 */}
         <HotelRoom
