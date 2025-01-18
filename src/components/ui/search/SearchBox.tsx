@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useClickAway } from 'react-use';
 
-import ScrollSearchSection from '@/app/_components/ScrollSearchSection';
+import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
 
 import { HiSearch } from 'react-icons/hi';
 
@@ -59,7 +59,7 @@ const SearchBox = () => {
   // 스크롤 이벤트 핸들러
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY >= 100) {
+      if (window.scrollY >= 10) {
         setIsSticky(true);
       } else {
         setIsSticky(false);
@@ -72,7 +72,7 @@ const SearchBox = () => {
   return (
     <>
       {isSticky ? (
-        <ScrollSearchSection />
+        <ScrollSearchBox />
       ) : (
         <div className="w-full max-w-[1300px] h-full mx-auto px-[50px] -mt-[210px]">
           <section className="w-full max-w-[1200px] h-[160px] mx-auto px-[32px] py-[24px] rounded-[8px] bg-white shadow-[0px_4px_12px_rgba(0,0,0,0.1)]">
@@ -105,7 +105,7 @@ const SearchBox = () => {
                   isStayDurationClicked ? 'border-[#B3916A]' : 'border-[#BFBFBF]'
                 }`}
               >
-                <div className="w-1/2 h-full border-r border-[#A0A0A0]">
+                <div className="w-1/2 h-full">
                   <p className="text-[15px] text-[#636363] font-medium">체크인</p>
                   <span className="text-[16px] text-[#A0A0A0] font-medium">날짜 추가</span>
                 </div>
