@@ -5,14 +5,14 @@ import { useClickAway } from 'react-use';
 
 import { HiSearch } from 'react-icons/hi';
 
-const ScrollSearchSection = () => {
+const ScrollSearchBox = () => {
   const [isClicked, setIsClicked] = useState(false);
   const searchBoxRef = useRef<HTMLDivElement>(null);
 
   // SearchBox 클릭이벤트
   const clickSearchBox = () => {
-    console.log("서치박스를 선택한 상태입니다.")
-    setIsClicked(true)
+    console.log('서치박스를 선택한 상태입니다.');
+    setIsClicked(true);
   };
 
   // 외부 클릭 감지하기
@@ -84,11 +84,11 @@ const ScrollSearchSection = () => {
           }`}
         >
           <HiSearch className="w-[24px] h-[24px]" />
-          <p className='text-[20px] font-semibold'>검색</p>
+          <p className="text-[20px] font-semibold">검색</p>
         </button>
       </div>
     </div>
   );
 };
 
-export default ScrollSearchSection;
+export default ScrollSearchBox;
