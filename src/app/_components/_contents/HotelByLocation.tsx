@@ -41,7 +41,7 @@ const HotelByLocation = () => {
   ];
 
   return (
-    <section className="w-full max-w-[1300px] px-[50px] mx-auto h-[850px] py-[80px] pb-[120px]">
+    <section className="w-full max-w-[1300px] h-[850px] px-[50px] mx-auto  py-[80px] pb-[120px]">
       <h3 className="text-[24px] font-semibold">많은 회원이 높은 평가를 준 호텔</h3>
       <p className="text-[18px] text-[#636363] font-normal leading-[1.45]">
         지역별로 인기가 가장 많았던 호텔을 추천해 드릴게요.
