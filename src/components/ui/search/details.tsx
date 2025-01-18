@@ -15,7 +15,8 @@ export default function Details({ isOpen, onClose, onApply }: DetailsProps) {
     어린이: 0,
     반려동물: 0
   });
-
+  // 커밋용 주석1
+  // 커밋용 주석2
   const handleChange = (type: keyof typeof filters, increment: boolean) => {
     setFilters((prev) => ({
       ...prev,
