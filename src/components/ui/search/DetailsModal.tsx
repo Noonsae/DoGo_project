@@ -3,12 +3,7 @@ import React from 'react';
 import { IoIosAddCircleOutline, IoIosRemoveCircleOutline } from 'react-icons/io';
 import useSearchStore from '@/store/useSearchStore'; // zustand store import
 
-interface DetailsProps {
-  right?: string;
-  top: string;
-}
-
-const DetailsModal = ({ right = '360px', top }: DetailsProps) => {
+const DetailsModal = ({ right = '360px', top } : {right?: string; top? :string; }) => {
   const { setDetails } = useSearchStore(); // zustand의 setDetails 사용
   const [filters, setFilters] = React.useState({
     객실수: 1,

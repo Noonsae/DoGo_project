@@ -7,6 +7,8 @@ import { HiSearch } from 'react-icons/hi';
 import LocationModal from './LocationModal';
 import useSearchStore from '@/store/useSearchStore';
 import Link from 'next/link';
+import DurationModal from './DurationModal';
+import DetailsModal from './DetailsModal';
 
 const ScrollSearchBox = () => {
   const [isSearchBoxClicked, setIsSearchBoxClicked] = useState(false);
@@ -117,8 +119,14 @@ const ScrollSearchBox = () => {
             <p className="text-[20px] font-semibold">검색</p>
           </Link>
         </div>
-        {activeModal === 'location' && <LocationModal onSelectLocation={handleSelectLocation} left="18.5%" top="180px" />}
+        {activeModal === 'location' && (
+          <LocationModal onSelectLocation={handleSelectLocation} left="18.5%" top="180px" />
+        )}
       </div>
+
+      {activeModal === 'duration' && <DurationModal left="36%" top="180px" />}
+
+      {activeModal === 'details' && <DetailsModal right="20%" top="180px" />}
 
       {/* Dimmed */}
       {isSearchBoxClicked && (

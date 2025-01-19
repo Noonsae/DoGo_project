@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import useSearchStore from '@/store/useSearchStore';
 
-const DurationModal = (right ) => {
+const DurationModal = ({ left ='36%', top }: { left?: string; top?: string }) => {
   const { setCheckIn, setCheckOut } = useSearchStore();
   const [tab, setTab] = useState<'date' | 'flexible'>('date'); // 탭 상태
   const [selectedDateRange, setSelectedDateRange] = useState({ start: '', end: '' }); // 날짜 지정 값
@@ -18,7 +18,7 @@ const DurationModal = (right ) => {
   };
 
   return (
-    <div className="fixed bg-white w-[400px] p-6 rounded-lg z-50">
+    <div style={{ left, top }} className="fixed bg-white w-[400px] p-6 rounded-lg z-50">
       {/* 탭 */}
       <div className="flex justify-around mb-6">
         <button
