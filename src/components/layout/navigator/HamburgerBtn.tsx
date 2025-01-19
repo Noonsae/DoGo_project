@@ -86,7 +86,7 @@ const HamburgerBtn: React.FC = () => {
                 {/* 회원가입 메뉴 */}
                 <li>
                   <Link
-                    href="/sign-up/user"
+                    href="/sign-up"
                     className="px-[16px] py-[12px] w-full h-[50px] flex items-center text-base text-[#2c2c2c] font-normal rounded-[8px] hover:bg-[#f8f8f8]"
                   >
                     회원가입
