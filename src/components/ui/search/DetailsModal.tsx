@@ -8,7 +8,7 @@ interface DetailsProps {
   onApply: (filters: { 객실수: number; 성인: number; 어린이: number; 반려동물: number }) => void;
 }
 
-export default function Details({ isOpen, onClose, onApply }: DetailsProps) {
+export default function DetailsModal({ isOpen, onClose, onApply }: DetailsProps) {
   const [filters, setFilters] = React.useState({
     객실수: 1,
     성인: 1,
