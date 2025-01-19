@@ -82,9 +82,6 @@ const SearchBox = () => {
       {isSticky ? (
         <>
           <ScrollSearchBox />
-          {/* <DurationModal /> */}
-          {/* <LocationModal onSelectLocation={handleLocationSelect} /> */}
-          {/* <DetailsModal /> */}
         </>
       ) : (
         <div className="w-full max-w-[1300px] h-full mx-auto px-[50px] -mt-[210px]">
