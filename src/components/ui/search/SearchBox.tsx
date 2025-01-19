@@ -11,6 +11,8 @@ import useSearchStore from '@/store/useSearchStore';
 import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
 
 import LocationModal from './LocationModal';
+import DurationModal from './DurationModal';
+import DetailsModal from './DetailsModal';
 
 const SearchBox = () => {
   const { location, checkIn, checkOut, details, setLocation, setCheckIn, setCheckOut, setDetails } = useSearchStore();
@@ -28,6 +30,7 @@ const SearchBox = () => {
   // 모달 닫기
   const closeModal = () => {
     setActiveModal(null);
+    console.log('Modal closed, activeModal:', activeModal);
   };
 
   // 스크롤 이벤트 핸들러
@@ -40,19 +43,22 @@ const SearchBox = () => {
   }, []);
 
   // 외부 클릭 감지 핸들러
-    useClickAway(
-      modalRef, // 외부 클릭 감지 대상
-      (event) => {
-        const clickedElement = event.target as HTMLElement;
+  useClickAway(
+    modalRef,
+    (event) => {
+      const clickedElement = event.target as HTMLElement;
 
-        // 모달 내부를 클릭한 경우 닫지 않음
-        if (modalRef.current && clickedElement.closest('.modal-content')) {
-          return;
-        }
-        closeModal(); // 외부 클릭 시 모달 닫기
-      },
-      ['mousedown', 'touchstart'] // 클릭 및 터치 감지
-    );
+      // 현재 활성화된 모달만 처리
+      if (clickedElement.closest('.modal-content')) {
+        if (activeModal === 'location' && clickedElement.closest('.modal-location')) return;
+        if (activeModal === 'duration' && clickedElement.closest('.modal-duration')) return;
+        if (activeModal === 'details' && clickedElement.closest('.modal-details')) return;
+      }
+
+      closeModal();
+    },
+    ['mousedown', 'touchstart']
+  );
 
   return (
     <>
@@ -123,6 +129,17 @@ const SearchBox = () => {
             {activeModal === 'location' && (
               <div ref={modalRef}>
                 <LocationModal onSelectLocation={setLocation} />
+              </div>
+            )}
+            {activeModal === 'duration' && (
+              <div ref={modalRef}>
+                <DurationModal />
+              </div>
+            )}
+            {activeModal === 'details' && (
+              <div ref={modalRef}>
+                <DetailsModal       
+                />
               </div>
             )}
           </section>
