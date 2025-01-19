@@ -2,18 +2,30 @@ import React from 'react';
 import Slider from 'react-slick';
 import Image from 'next/image';
 
-import handleSaveHistory from '@/utils/handleSaveHistory';
+import useHistoryStore from '@/store/useHistoryStore';
 
-import { HotelWithMinPrice } from '@/types/supabase/room-type';
+import { HotelWithPriceOnly } from '@/types/supabase/hotel-type';
+
 import { CustomNextArrow, CustomPrevArrow } from '@/components/ui/slider/customArrow';
+
+import { RiThumbUpFill } from 'react-icons/ri';
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-const HotelListSlider = ({ hotels }: { hotels: HotelWithMinPrice[] | undefined }) => {
+const HotelListSlider = ({ hotels }: { hotels: HotelWithPriceOnly[] | undefined }) => {
+  
+  const addHotel = useHistoryStore((state) => state.addHotel);
+
+  const handleSaveHistory = (hotel: HotelWithPriceOnly) => {
+    addHotel(hotel);
+  };
+
   if (!hotels || hotels.length === 0) {
-    return <div className='mt-5 text-red-600'>해당하는 조건에 맞는 호텔 데이터가 존재하지 않습니다.</div>; // 데이터가 없을 때 처리
+    return <div className="mt-5 text-red-600">해당하는 조건에 맞는 호텔 데이터가 존재하지 않습니다.</div>; // 데이터가 없을 때 처리
   }
+  
+  console.log(hotels)
 
   const settings = {
     infinite: hotels.length > 3, // 슬라이드가 3개 이상일 때만 무한 반복
@@ -47,31 +59,29 @@ const HotelListSlider = ({ hotels }: { hotels: HotelWithMinPrice[] | undefined }
         {hotels.map((hotel) => (
           <div
             key={hotel.id}
-            onClick={() =>
-              handleSaveHistory(hotel)
-            }
+            onClick={() => handleSaveHistory(hotel)}
             className="w-[380px] h-[484px] flex-shrink-0 p-[16px] rounded-[12px] shadow-[0px_8px_12px_rgba(0,0,0,0.1)] mr-[32px] cursor-pointer"
           >
             <Image
               src={hotel.main_img_url || ''}
               width={348}
-              height={282}
+              height={292}
               alt={'호텔 메인 이미지'}
               className="w-full h-[282px] rounded-[12px]"
             />
-            <h3 className="mt-[12px]">{hotel.name}</h3>
-            <p className="text-gray-600">{hotel.address}</p>
+            <h3 className="mt-4 text-[24px] font-semibold">{hotel.name}</h3>
+            <p className="mt-2 text-[18px] text-gray-600 font-medium">{hotel.address}</p>
 
-            <p className="mt-[11px] text-[#D9D9D9]">
-              {'⭐'.repeat(hotel.stars)}
-              <span className="text-[#9E9E9E]"> 리뷰 갯수 표시 </span>
-            </p>
-            <p className="w-full mt-[24px] text-right text-[24px]-black font-semibold">
-              <span className="text-base text-[#5b5b5b] font-medium mr-1">Sale%</span>
+            <div className="flex flex-row items-center gap-2  mt-2 text-[#D9D9D9]">
+              <RiThumbUpFill className="w-[20px] h-[20px] text-[#EEC18D]" />
+              <span className="text-[18px] text-[#444] font-semibold">4.8</span>
+              <span className="text-[#9E9E9E]"> (3,222) </span>
+            </div>
+            <p className="w-full mt-[24px] text-right">
               {/* 가격이 없는 객실 데이터가 존재해서 현재는 ∞ 도 출력되고 있음.. */}
               {/* <span>{hotel.min_price.toLocaleString('en-US')}원</span> */}
-              <span>
-                {isFinite(hotel.min_price) ? `${hotel.min_price.toLocaleString('en-US')}원` : '가격 정보 없음'}
+              <span className="text-[24px] text-[#232527] font-semibold">
+                {typeof hotel.min_price === "number" && isFinite(hotel.min_price) ? `${hotel.min_price.toLocaleString('en-US')}원` : '가격 정보 없음'}
               </span>
             </p>
           </div>
