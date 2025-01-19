@@ -46,7 +46,7 @@ const LocationModal = ({ onSelectLocation, top, left }: { onSelectLocation: (lab
   return (
     <div
       style={{ left, top }}
-      className="fixed w-[404px] px-9 py-8 bg-white shadow-[0px_4px_12px_rgba(0,0,0,0.1)] rounded-[12px] z-50"
+      className="modal-content modal-location fixed w-[404px] px-9 py-8 bg-white shadow-[0px_4px_12px_rgba(0,0,0,0.1)] rounded-[12px] z-50"
     >
       <div>
         <p className="mb-3 text-[20px] text-[#232527] font-semibold">최근 검색지</p>
