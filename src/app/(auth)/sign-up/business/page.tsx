@@ -7,7 +7,11 @@ import handleSignupAction from '../actions/handleSignupAction';
 import { useRouter } from 'next/navigation';
 import SignUpBusiness from './_components/SignUpBusiness';
 import { browserSupabase } from '@/supabase/supabase-client';
+<<<<<<< HEAD
 import SignupUserModal from '@/components/ui/sign-up/signUpUi';
+=======
+import SignupUserModal from '@/components/ui/sign-up/SignUpUserUi';
+>>>>>>> 3ce273c0ba4e6a05b7530d8adbcb1501e7238bbc
 export default function SignUpBusinessPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
