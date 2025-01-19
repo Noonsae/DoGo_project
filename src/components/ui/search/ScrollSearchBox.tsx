@@ -29,8 +29,7 @@ const ScrollSearchBox = () => {
 
   // onSelectLocation 함수 정의
   const handleSelectLocation = (label: string) => {
-    setLocation(label); // 선택된 location 업데이트
-    closeModal(); // 모달 닫기
+    setLocation(label); // 선택된 location 업데이트    
   };
 
   // 외부 클릭 감지
