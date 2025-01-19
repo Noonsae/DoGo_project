@@ -118,7 +118,7 @@ const ScrollSearchBox = () => {
             <p className="text-[20px] font-semibold">검색</p>
           </Link>
         </div>
-        {activeModal === 'location' && <LocationModal onSelectLocation={handleSelectLocation} />}
+        {activeModal === 'location' && <LocationModal onSelectLocation={handleSelectLocation} left="18.5%" top="180px" />}
       </div>
 
       {/* Dimmed */}

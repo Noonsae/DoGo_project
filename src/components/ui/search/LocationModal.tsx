@@ -9,7 +9,7 @@ import { locations } from '@/constants/constant';
 import { IoMdPin } from 'react-icons/io';
 import { IoClose } from 'react-icons/io5';
 
-const LocationModal = ({ onSelectLocation }: { onSelectLocation: (label: string) => void }) => {
+const LocationModal = ({ onSelectLocation, top, left }: { onSelectLocation: (label: string) => void; top?: string; left?: string; }) => {
   const history = useHistoryStore((state) => state.history);
   const removeHotel = useHistoryStore((state) => state.removeHotel);
   const [selectedLocal, setSelectedLocal] = useState<string>(''); // input으로 넘겨주는 상태값
@@ -44,7 +44,10 @@ const LocationModal = ({ onSelectLocation }: { onSelectLocation: (label: string)
   };
 
   return (
-    <div className="fixed left-[17%] top-[180px] w-[404px] px-9 py-8 bg-white shadow-[0px_4px_12px_rgba(0,0,0,0.1)] rounded-[12px] z-50">
+    <div
+      style={{ left, top }}
+      className="fixed w-[404px] px-9 py-8 bg-white shadow-[0px_4px_12px_rgba(0,0,0,0.1)] rounded-[12px] z-50"
+    >
       <div>
         <p className="mb-3 text-[20px] text-[#232527] font-semibold">최근 검색지</p>
         <div className="h-[126px] overflow-hidden">
