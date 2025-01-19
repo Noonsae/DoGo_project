@@ -31,7 +31,7 @@ const ScrollSearchBox = () => {
 
   // onSelectLocation 함수 정의
   const handleSelectLocation = (label: string) => {
-    setLocation(label); // 선택된 location 업데이트    
+    setLocation(label); // 선택된 location 업데이트
   };
 
   // 외부 클릭 감지
@@ -105,8 +105,8 @@ const ScrollSearchBox = () => {
               activeModal === 'details' ? 'outline-[#B3916A]' : ''
             } ${isSearchBoxClicked ? 'h-[68px]' : 'h-[48px]'}`}
           >
-            <p className="text-[15px] text-[#777]">{details || '객실 및 인원 추가'}</p>
-            {isSearchBoxClicked && <p className="text-base text-[#444]">{details || '객실 및 인원 추가'}</p>}
+            {isSearchBoxClicked && <p className="text-[15px] text-[#777]">객실 및 인원 추가</p>}
+            <p className="text-base text-[#444] truncate">{details || '객실 및 인원 추가'}</p>
           </div>
 
           <Link
@@ -122,11 +122,10 @@ const ScrollSearchBox = () => {
         {activeModal === 'location' && (
           <LocationModal onSelectLocation={handleSelectLocation} left="18.5%" top="180px" />
         )}
+        {activeModal === 'duration' && <DurationModal left="36%" top="180px" />}
+
+        {activeModal === 'details' && <DetailsModal right="20%" top="180px" />}
       </div>
-
-      {activeModal === 'duration' && <DurationModal left="36%" top="180px" />}
-
-      {activeModal === 'details' && <DetailsModal right="20%" top="180px" />}
 
       {/* Dimmed */}
       {isSearchBoxClicked && (
