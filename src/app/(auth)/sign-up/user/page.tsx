@@ -98,7 +98,7 @@ export default function SignUpUserPage() {
             <p className="flex justify-center flex-row">회원가입이 완료되었습니다.</p>
           </div>
           <button
-            className="bg-[#B3916A] items-center p-[8px 24px] w-[436px] h-[48px] rounded-[8px]"
+            className="bg-[#B3916A] text-white text-[20px] items-center p-[8px 24px] w-[436px] h-[48px] rounded-[8px]"
             onClick={closeModal}
           >
             확인
