@@ -7,6 +7,8 @@ import { HiSearch } from 'react-icons/hi';
 import LocationModal from './LocationModal';
 import useSearchStore from '@/store/useSearchStore';
 import Link from 'next/link';
+import DurationModal from './DurationModal';
+import DetailsModal from './DetailsModal';
 
 const ScrollSearchBox = () => {
   const [isSearchBoxClicked, setIsSearchBoxClicked] = useState(false);
@@ -29,7 +31,7 @@ const ScrollSearchBox = () => {
 
   // onSelectLocation 함수 정의
   const handleSelectLocation = (label: string) => {
-    setLocation(label); // 선택된 location 업데이트    
+    setLocation(label); // 선택된 location 업데이트
   };
 
   // 외부 클릭 감지
@@ -103,8 +105,8 @@ const ScrollSearchBox = () => {
               activeModal === 'details' ? 'outline-[#B3916A]' : ''
             } ${isSearchBoxClicked ? 'h-[68px]' : 'h-[48px]'}`}
           >
-            <p className="text-[15px] text-[#777]">{details || '객실 및 인원 추가'}</p>
-            {isSearchBoxClicked && <p className="text-base text-[#444]">{details || '객실 및 인원 추가'}</p>}
+            {isSearchBoxClicked && <p className="text-[15px] text-[#777]">객실 및 인원 추가</p>}
+            <p className="text-base text-[#444] truncate">{details || '객실 및 인원 추가'}</p>
           </div>
 
           <Link
@@ -117,7 +119,12 @@ const ScrollSearchBox = () => {
             <p className="text-[20px] font-semibold">검색</p>
           </Link>
         </div>
-        {activeModal === 'location' && <LocationModal onSelectLocation={handleSelectLocation} left="18.5%" top="180px" />}
+        {activeModal === 'location' && (
+          <LocationModal onSelectLocation={handleSelectLocation} left="18.5%" top="180px" />
+        )}
+        {activeModal === 'duration' && <DurationModal left="36%" top="180px" />}
+
+        {activeModal === 'details' && <DetailsModal right="20%" top="180px" />}
       </div>
 
       {/* Dimmed */}
