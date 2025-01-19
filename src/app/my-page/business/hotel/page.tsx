@@ -20,52 +20,52 @@ const HotelManagement: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   // 데이터 가져오기
-  useEffect(() => {
-    const fetchHotel = async () => {
-      try {
-        const { data, error } = await browserSupabase()
-          .from('hotels')
-          .select(
-            `
-            id,
-            name,
-            address,
-            description,
-            main_img_url,
-            hotel_facility (
-              facility_id
-            ),
-            hotel_service (
-              service_id
-            )
-          `
-          )
-          .single();
+  // useEffect(() => {
+  //   const fetchHotel = async () => {
+  //     try {
+  //       const { data, error } = await browserSupabase()
+  //         .from('hotels')
+  //         .select(
+  //           `
+  //           id,
+  //           name,
+  //           address,
+  //           description,
+  //           main_img_url,
+  //           hotel_facility (
+  //             facility_id
+  //           ),
+  //           hotel_service (
+  //             service_id
+  //           )
+  //         `
+  //         )
+  //         .single();
 
-        if (error) throw error;
+  //       if (error) throw error;
 
-        // 데이터 가공
-        const formattedHotel: Hotel = {
-          id: data.id,
-          name: data.name,
-          address: data.address,
-          description: data.description,
-          main_img_url: data.main_img_url,
-          facilities: data.hotel_facility.map((facility: any) => facility.facility_id),
-          services: data.hotel_service.map((service: any) => service.service_id),
-        };
+  //       // 데이터 가공
+  //       const formattedHotel: Hotel = {
+  //         id: data.id,
+  //         name: data.name,
+  //         address: data.address,
+  //         description: data.description,
+  //         main_img_url: data.main_img_url,
+  //         facilities: data.hotel_facility.map((facility: any) => facility.facility_id),
+  //         services: data.hotel_service.map((service: any) => service.service_id),
+  //       };
 
-        setHotel(formattedHotel);
-      } catch (err) {
-        console.error('Error fetching hotel data:', err);
-        setError('호텔 데이터를 불러오는 중 오류가 발생했습니다.');
-      } finally {
-        setLoading(false);
-      }
-    };
+  //       setHotel(formattedHotel);
+  //     } catch (err) {
+  //       console.error('Error fetching hotel data:', err);
+  //       setError('호텔 데이터를 불러오는 중 오류가 발생했습니다.');
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchHotel();
-  }, []);
+  //   fetchHotel();
+  // }, []);
 
   // 로딩 중 상태 처리
   if (loading) {
