@@ -9,6 +9,7 @@ export default async function handleSignupAction({
   name,
   phone,
   business_number,
+  nickname,
   role
 }: {
   email: string;
@@ -16,6 +17,7 @@ export default async function handleSignupAction({
   name: string;
   phone: string;
   business_number?: string; // 사업자 번호는 선택적
+  nickname: string;
   role: 'admin' | 'business' | 'user';
 }) {
   // const supabaseAdmin = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
