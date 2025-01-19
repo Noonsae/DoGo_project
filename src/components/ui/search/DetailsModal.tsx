@@ -19,8 +19,25 @@ const DetailsModal = ({ right = '360px', top } : {right?: string; top? :string; 
     }));
   };
 
-  const applyChanges = () => {
-    const formattedDetails = `객실수: ${filters.객실수}, 성인: ${filters.성인}, 어린이: ${filters.어린이}, 반려동물: ${filters.반려동물}`;
+  const handleSaveDetails = () => {
+    const formattedDetails = Object.entries(filters)
+      .filter(([_, value]) => value > 0) // 값이 0보다 큰 항목만 필터링
+      .map(([key, value]) => {
+        switch (key) {
+          case '객실수':
+            return `객실수: ${value}개`;
+          case '성인':
+            return `성인: ${value}명`;
+          case '어린이':
+            return `어린이: ${value}명`;
+          case '반려동물':
+            return `반려동물: ${value}마리`;
+          default:
+            return '';
+        }
+      })
+      .join(', '); // 필터링된 값을 쉼표로 연결
+
     setDetails(formattedDetails); // zustand에 저장
   };
 
@@ -60,7 +77,7 @@ const DetailsModal = ({ right = '360px', top } : {right?: string; top? :string; 
       <div className="w-full flex justify-end">
         <button
           onClick={() => {
-            applyChanges(); // zustand에 저장
+            handleSaveDetails(); // zustand에 저장
           }}
           className="w-[124px] h-[44px] mt-4 bg-[#B3916A] text-white py-2 rounded"
         >
