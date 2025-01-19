@@ -4,9 +4,12 @@ import { useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
 
 import { HiSearch } from 'react-icons/hi';
-import LocationModal from './LocationModal';
-import useSearchStore from '@/store/useSearchStore';
+
 import Link from 'next/link';
+
+import useSearchStore from '@/store/useSearchStore';
+
+import LocationModal from './LocationModal';
 import DurationModal from './DurationModal';
 import DetailsModal from './DetailsModal';
 

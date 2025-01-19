@@ -18,9 +18,9 @@ const DurationModal = ({ left ='36%', top }: { left?: string; top?: string }) =>
   };
 
   return (
-    <div style={{ left, top }} className="fixed bg-white w-[400px] p-6 rounded-lg z-50">
+    <div style={{ left, top }} className="fixed bg-white w-[592px] h-[462px] px-9 pt-8 rounded-[12px] z-50">
       {/* 탭 */}
-      <div className="flex justify-around mb-6">
+      <div className="w-[270px] h-[43px] mx-auto flex justify-center mb-6 rounded-full">
         <button
           className={`py-2 px-4 rounded ${tab === 'date' ? 'bg-[#B3916A] text-white' : 'bg-gray-200'}`}
           onClick={() => setTab('date')}
