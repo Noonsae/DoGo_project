@@ -13,7 +13,6 @@ const ScrollSearchBox = () => {
   const [activeModal, setActiveModal] = useState<'location' | 'duration' | 'details' | null>(null); // 모달 상태
 
   const searchBoxRef = useRef<HTMLDivElement>(null);
-  const modalRef = useRef<HTMLDivElement>(null); // 모달 영역 참조
 
   const { location, checkIn, checkOut, details, setLocation, setCheckIn, setCheckOut, setDetails } = useSearchStore();
 
@@ -25,6 +24,7 @@ const ScrollSearchBox = () => {
   // 모달 닫기
   const closeModal = () => {
     setActiveModal(null);
+    setIsSearchBoxClicked(false); // SearchBox 상태 초기화
   };
 
   // onSelectLocation 함수 정의
@@ -118,7 +118,6 @@ const ScrollSearchBox = () => {
             <p className="text-[20px] font-semibold">검색</p>
           </Link>
         </div>
-
         {activeModal === 'location' && <LocationModal onSelectLocation={handleSelectLocation} />}
       </div>
 
