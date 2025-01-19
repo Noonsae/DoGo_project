@@ -40,7 +40,7 @@ const HotelByView = () => {
   ];
 
   return (
-    <section className="box-border w-full max-w-[1300px] px-[50px] mx-auto h-[850px] py-[80px] pb-[120px]">
+    <section className="box-border w-full max-w-[1300px] h-[850px] px-[50px] mx-auto py-[80px] pb-[120px]">
       <h3 className="text-[24px] font-semibold">객실 뷰가 아름다운 호텔</h3>
       <p className="text-[18px] text-[#636363] font-normal leading-[1.45]">
         휴식을 취하면서 바라보는 아름다운 뷰는 힐링하는데 큰 도움을 줄 수 있어요.

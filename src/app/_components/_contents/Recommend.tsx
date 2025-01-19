@@ -35,7 +35,7 @@ const Recommend = () => {
   }
 
   return (
-    <section className="w-full max-w-[1300px] px-[50px] pt-[80px] pb-[120px] mx-auto h-[748px]">
+    <section className="w-full max-w-[1300px] h-[778px] px-[50px] pt-[80px] pb-[120px] mx-auto ">
       <h3 className="text-[24px] font-semibold">이런 호텔은 어떠신가요?</h3>
       <p className="text-[18px] text-[#636363] font-normal leading-[1.45] mb-[32px]">
         회원님의 리스트를 바탕으로 비슷한 호텔을 추천해 드릴게요.
