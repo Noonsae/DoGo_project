@@ -3,88 +3,90 @@
 import React, { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 
+// Booking 데이터 타입 정의
 interface Booking {
-  id: string;
-  user_id: string;
-  room_id: string;
-  check_in_date: string;
-  check_out_date: string;
-  status: string;
-  created_at: string;
+  id: string; // 예약 고유 ID
+  user_id: string; // 예약자 사용자 ID
+  room_id: string; // 객실 ID
+  check_in_date: string; // 체크인 날짜
+  check_out_date: string; // 체크아웃 날짜
+  status: 'confirmed' | 'pending' | 'cancelled'; // 예약 상태
+  created_at: string; // 생성 날짜
+  room_details: {
+    room_name: string; // 객실 이름
+    price: number; // 객실 가격
+  };
 }
 
-const BookingPage: React.FC = () => {
-  const [bookings, setBookings] = useState<Booking[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState(1); // 페이지네이션용
-  const [hasMore, setHasMore] = useState(true); // 무한 스크롤용
-  const PAGE_SIZE = 5; // 한 번에 가져올 데이터 크기
+const PAGE_SIZE = 5; // 페이지네이션용 한 번에 가져올 데이터 크기
 
-  // 권한 확인 (관리자 또는 특정 사용자만 접근 가능)
-  const checkPermissions = async () => {
-    const { data, error } = await browserSupabase().auth.getUser();
-    if (error || !data?.user) {
-      setError('권한이 없습니다.');
-      throw new Error('Unauthorized');
-    }
+const BookingManager: React.FC = () => {
+  const [bookings, setBookings] = useState<Booking[]>([]); // 예약 데이터 상태
+  const [loading, setLoading] = useState(true); // 로딩 상태
+  const [error, setError] = useState<string | null>(null); // 에러 상태
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호
+  const [hasMore, setHasMore] = useState(true); // 추가 데이터 여부
 
-    // 권한 체크 예: 관리자만 접근 가능하도록 설정
-    if (data.user.role !== 'admin','business') {
-      setError('접근 권한이 없습니다.');
-      throw new Error('Unauthorized');
-    }
-  };
-
-  // 예약 데이터 가져오기
   const fetchBookings = async (page: number) => {
     try {
-      await checkPermissions(); // 권한 확인
+      setLoading(true);
+
       const { data, error } = await browserSupabase()
         .from('bookings')
-        .select('id, user_id, room_id, check_in_date, check_out_date, status, created_at')
+        .select(`
+          id,
+          user_id,
+          room_id,
+          check_in_date,
+          check_out_date,
+          status,
+          created_at,
+          rooms (
+            room_name,
+            price
+          )
+        `)
         .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1)
-        .order('created_at', { ascending: false }); // 최신순 정렬
+        .order('created_at', { ascending: false });
+
       if (error) throw error;
 
       if (data.length < PAGE_SIZE) setHasMore(false);
-      setBookings((prev) => [...prev, ...data]);
-    } catch (err: any) {
-      console.error(err);
+
+      const formattedData: Booking[] = data.map((booking) => ({
+        id: booking.id,
+        user_id: booking.user_id,
+        room_id: booking.room_id,
+        check_in_date: booking.check_in_date,
+        check_out_date: booking.check_out_date,
+        status: booking.status as 'confirmed' | 'pending' | 'cancelled',
+        created_at: booking.created_at,
+        room_details: {
+          room_name: booking.rooms?.room_name ?? 'N/A',
+          price: booking.rooms?.price ?? 0,
+        },
+      }));
+
+      setBookings((prev) => [...prev, ...formattedData]);
+    } catch (err) {
+      console.error('Error fetching bookings:', err);
       setError('예약 데이터를 불러오는 중 오류가 발생했습니다.');
     } finally {
       setLoading(false);
     }
   };
 
-  // 첫 번째 페이지 예약 데이터 가져오기
   useEffect(() => {
     fetchBookings(1);
   }, []);
 
-  // 페이지네이션 핸들링
-  const handleLoadMore = () => {
-    if (!hasMore || loading) return;
-    setCurrentPage((prev) => prev + 1);
-    fetchBookings(currentPage + 1);
-  };
+  if (loading && bookings.length === 0)
+    return <p className="text-center text-gray-600">로딩 중...</p>;
 
-  // 예약 삭제
-  const handleDeleteBooking = async (id: string) => {
-    try {
-      await checkPermissions(); // 권한 확인
-      const { error } = await browserSupabase().from('bookings').delete().eq('id', id);
-      if (error) throw error;
+  if (error) return <p className="text-center text-red-500">{error}</p>;
 
-      setBookings((prev) => prev.filter((booking) => booking.id !== id));
-    } catch (err) {
-      console.error(err);
-      setError('예약 삭제 중 오류가 발생했습니다.');
-    }
-  };
-
-  if (loading && bookings.length === 0) return <p>로딩 중...</p>;
-  if (error) return <p>{error}</p>;
+  if (bookings.length === 0)
+    return <p className="text-center text-gray-600">등록된 예약이 없습니다.</p>;
 
   return (
     <div className="p-6 bg-white rounded-lg shadow">
@@ -94,11 +96,11 @@ const BookingPage: React.FC = () => {
           <tr>
             <th className="border p-2">ID</th>
             <th className="border p-2">사용자</th>
-            <th className="border p-2">객실</th>
+            <th className="border p-2">객실명</th>
+            <th className="border p-2">가격</th>
             <th className="border p-2">체크인</th>
             <th className="border p-2">체크아웃</th>
             <th className="border p-2">상태</th>
-            <th className="border p-2">작업</th>
           </tr>
         </thead>
         <tbody>
@@ -106,35 +108,23 @@ const BookingPage: React.FC = () => {
             <tr key={booking.id}>
               <td className="border p-2">{booking.id}</td>
               <td className="border p-2">{booking.user_id}</td>
-              <td className="border p-2">{booking.room_id}</td>
-              <td className="border p-2">{new Date(booking.check_in_date).toLocaleDateString()}</td>
-              <td className="border p-2">{new Date(booking.check_out_date).toLocaleDateString()}</td>
-              <td className="border p-2">{booking.status}</td>
+              <td className="border p-2">{booking.room_details.room_name}</td>
               <td className="border p-2">
-                <button
-                  onClick={() => handleDeleteBooking(booking.id)}
-                  className="bg-red-500 text-white p-2 rounded hover:bg-red-600"
-                >
-                  삭제
-                </button>
+                {booking.room_details.price.toLocaleString()}원
               </td>
+              <td className="border p-2">
+                {new Date(booking.check_in_date).toLocaleDateString()}
+              </td>
+              <td className="border p-2">
+                {new Date(booking.check_out_date).toLocaleDateString()}
+              </td>
+              <td className="border p-2">{booking.status}</td>
             </tr>
           ))}
         </tbody>
       </table>
-      {hasMore && (
-        <div className="mt-4 text-center">
-          <button
-            onClick={handleLoadMore}
-            className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-            disabled={loading}
-          >
-            더 보기
-          </button>
-        </div>
-      )}
     </div>
   );
 };
 
-export default BookingPage;
+export default BookingManager;

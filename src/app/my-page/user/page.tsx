@@ -1,101 +1,94 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { createClient } from '@supabase/supabase-js';
+import React, { useState, useEffect } from 'react';
+import { browserSupabase } from '@/supabase/supabase-client';
 
 import UserSidebar from '@/app/my-page/_components/Usersidebar';
 import ProfileContent from '@/app/my-page/_components/ProfileContent';
 import BookingsContent from '@/app/my-page/_components/BookingsContent';
 import FavoritesContent from '@/app/my-page/_components/FavoritesContent';
 import ReviewsContent from '@/app/my-page/_components/ReviewsContent';
-import InquiryContent from '@/app/my-page/_components/InquiryManagement';
+import InquiryManagement from '@/app/my-page/_components/InquiryManagement';
 
+// Tab 타입 정의
 type TabType = 'profile' | 'bookings' | 'favorites' | 'reviews' | 'inquiries';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+const UserPage: React.FC = () => {
+  const [currentTab, setCurrentTab] = useState<TabType>('profile'); // 현재 활성화된 탭
+  const [userId, setUserId] = useState<string | null>(null); // 사용자 ID
+  const [loading, setLoading] = useState(true); // 로딩 상태
+  const [error, setError] = useState<string | null>(null); // 에러 상태
 
-export default function UserPage() {
-  const [currentTab, setCurrentTab] = useState<TabType>('profile');
-  const [userData, setUserData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const router = useRouter();
-
+  // 사용자 정보 로드
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchUser = async () => {
       try {
-        // Fetch authenticated user
+        // Supabase 인증된 사용자 가져오기
         const {
           data: { user },
-          error: authError,
-          // TODO: supabase -> browserSupabase 로 바꿔보기 
-        } = await supabase.auth.getUser();
+          error: authError
+        } = await browserSupabase().auth.getUser();
 
-        if (authError || !user) throw new Error('로그인된 사용자가 없습니다.');
+        if (authError || !user) throw new Error('사용자 정보를 가져올 수 없습니다.');
 
-        // Fetch additional user details
-        // supabase에서 user 정보가 없는다. 
-        // users 테이블에 없는 것???
-        const { data, error: userError } = await supabase
-          .from('users')
-          .select('*')
-          .eq('id', user.id)
-          .single(); // -> 없으면 에러 남 
-
-        if (userError) throw userError;
-
-        setUserData(data);
+        // 사용자 ID 저장
+        setUserId(user.id);
       } catch (err) {
-        console.error('Error fetching user data:', err);
+        console.error('Error fetching user:', err);
         setError('사용자 정보를 불러오는 중 오류가 발생했습니다.');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchUserData();
+    fetchUser();
   }, []);
 
+  // 현재 탭에 따라 적절한 콘텐츠 렌더링
   const renderContent = () => {
-    if (!userData) {
-      return <p className="text-center text-gray-500">사용자 데이터를 불러오는 중입니다.</p>;
-    }
+    if (!userId) return <p className="text-center text-gray-500">사용자 정보를 불러오지 못했습니다.</p>;
 
     switch (currentTab) {
       case 'profile':
-        return <ProfileContent userId={userData.id} />;
+        return <ProfileContent userId={userId} />;
       case 'bookings':
-        return <BookingsContent userId={userData.id} />;
+        return <BookingsContent userId={userId} />;
       case 'favorites':
-        return <FavoritesContent userId={userData.id} />;
+        return <FavoritesContent userId={userId} />;
       case 'reviews':
-        return <ReviewsContent userId={userData.id} />;
+        return <ReviewsContent userId={userId} />;
       case 'inquiries':
-        return <InquiryContent userId={userData.id} />;
+        return <InquiryManagement userId={userId} />;
       default:
         return <p className="text-center text-gray-500">유효하지 않은 탭입니다.</p>;
     }
   };
 
-  if (loading) return <p className="text-center text-gray-500">로딩 중...</p>;
+  // 로딩 상태 처리
+  if (loading) return <p className="text-center text-gray-500">페이지를 로드하는 중입니다...</p>;
+
+  // 에러 상태 처리
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
-    <div className="flex">
-      {/* Sidebar */}
-      <UserSidebar
-        userId={userData.id}
-        currentTab={currentTab}
-        setCurrentTab={(tab) => setCurrentTab(tab as TabType)} // TabType을 명시적으로 설정
-      />
+    <div className="flex h-screen">
+      {/* 사이드바 */}
+      <aside className="w-64 bg-gray-100 h-full shadow-md fixed">
+        <UserSidebar
+          currentTab={currentTab}
+          setCurrentTab={(tab) => setCurrentTab(tab as TabType)} // 문자열을 TabType으로 캐스팅
+        />
+      </aside>
 
-      {/* Main Content */}
-      <main className="flex-1 p-6">{renderContent()}</main>
+      {/* 메인 콘텐츠 */}
+      <main className="flex-1 ml-64 p-6 overflow-auto">
+        <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-8">
+          <h1 className="text-2xl font-bold mb-4">사용자 페이지</h1>
+          {renderContent()}
+        </div>
+      </main>
     </div>
   );
-}
+};
+
+export default UserPage;
