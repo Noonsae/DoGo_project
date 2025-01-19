@@ -6,11 +6,9 @@ import SignUpUser from './_components/SignUpUser';
 import handleSignupAction from '../actions/handleSignupAction';
 import { browserSupabase } from '@/supabase/supabase-client';
 import { useRouter } from 'next/navigation';
-<<<<<<< HEAD
-import SignupUserModal from '@/components/ui/sign-up/signUpUi';
-=======
+
 import SignupUserModal from '@/components/ui/sign-up/SignUpUserUi';
->>>>>>> 3ce273c0ba4e6a05b7530d8adbcb1501e7238bbc
+
 // import clap from '/images/clap.png';
 
 //각페이지 별 임포트 순서는 추후에 진행될 예정입니다.
@@ -24,11 +22,7 @@ export default function SignUpUserPage() {
   const [nickname, setNickname] = useState('');
   const setUser = useAuthStore((state) => state.setUser);
   const [isModlaOpen, setIsModalOpen] = useState(false);
-<<<<<<< HEAD
 
-=======
-  //
->>>>>>> 3ce273c0ba4e6a05b7530d8adbcb1501e7238bbc
   const router = useRouter();
   const handleSignup = async () => {
     try {
@@ -64,11 +58,6 @@ export default function SignUpUserPage() {
         role: 'user'
       });
 
-<<<<<<< HEAD
-=======
-      // Swal.fire('회원가입 성공!', result.message, 'success');
-
->>>>>>> 3ce273c0ba4e6a05b7530d8adbcb1501e7238bbc
       setIsModalOpen(true);
     } catch (err: any) {
       setError('회원가입 중 오류가 발생했습니다.');
@@ -98,10 +87,6 @@ export default function SignUpUserPage() {
         handleSignup={handleSignup}
       />
 
-<<<<<<< HEAD
-=======
-      {/* 모달추가! */}
->>>>>>> 3ce273c0ba4e6a05b7530d8adbcb1501e7238bbc
       <SignupUserModal isOpen={isModlaOpen} onClose={closeModal}>
         <div className="flex flex-col p-[40px 32px 32px 32px] items-center g-[32px]">
           <div>
