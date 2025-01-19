@@ -52,14 +52,22 @@ const DetailsModal = ({ right = '360px', top }: { right?: string; top?: string }
   return (
     <div
       style={{ right, top }}
-      className="fixed w-[432px] h-[364px] px-8 py-6 bg-white rounded-[12px] shadow-lg z-50"
+      className="fixed w-[432px] h-[374px] p-8 bg-white rounded-[12px] shadow-lg z-50"
       onClick={(e) => e.stopPropagation()} // 내부 클릭 방지
     >
       {Object.keys(filters).map((key) => (
         <div key={key} className="mb-[12px]">
           {/* 필터 옵션 */}
           <div className="flex justify-between items-center mb-1 mt-[12px]">
-            <span className="text-[16px] font-neutral-800 font-semibold">{key}</span>
+            <div>
+              <p className="text-[18px] text-[#444] font-medium">{key}</p>
+              <p className="text-base text-[#A0A0A0] leading-[1.45] font-normal ">
+                {key === '객실수' && '필요한 객실의 수'}
+                {key === '성인' && '18세 이상'}
+                {key === '어린이' && '17세 이하'}
+                {key === '반려동물' && '강아지, 고양이, 소동물 등'}
+              </p>
+            </div>
             <div className="flex items-center space-x-2">
               <IoIosRemoveCircleOutline
                 onClick={() => handleChange(key as keyof typeof filters, false)}
@@ -73,12 +81,6 @@ const DetailsModal = ({ right = '360px', top }: { right?: string; top?: string }
             </div>
           </div>
           {/* 문구 */}
-          <p className="text-xs font-normal font-neutral-500">
-            {key === '객실수' && '필요한 객실의 수'}
-            {key === '성인' && '18세 이상'}
-            {key === '어린이' && '17세 이하'}
-            {key === '반려동물' && '강아지, 고양이, 소동물 등'}
-          </p>
         </div>
       ))}
       {/* 버튼 영역 */}
