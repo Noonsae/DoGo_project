@@ -81,7 +81,7 @@ const HotelListSlider = ({ hotels }: { hotels: HotelWithPriceOnly[] | undefined 
               {/* 가격이 없는 객실 데이터가 존재해서 현재는 ∞ 도 출력되고 있음.. */}
               {/* <span>{hotel.min_price.toLocaleString('en-US')}원</span> */}
               <span className="text-[24px] text-[#232527] font-semibold">
-                {isFinite(hotel.min_price) ? `${hotel.min_price.toLocaleString('en-US')}원` : '가격 정보 없음'}
+                {typeof hotel.min_price === "number" && isFinite(hotel.min_price) ? `${hotel.min_price.toLocaleString('en-US')}원` : '가격 정보 없음'}
               </span>
             </p>
           </div>
