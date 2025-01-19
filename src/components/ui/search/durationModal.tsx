@@ -1,9 +1,9 @@
 import React from 'react'
 
-const duration = () => {
+const DurationModal = () => {
   return (
-    <div>duration</div>
+    <div>durationModal</div>
   )
 }
 
-export default duration
+export default DurationModal
