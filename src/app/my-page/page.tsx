@@ -45,6 +45,7 @@ export default function MyPage() {
 
         if (userError) throw userError;
 
+        // 역할 설정
         setRole(data.role);
       } catch (err) {
         console.error('Error fetching user role:', err);

@@ -19,7 +19,7 @@ const HotelManagement: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // 데이터 가져오기
+  //데이터 가져오기
   useEffect(() => {
     const fetchHotel = async () => {
       try {
