@@ -47,6 +47,7 @@ const DetailsModal = ({ right = '360px', top }: { right?: string; top?: string }
 
   const handleResetFilters = () => {
     setFilters(initialFilters); // 초기 상태로 되돌리기
+    setDetails("");
   };
 
   return (
