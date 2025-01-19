@@ -6,14 +6,18 @@ import { useClickAway } from 'react-use';
 
 import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
 
+import DurationModal from './DurationModal';
+import LocationModal from './LocationModal';
+
 import { HiSearch } from 'react-icons/hi';
 
 const SearchBox = () => {
   const [location, setLocation] = useState('');
-  const [isLabelClicked, setIsLabelClicked] = useState(false);
-  const [isStayDurationClicked, setIsStayDurationClicked] = useState(false);
-  const [isStayDetailsClicked, setIsStayDetailsClicked] = useState(false);
+  const [isLabelSearchBoxClicked, setIsLabelSearchBoxClicked] = useState(false);
+  const [isStayDurationSearchBoxClicked, setIsStayDurationSearchBoxClicked] = useState(false);
+  const [isStayDetailsSearchBoxClicked, setIsStayDetailsSearchBoxClicked] = useState(false);
   const [isSticky, setIsSticky] = useState(false); // 스크롤 상태 관리
+  const [selectedLocation, setSelectedLocation] = useState('');
   const clickLabelRef = useRef<HTMLLabelElement>(null);
   const clickStayDurationRef = useRef<HTMLDivElement>(null);
   const clickStayDetailsRef = useRef<HTMLDivElement>(null);
@@ -26,34 +30,38 @@ const SearchBox = () => {
   // 라벨 요소를 클릭하면 테두리 색상을 변경
   const handleLabelClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsLabelClicked(true);
+    setIsLabelSearchBoxClicked(true);
+  };
+
+  const handleLocationSelect = (locationLabel: string) => {
+    setSelectedLocation(locationLabel);
   };
 
   // 체크인/체크아웃 박스를 클릭하면 테두리 색상을 변경
   const handleStayDurationClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsStayDurationClicked(true);
+    setIsStayDurationSearchBoxClicked(true);
   };
 
   // 객실 및 인원 박스를 클릭하면 테두리 색상을 변경
   const handleStayDetailsClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsStayDetailsClicked(true);
+    setIsStayDetailsSearchBoxClicked(true);
   };
 
   // 외부 클릭 감지
   useClickAway(clickLabelRef, () => {
-    setIsLabelClicked(false);
+    setIsLabelSearchBoxClicked(false);
   });
 
   // 외부 클릭 감지
   useClickAway(clickStayDurationRef, () => {
-    setIsStayDurationClicked(false);
+    setIsStayDurationSearchBoxClicked(false);
   });
 
   // 외부 클릭 감지
   useClickAway(clickStayDetailsRef, () => {
-    setIsStayDetailsClicked(false);
+    setIsStayDetailsSearchBoxClicked(false);
   });
 
   // 스크롤 이벤트 핸들러
@@ -72,7 +80,12 @@ const SearchBox = () => {
   return (
     <>
       {isSticky ? (
-        <ScrollSearchBox />
+        <>
+          <ScrollSearchBox />
+          {/* <DurationModal /> */}
+          {/* <LocationModal onSelectLocation={handleLocationSelect} /> */}
+          {/* <DetailsModal /> */}
+        </>
       ) : (
         <div className="w-full max-w-[1300px] h-full mx-auto px-[50px] -mt-[210px]">
           <section className="w-full max-w-[1200px] h-[160px] mx-auto px-[32px] py-[24px] rounded-[8px] bg-white shadow-[0px_4px_12px_rgba(0,0,0,0.1)]">
@@ -84,14 +97,14 @@ const SearchBox = () => {
                 onClick={handleLabelClick}
                 ref={clickLabelRef}
                 className={`block w-[25%] max-w-[288px] h-full px-[16px] py-[12px] border  rounded-[8px] cursor-pointer ${
-                  isLabelClicked ? 'border-[#B3916A]' : 'border-[#BFBFBF]'
+                  isLabelSearchBoxClicked ? 'border-[#B3916A]' : 'border-[#BFBFBF]'
                 }`}
               >
                 <span className="text-[15px] text-[#636363] font-medium">여행지</span>
                 <input
                   type="text-[16px] text-[#A0A0A0] font-medium"
                   placeholder="여행지 검색"
-                  value={location}
+                  value={selectedLocation}
                   onChange={(e) => setLocation(e.target.value)}
                   className="w-full border-none outline-none"
                 />
@@ -102,7 +115,7 @@ const SearchBox = () => {
                 onClick={handleStayDurationClick}
                 ref={clickStayDurationRef}
                 className={`w-[35%] max-w-[400px] h-full flex flex-row px-[16px] py-[12px] border rounded-[8px] cursor-pointer ${
-                  isStayDurationClicked ? 'border-[#B3916A]' : 'border-[#BFBFBF]'
+                  isStayDurationSearchBoxClicked ? 'border-[#B3916A]' : 'border-[#BFBFBF]'
                 }`}
               >
                 <div className="w-1/2 h-full">
@@ -120,7 +133,7 @@ const SearchBox = () => {
                 onClick={handleStayDetailsClick}
                 ref={clickStayDetailsRef}
                 className={`w-[25%] max-w-[288px] h-full px-[16px] py-[12px] border rounded-[8px] ${
-                  isStayDetailsClicked ? 'border-[#B3916A]' : 'border-[#BFBFBF]'
+                  isStayDetailsSearchBoxClicked ? 'border-[#B3916A]' : 'border-[#BFBFBF]'
                 }`}
               >
                 <p className="text-[15px] text-[#636363] font-medium">객실 및 인원</p>
