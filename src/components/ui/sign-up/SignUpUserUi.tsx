@@ -6,7 +6,7 @@ interface ModalProps {
   children: React.ReactNode;
 }
 
-export default function SignModal({ isOpen, children }: ModalProps) {
+export default function SignupUserModal({ isOpen, children }: ModalProps) {
   if (!isOpen) return null;
 
   return (
