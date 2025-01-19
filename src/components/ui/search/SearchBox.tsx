@@ -1,40 +1,36 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-
 import { useClickAway } from 'react-use';
+import { HiSearch } from 'react-icons/hi';
+
+import Link from 'next/link';
+
+import useSearchStore from '@/store/useSearchStore';
 
 import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
 
-import DurationModal from './DurationModal';
 import LocationModal from './LocationModal';
+import DurationModal from './DurationModal';
+import DetailsModal from './DurationModal';
 
-import { HiSearch } from 'react-icons/hi';
 
 const SearchBox = () => {
-  const [location, setLocation] = useState('');
+  const { location, checkIn, checkOut, details, setLocation, setCheckIn, setCheckOut, setDetails } = useSearchStore();
+
+  const [isSticky, setIsSticky] = useState(false); // 스크롤 상태 관리
   const [isLabelSearchBoxClicked, setIsLabelSearchBoxClicked] = useState(false);
   const [isStayDurationSearchBoxClicked, setIsStayDurationSearchBoxClicked] = useState(false);
   const [isStayDetailsSearchBoxClicked, setIsStayDetailsSearchBoxClicked] = useState(false);
-  const [isSticky, setIsSticky] = useState(false); // 스크롤 상태 관리
-  const [selectedLocation, setSelectedLocation] = useState('');
+
   const clickLabelRef = useRef<HTMLLabelElement>(null);
   const clickStayDurationRef = useRef<HTMLDivElement>(null);
   const clickStayDetailsRef = useRef<HTMLDivElement>(null);
-
-  const handleSearch = () => {
-    console.log('Search with:', { location });
-    // 검색 로직 추가 (예: 클라이언트 측 API 호출)
-  };
 
   // 라벨 요소를 클릭하면 테두리 색상을 변경
   const handleLabelClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsLabelSearchBoxClicked(true);
-  };
-
-  const handleLocationSelect = (locationLabel: string) => {
-    setSelectedLocation(locationLabel);
   };
 
   // 체크인/체크아웃 박스를 클릭하면 테두리 색상을 변경
@@ -101,7 +97,7 @@ const SearchBox = () => {
                 <input
                   type="text-[16px] text-[#A0A0A0] font-medium"
                   placeholder="여행지 검색"
-                  value={selectedLocation}
+                  value={location}
                   onChange={(e) => setLocation(e.target.value)}
                   className="w-full border-none outline-none"
                 />
@@ -138,14 +134,15 @@ const SearchBox = () => {
               </div>
 
               {/* 검색 버튼 */}
-              <button
-                onClick={handleSearch}
+              <Link
+                href="/hotel-list"
                 className="w-[11%] max-w-[124px] h-full flex flex-row justify-center items-center bg-[#B3916A] text-white text-[20px] text-center font-semibold rounded-[8px] outline-none hover:bg-[#8F7455] active:bg-[#6B573F] disabled:bg-[#EFEFEF] disabled:text-[#BFBFBF] transition duration-200"
               >
                 <HiSearch className="inline-block w-[24px] h-[24px] -ml-[1px] mr-[4%] fill-white" />
                 검색
-              </button>
+              </Link>
             </div>
+            {isLabelSearchBoxClicked && <LocationModal onSelectLocation={setLocation} />}
           </section>
         </div>
       )}
