@@ -112,7 +112,7 @@ const SearchBox = () => {
                 }`}
               >
                 <p className="text-[15px] text-[#636363] font-medium">객실 및 인원</p>
-                <span className="text-[16px] text-[#A0A0A0] font-medium">객실 및 인원 추가</span>
+                <span className="text-[16px] text-[#A0A0A0] font-medium">{details || '객실 및 인원 추가'}</span>
               </div>
 
               {/* 검색 버튼 */}
@@ -138,8 +138,7 @@ const SearchBox = () => {
             )}
             {activeModal === 'details' && (
               <div ref={modalRef}>
-                <DetailsModal       
-                />
+                <DetailsModal />
               </div>
             )}
           </section>
