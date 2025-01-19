@@ -4,9 +4,8 @@ import { IoIosAddCircleOutline, IoIosRemoveCircleOutline } from 'react-icons/io'
 import useSearchStore from '@/store/useSearchStore'; // zustand store import
 
 const DetailsModal = ({ right = '360px', top }: { right?: string; top?: string }) => {
-  
   const { setDetails } = useSearchStore(); // zustand의 setDetails 사용
-  
+
   const initialFilters = {
     객실수: 1,
     성인: 1,
@@ -14,7 +13,7 @@ const DetailsModal = ({ right = '360px', top }: { right?: string; top?: string }
     반려동물: 0
   };
 
-  const [filters, setFilters] = React.useState(initialFilters);  
+  const [filters, setFilters] = React.useState(initialFilters);
 
   const handleChange = (type: keyof typeof filters, increment: boolean) => {
     setFilters((prev) => ({
@@ -47,7 +46,7 @@ const DetailsModal = ({ right = '360px', top }: { right?: string; top?: string }
 
   const handleResetFilters = () => {
     setFilters(initialFilters); // 초기 상태로 되돌리기
-    setDetails("");
+    setDetails('');
   };
 
   return (
