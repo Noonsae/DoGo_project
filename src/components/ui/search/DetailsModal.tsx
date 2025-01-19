@@ -1,22 +1,22 @@
 'use client';
 import React from 'react';
 import { IoIosAddCircleOutline, IoIosRemoveCircleOutline } from 'react-icons/io';
+import useSearchStore from '@/store/useSearchStore'; // zustand store import
 
 interface DetailsProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onApply: (filters: { 객실수: number; 성인: number; 어린이: number; 반려동물: number }) => void;
+  right?: string;
+  top: string;
 }
 
-export default function DetailsModal({ isOpen, onClose, onApply }: DetailsProps) {
+const DetailsModal = ({ right = '360px', top }: DetailsProps) => {
+  const { setDetails } = useSearchStore(); // zustand의 setDetails 사용
   const [filters, setFilters] = React.useState({
     객실수: 1,
     성인: 1,
     어린이: 0,
     반려동물: 0
   });
-  // 커밋용 주석1
-  // 커밋용 주석2
+
   const handleChange = (type: keyof typeof filters, increment: boolean) => {
     setFilters((prev) => ({
       ...prev,
@@ -24,11 +24,15 @@ export default function DetailsModal({ isOpen, onClose, onApply }: DetailsProps)
     }));
   };
 
-  if (!isOpen) return null;
+  const applyChanges = () => {
+    const formattedDetails = `객실수: ${filters.객실수}, 성인: ${filters.성인}, 어린이: ${filters.어린이}, 반려동물: ${filters.반려동물}`;
+    setDetails(formattedDetails); // zustand에 저장
+  };
 
   return (
     <div
-      className="fixed z-50 bg-white p-6 rounded-lg shadow-lg w-[432px] h-[364px]"
+      style={{ right, top }}
+      className="fixed bg-white p-6 rounded-[12px] shadow-lg w-[432px] h-[364px] z-50"
       onClick={(e) => e.stopPropagation()} // 내부 클릭 방지
     >
       {Object.keys(filters).map((key) => (
@@ -61,8 +65,7 @@ export default function DetailsModal({ isOpen, onClose, onApply }: DetailsProps)
       <div className="w-full flex justify-end">
         <button
           onClick={() => {
-            onApply(filters); // 필터 값 부모 컴포넌트로 전달
-            onClose(); // 모달 닫기
+            applyChanges(); // zustand에 저장
           }}
           className="w-[124px] h-[44px] mt-4 bg-[#B3916A] text-white py-2 rounded"
         >
@@ -71,4 +74,6 @@ export default function DetailsModal({ isOpen, onClose, onApply }: DetailsProps)
       </div>
     </div>
   );
-}
+};
+
+export default DetailsModal;
