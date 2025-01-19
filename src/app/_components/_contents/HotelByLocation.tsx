@@ -6,6 +6,7 @@ import useHotelsByLocation from '@/hooks/hotel/useHotelsByLocation';
 
 import HotelByLocationSkeletonUI from '@/components/ui/skeleton/HotelByLocationSkeletonUI';
 import HotelListSlider from '@/components/ui/slider/HotelListSlider';
+import { locations } from '@/constants/constant';
 
 const HotelByLocation = () => {
   const [selectedLocations, setSelectedLocations] = useState<string>(`all`);
@@ -28,18 +29,6 @@ const HotelByLocation = () => {
     setSelectedLocations(id);
   };
 
-  const locations = [
-    { id: `all`, label: `전체` },
-    { id: `seoul`, label: `서울` },
-    { id: `incheon`, label: `인천` },
-    { id: `gwangju`, label: `광주` },
-    { id: `daegu`, label: `대구` },
-    { id: `daejeon`, label: `대전` },
-    { id: `busan`, label: `부산` },
-    { id: `ulsan`, label: `울산` },
-    { id: `jeju`, label: `제주` }
-  ];
-
   return (
     <section className="w-full max-w-[1300px] h-[850px] px-[50px] mx-auto  py-[80px] pb-[120px]">
       <h3 className="text-[24px] font-semibold">많은 회원이 높은 평가를 준 호텔</h3>
@@ -49,18 +38,18 @@ const HotelByLocation = () => {
 
       {/* 슬라이드로 구현될 예정 */}
       <div className="flex flex-row gap-2">
-        {locations.map((select) => (
+        {locations.map((location) => (
           <button
-            key={select.id}
+            key={location.id}
             type="button"
-            onClick={() => handleBtnClick(select.id)}
+            onClick={() => handleBtnClick(location.id)}
             className={`w-[80px] h-[44px] mr-[12px] mt-[28px] border border-[#CDCDCD] rounded-[8px] text-[18px] font-semibold outline-none transition duration-200 ${
-              selectedLocations === select.id
+              selectedLocations === location.id
                 ? 'bg-[#B3916A] text-white'
                 : 'bg-[#fff] text-[#777] font-medium hover:bg-[#8F7455] hover:text-[#fff] active:bg-[#6B573F]'
             }`}
           >
-            {select.label}
+            {location.label}
           </button>
         ))}
       </div>
