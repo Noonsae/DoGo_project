@@ -31,6 +31,7 @@ const Page = () => {
   return (
     <div className="flex justify-center items-center min-h-screen">
       <div className="p-8 h-[693px] w-[400px] ">
+        <p>DoGo</p>
         {/* 회원 유형 선택 */}
         <div className="w-[400px] flex justify-between gap-4 mb-8">
           {/* 일반 회원가입 */}
