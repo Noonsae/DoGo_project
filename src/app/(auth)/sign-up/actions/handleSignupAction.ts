@@ -16,7 +16,7 @@ export default async function handleSignupAction({
   password: string;
   name: string;
   phone: string;
-  businessNumber: string;
+  businessNumber?: string;
   nickname?: string;
   role: string;
 }) {
