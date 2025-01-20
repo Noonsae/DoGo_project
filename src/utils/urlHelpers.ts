@@ -51,6 +51,8 @@ const generateUrl = ({
   }
 };
 
+export default generateUrl;
+
 const searchState: Partial<SearchState> = {
   location: '서울',
   checkIn: '2023-02-01',
