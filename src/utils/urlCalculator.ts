@@ -1,14 +1,14 @@
 export const convertToEnglish = (text: string): string => {
   // 한글을 영어로 변환하는 로직 (예: 라이브러리 활용 또는 간단한 매핑)
   const conversionMap: { [key: string]: string } = {
-    제주: 'Jeju',
-    서울: 'Seoul',
-    부산: 'Busan',
-    광주: 'Gwangju',
-    인천: 'Incheon',
-    울산: 'Ulsan',
-    대전: `Daejeon`,
-    대구: 'Daegu',
+    제주: 'jeju',
+    서울: 'seoul',
+    부산: 'busan',
+    광주: 'gwangju',
+    인천: 'incheon',
+    울산: 'ulsan',
+    대전: `daejeon`,
+    대구: 'daegu',
   };
   return conversionMap[text] || text;
 };
