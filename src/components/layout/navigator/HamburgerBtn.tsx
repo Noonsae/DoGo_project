@@ -28,7 +28,6 @@ const HamburgerBtn: React.FC = () => {
     Swal.fire({
       icon: 'success',
       title: "로그아웃 되었습니다.",
-      text: `안녕히가세요 ${user}님 `
     });
   };
 
