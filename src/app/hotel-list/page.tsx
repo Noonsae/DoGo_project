@@ -8,6 +8,8 @@ import AsideFilter from './_components/AsideFilter';
 import { HotelType } from '@/types/supabase/hotel-type';
 import useFavoriteStore from '@/hooks/favorite/useFavoriteStore';
 import SortBtn from './_components/SortBtn';
+import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
+import { useSearchParams } from 'next/navigation';
 
 interface UserType {
   id: string;
@@ -15,8 +17,10 @@ interface UserType {
 
 const fetchHotels = async ({
   pageParam = 0,
-  filters,
-  sortOrder
+  // 지역, 날짜, .... 추가 예정 
+  filters = { grade: []},
+  // TODO: 가격 이외의 조건이 있다면 객체로 변경 해야 함  { price: "asc", rating: "desc" }
+  sortOrder = ''
 }: {
   pageParam?: number;
   filters: {
@@ -34,28 +38,52 @@ const fetchHotels = async ({
   const servicesQuery = filters.services.length ? `&services=${filters.services.join(',')}` : '';
   const sortQuery = sortOrder ? `&sortOrder=${sortOrder}` : '';
 
-  const res = await fetch(
-    `/api/hotel?offset=${pageParam}&limit=8${gradeQuery}${priceQuery}${facilitiesQuery}${servicesQuery}${sortQuery}`
-  );
-  if (!res.ok) throw new Error('Failed to fetch hotels');
-  return res.json();
+  // TODO: supabase로
+  // let query = supabase.from("hotels").select("*");
+
+  // if (filters.grade.length > 0 ) {
+  //   // query.eq("type", ~~~)
+  // }
+
+  // if (filters.location) {
+  //   query.eq("location", filters.location)
+  // }
+
+  // if (sortOrder) {
+  //   query.order("~~~", s)
+  // }
+
+  // query.limit(10).offset(pageParam * 10)
+  // 1,2,3,4,5,6,7,8,9,10, 11, 12, 13, 14, 15, 16, 17,... 
+
+  // await query
+
+  // 
+
+
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch hotels: ${res.status}`);
+  }
+
+  const data = await res.json();
+  return {
+    items: data.items,
+    totalCount: data.totalCount
+  };
 };
 
-const HotelList = () => {
-  const [filters, setFilters] = useState<{
-    grade: number[];
-    minPrice: number;
-    maxPrice: number;
-    facilities: string[];
-    services: string[];
-  }>({
-    grade: [],
-    minPrice: 0,
-    maxPrice: 10000000,
-    facilities: [],
-    services: []
-  });
+/**
+ * 1. url에서 필터 조건을 가져온다. useSearchParams 활용
+ * 2. location, 날짜, 지역 -> API 요청 (fetchHotels의 파라미터로 전달한다)
+ */
 
+const HotelList = () => {
+  // TODO: 이거 활용하기
+  const searchParams = useSearchParams(); 
+  const params = searchParams.get("location");
+
+  const [filters, setFilters] = useState<{ grade: number[] }>({ grade: [] });
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | ''>('');
   const observerRef = useRef<HTMLDivElement | null>(null);
 
@@ -73,8 +101,14 @@ const HotelList = () => {
   // 무한 스크롤 및 데이터 가져오기
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ['hotels', filters, sortOrder],
+    // 1. queryFn -> fetchHotels가 실행된다. 이때 pageParam = 0이다. 
     queryFn: ({ pageParam = 0 }) => fetchHotels({ pageParam, filters, sortOrder }),
+    // 2. 스크롤이 마지막까지 내려가서 fetchNextPage가 실행되면 getNextPageParam 함수가 실행된다. 
+    // 3. totalLoaded 가 pageParam으로 들어가진다. -> 
+    // 4. pageParam이 바뀌면 fetchHotels가 추가로 더 실행된다. 이때 pageParam = 1이다. 
     getNextPageParam: (lastPage, allPages) => {
+      // { pages: [~~~], ~~~~ }
+      // console.log(lastPage) 
       const totalLoaded = allPages.flatMap((page) => page.items).length;
       if (totalLoaded >= lastPage.totalCount) return undefined;
       return totalLoaded;

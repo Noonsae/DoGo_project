@@ -1,25 +1,29 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
-
 import { HiSearch } from 'react-icons/hi';
 
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import useSearchStore from '@/store/useSearchStore';
 
 import LocationModal from './LocationModal';
 import DurationModal from './DurationModal';
 import DetailsModal from './DetailsModal';
+import generateUrl from '@/utils/urlHelpers';
+
 
 const ScrollSearchBox = () => {
+  const [searchUrl, setSearchUrl] = useState<string>('');
   const [isSearchBoxClicked, setIsSearchBoxClicked] = useState(false);
   const [activeModal, setActiveModal] = useState<'location' | 'duration' | 'details' | null>(null); // 모달 상태
 
   const searchBoxRef = useRef<HTMLDivElement>(null);
 
-  const { location, checkIn, checkOut, details, setLocation, setCheckIn, setCheckOut, setDetails } = useSearchStore();
+  const { location, checkIn, checkOut, details, schedule, setLocation } = useSearchStore();
+
+  const router = useRouter(); // Next.js의 useRouter 훅
 
   // 모달 열기
   const openModal = (modal: 'location' | 'duration' | 'details') => {
@@ -27,7 +31,7 @@ const ScrollSearchBox = () => {
   };
 
   // 모달 닫기
-  const closeModal = () => {
+  const inactiveSearchBox = () => {
     setActiveModal(null);
     setIsSearchBoxClicked(false); // SearchBox 상태 초기화
   };
@@ -45,10 +49,25 @@ const ScrollSearchBox = () => {
       if (clickedElement instanceof HTMLElement && clickedElement.closest('.modal-content')) {
         return; // 모달 내부를 클릭한 경우 닫히지 않음
       }
-      closeModal(); // 모달 닫기
+      inactiveSearchBox(); // 모달 닫기
     },
     ['mousedown', 'touchstart']
   );
+
+  const url = generateUrl({ location, checkIn, checkOut, schedule, details }); // URL 생성
+
+  console.log(url);
+  
+  // 비동기로 전환 후 제대로 작동하는데 이유를 모르겠음;;
+  const handleSearchClick = async() => {
+    const searchUrl = url;
+    router.push(searchUrl); // 페이지 이동
+    inactiveSearchBox();
+  };
+
+  useEffect(() => {
+    setSearchUrl(url); // 의존성 배열에서 searchUrl 제거
+  }, [location, schedule, details]); // 필요한 의존성만 포함
 
   return (
     <>
@@ -112,15 +131,15 @@ const ScrollSearchBox = () => {
             <p className="text-base text-[#444] truncate">{details || '객실 및 인원 추가'}</p>
           </div>
 
-          <Link
-            href="/hotel-list"
+          <button
+            onClick={handleSearchClick}
             className={`w-[124px] flex flex-row items-center justify-center gap-1 bg-[#B3916A] rounded-[8px] text-white ${
               isSearchBoxClicked ? 'h-[68px]' : 'h-[48px]'
             }`}
           >
             <HiSearch className="w-[24px] h-[24px]" />
             <p className="text-[20px] font-semibold">검색</p>
-          </Link>
+          </button>
         </div>
         {activeModal === 'location' && (
           <LocationModal onSelectLocation={handleSelectLocation} left="18.5%" top="180px" />
@@ -134,7 +153,7 @@ const ScrollSearchBox = () => {
       {isSearchBoxClicked && (
         <div
           className="fixed left-0 top-[192px] inset-0 w-full h-[calc(100vh-192px)] bg-black bg-opacity-40 z-30"
-          onClick={closeModal}
+          onClick={inactiveSearchBox}
         >
           {/* SearchBox가 활성화되면 생성되는 딤드 */}
         </div>

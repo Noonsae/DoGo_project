@@ -4,9 +4,11 @@ import { useEffect, useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
 import { HiSearch } from 'react-icons/hi';
 
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import useSearchStore from '@/store/useSearchStore';
+
+import generateUrl from '@/utils/urlHelpers';
 
 import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
 
@@ -15,12 +17,15 @@ import DurationModal from './DurationModal';
 import DetailsModal from './DetailsModal';
 
 const SearchBox = () => {
-  const { location, checkIn, checkOut, details, setLocation, setCheckIn, setCheckOut, setDetails } = useSearchStore();
+  const [searchUrl, setSearchUrl] = useState<string>('');
+  const { location, checkIn, checkOut, details, schedule, setLocation } = useSearchStore();
 
   const [isSticky, setIsSticky] = useState(false); // 스크롤 상태 관리
   const [activeModal, setActiveModal] = useState<'location' | 'duration' | 'details' | null>(null); // 모달 상태
 
   const modalRef = useRef<HTMLDivElement>(null);
+
+  const router = useRouter(); // Next.js의 useRouter 훅
 
   // 모달 열기
   const openModal = (modal: 'location' | 'duration' | 'details') => {
@@ -59,6 +64,19 @@ const SearchBox = () => {
     },
     ['mousedown', 'touchstart']
   );
+
+  const url = generateUrl({ location, checkIn, checkOut, schedule, details }); // URL 생성
+
+  // 비동기로 전환 후 제대로 작동하는데 이유를 모르겠음;;
+  const handleSearchClick = async () => {
+    const searchUrl = url;
+    router.push(searchUrl); // 페이지 이동
+    closeModal();
+  };
+
+  useEffect(() => {
+    setSearchUrl(url); // 의존성 배열에서 searchUrl 제거
+  }, [location, schedule, details]); // 필요한 의존성만 포함
 
   return (
     <>
@@ -118,13 +136,13 @@ const SearchBox = () => {
               </div>
 
               {/* 검색 버튼 */}
-              <Link
-                href="/hotel-list"
+              <button
+                onClick={handleSearchClick}
                 className="w-[11%] max-w-[124px] h-full flex flex-row justify-center items-center bg-[#B3916A] text-white text-[20px] text-center font-semibold rounded-[8px] outline-none hover:bg-[#8F7455] active:bg-[#6B573F] disabled:bg-[#EFEFEF] disabled:text-[#BFBFBF] transition duration-200"
               >
                 <HiSearch className="inline-block w-[24px] h-[24px] -ml-[1px] mr-[4%] fill-white" />
                 검색
-              </Link>
+              </button>
             </div>
 
             {/* 모달 */}

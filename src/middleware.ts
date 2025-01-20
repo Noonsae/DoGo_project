@@ -2,12 +2,13 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
-  const token = req.cookies.get("token");
-  const isAuthRoute = req.nextUrl.pathname.startsWith("/");
+  // const token = req.cookies.get("token");
+  // const isAuthRoute = req.nextUrl.pathname.startsWith("/");
 
-  if (!token && !isAuthRoute) {
-    return NextResponse.redirect(new URL("/", req.url));
-  }
+  // TODO: 수정 예정 
+  // if (!token && !isAuthRoute) {
+  //   return NextResponse.redirect(new URL("/", req.url));
+  // }
 
   return NextResponse.next();
 }
