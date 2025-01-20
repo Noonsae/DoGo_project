@@ -17,7 +17,7 @@ interface FilterProps {
 const AsideFilter = ({ onFilterChange }: FilterProps) => {
   const [selectedGrade, setSelectedGrade] = useState<number[]>([]);
   const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(5000000); // 초기값 50만 원
+  const [maxPrice, setMaxPrice] = useState(10000000); // 초기값 50만 원
   const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
 
@@ -79,7 +79,7 @@ const AsideFilter = ({ onFilterChange }: FilterProps) => {
             className="absolute h-1 bg-[#B3916A] rounded"
             style={{
               left: `${(minPrice / 500000) * 100}%`,
-              right: `${100 - (maxPrice / 5000000) * 100}%`
+              right: `${100 - (maxPrice / 10000000) * 100}%`
             }}
           />
           <input
@@ -93,8 +93,8 @@ const AsideFilter = ({ onFilterChange }: FilterProps) => {
           <input
             type="range"
             min={0}
-            max={5000000}
-            step={100000}
+            max={10000000}
+            step={500000}
             value={maxPrice}
             className="absolute w-full h-1 appearance-none pointer-events-auto"
             onChange={(e) => handlePriceChange('max', Number(e.target.value))}
