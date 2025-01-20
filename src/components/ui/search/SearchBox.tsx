@@ -135,12 +135,12 @@ const SearchBox = () => {
             )}
             {activeModal === 'duration' && (
               <div ref={modalRef}>
-                <DurationModal />
+                <DurationModal onClose={() => setActiveModal(null)} />
               </div>
             )}
             {activeModal === 'details' && (
               <div ref={modalRef}>
-                <DetailsModal />
+                <DetailsModal onClose={() => setActiveModal(null)} />
               </div>
             )}
           </section>

@@ -125,9 +125,9 @@ const ScrollSearchBox = () => {
         {activeModal === 'location' && (
           <LocationModal onSelectLocation={handleSelectLocation} left="18.5%" top="180px" />
         )}
-        {activeModal === 'duration' && <DurationModal left="36%" top="180px" />}
+        {activeModal === 'duration' && <DurationModal left="36%" top="180px" onClose={() => setActiveModal(null)} />}
 
-        {activeModal === 'details' && <DetailsModal right="20%" top="180px" />}
+        {activeModal === 'details' && <DetailsModal right="20%" top="180px" onClose={() => setActiveModal(null)} />}
       </div>
 
       {/* Dimmed */}

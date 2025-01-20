@@ -3,7 +3,7 @@ import React from 'react';
 import { IoIosAddCircleOutline, IoIosRemoveCircleOutline } from 'react-icons/io';
 import useSearchStore from '@/store/useSearchStore'; // zustand store import
 
-const DetailsModal = ({ right = '360px', top }: { right?: string; top?: string }) => {
+const DetailsModal = ({ right = '360px', top, onClose }: { right?: string; top?: string; onClose: () => void }) => {
   const { setDetails } = useSearchStore(); // zustand의 setDetails 사용
 
   const initialFilters = {
@@ -42,6 +42,7 @@ const DetailsModal = ({ right = '360px', top }: { right?: string; top?: string }
       .join(', '); // 필터링된 값을 쉼표로 연결
 
     setDetails(formattedDetails); // zustand에 저장
+    onClose();
   };
 
   const handleResetFilters = () => {
