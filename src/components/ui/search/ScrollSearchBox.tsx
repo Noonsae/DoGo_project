@@ -91,13 +91,13 @@ const ScrollSearchBox = () => {
           >
             <div className={`w-1/2 py-2 items-center`}>
               {/* check_in 상태를 text로 나타냄.*/}
-              <p className="text-[15px] text-[#777]">{checkIn || '날짜 추가'}</p>
-              {isSearchBoxClicked && <p className="text-base text-[#444]">체크인 날짜 선택</p>}
+              <p className="text-[15px] text-[#777]">체크인</p>
+              {isSearchBoxClicked && <p className="text-base text-[#444]">{checkIn || '날짜 추가'}</p>}
             </div>
             <div className="w-1/2 py-2 items-center">
               {/* check_out 상태를 text로 나타냄.*/}
-              <p className="text-[15px] text-[#777]">{checkOut || '날짜 추가'}</p>
-              {isSearchBoxClicked && <p className="text-base text-[#444]">체크아웃 날짜 선택</p>}
+              <p className="text-[15px] text-[#777]">체크아웃</p>
+              {isSearchBoxClicked && <p className="text-base text-[#444]">{checkOut || '날짜 추가'}</p>}
             </div>
           </div>
 
