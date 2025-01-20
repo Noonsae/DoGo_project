@@ -2,13 +2,12 @@
 
 import { useState } from 'react';
 import useAuthStore from '@/store/useAuth';
-import Swal from 'sweetalert2';
 import handleSignupAction from '../actions/handleSignupAction';
 import { useRouter } from 'next/navigation';
 import SignUpBusiness from './_components/SignUpBusiness';
 import { browserSupabase } from '@/supabase/supabase-client';
-
 import SignupUserModal from '@/components/ui/sign-up/SignUpUserUi';
+
 
 export default function SignUpBusinessPage() {
   const [email, setEmail] = useState('');
@@ -32,7 +31,7 @@ export default function SignUpBusinessPage() {
         password,
         name,
         phone,
-        business_number: businessNumber,
+        businessNumber,
         nickname,
         role: 'business'
       });

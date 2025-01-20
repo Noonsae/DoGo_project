@@ -8,7 +8,7 @@ export default async function handleSignupAction({
   password,
   name,
   phone,
-  business_number,
+  businessNumber,
   nickname,
   role
 }: {
@@ -16,9 +16,9 @@ export default async function handleSignupAction({
   password: string;
   name: string;
   phone: string;
-  business_number?: string; // 사업자 번호는 선택적
-  nickname: string;
-  role: 'admin' | 'business' | 'user';
+  businessNumber?: string;
+  nickname?: string;
+  role: string;
 }) {
   // const supabaseAdmin = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
   const supabaseAdmin = await serverSupabase();
@@ -62,7 +62,7 @@ export default async function handleSignupAction({
       phone_number: phone,
       role,
       user_name: name,
-      business_number: role === 'business' ? business_number : null,
+      business_number: role === 'business' ? businessNumber : null,
       nickname: role === 'user' ? name : null
     };
 

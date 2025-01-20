@@ -13,8 +13,7 @@ const SignUpUser: React.FC<SignUpProps> = ({
   setPhone,
   nickname,
   setNickname,
-  setBusinessNumber,
-  name,
+  name, 
   setName,
   error,
   setError,
@@ -121,7 +120,7 @@ const SignUpUser: React.FC<SignUpProps> = ({
         <input
           type="text"
           placeholder="이름을 입력해 주세요."
-          value={nickname || ''}
+          value={name}
           onChange={(e) => setName(e.target.value)}
           className="w-[400px] p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#B3916A] mb-4"
         />
