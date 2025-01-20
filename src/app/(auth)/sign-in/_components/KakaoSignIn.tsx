@@ -4,7 +4,6 @@ import React from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 import useAuthStore from '@/store/useAuth';
 import { User } from '@supabase/supabase-js';
-import { AuthResponse } from '@supabase/supabase-js';
 
 const KakaoSignIn = () => {
   const setUser = useAuthStore((state) => state.setUser);
