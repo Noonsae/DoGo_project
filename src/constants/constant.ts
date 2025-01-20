@@ -9,3 +9,18 @@ export const locations = [
   { id: `ulsan`, label: `울산` },
   { id: `jeju`, label: `제주` }
 ];
+
+export const MonthList = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+];

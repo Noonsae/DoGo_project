@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import useAuthStore from '@/store/useAuth';
 import { HotelType } from '@/types/supabase/hotel-type';
-import { RoomType } from '@/types/supabase/room-type';
 import HotelRoom from './_components/HotelRoom';
 import HotelLocation from './_components/HotelLocation';
 import HotelBox from './_components/HotelBox';
@@ -15,9 +14,10 @@ import HotelFacility from './_components/HotelFacility';
 import { ServicesType } from '@/types/supabase/services-type';
 import useFavoriteStore from '@/hooks/favorite/useFavoriteStore';
 import HotelAttraction from './_components/HotelAttraction';
-import { ReviewType } from '@/types/supabase/review-type';
 import HotelReviews from './_components/HotelReviews';
 import HotelPolicies from './_components/HotelPolicies';
+import useHotelReviews from '@/hooks/review/useHotelReviews';
+import useHotelRooms from '@/hooks/room/useHotelRooms';
 
 const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const hotelId = params?.id;
@@ -25,13 +25,12 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const [hotelData, setHotelData] = useState<HotelType | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
-  const [roomsData, setRoomsData] = useState<RoomType[]>([]);
   const [facilityData, setFacilityData] = useState<FacilitiesType[]>([]);
   const user = useAuthStore((state) => state.user) as UserType | null;
   const [servicesData, setServicesData] = useState<ServicesType[]>([]);
-  const [reviews, setReviews] = useState<ReviewType[]>([]); // 최신 2개의 리뷰
-  const [allReviews, setAllReviews] = useState<ReviewType[]>([]); // 전체 리뷰
   const { favoriteStatus, toggleFavorite, initializeFavorites } = useFavoriteStore();
+  const { reviews, allReviews } = useHotelReviews(hotelId);
+  const { roomsData } = useHotelRooms(hotelId);
 
   useEffect(() => {
     if (user?.id && hotelId) {
@@ -68,53 +67,6 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
     };
 
     fetchHotelData();
-  }, [hotelId]);
-
-  useEffect(() => {
-    const fetchRoomsData = async () => {
-      if (!hotelId) return;
-
-      try {
-        const response = await fetch(`/api/rooms?hotelId=${hotelId}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch rooms data');
-        }
-        const data = await response.json();
-        const sortedData = data.sort((a: RoomType, b: RoomType) => a.price - b.price);
-        setRoomsData(sortedData);
-      } catch (error) {
-        console.error('Error fetching rooms data:', error);
-      }
-    };
-
-    fetchRoomsData();
-  }, [hotelId]);
-
-  const fetchHotelReviews = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch(`/api/review?hotelId=${hotelId}`);
-      const data = await response.json();
-
-      if (response.ok) {
-        // 리뷰를 최신순으로 정렬
-        const sortedReviews = data.sort((a: ReviewType, b: ReviewType) => b.created_at.localeCompare(a.created_at));
-        setReviews(sortedReviews.slice(0, 2)); // 최신 2개 리뷰만 상태에 저장
-        setAllReviews(sortedReviews); // 전체 리뷰 상태에 저장
-      } else {
-        console.error('API Error:', data.error);
-      }
-    } catch (error) {
-      console.error('Failed to fetch reviews:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (hotelId) {
-      fetchHotelReviews();
-    }
   }, [hotelId]);
 
   const selectedRoomId = roomsData.length > 0 ? roomsData[0]?.id : null;

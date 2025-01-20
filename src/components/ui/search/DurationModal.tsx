@@ -16,20 +16,20 @@ const DurationModal = ({ left = '36%', top, onClose }: { left?: string; top?: st
   const [selectedStayOption, setSelectedStayOption] = useState(''); // 단일 선택된 숙박 옵션
   const [selectedMonth, setSelectedMonth] = useState<string>(''); // 다중 선택된 달
 
-  const handleDateSelect = (info: any) => {
-    const { startStr, endStr } = info;
-    setSelectedDateRange({ start: startStr, end: endStr });
+    const handleDateSelect = (info: any) => {
+      const { startStr, endStr } = info;
+      setSelectedDateRange({ start: startStr, end: endStr });
   };
 
   // 캘린더 폼 모달 저장 버튼
-  const applyChanges = () => {
-    if (selectedDateRange.start && selectedDateRange.end) {
-      const formattedSchedule = `체크인: ${selectedDateRange.start}, 체크아웃: ${selectedDateRange.end}`;
-      setCheckIn(selectedDateRange.start);
-      setCheckOut(selectedDateRange.end);
-      setSchedule(formattedSchedule);
-    }
-  };
+    const applyChanges = () => {
+      if (selectedDateRange.start && selectedDateRange.end) {
+        const formattedSchedule = `체크인: ${selectedDateRange.start}, 체크아웃: ${selectedDateRange.end}`;
+        setCheckIn(selectedDateRange.start);
+        setCheckOut(selectedDateRange.end);
+        setSchedule(formattedSchedule);
+      }
+    };
 
   // 저장 버튼
   const handleSaveSchedule = () => {
@@ -86,10 +86,10 @@ const DurationModal = ({ left = '36%', top, onClose }: { left?: string; top?: st
               plugins={[dayGridPlugin]}
               initialView="dayGridMonth"
               dayCellContent={(arg) => {
-                console.log({ arg });
+                console.log({arg})
                 // arg.dayNumber는 날짜 숫자
                 return (
-                  // 버튼 onClick -> state 넣기
+                  // 버튼 onClick -> state 넣기 
                   <div className="custom-day-cell">
                     {/* <span>{arg.dayNumber}</span> */}
                     <span>{arg.date.getDate()}</span>

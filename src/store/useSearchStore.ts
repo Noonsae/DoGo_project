@@ -6,11 +6,13 @@ const useSearchStore = create<SearchState>((set) => ({
   location: '',
   checkIn: '',
   checkOut: '',
+  schedule: '',
   details: '',
   setLocation: (location) => set({ location }),
   setCheckIn: (checkIn) => set({ checkIn }),
   setCheckOut: (checkOut) => set({ checkOut }),
-  setDetails: (details) => set({ details })
+  setSchedule: (schedule) => set({ schedule }),
+  setDetails: (details) => set({ details }),
 }));
 
 export default useSearchStore;
