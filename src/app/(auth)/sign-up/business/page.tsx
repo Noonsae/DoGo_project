@@ -33,6 +33,7 @@ export default function SignUpBusinessPage() {
         name,
         phone,
         business_number: businessNumber,
+        nickname,
         role: 'business'
       });
 
