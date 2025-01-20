@@ -1,34 +1,52 @@
 'use client';
 
 import { useState } from 'react';
-
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
 import useSearchStore from '@/store/useSearchStore';
 
-const DurationModal = ({ left ='36%', top }: { left?: string; top?: string }) => {
+const DurationModal = ({ left = '36%', top }: { left?: string; top?: string }) => {
   const { setCheckIn, setCheckOut } = useSearchStore();
   const [tab, setTab] = useState<'date' | 'flexible'>('date'); // 탭 상태
-  const [selectedDateRange, setSelectedDateRange] = useState({ start: '', end: '' }); // 날짜 지정 값
-  const [selectedFlexibleOption, setSelectedFlexibleOption] = useState(''); // 유동적인 값
+  const [selectedDates, setSelectedDates] = useState<{ start?: Date; end?: Date }>({}); // 달력에서 선택한 날짜
+  const [selectedFlexibleOption, setSelectedFlexibleOption] = useState(''); // 유동적인 옵션
 
   const applyChanges = () => {
-    if (tab === 'date') {
-      setCheckIn(selectedDateRange.start);
-      setCheckOut(selectedDateRange.end);
+    if (tab === 'date' && selectedDates.start && selectedDates.end) {
+      setCheckIn(selectedDates.start.toISOString().split('T')[0]);
+      setCheckOut(selectedDates.end.toISOString().split('T')[0]);
+    } else if (tab === 'flexible') {
+      console.log('유동적인 옵션:', selectedFlexibleOption);
+    }
+  };
+
+  const handleDateSelect = (info: any) => {
+    if (!selectedDates.start) {
+      setSelectedDates({ start: info.start });
+    } else {
+      setSelectedDates({ start: selectedDates.start, end: info.end });
     }
   };
 
   return (
-    <div style={{ left, top }} className="fixed bg-white w-[400px] p-6 rounded-lg z-50">
+    <div
+      style={{ left, top }}
+      className="fixed bg-white w-[400px] p-6 rounded-lg z-50 shadow-lg"
+    >
       {/* 탭 */}
       <div className="flex justify-around mb-6">
         <button
-          className={`py-2 px-4 rounded ${tab === 'date' ? 'bg-[#B3916A] text-white' : 'bg-gray-200'}`}
+          className={`py-2 px-4 rounded ${
+            tab === 'date' ? 'bg-[#B3916A] text-white' : 'bg-gray-200'
+          }`}
           onClick={() => setTab('date')}
         >
           날짜 지정
         </button>
         <button
-          className={`py-2 px-4 rounded ${tab === 'flexible' ? 'bg-[#B3916A] text-white' : 'bg-gray-200'}`}
+          className={`py-2 px-4 rounded ${
+            tab === 'flexible' ? 'bg-[#B3916A] text-white' : 'bg-gray-200'
+          }`}
           onClick={() => setTab('flexible')}
         >
           유동적인
@@ -38,21 +56,51 @@ const DurationModal = ({ left ='36%', top }: { left?: string; top?: string }) =>
       {/* 날짜 지정 폼 */}
       {tab === 'date' && (
         <div>
-          <p className="mb-4">달력 폼이 들어갈 자리 (FullCalendar 라이브러리 활용 가능)</p>
-          <input
-            type="text"
-            placeholder="체크인 날짜"
-            value={selectedDateRange.start}
-            onChange={(e) => setSelectedDateRange({ ...selectedDateRange, start: e.target.value })}
-            className="border p-2 w-full mb-4"
-          />
-          <input
-            type="text"
-            placeholder="체크아웃 날짜"
-            value={selectedDateRange.end}
-            onChange={(e) => setSelectedDateRange({ ...selectedDateRange, end: e.target.value })}
-            className="border p-2 w-full"
-          />
+          <p className="mb-4 text-lg font-semibold">날짜 선택</p>
+          <div className="grid grid-cols-2 gap-6 mb-6">
+            {/* 첫 번째 달력 */}
+            <FullCalendar
+              plugins={[dayGridPlugin]}
+              initialView="dayGridMonth"
+              dayCellContent={(arg) => {
+                console.log({ arg });
+                return (
+                  <div className="custom-day-cell">
+                    <span>{arg.date.getDate()}</span>
+                  </div>
+                );
+              }}
+              locale="ko"
+              height="274px"
+              events={[]}
+              selectable
+              select={handleDateSelect}
+              headerToolbar={false}
+              dayMaxEventRows
+            />
+
+            {/* 두 번째 달력 */}
+            <FullCalendar
+              plugins={[dayGridPlugin]}
+              initialView="dayGridMonth"
+              locale="ko"
+              height="274px"
+              events={[]}
+              selectable
+              select={handleDateSelect}
+              headerToolbar={false}
+              dayMaxEventRows
+              initialDate={new Date(new Date().setMonth(new Date().getMonth() + 1))} // 다음 달 표시
+            />
+          </div>
+          <div className="w-full flex justify-end">
+            <button
+              onClick={applyChanges}
+              className="w-[124px] mt-8 px-6 py-[10px] bg-[#B3916A] text-white text-[18px] font-semibold rounded-lg hover:bg-[#8F7455] active:bg-[#6B573F]"
+            >
+              적용하기
+            </button>
+          </div>
         </div>
       )}
 
@@ -89,11 +137,6 @@ const DurationModal = ({ left ='36%', top }: { left?: string; top?: string }) =>
           </div>
         </div>
       )}
-
-      {/* 적용 버튼 */}
-      <button onClick={applyChanges} className="mt-6 bg-[#B3916A] text-white py-2 px-4 rounded w-full">
-        적용하기
-      </button>
     </div>
   );
 };
