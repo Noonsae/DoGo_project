@@ -96,11 +96,11 @@ const SearchBox = () => {
               >
                 <div className="w-1/2 h-full">
                   <p className="text-[15px] text-[#636363] font-medium">체크인</p>
-                  <span className="text-[16px] text-[#A0A0A0] font-medium">날짜 추가</span>
+                  <span className="text-[16px] text-[#A0A0A0] font-medium">{checkIn || `날짜 추가`}</span>
                 </div>
                 <div className="w-1/2 h-full px-[16px]">
                   <p className="text-[15px] text-[#636363] font-medium">체크아웃</p>
-                  <span className="text-[16px] text-[#A0A0A0] font-medium">날짜 추가</span>
+                  <span className="text-[16px] text-[#A0A0A0] font-medium">{checkOut || `날짜 추가`}</span>
                 </div>
               </div>
 
@@ -111,8 +111,10 @@ const SearchBox = () => {
                   activeModal === 'details' ? 'border-[#B3916A]' : 'border-[#BFBFBF]'
                 }`}
               >
-                <p className="text-[15px] text-[#636363] font-medium">객실 및 인원</p>
-                <span className="text-[16px] text-[#A0A0A0] font-medium">{details || '객실 및 인원 추가'}</span>
+                <p className="max-w-[272px] text-[15px] text-[#636363] font-medium">객실 및 인원</p>
+                <p className="max-w-[272px] text-[16px] text-[#A0A0A0] font-medium truncate">
+                  {details || '객실 및 인원 추가'}
+                </p>
               </div>
 
               {/* 검색 버튼 */}
@@ -133,12 +135,12 @@ const SearchBox = () => {
             )}
             {activeModal === 'duration' && (
               <div ref={modalRef}>
-                <DurationModal />
+                <DurationModal onClose={() => setActiveModal(null)} />
               </div>
             )}
             {activeModal === 'details' && (
               <div ref={modalRef}>
-                <DetailsModal />
+                <DetailsModal onClose={() => setActiveModal(null)} />
               </div>
             )}
           </section>
