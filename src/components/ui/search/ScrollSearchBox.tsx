@@ -74,7 +74,7 @@ const ScrollSearchBox = () => {
       <div
         ref={searchBoxRef}
         onClick={() => setIsSearchBoxClicked(true)}
-        className={`fixed left-0 top-[76px] w-full flex items-center bg-white border-b border-[#bfbfbf] z-50 ${
+        className={`fixed left-0 top-[76px] w-full flex items-center bg-white border-b border-[#bfbfbf] z-30 ${
           isSearchBoxClicked ? 'h-[116px] py-6' : 'h-[72px] py-3'
         }`}
       >
@@ -152,7 +152,7 @@ const ScrollSearchBox = () => {
       {/* Dimmed */}
       {isSearchBoxClicked && (
         <div
-          className="fixed left-0 top-[192px] inset-0 w-full h-[calc(100vh-192px)] bg-black bg-opacity-40 z-30"
+          className="fixed left-0 top-[192px] inset-0 w-full h-[calc(100vh-192px)] bg-black bg-opacity-40 z-20"
           onClick={inactiveSearchBox}
         >
           {/* SearchBox가 활성화되면 생성되는 딤드 */}
