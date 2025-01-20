@@ -29,14 +29,14 @@ const fetchHotelsFilter = async ({
   }
 
   // 2. 가격 조건 처리
-  if (filters.minPrice != null && filters.minPrice >= 0) {
-    query = query.gte('price', filters.minPrice);
-    console.log(filters.minPrice);
-  }
-  if (filters.maxPrice != null && filters.maxPrice > 0) {
-    query = query.lte('price', filters.maxPrice);
-    console.log(filters.maxPrice);
-  }
+  // if (filters.minPrice != null && filters.minPrice >= 0) {
+  //   query = query.gte('price', filters.minPrice);
+  //   console.log(filters.minPrice);
+  // }
+  // if (filters.maxPrice != null && filters.maxPrice > 0) {
+  //   query = query.lte('price', filters.maxPrice);
+  //   console.log(filters.maxPrice);
+  // }
 
   // 3. 위치 필터 처리
   if (filters.location) {
