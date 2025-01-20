@@ -29,6 +29,7 @@ const Page = () => {
     router.push('/sign-in');
   };
   return (
+
     <div className="flex flex-col justify-center items-center min-h-screen">
       <div className=" mt-[156px] mb-[40px]">
         <svg width="142" height="40" viewBox="0 0 142 40" fill="none" xmlns="http://www.w3.org/2000/svg">
