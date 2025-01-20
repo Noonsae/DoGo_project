@@ -6,6 +6,8 @@ import { FiCalendar } from 'react-icons/fi';
 import useSearchStore from '@/store/useSearchStore';
 
 import { MonthList } from '@/constants/constant';
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
 
 const DurationModal = ({ left = '36%', top, onClose }: { left?: string; top?: string; onClose: () => void }) => {
   const { setCheckIn, setCheckOut, setSchedule } = useSearchStore();
@@ -13,6 +15,21 @@ const DurationModal = ({ left = '36%', top, onClose }: { left?: string; top?: st
   const [selectedDateRange, setSelectedDateRange] = useState({ start: '', end: '' }); // 날짜 지정 값
   const [selectedStayOption, setSelectedStayOption] = useState(''); // 단일 선택된 숙박 옵션
   const [selectedMonth, setSelectedMonth] = useState<string>(''); // 다중 선택된 달
+
+    const handleDateSelect = (info: any) => {
+      const { startStr, endStr } = info;
+      setSelectedDateRange({ start: startStr, end: endStr });
+  };
+
+  // 캘린더 폼 모달 저장 버튼
+    const applyChanges = () => {
+      if (selectedDateRange.start && selectedDateRange.end) {
+        const formattedSchedule = `체크인: ${selectedDateRange.start}, 체크아웃: ${selectedDateRange.end}`;
+        setCheckIn(selectedDateRange.start);
+        setCheckOut(selectedDateRange.end);
+        setSchedule(formattedSchedule);
+      }
+    };
 
   // 저장 버튼
   const handleSaveSchedule = () => {
@@ -62,21 +79,54 @@ const DurationModal = ({ left = '36%', top, onClose }: { left?: string; top?: st
       {/* 날짜 지정 폼 */}
       {tab === 'date' && (
         <div>
-          <p className="mb-4">달력 폼이 들어갈 자리 (FullCalendar 라이브러리 활용 가능)</p>
-          <input
-            type="text"
-            placeholder="체크인 날짜"
-            value={selectedDateRange.start}
-            onChange={(e) => setSelectedDateRange({ ...selectedDateRange, start: e.target.value })}
-            className="border p-2 w-full mb-4"
-          />
-          <input
-            type="text"
-            placeholder="체크아웃 날짜"
-            value={selectedDateRange.end}
-            onChange={(e) => setSelectedDateRange({ ...selectedDateRange, end: e.target.value })}
-            className="border p-2 w-full"
-          />
+          <p className="mb-4 text-lg font-semibold">날짜 선택</p>
+          <div className="grid grid-cols-2 gap-6 mb-6">
+            {/* 첫 번째 달력 */}
+            <FullCalendar
+              plugins={[dayGridPlugin]}
+              initialView="dayGridMonth"
+              dayCellContent={(arg) => {
+                console.log({arg})
+                // arg.dayNumber는 날짜 숫자
+                return (
+                  // 버튼 onClick -> state 넣기 
+                  <div className="custom-day-cell">
+                    {/* <span>{arg.dayNumber}</span> */}
+                    <span>{arg.date.getDate()}</span>
+                  </div>
+                );
+              }}
+              locale="ko"
+              height="274px"
+              events={[]}
+              selectable
+              select={(info) => handleDateSelect(info)}
+              headerToolbar={false}
+              dayMaxEventRows
+            />
+
+            {/* 두 번째 달력 */}
+            <FullCalendar
+              plugins={[dayGridPlugin]}
+              initialView="dayGridMonth"
+              locale="ko"
+              height="274px"
+              events={[]}
+              selectable
+              select={(info) => handleDateSelect(info)}
+              headerToolbar={false}
+              dayMaxEventRows
+              initialDate={new Date(new Date().setMonth(new Date().getMonth() + 1))} // 다음 달 표시
+            />
+          </div>
+          <div className="w-full flex justify-end">
+            <button
+              onClick={applyChanges}
+              className="w-[124px] mt-8 px-6 py-[10px] bg-[#B3916A] text-white text-[18px] font-semibold rounded-lg hover:bg-[#8F7455] active:bg-[#6B573F]"
+            >
+              적용하기
+            </button>
+          </div>
         </div>
       )}
 
@@ -136,18 +186,18 @@ const DurationModal = ({ left = '36%', top, onClose }: { left?: string; top?: st
               ))}
             </div>
           </div>
+          <div className="w-full flex justify-end">
+            <button
+              onClick={handleSaveSchedule}
+              className="w-[124px] mt-8 px-6 py-[10px] bg-[#B3916A] text-white text-[18px] font-semibold rounded-lg hover:bg-[#8F7455] active:bg-[#6B573F]"
+            >
+              적용하기
+            </button>
+          </div>
         </div>
       )}
 
       {/* 적용 버튼 */}
-      <div className="w-full flex justify-end">
-        <button
-          onClick={handleSaveSchedule}
-          className="w-[124px] mt-8 px-6 py-[10px] bg-[#B3916A] text-white text-[18px] font-semibold rounded-lg hover:bg-[#8F7455] active:bg-[#6B573F]"
-        >
-          적용하기
-        </button>
-      </div>
     </div>
   );
 };

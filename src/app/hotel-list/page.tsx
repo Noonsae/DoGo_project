@@ -18,7 +18,9 @@ interface UserType {
 // 호텔 데이터를 가져오는 비동기 함수
 const fetchHotels = async ({
   pageParam = 0,
-  filters = { grade: [] },
+  // 지역, 날짜, .... 추가 예정 
+  filters = { grade: []},
+  // TODO: 가격 이외의 조건이 있다면 객체로 변경 해야 함  { price: "asc", rating: "desc" }
   sortOrder = ''
 }: {
   pageParam?: number;
@@ -33,6 +35,30 @@ const fetchHotels = async ({
   const url = `/api/hotel?offset=${pageParam}&limit=8${gradeQuery}${sortQuery}`;
   const res = await fetch(url);
 
+  // TODO: supabase로
+  // let query = supabase.from("hotels").select("*");
+
+  // if (filters.grade.length > 0 ) {
+  //   // query.eq("type", ~~~)
+  // }
+
+  // if (filters.location) {
+  //   query.eq("location", filters.location)
+  // }
+
+  // if (sortOrder) {
+  //   query.order("~~~", s)
+  // }
+
+  // query.limit(10).offset(pageParam * 10)
+  // 1,2,3,4,5,6,7,8,9,10, 11, 12, 13, 14, 15, 16, 17,... 
+
+  // await query
+
+  // 
+
+
+
   if (!res.ok) {
     throw new Error(`Failed to fetch hotels: ${res.status}`);
   }
@@ -43,6 +69,11 @@ const fetchHotels = async ({
     totalCount: data.totalCount
   };
 };
+
+/**
+ * 1. url에서 필터 조건을 가져온다. useSearchParams 활용
+ * 2. location, 날짜, 지역 -> API 요청 (fetchHotels의 파라미터로 전달한다)
+ */
 
 const HotelList = () => {
   // TODO: 이거 활용하기
@@ -74,8 +105,14 @@ const HotelList = () => {
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ['hotels', filters, sortOrder],
+    // 1. queryFn -> fetchHotels가 실행된다. 이때 pageParam = 0이다. 
     queryFn: ({ pageParam = 0 }) => fetchHotels({ pageParam, filters, sortOrder }),
+    // 2. 스크롤이 마지막까지 내려가서 fetchNextPage가 실행되면 getNextPageParam 함수가 실행된다. 
+    // 3. totalLoaded 가 pageParam으로 들어가진다. -> 
+    // 4. pageParam이 바뀌면 fetchHotels가 추가로 더 실행된다. 이때 pageParam = 1이다. 
     getNextPageParam: (lastPage, allPages) => {
+      // { pages: [~~~], ~~~~ }
+      // console.log(lastPage) 
       const totalLoaded = allPages.flatMap((page) => page.items).length;
       const totalAvailable = lastPage.totalCount;
 
