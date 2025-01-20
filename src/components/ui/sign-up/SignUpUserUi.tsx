@@ -11,7 +11,9 @@ export default function SignupUserModal({ isOpen, children }: ModalProps) {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-      <div className="w-[500px] bg-white  p-6 rounded-lg shadow-lg max-w-sm ">{children}</div>
+      <div className="w-[500px] flex p-[40px 32px 32px 32px] flex-col items-center g-[32px] bg-white rounded-[8px] ">
+        {children}
+      </div>
     </div>
   );
 }
