@@ -5,7 +5,6 @@ import { useClickAway } from 'react-use';
 import { HiSearch } from 'react-icons/hi';
 
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 
 import useSearchStore from '@/store/useSearchStore';
 
