@@ -13,7 +13,6 @@ const SignUpUser: React.FC<SignUpProps> = ({
   setPhone,
   nickname,
   setNickname,
-  setBusinessNumber,
   name,
   setName,
   error,

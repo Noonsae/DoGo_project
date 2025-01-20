@@ -41,7 +41,7 @@ export default function SignUpUserPage() {
         setError(result.message);
         return;
       }
-// commit용 주석
+      // commit용 주석
       const { error: loinError } = await supabase.auth.signInWithPassword({
         email,
         password
