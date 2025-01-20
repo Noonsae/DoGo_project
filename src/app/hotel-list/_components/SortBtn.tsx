@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 
+import { sortOrder } from '@/types/hotel-filter-type';
+
 // Props 타입 정의
 interface SortBtnType {
-  sortOrder: string; // 선택된 정렬 순서
-  handleSortChange: (value: string) => void; // onChange 핸들러
+  sortOrder: sortOrder; // 선택된 정렬 순서
+  handleSortChange: (value: sortOrder) => void; // onChange 핸들러
 }
 
 const SortBtn = ({ sortOrder, handleSortChange }: SortBtnType) => {
   const [isOpen, setIsOpen] = useState(false); // 드롭다운 열림/닫힘 상태
-  const options = [
+  const options:{value: sortOrder, label: string}[] = [
     { value: '', label: '추천순' },
     { value: 'asc', label: '낮은 가격 순' },
     { value: 'desc', label: '높은 가격 순' }
   ];
 
-  const handleSelect = (value: string) => {
+  const handleSelect = (value: sortOrder) => {
     handleSortChange(value); // 부모 컴포넌트의 핸들러 호출
     setIsOpen(false); // 드롭다운 닫기
   };
