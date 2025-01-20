@@ -22,7 +22,7 @@ export default function SignUpUserPage() {
   const [nickname, setNickname] = useState('');
   const setUser = useAuthStore((state) => state.setUser);
   const [isModlaOpen, setIsModalOpen] = useState(false);
-
+  const [businessNumber, setBusinessNumber] = useState<string>('');
   const router = useRouter();
   const handleSignup = async () => {
     try {
@@ -85,6 +85,8 @@ export default function SignUpUserPage() {
         error={error}
         setError={setError}
         handleSignup={handleSignup}
+        setBusinessNumber={setBusinessNumber}
+        businessNumber={businessNumber}
       />
 
       <SignupUserModal isOpen={isModlaOpen} onClose={closeModal}>
