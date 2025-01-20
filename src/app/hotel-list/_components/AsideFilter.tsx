@@ -1,5 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import { HiOutlineRefresh } from 'react-icons/hi';
 
 interface FilterObject {
   grade: number[];
@@ -16,7 +17,7 @@ interface FilterProps {
 const AsideFilter = ({ onFilterChange }: FilterProps) => {
   const [selectedGrade, setSelectedGrade] = useState<number[]>([]);
   const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(500000); // 초기값 50만 원
+  const [maxPrice, setMaxPrice] = useState(5000000); // 초기값 50만 원
   const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
 
@@ -57,36 +58,45 @@ const AsideFilter = ({ onFilterChange }: FilterProps) => {
   };
 
   return (
-    <aside className="w-[266px]">
-      <h2 className="text-lg font-bold">필터</h2>
+    <aside className="w-[298px] h-[1350px] px-4 py-3">
+      {/* 필터 - ㅇ필터 초기화 */}
+      <div className="flex flex-row items-center justify-between mb-[70px]">
+        <p className="text-[20px] font-bold">필터</p>
+        <button className="flex flex-row items-center justify-between gap-[1.5px]">
+          <HiOutlineRefresh className="w-[20px] h-[20px] text-[#A0A0A0]" />
+          <span className="text-base text-[#777] font-regular leading-[1.45]">필터 초기화</span>
+        </button>
+      </div>
 
-      {/* 금액 필터 */}
-      <div>
-        <h3 className="text-lg font-semibold mb-2">
+      {/* 가격 1박 기준 */}
+      <div className="w-full h-[156px] py-[28px] border-y-2 border-[#e2e2e2] flex flex-col justify-start ">
+        <p className="text-lg font-semibold mb-2">
           가격 <span className="text-sm text-gray-500">1박 기준</span>
-        </h3>
+        </p>
+        
         <div className="relative w-full h-1 bg-gray-200 rounded my-4">
           <div
             className="absolute h-1 bg-[#B3916A] rounded"
             style={{
               left: `${(minPrice / 500000) * 100}%`,
-              right: `${100 - (maxPrice / 500000) * 100}%`
+              right: `${100 - (maxPrice / 5000000) * 100}%`
             }}
           />
           <input
             type="range"
             min={0}
-            max={500000}
+            max={10000000}
             value={minPrice}
-            className="absolute w-full h-1 opacity-0 cursor-pointer"
+            className="absolute w-full h-1 appearance-none pointer-events-auto"
             onChange={(e) => handlePriceChange('min', Number(e.target.value))}
           />
           <input
             type="range"
             min={0}
-            max={500000}
+            max={5000000}
+            step={100000}
             value={maxPrice}
-            className="absolute w-full h-1 opacity-0 cursor-pointer"
+            className="absolute w-full h-1 appearance-none pointer-events-auto"
             onChange={(e) => handlePriceChange('max', Number(e.target.value))}
           />
         </div>
