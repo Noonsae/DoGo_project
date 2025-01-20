@@ -31,20 +31,6 @@ interface UserType {
 const HotelList = () => {
   // TODO: 이거 활용하기
 
-  const searchParams = useSearchParams();
-  // location 파라미터 가져오기
-  const location = searchParams.get('location') || '';
-  // minPrice 가져오기
-  const minPrice = searchParams.get('minPrice') || '0';
-  // maxPrice 가져오기
-  const maxPrice = searchParams.get('maxPrice') || '10000000';
-  // stars(성급) 가져오기
-  const stars = searchParams.get('stars')?.split(',').map(Number) || [];
-  // facilities는 디코딩을 해서 가져와야 함 ( 가져오는 로직의 수정 필요 )
-  // const facilities = searchParams.get('facilities')?.split(',').map(Number) || [];
-  // services는 디코딩을 해서 가져와야 함 ( 가져오는 로직의 수정 필요 )
-  // const services = searchParams.get('services')?.split(',').map(Number) || [];
-
   const [filters, setFilters] = useState<FiltersType>({
     stars: [],
     minPrice: 0,
