@@ -89,7 +89,6 @@ export const parseStars = (details: string): number => {
   return 0; // 기본값
 };
 
-
 // 5. 호텔 객실 가격 칼큘레이터
 export const parsePrices = (price: string): { minPrice: number; maxPrice: number } => {
   const minMatch = price.match(/최저가:\s*(\d+)/);
