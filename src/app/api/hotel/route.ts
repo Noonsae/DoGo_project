@@ -10,8 +10,8 @@ export const GET = async (req: Request) => {
     const gradeQuery = url.searchParams.get('grade');
     const minPrice = parseInt(url.searchParams.get('minPrice') || '0', 10);
     const maxPrice = parseInt(url.searchParams.get('maxPrice') || '10000000', 10);
-    const facilities = url.searchParams.getAll('facilities');
-    const services = url.searchParams.getAll('services');
+    const facilities = url.searchParams.get('facilities')?.split(',') || [];
+    const services = url.searchParams.get('services')?.split(',') || [];
     const sortOrder = url.searchParams.get('sortOrder');
 
     console.log('Query Parameters:', {
@@ -29,10 +29,16 @@ export const GET = async (req: Request) => {
       .from('hotels')
       .select(
         `
-          *,
-          rooms(price),
-          hotel_facility(facility_id(id, name)),
-          hotel_service(service_id(id, name))
+          id,
+          name,
+          description,
+          main_img_url,
+          location,
+          stars,
+          address,
+          rooms(price, view),
+          hotel_facility(facility_id(name)),
+          hotel_service(service_id(name))
         `,
         { count: 'exact' }
       )
@@ -50,16 +56,16 @@ export const GET = async (req: Request) => {
     // 가격 필터 추가
     query = query.gte('rooms.price', minPrice).lte('rooms.price', maxPrice);
 
-    // 시설 필터 추가 (시설 이름 기준)
     if (facilities.length > 0) {
-      console.log('Facilities Filter:', facilities);
-      query = query.contains('hotel_facility.facility_id', facilities);
+      facilities.forEach((facility) => {
+        query = query.filter('hotel_facility.facility_id', 'eq', facility);
+      });
     }
-
-    // 서비스 필터 추가 (서비스 이름 기준)
     if (services.length > 0) {
       console.log('Services Filter:', services);
-      query = query.contains('hotel_service.service_id', services);
+
+      // UUID 배열을 IN 조건으로 필터링
+      query = query.in('hotel_service.service_id', services);
     }
 
     const { data, error, count } = await query;
@@ -81,7 +87,10 @@ export const GET = async (req: Request) => {
       address: hotel.address || '',
       location: hotel.location || '',
       stars: hotel.stars || 0,
-      min_price: hotel.rooms?.length ? Math.min(...hotel.rooms.map((room) => room.price)) : null,
+      min_price:
+        hotel.rooms?.length > 0
+          ? Math.min(...hotel.rooms.map((room) => room.price).filter((price) => price != null)) // null 방지
+          : null,
       facilities: hotel.hotel_facility?.map((facility) => facility.facility_id?.name) || [],
       services: hotel.hotel_service?.map((service) => service.service_id?.name) || []
     }));
