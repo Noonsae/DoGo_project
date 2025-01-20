@@ -8,6 +8,8 @@ import AsideFilter from './_components/AsideFilter';
 import { HotelType } from '@/types/supabase/hotel-type'; // HotelType 추가
 import useFavoriteStore from '@/hooks/favorite/useFavoriteStore';
 import SortBtn from './_components/SortBtn';
+import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
+import { useSearchParams } from 'next/navigation';
 
 interface UserType {
   id: string;
@@ -43,6 +45,10 @@ const fetchHotels = async ({
 };
 
 const HotelList = () => {
+  // TODO: 이거 활용하기
+  const searchParams = useSearchParams(); 
+  const params = searchParams.get("location");
+
   const [filters, setFilters] = useState<{ grade: number[] }>({ grade: [] });
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | ''>('');
   const observerRef = useRef<HTMLDivElement | null>(null);
@@ -106,9 +112,10 @@ const HotelList = () => {
   return (
     <div className="mx-[360px]">
       <div>
-        <h1 className="font-bold my-6">DoGo</h1>
+        <h1 className="font-bold">DoGo</h1>
       </div>
-      <div className="flex gap-8 mt-16">
+      <ScrollSearchBox/>
+      <div className="flex gap-8 mt-16 pt-[200px]">
         <AsideFilter onFilterChange={(newFilters) => setFilters(newFilters)} />
         <div className="flex-1">
           <div className="flex items-center mb-4">
