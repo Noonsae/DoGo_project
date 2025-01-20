@@ -1,15 +1,19 @@
 'use client';
 import React, { useEffect, useState, useRef } from 'react';
+
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+
 import useAuthStore from '@/store/useAuth';
 import HotelCardList from './_components/HotelsCardList';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import Link from 'next/link';
+
 import AsideFilter from './_components/AsideFilter';
 import { HotelType } from '@/types/supabase/hotel-type';
 import useFavoriteStore from '@/hooks/favorite/useFavoriteStore';
 import SortBtn from './_components/SortBtn';
 import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
-import { useSearchParams } from 'next/navigation';
+import useFetchHotelsFilter from '@/hooks/hotel/useFetchHotelsFilter';
+import { FiltersType, sortOrder } from '@/types/hotel-filter-type';
 
 interface UserType {
   id: string;
@@ -22,11 +26,24 @@ interface UserType {
 
 const HotelList = () => {
   // TODO: 이거 활용하기
-  const searchParams = useSearchParams(); 
-  const params = searchParams.get("location");
 
-  const [filters, setFilters] = useState<{ grade: number[] }>({ grade: [] });
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | ''>('');
+  const searchParams = useSearchParams();
+  const location = searchParams.get('location') || ''; // location 파라미터 가져오기
+  const minPrice = searchParams.get('minPrice') || '0'; // minPrice 가져오기
+  const maxPrice = searchParams.get('maxPrice') || '10000000'; // maxPrice 가져오기
+  const stars = searchParams.get('stars')?.split(',').map(Number) || []; // stars는 쉼표로 구분된 문자열을 배열로 변환
+  const facilities = searchParams.get('facilities')?.split(',').map(Number) || []; // stars는 쉼표로 구분된 문자열을 배열로 변환
+  const services = searchParams.get('services')?.split(',').map(Number) || []; // stars는 쉼표로 구분된 문자열을 배열로 변환
+
+  const [filters, setFilters] = useState<FiltersType>({
+    stars: [],
+    minPrice: 0,
+    maxPrice: 10000000,
+    location: '',
+    facilities: [],
+    services: []
+  });
+  const [sortOrder, setSortOrder] = useState<sortOrder>('');
   const observerRef = useRef<HTMLDivElement | null>(null);
 
   // 사용자 정보
@@ -40,23 +57,9 @@ const HotelList = () => {
     }
   }, [user, initializeFavorites]);
 
-  // 무한 스크롤 및 데이터 가져오기
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ['hotels', filters, sortOrder],
-    // 1. queryFn -> fetchHotels가 실행된다. 이때 pageParam = 0이다. 
-    queryFn: ({ pageParam = 0 }) => fetchHotels({ pageParam, filters, sortOrder }),
-    // 2. 스크롤이 마지막까지 내려가서 fetchNextPage가 실행되면 getNextPageParam 함수가 실행된다. 
-    // 3. totalLoaded 가 pageParam으로 들어가진다. -> 
-    // 4. pageParam이 바뀌면 fetchHotels가 추가로 더 실행된다. 이때 pageParam = 1이다. 
-    getNextPageParam: (lastPage, allPages) => {
-      // { pages: [~~~], ~~~~ }
-      // console.log(lastPage) 
-      const totalLoaded = allPages.flatMap((page) => page.items).length;
-      if (totalLoaded >= lastPage.totalCount) return undefined;
-      return totalLoaded;
-    },
-    initialPageParam: 0
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useFetchHotelsFilter({ filters, sortOrder });
+
+  console.log(data);
 
   // 무한 스크롤 Intersection Observer
   useEffect(() => {
@@ -77,35 +80,33 @@ const HotelList = () => {
 
   return (
     <div className="w-full max-w-[1300px] mx-auto px-[50px] py-[200px] flex flex-row justify-between gap-[30px] ">
-      
-        <AsideFilter
-          onFilterChange={(newFilters) => setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }))}
-        />
+      <ScrollSearchBox />
 
-        <div className="flex-1 ml-11">
-          <div className="flex justify-between items-center mb-4">
+      <AsideFilter onFilterChange={(newFilters) => setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }))} />
+
+      <div className="flex-1 ml-11">
+        <div className="flex justify-between items-center mb-4">
           <p className="text-[24px] text-[#232527] font-semibold">
-            {/* 결과의 대한 갯수 가져오기 */}
-              총 9,999개의 결과를 불러왔습니다.
-            </p>
-            <SortBtn sortOrder={sortOrder} handleSortChange={(e) => setSortOrder(e.target.value as 'asc' | 'desc')} />
-          </div>
-          <ul className='border border-blue-400 '>
-            {data?.pages?.flatMap((page) =>
-              page.items.map((hotel: HotelType) => (
-                <li key={hotel.id}>
-                  <Link href={`/hotel-list/${hotel.id}`}>
-                    <HotelCardList hotel={hotel} isFavorite={favoriteStatus[hotel.id] || false} hotelId={hotel.id} />
-                  </Link>
-                </li>
-              ))
-            )}
-          </ul>
-          <div ref={observerRef} />
-          {isFetchingNextPage && <p>Loading more...</p>}
-          {!hasNextPage && <p>모든 호텔 데이터를 불러왔습니다.</p>}
+            {/* 결과의 대한 갯수 가져오기 */}총 9,999개의 결과를 불러왔습니다.
+          </p>
+          <SortBtn sortOrder={sortOrder} handleSortChange={setSortOrder} />
         </div>
-      </div>    
+        <ul className="border border-blue-400 ">
+          {data?.pages?.flatMap((page) =>
+            page.items.map((hotel: HotelType) => (
+              <li key={hotel.id}>
+                <Link href={`/hotel-list/${hotel.id}`}>
+                  <HotelCardList hotel={hotel} isFavorite={favoriteStatus[hotel.id] || false} hotelId={hotel.id} />
+                </Link>
+              </li>
+            ))
+          )}
+        </ul>
+        <div ref={observerRef} />
+        {isFetchingNextPage && <p>Loading more...</p>}
+        {!hasNextPage && <p>모든 호텔 데이터를 불러왔습니다.</p>}
+      </div>
+    </div>
   );
 };
 
