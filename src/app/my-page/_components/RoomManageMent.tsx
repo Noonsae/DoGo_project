@@ -13,6 +13,7 @@ interface Room {
   hotel_id: string; // 호텔 ID
   room_name: string; // 객실 이름
   view: string; // 뷰 정보
+  is_breakfast_included: string; // 조식 포함 여부
 }
 
 // Props 타입 정의
@@ -32,6 +33,7 @@ const RoomManagement: React.FC<RoomManagementProps> = ({ userId }) => {
     room_img_url: '',
     room_name: '',
     view: '',
+    is_breakfast_included: 'no', // 기본값 설정
   });
 
   useEffect(() => {
@@ -94,6 +96,7 @@ const RoomManagement: React.FC<RoomManagementProps> = ({ userId }) => {
     try {
       setError(null);
 
+      // 객실 추가
       const { error } = await browserSupabase()
         .from('rooms')
         .insert([{ ...newRoom, hotel_id: hotelId, price: Number(newRoom.price) }]);
@@ -107,6 +110,7 @@ const RoomManagement: React.FC<RoomManagementProps> = ({ userId }) => {
         room_img_url: '',
         room_name: '',
         view: '',
+        is_breakfast_included: 'no', // 기본값 초기화
       });
 
       // 데이터 새로고침
@@ -187,6 +191,14 @@ const RoomManagement: React.FC<RoomManagementProps> = ({ userId }) => {
             onChange={(e) => setNewRoom({ ...newRoom, view: e.target.value })}
             className="p-2 border rounded"
           />
+          <select
+            value={newRoom.is_breakfast_included}
+            onChange={(e) => setNewRoom({ ...newRoom, is_breakfast_included: e.target.value })}
+            className="p-2 border rounded"
+          >
+            <option value="yes">조식 포함</option>
+            <option value="no">조식 미포함</option>
+          </select>
           <button
             onClick={handleAddRoom}
             className="col-span-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
@@ -203,6 +215,7 @@ const RoomManagement: React.FC<RoomManagementProps> = ({ userId }) => {
             <th className="p-2 border">객실 이름</th>
             <th className="p-2 border">객실 유형</th>
             <th className="p-2 border">가격</th>
+            <th className="p-2 border">조식 포함</th>
             <th className="p-2 border">삭제</th>
           </tr>
         </thead>
@@ -212,6 +225,7 @@ const RoomManagement: React.FC<RoomManagementProps> = ({ userId }) => {
               <td className="p-2 border">{room.room_name}</td>
               <td className="p-2 border">{room.room_type}</td>
               <td className="p-2 border">{room.price.toLocaleString()}원</td>
+              <td className="p-2 border">{room.is_breakfast_included === 'yes' ? '포함' : '미포함'}</td>
               <td className="p-2 border">
                 <button
                   onClick={() => handleDeleteRoom(room.id)}
