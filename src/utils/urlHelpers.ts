@@ -35,8 +35,8 @@ const generateUrl = ({
       pet && `pet=${encodeURIComponent(pet)}`,
       child && `child=${encodeURIComponent(child)}`,
       parsedStars && `stars=${encodeURIComponent(parsedStars.toString())}`, // 숫자를 문자열로 변환
-      minPrice && `minPrice=${encodeURIComponent(minPrice.toString())}`, // 숫자를 문자열로 변환
-      maxPrice && `maxPrice=${encodeURIComponent(maxPrice.toString())}`, // 숫자를 문자열로 변환
+      minPrice !== undefined && `minPrice=${encodeURIComponent(minPrice.toString())}`, // 0도 포함
+      maxPrice !== undefined && `maxPrice=${encodeURIComponent(maxPrice.toString())}`,
       parsedFacilities && `facilities=${encodeURIComponent(parsedFacilities)}`,
       parsedServices && `services=${encodeURIComponent(parsedServices)}`
     ]
