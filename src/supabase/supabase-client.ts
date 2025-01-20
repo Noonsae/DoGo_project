@@ -1,5 +1,6 @@
 // @supabase/supabase-client.ts
 
+import { Database } from '@/types/supabase/supabase-type';
 import { createBrowserClient } from '@supabase/ssr';
 
 export const browserSupabase = () => {

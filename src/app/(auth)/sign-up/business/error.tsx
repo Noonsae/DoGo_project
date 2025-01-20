@@ -1,9 +1,11 @@
-import React from 'react'
+'use client';
+import React from 'react';
 
-const error = () => {
-  return (
-    <div>error</div>
-  )
+interface ErrorProps {
+  message: string;
 }
+const Error: React.FC<ErrorProps> = ({ message }) => {
+  return <p style={{ color: 'red' }}>{message}</p>;
+};
 
-export default error
+export default Error;

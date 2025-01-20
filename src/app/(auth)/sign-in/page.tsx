@@ -1,9 +1,11 @@
-import React from 'react'
-
+import Signin from './_components/SignIn';
+// commit용주석
 const SignInPage = () => {
   return (
-    <div>page</div>
-  )
-}
+    <>
+      <Signin />
+    </>
+  );
+};
 
 export default SignInPage;

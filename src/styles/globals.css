@@ -1,7 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import '@fullcalendar/common/main.css';
+/* @import '@fullcalendar/common/main.css';
 @import '@fullcalendar/daygrid/main.css';
-@import '@fullcalendar/timegrid/main.css';
+@import '@fullcalendar/timegrid/main.css'; */
 @import 'sweetalert2/dist/sweetalert2.min.css';
+
+.slick-track {
+  display: flex !important;
+  justify-content: flex-start !important;
+  height: 500px;
+  gap: 30px !important;
+}
