@@ -2,6 +2,7 @@ import UpModal from '@/components/ui/hotel-up-image/Modal';
 import { HotelType } from '@/types/supabase/hotel-type';
 import Image from 'next/image';
 import React, { useState } from 'react';
+import RenderStars from '../../_components/RenderStars';
 
 interface HotelOverviewProps {
   hotelData: HotelType; // HotelType에 대한 정의를 가져옵니다.
@@ -23,14 +24,6 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedImage(null);
-  };
-
-  const renderStars = (rating: number) => {
-    return Array.from({ length: 5 }).map((_, index) => (
-      <span key={index} className={`text-lg ${index < rating ? 'text-yellow-500' : 'text-gray-300'}`}>
-        ★
-      </span>
-    ));
   };
 
   return (
@@ -84,7 +77,9 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
         </div>
         <div className="flex">
           <h2 className="text-2xl font-bold mb-4 mt-2">{hotelData.name}</h2>
-          <h3 className="mt-3">{renderStars(hotelData.stars)}</h3>
+          <h3 className="mt-3">
+            <RenderStars rating={hotelData.stars} /> {/* JSX 문법으로 RenderStars 사용 */}
+          </h3>
         </div>
         <p className="mb-6">{hotelData.description}</p>
         <UpModal

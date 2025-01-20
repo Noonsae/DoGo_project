@@ -31,14 +31,14 @@ const BusinessSidebar: React.FC<BusinessSidebarProps> = ({ userId, currentTab })
         const { data, error } = await browserSupabase()
           .from('users')
           .select('id, user_name, created_at, business_number')
-          .eq('id', userId)
+          .eq('id', userId) //1. 왜 undefined인지 찾아보기 
           .maybeSingle();
 
         if (error) throw error;
 
         setBusinessInfo(data);
       } catch (err) {
-        console.error('Error fetching business info:', err);
+        console.error('Error fetching business info:', err); //문제가 있다면 체크해보기
       } finally {
         setLoading(false);
       }
@@ -54,7 +54,7 @@ const BusinessSidebar: React.FC<BusinessSidebarProps> = ({ userId, currentTab })
     { id: 'room', label: '객실 관리' },
     { id: 'booking', label: '예약 관리' },
     { id: 'inquiry', label: '문의 관리' },
-    { id: 'profile', label: '프로필 관리' },
+    { id: 'profile', label: '프로필 관리' }
   ];
 
   // 로딩 중일 때 출력
@@ -65,15 +65,11 @@ const BusinessSidebar: React.FC<BusinessSidebarProps> = ({ userId, currentTab })
       {/* 사업자 정보 표시 */}
       <div className="mb-6">
         <div className="rounded-full bg-gray-300 w-16 h-16 mx-auto" />
-        <p className="text-center mt-2 font-bold">
-          {businessInfo ? businessInfo.user_name : '사업자'}
-        </p>
+        <p className="text-center mt-2 font-bold">{businessInfo ? businessInfo.user_name : '사업자'}</p>
         <p className="text-center text-sm text-gray-600">
           가입일: {businessInfo ? new Date(businessInfo.created_at).toLocaleDateString() : 'N/A'}
         </p>
-        <p className="text-center text-sm">
-          사업자 번호: {businessInfo?.business_number || '없음'}
-        </p>
+        <p className="text-center text-sm">사업자 번호: {businessInfo?.business_number || '없음'}</p>
       </div>
 
       {/* 메뉴 목록 */}

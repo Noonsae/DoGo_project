@@ -22,7 +22,7 @@ export default function SignUpUserPage() {
   const [nickname, setNickname] = useState('');
   const setUser = useAuthStore((state) => state.setUser);
   const [isModlaOpen, setIsModalOpen] = useState(false);
-
+  const [businessNumber, setBusinessNumber] = useState<string>('');
   const router = useRouter();
   const handleSignup = async () => {
     try {
@@ -41,7 +41,7 @@ export default function SignUpUserPage() {
         setError(result.message);
         return;
       }
-// commit용 주석
+      // commit용 주석
       const { error: loinError } = await supabase.auth.signInWithPassword({
         email,
         password
@@ -85,11 +85,13 @@ export default function SignUpUserPage() {
         error={error}
         setError={setError}
         handleSignup={handleSignup}
+        setBusinessNumber={setBusinessNumber}
+        businessNumber={businessNumber}
       />
 
       <SignupUserModal isOpen={isModlaOpen} onClose={closeModal}>
         <div className="flex flex-col p-[40px 32px 32px 32px] items-center g-[32px]">
-          <div>
+          <div className="m-[32px]">
             <img src="/images/clap.png" alt="clap" width={100} height={100} />
           </div>
           <div className="text-[28px] text-[#444] aligin-center">
@@ -97,7 +99,7 @@ export default function SignUpUserPage() {
             <p className="flex justify-center flex-row">회원가입이 완료되었습니다.</p>
           </div>
           <button
-            className="bg-[#B3916A] text-white text-[20px] items-center p-[8px 24px] w-[436px] h-[48px] rounded-[8px]"
+            className="bg-[#B3916A] text-white text-[20px] items-center m-[32px] p-[8px 24px] w-[436px] h-[48px] rounded-[8px]"
             onClick={closeModal}
           >
             확인

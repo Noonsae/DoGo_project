@@ -35,6 +35,8 @@ const Signin = () => {
       }
 
       const supabase = browserSupabase();
+
+      // 1. 이메일과 비밀번호로 로그인 시도
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password
@@ -49,25 +51,36 @@ const Signin = () => {
         return;
       }
 
-      const { data: userTypeData, error: userTypeError } = await supabase
-        .from(activeTab === 'user' ? 'users' : 'businesses')
-        .select('id')
+      // 2. 로그인 성공 시 role 확인
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .select('id, role')
         .eq('email', email)
         .single();
 
-      if (userTypeError || !userTypeData) {
+      if (userError || !userData) {
         await Swal.fire({
           icon: 'error',
           title: '로그인 실패',
-          text: activeTab === 'user' ? '사업자 회원으로 로그인해주세요!' : '일반 회원으로 로그인해주세요!'
+          text: '사용자 정보를 가져오지 못했습니다.'
         });
         return;
       }
 
+      if (userData.role !== activeTab) {
+        // role과 선택한 탭(user/business)이 불일치할 경우
+        await Swal.fire({
+          icon: 'error',
+          title: '로그인 실패',
+          text: activeTab === 'user' ? '일반 회원 계정으로 로그인해주세요!' : '사업자 계정으로 로그인해주세요!'
+        });
+        return;
+      }
+
+      // 3. 로그인 성공 처리
       setUser(data.user);
       document.cookie = `user=${encodeURIComponent(JSON.stringify(data.user))}; path=/;`;
 
-      // 로그인 성공 시 Swal 표시 후 페이지 이동
       await Swal.fire({
         icon: 'success',
         title: '로그인 성공',

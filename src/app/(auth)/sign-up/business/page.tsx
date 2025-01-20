@@ -2,12 +2,10 @@
 
 import { useState } from 'react';
 import useAuthStore from '@/store/useAuth';
-import Swal from 'sweetalert2';
 import handleSignupAction from '../actions/handleSignupAction';
 import { useRouter } from 'next/navigation';
 import SignUpBusiness from './_components/SignUpBusiness';
 import { browserSupabase } from '@/supabase/supabase-client';
-
 import SignupUserModal from '@/components/ui/sign-up/SignUpUserUi';
 
 export default function SignUpBusinessPage() {
@@ -32,7 +30,7 @@ export default function SignUpBusinessPage() {
         password,
         name,
         phone,
-        business_number: businessNumber,
+        businessNumber,
         role: 'business'
       });
 
@@ -93,7 +91,7 @@ export default function SignUpBusinessPage() {
       {/* 모달추가! */}
       <SignupUserModal isOpen={isModlaOpen} onClose={closeModal}>
         <div className="flex flex-col p-[40px 32px 32px 32px] items-center g-[32px]">
-          <div>
+          <div className="m-[32px]">
             <img src="/images/clap.png" alt="clap" width={100} height={100} />
           </div>
           <div className="text-[28px] text-[#444] aligin-center">
@@ -101,7 +99,7 @@ export default function SignUpBusinessPage() {
             <p className="flex justify-center flex-row">회원가입이 완료되었습니다.</p>
           </div>
           <button
-            className="bg-[#B3916A] text-white items-center p-[8px 24px] w-[436px] h-[48px] rounded-[8px]"
+            className="bg-[#B3916A] m-[32px] text-white items-center p-[8px 24px] w-[436px] h-[48px] rounded-[8px]"
             onClick={closeModal}
           >
             확인
