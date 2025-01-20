@@ -15,64 +15,6 @@ interface UserType {
   id: string;
 }
 
-const fetchHotels = async ({
-  pageParam = 0,
-  // 지역, 날짜, .... 추가 예정 
-  filters = { grade: []},
-  // TODO: 가격 이외의 조건이 있다면 객체로 변경 해야 함  { price: "asc", rating: "desc" }
-  sortOrder = ''
-}: {
-  pageParam?: number;
-  filters: {
-    grade: number[];
-    minPrice: number;
-    maxPrice: number;
-    facilities: string[];
-    services: string[];
-  };
-  sortOrder?: 'asc' | 'desc' | '';
-}) => {
-  const gradeQuery = filters.grade.length ? `&grade=in.(${filters.grade.join(',')})` : '';
-  const priceQuery = `&minPrice=${filters.minPrice}&maxPrice=${filters.maxPrice}`;
-  const facilitiesQuery = filters.facilities.length ? `&facilities=${filters.facilities.join(',')}` : '';
-  const servicesQuery = filters.services.length ? `&services=${filters.services.join(',')}` : '';
-  const sortQuery = sortOrder ? `&sortOrder=${sortOrder}` : '';
-
-  // TODO: supabase로
-  // let query = supabase.from("hotels").select("*");
-
-  // if (filters.grade.length > 0 ) {
-  //   // query.eq("type", ~~~)
-  // }
-
-  // if (filters.location) {
-  //   query.eq("location", filters.location)
-  // }
-
-  // if (sortOrder) {
-  //   query.order("~~~", s)
-  // }
-
-  // query.limit(10).offset(pageParam * 10)
-  // 1,2,3,4,5,6,7,8,9,10, 11, 12, 13, 14, 15, 16, 17,... 
-
-  // await query
-
-  // 
-
-
-
-  if (!res.ok) {
-    throw new Error(`Failed to fetch hotels: ${res.status}`);
-  }
-
-  const data = await res.json();
-  return {
-    items: data.items,
-    totalCount: data.totalCount
-  };
-};
-
 /**
  * 1. url에서 필터 조건을 가져온다. useSearchParams 활용
  * 2. location, 날짜, 지역 -> API 요청 (fetchHotels의 파라미터로 전달한다)
@@ -134,22 +76,21 @@ const HotelList = () => {
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   return (
-    <div className="mx-[360px]">
-      <div>
-        <h1 className="font-bold ">DoGo</h1>
-      </div>
-      <div className="flex gap-8 mt-16">
+    <div className="w-full max-w-[1300px] mx-auto px-[50px] py-[200px] flex flex-row justify-between gap-[30px] ">
+      
         <AsideFilter
           onFilterChange={(newFilters) => setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }))}
         />
+
         <div className="flex-1 ml-11">
           <div className="flex justify-between items-center mb-4">
-            <span className="block">
-              적용된 필터: {filters.grade.length > 0 ? `${filters.grade.join(', ')}성` : '전체'}
-            </span>
+          <p className="text-[24px] text-[#232527] font-semibold">
+            {/* 결과의 대한 갯수 가져오기 */}
+              총 9,999개의 결과를 불러왔습니다.
+            </p>
             <SortBtn sortOrder={sortOrder} handleSortChange={(e) => setSortOrder(e.target.value as 'asc' | 'desc')} />
           </div>
-          <ul>
+          <ul className='border border-blue-400 '>
             {data?.pages?.flatMap((page) =>
               page.items.map((hotel: HotelType) => (
                 <li key={hotel.id}>
@@ -164,8 +105,7 @@ const HotelList = () => {
           {isFetchingNextPage && <p>Loading more...</p>}
           {!hasNextPage && <p>모든 호텔 데이터를 불러왔습니다.</p>}
         </div>
-      </div>
-    </div>
+      </div>    
   );
 };
 
