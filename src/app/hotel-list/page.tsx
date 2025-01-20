@@ -112,7 +112,7 @@ const HotelList = () => {
         </div>
 
         {/* hotel list card */}
-        <ul className="border border-blue-400 ">
+        <ul className="border border-red-400">
           {data?.pages?.flatMap((page) =>
             page.items.map((hotel: HotelType) => (
               <li key={hotel.id}>
