@@ -9,16 +9,17 @@ import { HotelWithPriceOnly } from '@/types/supabase/hotel-type';
 import { CustomNextArrow, CustomPrevArrow } from '@/components/ui/slider/customArrow';
 
 import { RiThumbUpFill } from 'react-icons/ri';
-
+import { useRouter } from 'next/navigation';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 const HotelListSlider = ({ hotels }: { hotels: HotelWithPriceOnly[] | undefined }) => {
-  
+  const router = useRouter()
   const addHotel = useHistoryStore((state) => state.addHotel);
 
   const handleSaveHistory = (hotel: HotelWithPriceOnly) => {
     addHotel(hotel);
+    router.push(`/hotel-list/${hotel.id}`)
   };
 
   if (!hotels || hotels.length === 0) {
