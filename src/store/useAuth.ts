@@ -34,8 +34,17 @@ const useAuthStore = create<AuthStateFace>((set) => ({
   },
 
   // 유저 정보 초기화 및 쿠키 제거
-  signOutUser: () => {
-    set({ user: null });
+  signOutUser: async () => {
+    const supabase = browserSupabase();
+    const { error } = await supabase.auth.signOut(); //supabase 세션무효화
+    if (error) {
+      console.error('로그아웃 실패!', error);
+    } else {
+      console.log('로그아웃성공!');
+      set({ user: null });
+      document.cookie = `user=; Max-Age=0; path=/;`;
+    }
+    // set({ user: null });=> zustand만 초기화하는 역할
     // document.cookie = 'user=; Max-Age=0; path=/;';
   }
 }));
