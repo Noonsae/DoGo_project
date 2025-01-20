@@ -1,81 +1,69 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-
 import { useClickAway } from 'react-use';
-
 import { HiSearch } from 'react-icons/hi';
 
-import ScrollSearchSection from './ScrollSearchSection';
+import Link from 'next/link';
 
-const SearchSection = () => {
-  const [location, setLocation] = useState('');
-  const [checkIn, setCheckIn] = useState('');
-  const [checkOut, setCheckOut] = useState('');
-  const [guests, setGuests] = useState('');
-  const [isLabelClicked, setIsLabelClicked] = useState(false);
-  const [isStayDurationClicked, setIsStayDurationClicked] = useState(false);
-  const [isStayDetailsClicked, setIsStayDetailsClicked] = useState(false);
+import useSearchStore from '@/store/useSearchStore';
+
+import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
+
+import LocationModal from './LocationModal';
+import DurationModal from './DurationModal';
+import DetailsModal from './DetailsModal';
+
+const SearchBox = () => {
+  const { location, checkIn, checkOut, details, setLocation, setCheckIn, setCheckOut, setDetails } = useSearchStore();
+
   const [isSticky, setIsSticky] = useState(false); // 스크롤 상태 관리
-  const clickLabelRef = useRef<HTMLLabelElement>(null);
-  const clickStayDurationRef = useRef<HTMLDivElement>(null);
-  const clickStayDetailsRef = useRef<HTMLDivElement>(null);
+  const [activeModal, setActiveModal] = useState<'location' | 'duration' | 'details' | null>(null); // 모달 상태
 
-  const handleSearch = () => {
-    console.log('Search with:', { location, checkIn, checkOut, guests });
-    // 검색 로직 추가 (예: 클라이언트 측 API 호출)
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  // 모달 열기
+  const openModal = (modal: 'location' | 'duration' | 'details') => {
+    setActiveModal(modal);
   };
 
-  // 라벨 요소를 클릭하면 테두리 색상을 변경
-  const handleLabelClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsLabelClicked(true);
+  // 모달 닫기
+  const closeModal = () => {
+    setActiveModal(null);
+    console.log('Modal closed, activeModal:', activeModal);
   };
-
-  // 체크인/체크아웃 박스를 클릭하면 테두리 색상을 변경
-  const handleStayDurationClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsStayDurationClicked(true);
-  };
-
-  // 객실 및 인원 박스를 클릭하면 테두리 색상을 변경
-  const handleStayDetailsClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsStayDetailsClicked(true);
-  };
-
-  // 외부 클릭 감지
-  useClickAway(clickLabelRef, () => {
-    setIsLabelClicked(false);
-  });
-
-  // 외부 클릭 감지
-  useClickAway(clickStayDurationRef, () => {
-    setIsStayDurationClicked(false);
-  });
-
-  // 외부 클릭 감지
-  useClickAway(clickStayDetailsRef, () => {
-    setIsStayDetailsClicked(false);
-  });
 
   // 스크롤 이벤트 핸들러
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY >= 100) {
-        setIsSticky(true);
-      } else {
-        setIsSticky(false);
-      }
+      setIsSticky(window.scrollY >= 10);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // 외부 클릭 감지 핸들러
+  useClickAway(
+    modalRef,
+    (event) => {
+      const clickedElement = event.target as HTMLElement;
+
+      // 현재 활성화된 모달만 처리
+      if (clickedElement.closest('.modal-content')) {
+        if (activeModal === 'location' && clickedElement.closest('.modal-location')) return;
+        if (activeModal === 'duration' && clickedElement.closest('.modal-duration')) return;
+        if (activeModal === 'details' && clickedElement.closest('.modal-details')) return;
+      }
+
+      closeModal();
+    },
+    ['mousedown', 'touchstart']
+  );
+
   return (
     <>
       {isSticky ? (
-        <ScrollSearchSection />
+        <ScrollSearchBox />
       ) : (
         <div className="w-full max-w-[1300px] h-full mx-auto px-[50px] -mt-[210px]">
           <section className="w-full max-w-[1200px] h-[160px] mx-auto px-[32px] py-[24px] rounded-[8px] bg-white shadow-[0px_4px_12px_rgba(0,0,0,0.1)]">
@@ -84,10 +72,9 @@ const SearchSection = () => {
             <div className="w-full h-[68px] flex flex-row gap-3 rounded-[8px]">
               {/* 여행지 검색 */}
               <label
-                onClick={handleLabelClick}
-                ref={clickLabelRef}
-                className={`block w-[25%] max-w-[288px] h-full px-[16px] py-[12px] border  rounded-[8px] cursor-pointer ${
-                  isLabelClicked ? 'border-[#B3916A]' : 'border-[#BFBFBF]'
+                onClick={() => openModal('location')}
+                className={`block w-[25%] max-w-[288px] h-full px-[16px] py-[12px] border rounded-[8px] cursor-pointer ${
+                  activeModal === 'location' ? 'border-[#B3916A]' : 'border-[#BFBFBF]'
                 }`}
               >
                 <span className="text-[15px] text-[#636363] font-medium">여행지</span>
@@ -102,13 +89,12 @@ const SearchSection = () => {
 
               {/* 체크인과 체크아웃 */}
               <div
-                onClick={handleStayDurationClick}
-                ref={clickStayDurationRef}
+                onClick={() => openModal('duration')}
                 className={`w-[35%] max-w-[400px] h-full flex flex-row px-[16px] py-[12px] border rounded-[8px] cursor-pointer ${
-                  isStayDurationClicked ? 'border-[#B3916A]' : 'border-[#BFBFBF]'
+                  activeModal === 'duration' ? 'border-[#B3916A]' : 'border-[#BFBFBF]'
                 }`}
               >
-                <div className="w-1/2 h-full border-r border-[#A0A0A0]">
+                <div className="w-1/2 h-full">
                   <p className="text-[15px] text-[#636363] font-medium">체크인</p>
                   <span className="text-[16px] text-[#A0A0A0] font-medium">날짜 추가</span>
                 </div>
@@ -120,25 +106,41 @@ const SearchSection = () => {
 
               {/* 객실 및 인원 */}
               <div
-                onClick={handleStayDetailsClick}
-                ref={clickStayDetailsRef}
+                onClick={() => openModal('details')}
                 className={`w-[25%] max-w-[288px] h-full px-[16px] py-[12px] border rounded-[8px] ${
-                  isStayDetailsClicked ? 'border-[#B3916A]' : 'border-[#BFBFBF]'
+                  activeModal === 'details' ? 'border-[#B3916A]' : 'border-[#BFBFBF]'
                 }`}
               >
                 <p className="text-[15px] text-[#636363] font-medium">객실 및 인원</p>
-                <span className="text-[16px] text-[#A0A0A0] font-medium">객실 및 인원 추가</span>
+                <span className="text-[16px] text-[#A0A0A0] font-medium">{details || '객실 및 인원 추가'}</span>
               </div>
 
               {/* 검색 버튼 */}
-              <button
-                onClick={handleSearch}
+              <Link
+                href="/hotel-list"
                 className="w-[11%] max-w-[124px] h-full flex flex-row justify-center items-center bg-[#B3916A] text-white text-[20px] text-center font-semibold rounded-[8px] outline-none hover:bg-[#8F7455] active:bg-[#6B573F] disabled:bg-[#EFEFEF] disabled:text-[#BFBFBF] transition duration-200"
               >
                 <HiSearch className="inline-block w-[24px] h-[24px] -ml-[1px] mr-[4%] fill-white" />
                 검색
-              </button>
+              </Link>
             </div>
+
+            {/* 모달 */}
+            {activeModal === 'location' && (
+              <div ref={modalRef}>
+                <LocationModal onSelectLocation={setLocation} />
+              </div>
+            )}
+            {activeModal === 'duration' && (
+              <div ref={modalRef}>
+                <DurationModal />
+              </div>
+            )}
+            {activeModal === 'details' && (
+              <div ref={modalRef}>
+                <DetailsModal />
+              </div>
+            )}
           </section>
         </div>
       )}
@@ -146,4 +148,4 @@ const SearchSection = () => {
   );
 };
 
-export default SearchSection;
+export default SearchBox;

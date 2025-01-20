@@ -7,7 +7,10 @@ const EventSection = () => {
       <article className="relative w-full max-w-[580px] h-[300px] p-[40px] bg-[#EFEFEF] rounded-[8px]">
         <h4 className="text-[32px] font-semibold">Event 01</h4>
         <p className="mt-[12px]">Lorem, ipsum.</p>
-        <Link href="/event" className="absolute right-[40px] bottom-[40px] w-full p-[10px] text-right">
+        <Link
+          href="/event"
+          className="absolute right-[40px] bottom-[40px] w-full p-[10px] text-right hover:text-[#8F7455] hover:underline"
+        >
           이벤트 보러가기
         </Link>
       </article>
@@ -15,7 +18,10 @@ const EventSection = () => {
       <article className="relative w-full max-w-[580px] h-[300px] p-[40px] bg-[#EFEFEF] rounded-[8px]">
         <h4 className="text-[32px] font-semibold">Event 02</h4>
         <p className="mt-[12px]">Lorem, ipsum dolor.</p>
-        <Link href="/event" className="absolute right-[40px] bottom-[40px] w-full p-[10px] text-right">
+        <Link
+          href="/event"
+          className="absolute right-[40px] bottom-[40px] w-full p-[10px] text-right hover:text-[#8F7455] hover:underline"
+        >
           이벤트 보러가기
         </Link>
       </article>
