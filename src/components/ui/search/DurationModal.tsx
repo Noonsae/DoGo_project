@@ -7,17 +7,31 @@ import useSearchStore from '@/store/useSearchStore';
 
 import { MonthList } from '@/constants/constant';
 
-const DurationModal = ({ left = '36%', top }: { left?: string; top?: string }) => {
-  const { setCheckIn, setCheckOut } = useSearchStore();
+const DurationModal = ({ left = '36%', top, onClose }: { left?: string; top?: string; onClose: () => void }) => {
+  const { setCheckIn, setCheckOut, setSchedule } = useSearchStore();
   const [tab, setTab] = useState<'date' | 'flexible'>('date'); // 탭 상태
   const [selectedDateRange, setSelectedDateRange] = useState({ start: '', end: '' }); // 날짜 지정 값
-  const [selectedFlexibleOption, setSelectedFlexibleOption] = useState(''); // 유동적인 값
+  const [selectedStayOption, setSelectedStayOption] = useState(''); // 단일 선택된 숙박 옵션
+  const [selectedMonth, setSelectedMonth] = useState<string>(''); // 다중 선택된 달
 
-  const applyChanges = () => {
+  // 저장 버튼
+  const handleSaveSchedule = () => {
     if (tab === 'date') {
+      const formattedSchedule = `체크인: ${selectedDateRange.start}, 체크아웃: ${selectedDateRange.end}`;
+      // 날짜 지정 옵션 저장
       setCheckIn(selectedDateRange.start);
       setCheckOut(selectedDateRange.end);
+      setSchedule(formattedSchedule);
+    } else if (tab === 'flexible') {
+      // 유동적인 옵션 저장
+      const stayDetails = selectedStayOption ? `숙박 옵션: ${selectedStayOption}` : '';
+      const monthDetails = selectedMonth ? `여행 월: ${selectedMonth}` : '';
+      if (stayDetails || monthDetails) {
+        const formattedSchedule = [stayDetails, monthDetails].filter(Boolean).join(' | ');
+        setSchedule(formattedSchedule); // 한 쌍의 데이터 저장
+      }
     }
+    onClose();
   };
 
   return (
@@ -75,9 +89,9 @@ const DurationModal = ({ left = '36%', top }: { left?: string; top?: string }) =
               <button
                 key={option}
                 value={option}
-                onClick={() => setSelectedFlexibleOption((prevOption) => (prevOption === option ? '' : option))}
+                onClick={() => setSelectedStayOption((prevOption) => (prevOption === option ? '' : option))} // 단일 선택
                 className={`w-[76px] h-[36px] px-4 py-2 rounded-full border text-[15px] font-medium hover:bg-[#8F7455] hover:text-white active:bg-[#6B573F] ${
-                  selectedFlexibleOption === option
+                  selectedStayOption === option
                     ? 'bg-[#B3916A] text-white'
                     : 'bg-white border border-[#e2e2e2] text-[#777]'
                 }`}
@@ -93,27 +107,27 @@ const DurationModal = ({ left = '36%', top }: { left?: string; top?: string }) =
                 <button
                   key={month}
                   value={month}
-                  onClick={() => setSelectedFlexibleOption((prevMonth) => (prevMonth === month ? '' : month))}
+                  onClick={() => setSelectedMonth((prevMonth) => (prevMonth === month ? '' : month))} // 단일 선택
                   className={`h-[96px] flex flex-col items-center justify-center p-2 rounded-lg border 
-    hover:bg-[#8F7455] hover:text-white active:bg-[#6B573F] ${
-      selectedFlexibleOption === month ? 'bg-[#B3916A] text-white' : 'bg-white border border-[#e2e2e2] text-[#777]'
-    } group`}
+      hover:bg-[#8F7455] hover:text-white active:bg-[#6B573F] ${
+        selectedMonth.includes(month) ? 'bg-[#B3916A] text-white' : 'bg-white border border-[#e2e2e2] text-[#777]'
+      } group`}
                 >
                   <FiCalendar
                     className={`w-8 h-8 ${
-                      selectedFlexibleOption === month ? 'text-white' : 'text-[#A0A0A0]'
+                      selectedMonth.includes(month) ? 'text-white' : 'text-[#A0A0A0]'
                     } group-hover:text-white group-active:text-white`}
                   />
                   <p
                     className={`mt-2 text-[15px] font-medium ${
-                      selectedFlexibleOption === month ? 'text-white' : 'text-[#777]'
+                      selectedMonth.includes(month) ? 'text-white' : 'text-[#777]'
                     } group-hover:text-white group-active:text-white`}
                   >
                     {month}
                   </p>
                   <span
                     className={`text-sm font-normal leading-[1.45] ${
-                      selectedFlexibleOption === month ? 'text-white' : 'text-[#777]'
+                      selectedMonth.includes(month) ? 'text-white' : 'text-[#777]'
                     } group-hover:text-white group-active:text-white`}
                   >
                     2025
@@ -128,7 +142,7 @@ const DurationModal = ({ left = '36%', top }: { left?: string; top?: string }) =
       {/* 적용 버튼 */}
       <div className="w-full flex justify-end">
         <button
-          onClick={applyChanges}
+          onClick={handleSaveSchedule}
           className="w-[124px] mt-8 px-6 py-[10px] bg-[#B3916A] text-white text-[18px] font-semibold rounded-lg hover:bg-[#8F7455] active:bg-[#6B573F]"
         >
           적용하기
