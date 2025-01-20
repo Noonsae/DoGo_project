@@ -61,7 +61,7 @@ const ScrollSearchBox = () => {
   // 비동기로 전환 후 제대로 작동하는데 이유를 모르겠음;;
   const handleSearchClick = async() => {
     const searchUrl = url;
-    router.push(searchUrl); // 페이지 이동
+    await router.push(searchUrl); // 페이지 이동
     inactiveSearchBox();
   };
 
