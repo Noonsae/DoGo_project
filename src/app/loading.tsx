@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 const page = () => {
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center">      
