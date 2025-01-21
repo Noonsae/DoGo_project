@@ -61,7 +61,7 @@ const fetchHotelsFilter = async ({
 
   // 7. 페이지네이션 처리
   const { count } = await query
-  query = query.range(pageParam * 10, pageParam * 10 + 9); // 한 번에 10개씩 가져오기
+  query = query.range(pageParam * 3, pageParam * 3 + 3); // 한 번에 10개씩 가져오기
   // 8. 쿼리 실행
   
   const { data, error } = await query;

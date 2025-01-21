@@ -86,7 +86,6 @@ export default function SignUpUserPage() {
         setError={setError}
         handleSignup={handleSignup}
         setBusinessNumber={setBusinessNumber}
-        businessNumber={businessNumber}
       />
 
       <SignupUserModal isOpen={isModlaOpen} onClose={closeModal}>

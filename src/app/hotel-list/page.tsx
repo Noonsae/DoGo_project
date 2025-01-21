@@ -114,14 +114,17 @@ const HotelList = () => {
 
       <div className="">
         <div className="flex justify-between items-center mb-4">
-          <p className="text-[24px] text-[#232527] font-semibold">
-            {/* 결과의 대한 갯수 가져오기 */}총 {data?.pages[0].totalCount}개의 결과를 불러왔습니다.
-          </p>
+          <div>
+            <p className="text-[24px] text-[#232527] font-semibold">
+              {/* 결과의 대한 갯수 가져오기 */}총 {data?.pages[0].totalCount}개의 결과를 불러왔습니다.
+            </p>
+            <p className='mt-2 text-base text-[#777] font-medium'>적용된 필터: {filters.stars.length > 0 ? `${filters.stars.join(', ')}성` : '전체'}</p>
+          </div>
           <SortBtn sortOrder={sort as sortOrder} />
         </div>
 
         {/* hotel list card */}
-        <ul className="border border-red-400">
+        <ul className="flex flex-col gap-8">
           {data?.pages?.flatMap((page) =>
             page.items.map((hotel: HotelType) => (
               <li key={hotel.id}>
@@ -134,17 +137,17 @@ const HotelList = () => {
         </ul>
 
         {/* infinity scroll event 감지 div */}
-        <div ref={observerRef} className="w-full h-[50px] mt-10 border border-gray-300 items-center text-center ">
-          <span className="text-sm text-gray-600 leading-[50px]">
+        <div ref={observerRef} className="w-full h-[50px] mt-10 items-center text-center ">
+          {/* <span className="text-sm text-gray-600 leading-[50px]">
             저는 Infinity scroll event를 감지하는 Box입니당! 저한테 잘보이셔야 해요! 😂
-          </span>
+          </span> */}
         </div>
 
         {/* 여기에 스켈레톤 ui 만들면 좋을 듯 */}
-        {isFetchingNextPage && <p>Loading more...</p>}
+        {/* {isFetchingNextPage && <p>Loading more...</p>} */}
 
         {/* 얘는 !hasNextPage뿐 아니라 다른 장치도 필요할 듯. */}
-        {!hasNextPage && <p>모든 호텔 데이터를 불러왔습니다.</p>}
+        {/* {!hasNextPage && <p>모든 호텔 데이터를 불러왔습니다.</p>} */}
       </div>
     </div>
   );
