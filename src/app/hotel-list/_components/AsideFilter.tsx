@@ -1,6 +1,6 @@
 'use client';
-import { useSearchParams } from 'next/navigation';
-import React, { useState, useEffect } from 'react';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import React, { useState, useEffect, useCallback } from 'react';
 import { HiOutlineRefresh } from 'react-icons/hi';
 import DualSlider from './Dualslider';
 
@@ -17,27 +17,27 @@ interface FilterProps {
 }
 
 const AsideFilter = ({ onFilterChange: onChangeFilter }: FilterProps) => {
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+ 
+  // Get a new searchParams string by merging the current
+  // searchParams with a provided key/value pair
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString())
+      params.set(name, value)
+ 
+      return params.toString()
+    },
+    [searchParams]
+  )
+
   const [selectedGrade, setSelectedGrade] = useState<number[]>([]);
   const [filterMinPrice, setFilterMinPrice] = useState(0);
   const [filterMaxPrice, setFilterMaxPrice] = useState(10000000); // 초기값 50만 원
   const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
-
-  // const searchParams = useSearchParams();
-  // // location 파라미터 가져오기
-  // const location = searchParams.get('location') || '';
-  // // minPrice 가져오기
-  // const minPrice = searchParams.get('minPrice') || '0';
-  // // maxPrice 가져오기
-  // const maxPrice = searchParams.get('maxPrice') || '10000000';
-  // // stars(성급) 가져오기
-  // const stars = searchParams.get('stars')?.split(',').map(Number) || [];
-  // facilities는 디코딩을 해서 가져와야 함 ( 가져오는 로직의 수정 필요 )
-  // const facilities = searchParams.get('facilities')?.split(',').map(Number) || [];
-  // services는 디코딩을 해서 가져와야 함 ( 가져오는 로직의 수정 필요 )
-  // const services = searchParams.get('services')?.split(',').map(Number) || [];
-
-  // 필터 상태를 변경할 때마다 API 호출
 
   useEffect(() => {
     // 변경 사항이 있을 때만 onFilterChange 호출
@@ -51,7 +51,18 @@ const AsideFilter = ({ onFilterChange: onChangeFilter }: FilterProps) => {
   }, [selectedGrade, filterMinPrice, filterMaxPrice, selectedFacilities, selectedServices]);
 
   const handleHotelGradeChange = (grade: number) => {
-    setSelectedGrade((prev) => (prev.includes(grade) ? prev.filter((item) => item !== grade) : [...prev, grade]));
+    // setSelectedGrade((prev) => (prev.includes(grade) ? prev.filter((item) => item !== grade) : [...prev, grade]));
+    const urlStars = searchParams.get("stars");
+
+    const stars = urlStars?.split(",") || [];
+    const index = stars.findIndex((star) => Number(star) === grade)
+    if (index !== -1) {
+      stars.splice(index, 1)
+    } else {
+      stars.push(String(grade))
+    }
+    console.log({stars})
+    router.push(pathname + '?' + createQueryString('stars', stars.join(",")))
   };
 
   const handleFacilityChange = (facility: string) => {
@@ -96,57 +107,23 @@ const AsideFilter = ({ onFilterChange: onChangeFilter }: FilterProps) => {
           가격 <span className="text-sm text-gray-500">1박 기준</span>
         </p>
 
-        {/* <div className="relative w-full h-1 bg-gray-200 rounded my-4">
-          <div
-            className="absolute h-1 bg-[#B3916A] rounded"
-            style={{
-              left: `${(filterMinPrice / 10000000) * 100}%`,
-              right: `${100 - (filterMaxPrice / 10000000) * 100}%`
-            }}
-          />
-          <input
-            type="range"
-            min={0}
-            max={10000000}
-            step={500000}
-            value={filterMaxPrice}
-            className="absolute w-full h-1 appearance-none pointer-events-auto"
-            onChange={(e) => handlePriceChange('max', Number(e.target.value))}
-          />
-          <input
-            type="range"
-            min={0}
-            max={10000000}
-            step={500000}
-            value={filterMinPrice}
-            className="absolute w-full h-1 appearance-none pointer-events-auto"
-            onChange={(e) => handlePriceChange('min', Number(e.target.value))}
-          />
-        </div> */}
-
-        {/* <div className="flex justify-between text-sm">
-          <span>{filterMinPrice.toLocaleString()}원</span>
-          <span>{filterMaxPrice.toLocaleString()}원</span>
-        </div> */}
-        
-        <DualSlider/>
-
+        <DualSlider />
       </div>
 
       {/* 성급 필터 */}
       <div className="mt-6">
         <h3 className="text-lg font-semibold mb-2">호텔 성급</h3>
         <ul className="flex gap-2">
-          {[4, 5].map((grade) => (
-            <li key={grade}>
+          {[4, 5].map((stars) => (
+            <li key={stars}>
               <button
                 type="button"
-                onClick={() => handleHotelGradeChange(grade)}
+                onClick={() => handleHotelGradeChange(stars)}
                 className={`px-4 py-2 rounded-md border ${
-                  selectedGrade.includes(grade) ? 'bg-[#B3916A] text-white' : 'bg-white text-gray-700'
+                  selectedGrade.includes(stars) ? 'bg-[#B3916A] text-white' : 'bg-white text-gray-700'
                 }`}
               >
-                {grade}성
+                {stars}성
               </button>
             </li>
           ))}
