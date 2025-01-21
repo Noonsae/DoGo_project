@@ -6,6 +6,7 @@ import { browserSupabase } from '@/supabase/supabase-client'; // Supabase 클라
 import BusinessSidebar from '@/app/my-page/_components/BusinessSidebar'; // 사업자용 사이드바
 import UserSidebar from './Usersidebar';
 
+
 // Props 타입 정의
 interface SidebarWrapperProps {
   userId: string; // 현재 사용자 ID
