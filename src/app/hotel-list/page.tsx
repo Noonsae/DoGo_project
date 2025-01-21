@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from "next/navigation"
 
 import useAuthStore from '@/store/useAuth';
 import useHistoryStore from '@/store/useHistoryStore';
@@ -19,6 +19,7 @@ import HotelCardList from './_components/HotelsCardList';
 import AsideFilter from './_components/AsideFilter';
 import SortBtn from './_components/SortBtn';
 
+
 interface UserType {
   id: string;
 }
@@ -29,23 +30,38 @@ interface UserType {
  */
 
 const HotelList = () => {
-  // TODO: 이거 활용하기
+
+   // TODO: 재사용 로직으로 변경
+   const searchParams = useSearchParams();
+  const location = searchParams.get('location') || '';
+  const checkIn = searchParams.get('checkIn') || '';
+  const checkOut = searchParams.get('checkOut') || '';
+  // TODO: 추후 수정 
+  const stars = searchParams.get('stars')?.split(',').filter((star) => star !== "") || [];
+  // const stars = searchParams.get('stars') ? searchParams.get('stars').split(',') : [];
+  const minPrice = parseInt(searchParams.get('minPrice') || '0', 10);
+  const maxPrice = parseInt(searchParams.get('maxPrice') || '10000000', 10);
+  const facilities = searchParams.get('facilities')?.split(',') || [];
+  const services = searchParams.get('services')?.split(',') || [];
+  const sort = searchParams.get("sort") || "";
 
   const [filters, setFilters] = useState<FiltersType>({
+    location: '',
     stars: [],
     minPrice: 0,
     maxPrice: 10000000,
-    location: '',
     facilities: [],
     services: []
   });
-  const [sortOrder, setSortOrder] = useState<sortOrder>('');
-  const observerRef = useRef<HTMLDivElement | null>(null);
 
+  const observerRef = useRef<HTMLDivElement | null>(null);
   // 사용자 정보
   const user = useAuthStore((state) => state.user) as UserType | null;
-  const { favoriteStatus, toggleFavorite, initializeFavorites } = useFavoriteStore();
 
+  // 즐겨찾기 상태
+  const { favoriteStatus, initializeFavorites } = useFavoriteStore();
+
+  // onClick Event - 상세 페이지로 이동
   const router = useRouter();
   const addHotel = useHistoryStore((state) => state.addHotel);
 
@@ -55,15 +71,21 @@ const HotelList = () => {
   };
 
   // 초기 즐겨찾기 상태 로드
-  useEffect(() => {
-    if (user?.id) {
-      initializeFavorites(user.id);
-    }
-  }, [user, initializeFavorites]);
+  // useEffect(() => {
+  //   if (user?.id) {
+  //     initializeFavorites(user.id);
+  //   }
+  // }, [user, initializeFavorites]);
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useFetchHotelsFilter({ filters, sortOrder });
-
-  console.log(data);
+  // 필터 데이터 호출
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useFetchHotelsFilter({ filters: {
+    location,
+    stars,
+    minPrice,
+    maxPrice,
+    facilities,
+    services
+  }, sortOrder: sort as sortOrder });
 
   // 무한 스크롤 Intersection Observer
   useEffect(() => {
@@ -81,8 +103,9 @@ const HotelList = () => {
     return () => {
       if (observerRef.current) observer.unobserve(observerRef.current);
     };
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+  }, [hasNextPage, isFetchingNextPage]);
 
+  console.log({data})
   return (
     <div className="w-full max-w-[1300px] mx-auto px-[50px] pt-[200px] pb-[50px] flex flex-row justify-between gap-[30px] ">
       <ScrollSearchBox />
@@ -92,9 +115,9 @@ const HotelList = () => {
       <div className="">
         <div className="flex justify-between items-center mb-4">
           <p className="text-[24px] text-[#232527] font-semibold">
-            {/* 결과의 대한 갯수 가져오기 */}총 9,999개의 결과를 불러왔습니다.
+            {/* 결과의 대한 갯수 가져오기 */}총 {data?.pages[0].totalCount}개의 결과를 불러왔습니다.
           </p>
-          <SortBtn sortOrder={sortOrder} handleSortChange={setSortOrder} />
+          <SortBtn sortOrder={sort as sortOrder} />
         </div>
 
         {/* hotel list card */}
@@ -111,18 +134,17 @@ const HotelList = () => {
         </ul>
 
         {/* infinity scroll event 감지 div */}
-        <div
-          ref={observerRef}
-          className="w-full h-[50px] mt-10 border border-gray-300 items-center text-center text-sm text-gray-600 leading-[50px]"
-        >
-          저는 Infinity scroll event를 감지하는 박스입니당! 저한테 잘보이세용 😂
+        <div ref={observerRef} className="w-full h-[50px] mt-10 border border-gray-300 items-center text-center ">
+          <span className="text-sm text-gray-600 leading-[50px]">
+            저는 Infinity scroll event를 감지하는 Box입니당! 저한테 잘보이셔야 해요! 😂
+          </span>
         </div>
 
         {/* 여기에 스켈레톤 ui 만들면 좋을 듯 */}
         {isFetchingNextPage && <p>Loading more...</p>}
 
         {/* 얘는 !hasNextPage뿐 아니라 다른 장치도 필요할 듯. */}
-        {/* {!hasNextPage && <p>모든 호텔 데이터를 불러왔습니다.</p>} */}
+        {!hasNextPage && <p>모든 호텔 데이터를 불러왔습니다.</p>}
       </div>
     </div>
   );
