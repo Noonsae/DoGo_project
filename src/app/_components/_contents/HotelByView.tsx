@@ -14,8 +14,6 @@ const HotelByView = () => {
   // React Query 훅 사용
   const { data: hotels, isLoading, isError, error } = useHotelsByView(selectedViews);
 
-  console.log(hotels);
-
   // 로딩 중 상태 처리
   if (isLoading) {
     return <HotelByViewSkeletonUI />;
