@@ -74,7 +74,7 @@ const UserPage: React.FC = () => {
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen translate-y-6">
       {/* 사이드바 */}
       <aside className="w-64 bg-gray-100 h-full shadow-md fixed">
         <UserSidebar
