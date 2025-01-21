@@ -31,6 +31,7 @@ export default function SignUpBusinessPage() {
         name,
         phone,
         businessNumber,
+        nickname,
         role: 'business'
       });
 
