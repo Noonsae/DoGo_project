@@ -171,9 +171,11 @@ const ReviewsModal = ({
             sortedReviews.map((review) => (
               <div key={review.id} className="p-4 border-b border-gray-200">
                 <div className="flex gap-4 mb-2 items-center">
-                  <img
+                  <Image
                     src={review.users?.profile_img || '/placeholder-profile.png'}
                     alt="Profile"
+                    height={80}
+                    width={80}
                     className="w-[50px] h-[50px] rounded-full object-cover"
                   />
                   <div className="flex justify-between w-full">
@@ -182,6 +184,17 @@ const ReviewsModal = ({
                   </div>
                 </div>
                 <p>{renderStars(review.rating)}</p>
+                <div className="flex gap-1 h-[80px]">
+                  {Array.isArray(review.review_img_url) ? (
+                    review.review_img_url.map((url, index) =>
+                      typeof url === 'string' ? (
+                        <Image key={index} src={url} alt={`review-image-${index}`} height={80} width={80} />
+                      ) : null
+                    )
+                  ) : typeof review.review_img_url === 'string' ? (
+                    <Image src={review.review_img_url} alt="review-image" height={80} width={80} />
+                  ) : null}
+                </div>
                 <div className="mt-4">
                   <p className="text-sm text-gray-700 mb-2">{review.comment}</p>
                 </div>
