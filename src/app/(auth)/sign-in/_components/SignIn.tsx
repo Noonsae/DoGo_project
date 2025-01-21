@@ -8,15 +8,12 @@ import KakaoSignIn from './KakaoSignIn';
 import FindIdModal from './FindIdModal';
 import FindPasswordModal from './FindPasswordModal';
 import { browserSupabase } from '@/supabase/supabase-client';
-import { RxDividerVertical } from 'react-icons/rx';
 const Signin = () => {
   const [activeTab, setActiveTab] = useState<'user' | 'business'>('user');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // const { setUser } = useAuthStore();
   const [isFindIdModalOpen, setIsFindIdModalOpen] = useState(false);
   const [isFindPasswordOpen, setFindPasswordOpen] = useState(false);
-  // zustand 가져오기
   const router = useRouter();
   const setUser = useAuthStore((state) => state.setUser);
   const handleSignUp = () => {
@@ -36,7 +33,6 @@ const Signin = () => {
 
       const supabase = browserSupabase();
 
-      // 1. 이메일과 비밀번호로 로그인 시도
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password
@@ -51,7 +47,6 @@ const Signin = () => {
         return;
       }
 
-      // 2. 로그인 성공 시 role 확인
       const { data: userData, error: userError } = await supabase
         .from('users')
         .select('id, role')
@@ -68,7 +63,6 @@ const Signin = () => {
       }
 
       if (userData.role !== activeTab) {
-        // role과 선택한 탭(user/business)이 불일치할 경우
         await Swal.fire({
           icon: 'error',
           title: '로그인 실패',
@@ -77,7 +71,6 @@ const Signin = () => {
         return;
       }
 
-      // 3. 로그인 성공 처리
       setUser(data.user);
       document.cookie = `user=${encodeURIComponent(JSON.stringify(data.user))}; path=/;`;
 
@@ -153,7 +146,21 @@ const Signin = () => {
             <button type="button" onClick={() => setIsFindIdModalOpen(true)} className="m-[2px] hover:underline">
               아이디 찾기
             </button>
-            <RxDividerVertical className="text-[22px] text-neutral-400" />
+            <svg
+              className="items-center fill-neutral-200 ml-[12px] mr-[12px]"
+              width="1.6px"
+              height="17.6px"
+              viewBox="0 0 2 19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M1.0002 0.699951C1.44202 0.699951 1.8002 1.05813 1.8002 1.49995V17.5C1.8002 17.9417 1.44202 18.3 1.0002 18.3C0.558371 18.3 0.200195 17.9417 0.200195 17.5V1.49995C0.200195 1.05813 0.558371 0.699951 1.0002 0.699951Z"
+                fill="#444444"
+              />
+            </svg>
+
             <button type="button" onClick={() => setFindPasswordOpen(true)} className="hover:underline">
               비밀번호 찾기
             </button>
@@ -191,7 +198,15 @@ const Signin = () => {
           >
             개인정보처리방침
           </button>
-          <RxDividerVertical className="text-[22px] text-neutral-400" />
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M12.0002 3.19995C12.442 3.19995 12.8002 3.55813 12.8002 3.99995V20C12.8002 20.4417 12.442 20.8 12.0002 20.8C11.5584 20.8 11.2002 20.4417 11.2002 20V3.99995C11.2002 3.55813 11.5584 3.19995 12.0002 3.19995Z"
+              fill="#BFBFBF"
+            />
+          </svg>
+
           <button
             type="button"
             className="hover:underline"
