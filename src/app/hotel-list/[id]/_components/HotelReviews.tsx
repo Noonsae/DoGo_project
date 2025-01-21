@@ -1,5 +1,6 @@
 import ReviewsModal from '@/components/ui/hotel-review/ReviewsModal';
 import { ReviewType } from '@/types/supabase/review-type';
+import Image from 'next/image';
 import React, { useState } from 'react';
 
 interface HotelReviewsProps {
@@ -55,10 +56,12 @@ const HotelReviews = ({ loading, reviews, allReviews }: HotelReviewsProps) => {
                 <div className="flex gap-2">
                   {(review.review_img_url && Array.isArray(review.review_img_url) ? review.review_img_url : []).map(
                     (url, index) => (
-                      <img
+                      <Image
                         key={index}
                         src={typeof url === 'string' ? url : '/placeholder-profile.png'}
                         alt="Review Image"
+                        width={80}
+                        height={80}
                         className="w-[80px] h-[80px] object-cover rounded-md"
                       />
                     )
