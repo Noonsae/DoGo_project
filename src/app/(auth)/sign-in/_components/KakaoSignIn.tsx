@@ -3,21 +3,18 @@
 import React from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 import useAuthStore from '@/store/useAuth';
-import { User } from '@supabase/supabase-js';
 
 const KakaoSignIn = () => {
   const setUser = useAuthStore((state) => state.setUser);
 
   const kakaoLogin = async () => {
     try {
-      const { data, error }: { data: { user: User | null }; error: Error | null } =
-        await browserSupabase().auth.signInWithOAuth({
-          provider: 'kakao',
-          options: { redirectTo: 'http://localhost:3000/api/auth/kakao' }
-        });
+      const { data, error } = await browserSupabase().auth.signInWithOAuth({
+        provider: 'kakao',
+        options: { redirectTo: 'http://localhost:3000/api/auth/kakao' }
+      });
 
       if (data?.user) {
-        console.log('소셜 로그인 성공, 사용자 데이터:', data.user);
         setUser(data.user);
       } else {
         console.error('소셜 로그인 실패:', error);

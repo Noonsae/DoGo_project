@@ -13,7 +13,7 @@ const Header = () => {
 
   return (
     // header 전체 범위
-    <div className="w-full h-[76px] fixed bg-[#221A1A] z-10">
+    <div className="w-full h-[76px] fixed bg-[#221A1A] z-50">
       {/* header 이너값 max-width-1200px */}
       <div className="w-full max-w-[1300px] px-[50px] h-[76px] mx-auto flex flex-row justify-between items-center">
         {/* Logo : DoGo */}

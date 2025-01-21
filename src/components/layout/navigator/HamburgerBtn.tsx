@@ -28,7 +28,6 @@ const HamburgerBtn: React.FC = () => {
     Swal.fire({
       icon: 'success',
       title: "로그아웃 되었습니다.",
-      text: `안녕히가세요 ${user}님 `
     });
   };
 
@@ -57,7 +56,7 @@ const HamburgerBtn: React.FC = () => {
 
       {/* 토글 메뉴 */}
       {isOpen && (
-        <div className="absolute top-[42px] left-0 w-[200px] h-[216px] p-[8px] bg-white shadow-lg rounded-[8px]">
+        <div className="absolute top-[42px] left-0 w-[200px] h-[216px] p-[8px] bg-white shadow-lg rounded-[8px] z-50">
           <ul>
             {isLoggedIn ? (
               <>
