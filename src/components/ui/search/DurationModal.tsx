@@ -10,7 +10,7 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 
 const DurationModal = ({ left = '36%', top, onClose }: { left?: string; top?: string; onClose: () => void }) => {
-  const { setCheckIn, setCheckOut, setSchedule } = useSearchStore();
+  const { setCheckIn, setCheckOut, setMonth, setStay } = useSearchStore();
   const [tab, setTab] = useState<'date' | 'flexible'>('date'); // 탭 상태
   const [selectedDateRange, setSelectedDateRange] = useState({ start: '', end: '' }); // 날짜 지정 값
   const [selectedStayOption, setSelectedStayOption] = useState(''); // 단일 선택된 숙박 옵션
@@ -27,7 +27,8 @@ const DurationModal = ({ left = '36%', top, onClose }: { left?: string; top?: st
         const formattedSchedule = `체크인: ${selectedDateRange.start}, 체크아웃: ${selectedDateRange.end}`;
         setCheckIn(selectedDateRange.start);
         setCheckOut(selectedDateRange.end);
-        setSchedule(formattedSchedule);
+        setMonth(formattedSchedule);
+        setStay(formattedSchedule);
       }
     };
 
@@ -38,14 +39,16 @@ const DurationModal = ({ left = '36%', top, onClose }: { left?: string; top?: st
       // 날짜 지정 옵션 저장
       setCheckIn(selectedDateRange.start);
       setCheckOut(selectedDateRange.end);
-      setSchedule(formattedSchedule);
+      setMonth(formattedSchedule);
+      setStay(formattedSchedule);
     } else if (tab === 'flexible') {
       // 유동적인 옵션 저장
       const stayDetails = selectedStayOption ? `숙박 옵션: ${selectedStayOption}` : '';
       const monthDetails = selectedMonth ? `여행 월: ${selectedMonth}` : '';
       if (stayDetails || monthDetails) {
         const formattedSchedule = [stayDetails, monthDetails].filter(Boolean).join(' | ');
-        setSchedule(formattedSchedule); // 한 쌍의 데이터 저장
+        setMonth(formattedSchedule);
+        setStay(formattedSchedule);
       }
     }
     onClose();

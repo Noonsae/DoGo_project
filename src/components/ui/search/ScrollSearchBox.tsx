@@ -8,11 +8,11 @@ import { useRouter } from 'next/navigation';
 
 import useSearchStore from '@/store/useSearchStore';
 
+import generateUrl from '@/utils/urlHelpers';
+
 import LocationModal from './LocationModal';
 import DurationModal from './DurationModal';
 import DetailsModal from './DetailsModal';
-import generateUrl from '@/utils/urlHelpers';
-
 
 const ScrollSearchBox = () => {
   const [searchUrl, setSearchUrl] = useState<string>('');
@@ -21,7 +21,7 @@ const ScrollSearchBox = () => {
 
   const searchBoxRef = useRef<HTMLDivElement>(null);
 
-  const { location, checkIn, checkOut, details, schedule, setLocation } = useSearchStore();
+  const { location, checkIn, checkOut, details, stay, month, setLocation } = useSearchStore();
 
   const router = useRouter(); // Next.js의 useRouter 훅
 
@@ -54,27 +54,27 @@ const ScrollSearchBox = () => {
     ['mousedown', 'touchstart']
   );
 
-  const url = generateUrl({ location, checkIn, checkOut, schedule, details }); // URL 생성
+  const url = generateUrl({ location, checkIn, checkOut, stay, month, details }); // URL 생성
 
   console.log(url);
   
   // 비동기로 전환 후 제대로 작동하는데 이유를 모르겠음;;
   const handleSearchClick = async() => {
     const searchUrl = url;
-    router.push(searchUrl); // 페이지 이동
+    await router.push(searchUrl); // 페이지 이동
     inactiveSearchBox();
   };
 
   useEffect(() => {
     setSearchUrl(url); // 의존성 배열에서 searchUrl 제거
-  }, [location, schedule, details]); // 필요한 의존성만 포함
+  }, [location, stay, month, details]); // 필요한 의존성만 포함
 
   return (
     <>
       <div
         ref={searchBoxRef}
         onClick={() => setIsSearchBoxClicked(true)}
-        className={`fixed left-0 top-[76px] w-full flex items-center bg-white border-b border-[#bfbfbf] z-50 ${
+        className={`fixed left-0 top-[76px] w-full flex items-center bg-white border-b border-[#bfbfbf] z-30 ${
           isSearchBoxClicked ? 'h-[116px] py-6' : 'h-[72px] py-3'
         }`}
       >
@@ -152,7 +152,7 @@ const ScrollSearchBox = () => {
       {/* Dimmed */}
       {isSearchBoxClicked && (
         <div
-          className="fixed left-0 top-[192px] inset-0 w-full h-[calc(100vh-192px)] bg-black bg-opacity-40 z-30"
+          className="fixed left-0 top-[192px] inset-0 w-full h-[calc(100vh-192px)] bg-black bg-opacity-40 z-20"
           onClick={inactiveSearchBox}
         >
           {/* SearchBox가 활성화되면 생성되는 딤드 */}

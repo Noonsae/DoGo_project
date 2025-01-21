@@ -9,23 +9,24 @@ import { HotelWithPriceOnly } from '@/types/supabase/hotel-type';
 import { CustomNextArrow, CustomPrevArrow } from '@/components/ui/slider/customArrow';
 
 import { RiThumbUpFill } from 'react-icons/ri';
-
+import { useRouter } from 'next/navigation';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 const HotelListSlider = ({ hotels }: { hotels: HotelWithPriceOnly[] | undefined }) => {
-  
+  const router = useRouter();
   const addHotel = useHistoryStore((state) => state.addHotel);
 
-  const handleSaveHistory = (hotel: HotelWithPriceOnly) => {
+  const handleSaveHistoryAndMoveDetailsPage = (hotel: HotelWithPriceOnly) => {
     addHotel(hotel);
+    router.push(`/hotel-list/${hotel.id}`);
   };
 
   if (!hotels || hotels.length === 0) {
     return <div className="mt-5 text-red-600">해당하는 조건에 맞는 호텔 데이터가 존재하지 않습니다.</div>; // 데이터가 없을 때 처리
   }
-  
-  console.log(hotels)
+
+  console.log(hotels);
 
   const settings = {
     infinite: hotels.length > 3, // 슬라이드가 3개 이상일 때만 무한 반복
@@ -59,7 +60,7 @@ const HotelListSlider = ({ hotels }: { hotels: HotelWithPriceOnly[] | undefined 
         {hotels.map((hotel) => (
           <div
             key={hotel.id}
-            onClick={() => handleSaveHistory(hotel)}
+            onClick={() => handleSaveHistoryAndMoveDetailsPage(hotel)}
             className="w-[380px] h-[484px] flex-shrink-0 p-[16px] rounded-[12px] shadow-[0px_8px_12px_rgba(0,0,0,0.1)] mr-[32px] cursor-pointer"
           >
             <Image
@@ -81,7 +82,9 @@ const HotelListSlider = ({ hotels }: { hotels: HotelWithPriceOnly[] | undefined 
               {/* 가격이 없는 객실 데이터가 존재해서 현재는 ∞ 도 출력되고 있음.. */}
               {/* <span>{hotel.min_price.toLocaleString('en-US')}원</span> */}
               <span className="text-[24px] text-[#232527] font-semibold">
-                {typeof hotel.min_price === "number" && isFinite(hotel.min_price) ? `${hotel.min_price.toLocaleString('en-US')}원` : '가격 정보 없음'}
+                {typeof hotel.min_price === 'number' && isFinite(hotel.min_price)
+                  ? `${hotel.min_price.toLocaleString('en-US')}원`
+                  : '가격 정보 없음'}
               </span>
             </p>
           </div>
