@@ -116,8 +116,7 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   );
 
   return (
-    <div className=" min-h-screen">
-      <div className="h-[60px]"></div>
+    <div className="w-full max-w-[1300px] px-50 mx-auto pt-[78px]">
 
       {/* 네비게이션 탭 */}
       <Navigation activeTab={activeTab} scrollToSection={scrollToSection} />
