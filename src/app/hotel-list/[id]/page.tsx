@@ -1,23 +1,28 @@
 'use client';
+
 import React, { useEffect, useState } from 'react';
+
 import useAuthStore from '@/store/useAuth';
+
+import useFavoriteStore from '@/hooks/favorite/useFavoriteStore';
+import useHotelReviews from '@/hooks/review/useHotelReviews';
+import useHotelRooms from '@/hooks/room/useHotelRooms';
+
 import { HotelType } from '@/types/supabase/hotel-type';
-import HotelRoom from './_components/HotelRoom';
-import HotelLocation from './_components/HotelLocation';
-import HotelBox from './_components/HotelBox';
 import { FacilitiesType } from '@/types/supabase/facilities-type';
 import { Json } from '@/types/supabase/supabase-type';
 import { UserType } from '@/types/supabase/user-type';
-import Navigation from './_components/Navigation';
-import HotelOverview from './_components/HotelOverview';
-import HotelFacility from './_components/HotelFacility';
 import { ServicesType } from '@/types/supabase/services-type';
-import useFavoriteStore from '@/hooks/favorite/useFavoriteStore';
+
 import HotelAttraction from './_components/HotelAttraction';
-import HotelReviews from './_components/HotelReviews';
+import HotelBox from './_components/HotelBox';
+import HotelFacility from './_components/HotelFacility';
+import HotelLocation from './_components/HotelLocation';
+import HotelOverview from './_components/HotelOverview';
 import HotelPolicies from './_components/HotelPolicies';
-import useHotelReviews from '@/hooks/review/useHotelReviews';
-import useHotelRooms from '@/hooks/room/useHotelRooms';
+import HotelRoom from './_components/HotelRoom';
+import HotelReviews from './_components/HotelReviews';
+import Navigation from './_components/Navigation';
 
 const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const hotelId = params?.id;
