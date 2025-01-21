@@ -3,12 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 
-import UserSidebar from '@/app/my-page/_components/Usersidebar';
+
 import ProfileContent from '@/app/my-page/_components/ProfileContent';
 import BookingsContent from '@/app/my-page/_components/BookingsContent';
 import FavoritesContent from '@/app/my-page/_components/FavoritesContent';
 import ReviewsContent from '@/app/my-page/_components/ReviewsContent';
 import InquiryManagement from '@/app/my-page/_components/InquiryManagement';
+import UserSidebar from '../_components/Usersidebar';
 
 // Tab 타입 정의
 type TabType = 'profile' | 'bookings' | 'favorites' | 'reviews' | 'inquiries';
