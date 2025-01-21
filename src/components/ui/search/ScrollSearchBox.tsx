@@ -8,11 +8,11 @@ import { useRouter } from 'next/navigation';
 
 import useSearchStore from '@/store/useSearchStore';
 
+import generateUrl from '@/utils/urlHelpers';
+
 import LocationModal from './LocationModal';
 import DurationModal from './DurationModal';
 import DetailsModal from './DetailsModal';
-import generateUrl from '@/utils/urlHelpers';
-
 
 const ScrollSearchBox = () => {
   const [searchUrl, setSearchUrl] = useState<string>('');
@@ -21,7 +21,7 @@ const ScrollSearchBox = () => {
 
   const searchBoxRef = useRef<HTMLDivElement>(null);
 
-  const { location, checkIn, checkOut, details, schedule, setLocation } = useSearchStore();
+  const { location, checkIn, checkOut, details, stay, month, setLocation } = useSearchStore();
 
   const router = useRouter(); // Next.js의 useRouter 훅
 
@@ -54,20 +54,20 @@ const ScrollSearchBox = () => {
     ['mousedown', 'touchstart']
   );
 
-  const url = generateUrl({ location, checkIn, checkOut, schedule, details }); // URL 생성
+  const url = generateUrl({ location, checkIn, checkOut, stay, month, details }); // URL 생성
 
   console.log(url);
   
   // 비동기로 전환 후 제대로 작동하는데 이유를 모르겠음;;
   const handleSearchClick = async() => {
     const searchUrl = url;
-    router.push(searchUrl); // 페이지 이동
+    await router.push(searchUrl); // 페이지 이동
     inactiveSearchBox();
   };
 
   useEffect(() => {
     setSearchUrl(url); // 의존성 배열에서 searchUrl 제거
-  }, [location, schedule, details]); // 필요한 의존성만 포함
+  }, [location, stay, month, details]); // 필요한 의존성만 포함
 
   return (
     <>

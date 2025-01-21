@@ -12,3 +12,21 @@
   height: 500px;
   gap: 30px !important;
 }
+
+input[type="range"] {
+  -webkit-appearance: none; /* 브라우저 기본 스타일 제거 */
+  appearance: none;
+  height: 4px;
+  background: transparent;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 12px;
+  width: 12px;
+  background-color: #fff;
+  border: 1.5px solid #B3916A;
+  border-radius: 50%;
+  cursor: pointer;
+}

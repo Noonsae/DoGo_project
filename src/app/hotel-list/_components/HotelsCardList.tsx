@@ -47,23 +47,23 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
   };
 
   return (
-    <li className="w-[872px] h-[277px] flex items-center border border-gray-200 rounded-lg shadow-md mb-4 p-6 bg-white">
+    <li className="w-[872px] h-[277px] flex flex-row items-center rounded-[12px] shadow-[0px_4px_8px_rgba(0,0,0,0.1)] p-[16px] bg-white">
       {/* 왼쪽 이미지 */}
-      <div className="flex-shrink-0">
+      <div className="w-[324px] h-[240px] relative">
         <Image
           src={hotel.main_img_url || '/default-hotel.jpg'}
           alt={hotel.name || 'Default Image'}
-          width={324}
-          height={240}
-          className="object-cover block rounded-md"
+          fill
+          className="object-cover rounded-md"
         />
       </div>
 
       {/* 오른쪽 텍스트 */}
-      <div className="ml-6 flex flex-col justify-between flex-1">
+      <div className="w-[492px] h-[240px] border border-blue-600 flex flex-col justify-between flex-1">
         {/* 호텔 이름과 하트 */}
         <div className="flex justify-between items-center">
           <h3 className="text-[24px] font-bold text-[#232527]">{hotel.name}</h3>
+
           {/* 상태 표시만 하는 하트 */}
           <span className={`text-2xl ${isFavorite ? 'text-red-500' : 'text-gray-300'}`}>
             {isFavorite ? '❤️' : '🤍'}
