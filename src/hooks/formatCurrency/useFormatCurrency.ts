@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 
 const useFormatCurrency = (): ((amount: number | string) => string) => {
   const formatKoreanCurrency = useCallback((amount: number | string): string => {

@@ -9,7 +9,7 @@ import { FetchHotelsFilterResponse, UseFetchHotelsFilterParamsType } from '@/typ
 const fetchHotelsFilter = async ({
   pageParam = 0,
   filters = {
-    stars: [],
+    stars: [],    
     minPrice: 0,
     maxPrice: 10000000,
     location: '',
@@ -21,9 +21,10 @@ const fetchHotelsFilter = async ({
   const supabase = browserSupabase();
 
   // Supabase 기본 쿼리
-  let query = supabase.from('hotels').select('*');
+  let query = supabase.from('hotels').select('*', { count : "exact", head: false });
 
   // // 1. 필터 조건 추가
+  console.log({filtersstars: filters.stars})
   if (filters.stars.length > 0) {
     query = query.in('stars', filters.stars); // 등급 필터
   }
@@ -44,27 +45,26 @@ const fetchHotelsFilter = async ({
   }
 
   // 4. 시설 조건 처리
-  if (filters.facilities.length > 0) {
-    query = query.contains('facilities', filters.facilities);
-  }
+  // if (filters.facilities.length > 0) {
+  // query = query.contains('facilities', filters.facilities);
+  // }
 
   // 5. 서비스 조건 처리
-  if (filters.services.length > 0) {
-    query = query.contains('services', filters.services);
-  }
+  // if (filters.services.length > 0) {
+  //   query = query.contains('services', filters.services);
+  // }
 
   // 6. 정렬 조건 처리
-  if (sortOrder) {
-    query = query.order('price', { ascending: sortOrder === 'asc' }); // 정렬 기준: 가격
-  }
+  // if (sortOrder) {
+  //   query = query.order('price', { ascending: sortOrder === 'asc' }); // 정렬 기준: 가격
+  // }
 
   // 7. 페이지네이션 처리
+  const { count } = await query
   query = query.range(pageParam * 10, pageParam * 10 + 9); // 한 번에 10개씩 가져오기
-
   // 8. 쿼리 실행
-  const { data, error, count } = await query;
-
-  console.log(data);
+  
+  const { data, error } = await query;
 
   if (error) {
     throw new Error(`Failed to fetch hotels: ${error.message}`);
@@ -85,8 +85,10 @@ const fetchHotelsFilter = async ({
       stars: hotel.stars,
       user_id: hotel.user_id
     })),
-    totalCount: count || 0
+    totalCount: count || 0,
   };
 };
 
 export default fetchHotelsFilter;
+
+

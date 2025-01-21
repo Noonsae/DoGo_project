@@ -1,14 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
 import { sortOrder } from '@/types/hotel-filter-type';
+import { useRouter, usePathname, useSearchParams } from "next/navigation"
 
 // Props 타입 정의
 interface SortBtnType {
   sortOrder: sortOrder; // 선택된 정렬 순서
-  handleSortChange: (value: sortOrder) => void; // onChange 핸들러
+  // handleSortChange: (value: sortOrder) => void; // onChange 핸들러
 }
 
-const SortBtn = ({ sortOrder, handleSortChange }: SortBtnType) => {
+const SortBtn = ({ sortOrder }: SortBtnType) => {
+  // TODO: 재사용 로직으로 변경
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+ 
+  // Get a new searchParams string by merging the current
+  // searchParams with a provided key/value pair
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString())
+      params.set(name, value)
+ 
+      return params.toString()
+    },
+    [searchParams]
+  )
   const [isOpen, setIsOpen] = useState(false); // 드롭다운 열림/닫힘 상태
   const options:{value: sortOrder, label: string}[] = [
     { value: '', label: '추천순' },
@@ -17,7 +34,8 @@ const SortBtn = ({ sortOrder, handleSortChange }: SortBtnType) => {
   ];
 
   const handleSelect = (value: sortOrder) => {
-    handleSortChange(value); // 부모 컴포넌트의 핸들러 호출
+    // handleSortChange(value); // 부모 컴포넌트의 핸들러 호출
+    router.push(pathname + '?' + createQueryString('sort', value))
     setIsOpen(false); // 드롭다운 닫기
   };
 

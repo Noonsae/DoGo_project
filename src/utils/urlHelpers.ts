@@ -53,17 +53,3 @@ const generateUrl = ({
 
 export default generateUrl;
 
-const searchState: Partial<SearchState> = {
-  location: '서울',
-  checkIn: '2023-02-01',
-  checkOut: '2023-02-05',
-  stay: '4박5일',
-  month: 'June',
-  details: '객실수: 2개, 성인: 2명, 어린이: 1명, 반려동물: 0',
-  stars: '5',
-  prices: '최저가: 100000, 최고가: 300000',
-  facilities: '수영장, 헬스장, 사우나',
-  services: '룸서비스, 조식 포함'
-};
-console.log(generateUrl(searchState));
-
