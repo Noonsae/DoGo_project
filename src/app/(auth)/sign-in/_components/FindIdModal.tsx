@@ -1,9 +1,6 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { IoIosCheckmark } from 'react-icons/io';
-import { IoClose } from 'react-icons/io5';
-import { PiWarningCircleFill } from 'react-icons/pi';
 
 const FindIdModal = ({ onClose }: { onClose: () => void }) => {
   const [name, setName] = useState('');
