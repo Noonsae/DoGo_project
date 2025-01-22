@@ -55,14 +55,18 @@ const ScrollSearchBox = () => {
   );
 
   const url = generateUrl({ location, checkIn, checkOut, stay, month, details }); // URL 생성
-
-  console.log(url);
-
-  // 비동기로 전환 후 제대로 작동하는데 이유를 모르겠음;;
+  
   const handleSearchClick = async () => {
     const searchUrl = url;
     await router.push(searchUrl); // 페이지 이동
     inactiveSearchBox();
+  };
+
+  const handleKeyDownEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // 기본 엔터 키 동작 방지
+      handleSearchClick(); // 검색 함수 실행
+    }
   };
 
   useEffect(() => {
@@ -96,6 +100,8 @@ const ScrollSearchBox = () => {
               id="search"
               type="text"
               value={location || ''} // 선택된 location.label 값
+              onChange={(e) => setLocation(e.target.value)}
+              onKeyDown={handleKeyDownEnter}
               className="text-base text-[#777] leading-[1.45] bg-none outline-none"
               placeholder={`여행지를 입력해주세요.`}
             />
