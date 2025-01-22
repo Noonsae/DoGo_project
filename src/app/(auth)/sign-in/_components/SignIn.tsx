@@ -1,20 +1,22 @@
 'use client';
 
-import useAuthStore from '@/store/useAuth';
+import { browserSupabase } from '@/supabase/supabase-client';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import useAuthStore from '@/store/useAuth';
 import Swal from 'sweetalert2';
 import KakaoSignIn from './KakaoSignIn';
 import FindIdModal from './FindIdModal';
 import FindPasswordModal from './FindPasswordModal';
-import { browserSupabase } from '@/supabase/supabase-client';
 import DividerIcon from '@/components/ui/icon/DividerIcon';
 const Signin = () => {
-  const [activeTab, setActiveTab] = useState<'user' | 'business'>('user');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isFindIdModalOpen, setIsFindIdModalOpen] = useState(false);
-  const [isFindPasswordOpen, setFindPasswordOpen] = useState(false);
+  const [form, setForm] = useState({
+    activeTab: 'user',
+    email: '',
+    password: '',
+    isFindIdModalOpen: false,
+    isFindPasswordOpen: false
+  });
   const router = useRouter();
   const setUser = useAuthStore((state) => state.setUser);
   const handleSignUp = () => {
@@ -23,7 +25,7 @@ const Signin = () => {
 
   const handleLogin = async () => {
     try {
-      if (!email || !password) {
+      if (!form.email || !form.password) {
         await Swal.fire({
           icon: 'warning',
           title: '입력 오류',
@@ -35,8 +37,8 @@ const Signin = () => {
       const supabase = browserSupabase();
 
       const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
+        email: form.email,
+        password: form.password
       });
 
       if (error || !data.user) {
@@ -51,7 +53,7 @@ const Signin = () => {
       const { data: userData, error: userError } = await supabase
         .from('users')
         .select('id, role')
-        .eq('email', email)
+        .eq('email', form.email)
         .single();
 
       if (userError || !userData) {
@@ -63,11 +65,11 @@ const Signin = () => {
         return;
       }
 
-      if (userData.role !== activeTab) {
+      if (userData.role !== form.activeTab) {
         await Swal.fire({
           icon: 'error',
           title: '로그인 실패',
-          text: activeTab === 'user' ? '일반 회원 계정으로 로그인해주세요!' : '사업자 계정으로 로그인해주세요!'
+          text: form.activeTab === 'user' ? '일반 회원 계정으로 로그인해주세요!' : '사업자 계정으로 로그인해주세요!'
         });
         return;
       }
@@ -99,24 +101,30 @@ const Signin = () => {
         <div className="flex justify-between mb-8 border-b-2">
           <button
             className={`pb-2 w-1/2 text-center ${
-              activeTab === 'user' ? 'border-b-2 border-neutral-800' : 'text-neutral-600'
+              form.activeTab === 'user' ? 'border-b-2 border-neutral-800' : 'text-neutral-600'
             }`}
             onClick={() => {
-              setActiveTab('user');
-              setEmail('');
-              setPassword('');
+              setForm((prevForm) => ({
+                ...prevForm,
+                activeTab: 'user',
+                email: '',
+                password: ''
+              }));
             }}
           >
             일반 회원
           </button>
           <button
             className={`pb-2 w-1/2 text-center ${
-              activeTab === 'business' ? 'border-b-2 border-black' : 'text-gray-400'
+              form.activeTab === 'business' ? 'border-b-2 border-black' : 'text-gray-400'
             }`}
             onClick={() => {
-              setActiveTab('business');
-              setEmail('');
-              setPassword('');
+              setForm({
+                ...form,
+                activeTab: 'business',
+                email: '',
+                password: ''
+              });
             }}
           >
             사업자 회원
@@ -131,25 +139,53 @@ const Signin = () => {
         >
           <input
             type="email"
-            placeholder={activeTab === 'user' ? '일반 회원 이메일' : '사업자 이메일'}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            placeholder={form.activeTab === 'user' ? '일반 회원 이메일' : '사업자 이메일'}
+            value={form.email}
+            onChange={(e) =>
+              setForm((prevForm) => ({
+                ...prevForm,
+                email: e.target.value
+              }))
+            }
             className="w-[400px]  p-3 border border-neutral-300 rounded-[8px] mb-4 focus:outline-none focus:ring-2 focus:ring-black"
           />
           <input
             type="password"
             placeholder="비밀번호"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={form.password}
+            onChange={(e) =>
+              setForm((prevForm) => ({
+                ...prevForm,
+                password: e.target.value
+              }))
+            }
             className="w-[400px] p-3 border border-neutral-300 rounded-[8px] mb-4 focus:outline-none focus:ring-2 focus:ring-black"
           />
           <div className="flex w-[400px] justify-end text-sm text-gray-500 mb-4">
-            <button type="button" onClick={() => setIsFindIdModalOpen(true)} className="m-[2px] hover:underline">
+            <button
+              type="button"
+              onClick={() =>
+                setForm({
+                  ...form,
+                  isFindIdModalOpen: true
+                })
+              }
+              className="m-[2px] hover:underline"
+            >
               아이디 찾기
             </button>
             <DividerIcon />
 
-            <button type="button" onClick={() => setFindPasswordOpen(true)} className="hover:underline">
+            <button
+              type="button"
+              onClick={() =>
+                setForm({
+                  ...form,
+                  isFindPasswordOpen: true
+                })
+              }
+              className="hover:underline"
+            >
               비밀번호 찾기
             </button>
           </div>
@@ -172,8 +208,26 @@ const Signin = () => {
           <hr className="flex-grow border-neutral-300" />
         </div>
 
-        {isFindIdModalOpen && <FindIdModal onClose={() => setIsFindIdModalOpen(false)} />}
-        {isFindPasswordOpen && <FindPasswordModal onClose={() => setFindPasswordOpen(false)} />}
+        {form.isFindIdModalOpen && (
+          <FindIdModal
+            onClose={() =>
+              setForm((prevForm) => ({
+                ...prevForm,
+                setIsFindIdModalOpen: false
+              }))
+            }
+          />
+        )}
+        {form.isFindPasswordOpen && (
+          <FindPasswordModal
+            onClose={() =>
+              setForm((prevForm) => ({
+                ...prevForm,
+                setFindPasswordOpen: false
+              }))
+            }
+          />
+        )}
 
         <div className="text-center mt-8">
           <KakaoSignIn />
