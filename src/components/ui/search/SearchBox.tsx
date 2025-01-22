@@ -18,7 +18,7 @@ import DetailsModal from './DetailsModal';
 
 const SearchBox = () => {
   const [searchUrl, setSearchUrl] = useState<string>('');
-  const { location, checkIn, checkOut, details, schedule, setLocation } = useSearchStore();
+  const { location, checkIn, checkOut, details, stay, month, setLocation } = useSearchStore();
 
   const [isSticky, setIsSticky] = useState(false); // 스크롤 상태 관리
   const [activeModal, setActiveModal] = useState<'location' | 'duration' | 'details' | null>(null); // 모달 상태
@@ -65,7 +65,7 @@ const SearchBox = () => {
     ['mousedown', 'touchstart']
   );
 
-  const url = generateUrl({ location, checkIn, checkOut, schedule, details }); // URL 생성
+  const url = generateUrl({ location, checkIn, checkOut, stay, month, details }); // URL 생성
 
   // 비동기로 전환 후 제대로 작동하는데 이유를 모르겠음;;
   const handleSearchClick = async () => {
@@ -76,7 +76,7 @@ const SearchBox = () => {
 
   useEffect(() => {
     setSearchUrl(url); // 의존성 배열에서 searchUrl 제거
-  }, [location, schedule, details]); // 필요한 의존성만 포함
+  }, [location, stay, month, details]); // 필요한 의존성만 포함
 
   return (
     <>
