@@ -8,6 +8,7 @@ import KakaoSignIn from './KakaoSignIn';
 import FindIdModal from './FindIdModal';
 import FindPasswordModal from './FindPasswordModal';
 import { browserSupabase } from '@/supabase/supabase-client';
+import DividerIcon from '@/components/ui/icon/DividerIcon';
 const Signin = () => {
   const [activeTab, setActiveTab] = useState<'user' | 'business'>('user');
   const [email, setEmail] = useState('');
@@ -146,20 +147,7 @@ const Signin = () => {
             <button type="button" onClick={() => setIsFindIdModalOpen(true)} className="m-[2px] hover:underline">
               아이디 찾기
             </button>
-            <svg
-              className="items-center fill-neutral-200 ml-[12px] mr-[12px]"
-              width="1.6px"
-              height="17.6px"
-              viewBox="0 0 2 19"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M1.0002 0.699951C1.44202 0.699951 1.8002 1.05813 1.8002 1.49995V17.5C1.8002 17.9417 1.44202 18.3 1.0002 18.3C0.558371 18.3 0.200195 17.9417 0.200195 17.5V1.49995C0.200195 1.05813 0.558371 0.699951 1.0002 0.699951Z"
-                fill="#444444"
-              />
-            </svg>
+            <DividerIcon />
 
             <button type="button" onClick={() => setFindPasswordOpen(true)} className="hover:underline">
               비밀번호 찾기
@@ -198,14 +186,7 @@ const Signin = () => {
           >
             개인정보처리방침
           </button>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M12.0002 3.19995C12.442 3.19995 12.8002 3.55813 12.8002 3.99995V20C12.8002 20.4417 12.442 20.8 12.0002 20.8C11.5584 20.8 11.2002 20.4417 11.2002 20V3.99995C11.2002 3.55813 11.5584 3.19995 12.0002 3.19995Z"
-              fill="#BFBFBF"
-            />
-          </svg>
+          <DividerIcon />
 
           <button
             type="button"
