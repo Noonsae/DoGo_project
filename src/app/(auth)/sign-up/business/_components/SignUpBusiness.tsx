@@ -2,11 +2,10 @@
 
 import React, { useState } from 'react';
 import { SignUpProps } from '@/types/supabase/supabase-sign-up-type';
-import Error from '../error';
-import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
 import { useRouter } from 'next/navigation';
-//서버사이드에서 사용자 역할에 따라 라우팅 되게 하려고 했던 방식을
-// 클라이언트 사이드에서 동적 시그먼트를 생성하여 라우팅되게 바꾸신 것 같습니다 -민석님
+import Error from '../error';
+import CloseEyesIcon from '@/components/ui/icon/CloseEyesIcon';
+import OpenEyesIcon from '@/components/ui/icon/OpenEyesIcon';
 
 const SignUpBusiness: React.FC<SignUpProps> = ({
   email,
@@ -79,11 +78,7 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
             onClick={() => setShowPassword((prev) => !prev)}
             className="absolute right-[-70px] top-3 text-gray-600 hover:text-black"
           >
-            {showPassword ? (
-              <IoMdEyeOff className="text-neutral-500" size={24} />
-            ) : (
-              <IoMdEye className="text-neutral-500" size={24} />
-            )}
+            {showPassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
           </button>
         </div>
         <p className="mb-2 font-semibold text-gray-700">비밀번호 확인</p>
@@ -104,7 +99,7 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
             onClick={() => setShowConfirmPassword((prev) => !prev)}
             className="absolute right-[-70px] top-3 text-gray-600 hover:text-black"
           >
-            {showConfirmPassword ? <IoMdEyeOff size={24} /> : <IoMdEye size={24} />}
+            {showConfirmPassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
           </button>
         </div>
         {error && <Error message={error} />}
