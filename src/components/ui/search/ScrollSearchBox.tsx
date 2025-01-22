@@ -96,6 +96,7 @@ const ScrollSearchBox = () => {
               id="search"
               type="text"
               value={location || ''} // 선택된 location.label 값
+              onChange={(e)=> setLocation(e.target.value)}
               className="text-base text-[#777] leading-[1.45] bg-none outline-none"
               placeholder={`여행지를 입력해주세요.`}
             />
