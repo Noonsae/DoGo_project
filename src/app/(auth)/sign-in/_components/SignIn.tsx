@@ -211,10 +211,10 @@ const Signin = () => {
         {form.isFindIdModalOpen && (
           <FindIdModal
             onClose={() =>
-              setForm((prevForm) => ({
-                ...prevForm,
-                setIsFindIdModalOpen: false
-              }))
+              setForm({
+                ...form,
+                isFindIdModalOpen: false
+              })
             }
           />
         )}
