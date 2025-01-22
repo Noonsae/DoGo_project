@@ -1,11 +1,11 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { browserSupabase } from '@/supabase/supabase-client';
 import useAuthStore from '@/store/useAuth';
 import handleSignupAction from '../actions/handleSignupAction';
-import { useRouter } from 'next/navigation';
 import SignUpBusiness from './_components/SignUpBusiness';
-import { browserSupabase } from '@/supabase/supabase-client';
 import SignupUserModal from '@/components/ui/sign-up/SignUpUserUi';
 
 export default function SignUpBusinessPage() {

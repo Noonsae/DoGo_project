@@ -1,9 +1,9 @@
 'use client';
 
+import CheckIcon from '@/components/ui/icon/CheckIcon';
+import CloseButtonIcon from '@/components/ui/icon/CloseButtonIcon';
+import WarningIcon from '@/components/ui/icon/WarningIcon';
 import React, { useEffect, useState } from 'react';
-import { IoIosCheckmark } from 'react-icons/io';
-import { IoClose } from 'react-icons/io5';
-import { PiWarningCircleFill } from 'react-icons/pi';
 
 const FindIdModal = ({ onClose }: { onClose: () => void }) => {
   const [name, setName] = useState('');
@@ -65,7 +65,6 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
       setIsLoading(false);
     }
   };
-
   const handleTabChange = (tab: 'user' | 'business') => {
     setActiveTab(tab);
     setName('');
@@ -76,20 +75,23 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="w-[424px] h-[635px] bg-white rounded-lg shadow-lg relative">
-        <IoClose
+        <button
           onClick={onClose}
-          className="text-[30px] absolute top-3 right-3 text-gray-500 hover:text-black font-bold cursor-pointer"
-        />
+          className="absolute mt-[41px] mr-[41px] top-3 right-3 text-gray-500 hover:text-black font-bold cursor-pointer"
+        >
+          {/* x버튼 */}
+          <CloseButtonIcon />
+        </button>
 
         {modalType === 'input' && (
           <div className="m-10 flex flex-col h-full">
-            <h1 className="text-2xl font-bold mt-[50px] mb-[50px]">
+            <p className="text-2xl font-bold mt-[36px] mb-[40px]">
               DoGo 가입 정보로 <br /> 아이디를 확인하세요.
-            </h1>
+            </p>
 
-            <div className="flex mb-4 border-b-2">
+            <div className="flex border-b-2 w-[352px]">
               <button
-                className={`flex-1 pb-2 text-center ${
+                className={`flex-1 pb-2 text-center  ${
                   activeTab === 'user' ? 'border-b-2 border-gray-500 font-bold' : 'text-gray-400'
                 }`}
                 onClick={() => handleTabChange('user')}
@@ -107,29 +109,31 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
             </div>
 
             <form
-              className="flex-grow flex flex-col justify-between"
+              className="flex flex-col justify-between"
               onSubmit={(e) => {
                 e.preventDefault();
                 handleFindId();
               }}
             >
               <div>
-                <label className="block text-gray-700 mb-1">이름</label>
+                <div className="mt-[30px]">
+                  <label className="block text-gray-700 mb-1 ">이름</label>
 
-                <input
-                  type="text"
-                  placeholder="이름을 입력해 주세요."
-                  value={name}
-                  onChange={(e) => {
-                    setName(e.target.value);
-                    setErrors((prev) => ({ ...prev, name: undefined })); // 입력 시 에러 초기화
-                  }}
-                  className={`w-full p-[13px] border rounded-xl mb-2 focus:outline-none focus:ring-2 ${
-                    errors.name ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-black'
-                  }`}
-                />
+                  <input
+                    type="text"
+                    placeholder="이름을 입력해 주세요."
+                    value={name}
+                    onChange={(e) => {
+                      setName(e.target.value);
+                      setErrors((prev) => ({ ...prev, name: undefined })); // 입력 시 에러 초기화
+                    }}
+                    className={`w-[352px] h-[48px] pl-[16px] pt-[8px] pb-[8px] border rounded-[8px] focus:outline-none focus:ring-2 ${
+                      errors.name ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-black'
+                    }`}
+                  />
+                </div>
                 {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
-                <label className="block text-gray-700 mb-1">휴대폰 번호</label>
+                <label className="block mt-[20px]  text-gray-700">휴대폰 번호</label>
                 <input
                   type="tel"
                   placeholder="휴대폰 번호를 입력해 주세요."
@@ -138,17 +142,17 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
                     setPhone(e.target.value);
                     setErrors((prev) => ({ ...prev, phone: undefined })); // 입력 시 에러 초기화
                   }}
-                  className={`w-full p-[13px] border rounded-xl mb-2 focus:outline-none focus:ring-2 ${
+                  className={`w-[352px] h-[48px] pl-[16px] pt-[8px] pb-[8px] border rounded-[8px] mb-1 focus:outline-none focus:ring-2 ${
                     errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-black'
                   }`}
                 />
                 {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}
               </div>
 
-              <div className="flex flex-col py-[60px] rounded mt-auto">
+              <div className="flex flex-col  rounded">
                 <button
                   type="submit"
-                  className="w-full bg-[#B3916A] font-bold text-white py-[15px] rounded-xl hover:bg-[#a37e5f] transition"
+                  className="w-full bg-[#B3916A]  mt-[120px] font-bold text-white py-[15px] rounded-xl hover:bg-[#a37e5f] transition"
                   disabled={isLoading}
                 >
                   {isLoading ? '조회 중...' : '아이디 찾기'}
@@ -159,8 +163,12 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
         )}
 
         {modalType === 'success' && (
-          <div className="w-[424px] h-[635px] p-[35px] flex flex-col items-center">
-            <IoIosCheckmark className="text-[150px] text-[#B3916A]" />
+          <div className="w-[424px] h-[635px] p-[30px] flex flex-col items-center">
+            <div className="mt-[142px] p-[33px]">
+              {/* 체크아이콘 */}
+              <CheckIcon />
+            </div>
+
             <div className="text-center">
               <p className="text-xl font-semibold">
                 <span style={{ color: '#B3916A' }}>{name}</span>님의 아이디는
@@ -172,7 +180,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
             </div>
             <button
               onClick={onClose}
-              className="w-full mt-auto bg-[#B3916A] font-bold text-white py-[15px] rounded-xl hover:bg-[#a37e5f] transition"
+              className="w-full mt-[180px] bg-[#B3916A] font-bold text-white py-[15px] rounded-xl hover:bg-[#a37e5f] transition"
             >
               확인
             </button>
@@ -180,8 +188,10 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
         )}
 
         {modalType === 'failure' && (
-          <div className="w-[424px] h-[635px] p-[30px] flex flex-col items-center">
-            <PiWarningCircleFill className="text-[100px] m-[50px] text-[#B3916A]" />
+          <div className="w-[424px] mt-[50px] h-[635px] flex flex-col items-center justify-center p-[30px]">
+            {/* 경고아이콘 */}
+            <WarningIcon />
+
             <div className="text-center p-[30px]">
               <p className="text-xl font-semibold">
                 입력하신 정보와 일치하는 <br /> 아이디가 존재하지 않습니다.
@@ -190,7 +200,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
             </div>
             <button
               onClick={onClose}
-              className="w-full mt-auto bg-[#B3916A] font-bold text-white py-[15px] rounded-xl hover:bg-[#a37e5f] transition"
+              className="w-full mt-[180px] bg-[#B3916A] font-bold text-white py-[15px] rounded-xl hover:bg-[#a37e5f] transition"
             >
               확인
             </button>

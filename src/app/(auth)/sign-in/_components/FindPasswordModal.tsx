@@ -1,12 +1,11 @@
 'use client';
 
+import CheckIcon from '@/components/ui/icon/CheckIcon';
+import CloseButtonIcon from '@/components/ui/icon/CloseButtonIcon';
+import CloseEyesIcon from '@/components/ui/icon/CloseEyesIcon';
+import OpenEyesIcon from '@/components/ui/icon/OpenEyesIcon';
 import React, { useEffect, useState } from 'react';
-import { IoClose } from 'react-icons/io5';
-import { IoIosCheckmark } from 'react-icons/io';
 import Swal from 'sweetalert2';
-import Error from '../error';
-import { RxDividerVertical } from 'react-icons/rx';
-import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
 const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -21,6 +20,7 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
     email?: string;
     phone?: string;
     otp?: string;
+    name?: string;
     password?: string;
     confirmPassword?: string;
   }>({});
@@ -30,11 +30,10 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
       document.body.style.overflow = 'auto';
     };
   }, []);
-  // 가입 정보 확인
+
   const handleFindPassword = async () => {
     const newErrors: { email?: string; phone?: string } = {};
 
-    // 입력값 검증
     if (!email) {
       newErrors.email = '이메일은 필수 입력값입니다.';
     }
@@ -44,7 +43,6 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
 
     setErrors(newErrors);
 
-    // 에러가 있을 경우 요청 중단
     if (Object.keys(newErrors).length > 0) {
       return;
     }
@@ -77,11 +75,9 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
     }
   };
 
-  // 비밀번호 재설정
   const handleResetPassword = async () => {
     const newErrors: { otp?: string; password?: string; confirmPassword?: string } = {};
 
-    // 유효성 검증
     if (!otp) {
       newErrors.otp = '인증코드를 입력해 주세요.';
     }
@@ -96,7 +92,6 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
 
     setErrors(newErrors);
 
-    // 에러가 있을 경우 요청 중단
     if (Object.keys(newErrors).length > 0) {
       return;
     }
@@ -110,7 +105,7 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
       });
 
       if (response.ok) {
-        setModalType('success'); // 성공 모달로 전환
+        setModalType('success');
       } else {
         const result = await response.json();
         setErrors({ otp: result.error || '비밀번호 재설정에 실패했습니다.' });
@@ -126,14 +121,16 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="w-[424px] h-[635px] bg-white rounded-lg shadow-lg relative">
-        <IoClose
+        <button
           onClick={onClose}
-          className="text-[30px] absolute top-3 right-3 text-gray-500 hover:text-black font-bold cursor-pointer"
-        />
+          className="absolute mt-[36px] mr-[36px]  g-[12px] top-3 right-3 text-gray-500 hover:text-black font-bold cursor-pointer"
+        >
+          <CloseButtonIcon />
+        </button>
 
         {/* 첫 번째 모달: 가입 정보 확인 */}
         {modalType === 'input' && (
-          <div className="m-10 flex flex-col h-full">
+          <div className="m-10 flex flex-col ">
             <h1 className="text-2xl font-bold mt-[50px] mb-[50px]">
               비밀번호를 찾기 위해 <br /> 가입 정보를 입력해 주세요.
             </h1>
@@ -179,7 +176,7 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
                 {/* <div className="flex flex-col"> */}
                 <button
                   type="submit"
-                  className="w-full mt-[150px]  bg-[#B3916A] font-bold text-white py-[15px] rounded-xl hover:bg-[#a37e5f]"
+                  className="w-full mt-[77px]  bg-[#B3916A] font-bold text-white py-[15px] rounded-xl hover:bg-[#a37e5f]"
                   disabled={isLoading}
                 >
                   {isLoading ? '조회 중...' : '다음'}
@@ -192,7 +189,7 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
 
         {/* 두 번째 모달: 비밀번호 재설정 */}
         {modalType === 'reset' && (
-          <div className="m-10 flex flex-col h-full">
+          <div className="m-10 flex flex-col">
             <h1 className="font-semibold text-[24px] mt-[30px] mb-[30px]">
               가입정보가 <br />
               인증 되었습니다.
@@ -218,7 +215,6 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
 
                 setErrors(newErrors);
 
-                // 에러가 있을 경우 요청 중단
                 if (Object.keys(newErrors).length > 0) {
                   return;
                 }
@@ -235,7 +231,7 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
                   value={otp}
                   onChange={(e) => {
                     setOtp(e.target.value);
-                    setErrors((prev) => ({ ...prev, otp: undefined })); // 에러 초기화
+                    setErrors((prev) => ({ ...prev, otp: undefined }));
                   }}
                   className={`w-full p-[13px] border rounded-xl mb-2 focus:outline-none focus:ring-2 ${
                     errors.otp ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-[#B3916A]'
@@ -264,11 +260,7 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
                       onClick={() => setShowPassword((prev) => !prev)}
                       className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-black"
                     >
-                      {showPassword ? (
-                        <IoMdEye size={24} className="text-neutral-500" />
-                      ) : (
-                        <IoMdEyeOff size={24} className="text-neutral-500" />
-                      )}
+                      {showPassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
                     </button>
                   </div>
                   {errors.password && <p className="text-sm text-red-500 mt-2">{errors.password}</p>}
@@ -295,25 +287,21 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
                     <button
                       type="button"
                       onClick={() => setShowConfirmPassword((prev) => !prev)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-black"
+                      className="absolute  right-3 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-black"
                     >
-                      {showConfirmPassword ? (
-                        <IoMdEye size={24} className="text-neutral-500" />
-                      ) : (
-                        <IoMdEyeOff size={24} className="text-neutral-500" />
-                      )}
+                      {showConfirmPassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
                     </button>
                   </div>
                   {errors.confirmPassword && <p className="text-sm text-red-500 mt-2">{errors.confirmPassword}</p>}
                 </div>
               </div>
-              <div className="flex flex-col ">
+              <div className="flex flex-col mt-[77px]">
                 <button
                   type="submit"
-                  className="w-full mb-[70px] bg-[#B3916A] font-bold text-white py-[10px] rounded-xl hover:bg-[#a37e5f] transition"
+                  className=" bg-[#B3916A] font-bold text-white py-[10px] rounded-xl hover:bg-[#a37e5f] transition"
                   disabled={isLoading}
                 >
-                  <div className="text-[20px]">{isLoading ? '처리 중...' : '완료'}</div>
+                  <div className=" text-[20px]">{isLoading ? '처리 중...' : '완료'}</div>
                 </button>
               </div>
             </form>
@@ -323,11 +311,12 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
         {/* 세 번째 모달: 성공 메시지 */}
         {modalType === 'success' && (
           <div className="w-[424px] mt-[50px] h-[635px] flex flex-col items-center justify-center p-[30px]">
-            <IoIosCheckmark className="text-[150px] text-[#B3916A]" />
+            <CheckIcon />
+
             <span className="text-xl  font-semibold  text-center">비밀번호가 재설정 되었습니다.</span>
             <button
               onClick={onClose}
-              className="w-full mt-[180px] bg-[#B3916A] font-bold text-white py-[15px] rounded-xl hover:bg-[#a37e5f] transition"
+              className="w-full mt-[280px] bg-[#B3916A] font-bold text-white py-[15px] rounded-xl hover:bg-[#a37e5f] transition"
             >
               확인
             </button>

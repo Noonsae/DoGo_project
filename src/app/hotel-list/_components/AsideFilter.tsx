@@ -17,21 +17,21 @@ interface FilterProps {
 }
 
 const AsideFilter = ({ onFilterChange: onChangeFilter }: FilterProps) => {
-  const router = useRouter()
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
- 
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   // Get a new searchParams string by merging the current
   // searchParams with a provided key/value pair
   const createQueryString = useCallback(
     (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString())
-      params.set(name, value)
- 
-      return params.toString()
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+
+      return params.toString();
     },
     [searchParams]
-  )
+  );
 
   const [selectedGrade, setSelectedGrade] = useState<number[]>([]);
   const [filterMinPrice, setFilterMinPrice] = useState(0);
@@ -52,17 +52,17 @@ const AsideFilter = ({ onFilterChange: onChangeFilter }: FilterProps) => {
 
   const handleHotelGradeChange = (grade: number) => {
     // setSelectedGrade((prev) => (prev.includes(grade) ? prev.filter((item) => item !== grade) : [...prev, grade]));
-    const urlStars = searchParams.get("stars");
+    const urlStars = searchParams.get('stars');
 
-    const stars = urlStars?.split(",") || [];
-    const index = stars.findIndex((star) => Number(star) === grade)
+    const stars = urlStars?.split(',') || [];
+    const index = stars.findIndex((star) => Number(star) === grade);
     if (index !== -1) {
-      stars.splice(index, 1)
+      stars.splice(index, 1);
     } else {
-      stars.push(String(grade))
+      stars.push(String(grade));
     }
-    console.log({stars})
-    router.push(pathname + '?' + createQueryString('stars', stars.join(",")))
+    console.log({ stars });
+    router.push(pathname + '?' + createQueryString('stars', stars.join(',')));
   };
 
   const handleFacilityChange = (facility: string) => {
@@ -97,7 +97,7 @@ const AsideFilter = ({ onFilterChange: onChangeFilter }: FilterProps) => {
         <p className="text-[20px] font-bold">필터</p>
         <button className="flex flex-row items-center justify-between gap-[1.5px]">
           <HiOutlineRefresh className="w-[20px] h-[20px] text-[#A0A0A0]" />
-          <span className="text-base text-[#777] font-regular leading-[1.45]">필터 초기화</span>
+          <span className="text-base text-[#777] font-normal leading-[1.45]">필터 초기화</span>
         </button>
       </div>
 

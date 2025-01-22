@@ -53,7 +53,7 @@ const UserSidebar: React.FC<UserSidebarProps> = ({ userId, currentTab, setCurren
     { id: 'bookings', label: '예약 목록' },
     { id: 'favorites', label: '찜 목록' },
     { id: 'reviews', label: '작성한 후기' },
-    { id: 'inquiries', label: '1:1 문의' },
+    { id: 'inquiries', label: '1:1 문의' }
   ];
 
   return (
