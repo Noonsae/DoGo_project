@@ -1,17 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import { browserSupabase } from '@/supabase/supabase-client';
+import { useRouter } from 'next/navigation';
 import useAuthStore from '@/store/useAuth';
 import SignUpUser from './_components/SignUpUser';
 import handleSignupAction from '../actions/handleSignupAction';
-import { browserSupabase } from '@/supabase/supabase-client';
-import { useRouter } from 'next/navigation';
-
 import SignupUserModal from '@/components/ui/sign-up/SignUpUserUi';
-
-// import clap from '/images/clap.png';
-
-//각페이지 별 임포트 순서는 추후에 진행될 예정입니다.
 
 export default function SignUpUserPage() {
   const [email, setEmail] = useState('');
