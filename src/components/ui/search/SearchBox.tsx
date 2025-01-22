@@ -142,7 +142,7 @@ const SearchBox = () => {
                 className="w-[11%] max-w-[124px] h-full flex flex-row justify-center items-center bg-[#B3916A] text-white text-[20px] text-center font-semibold rounded-[8px] outline-none hover:bg-[#8F7455] active:bg-[#6B573F] disabled:bg-[#EFEFEF] disabled:text-[#BFBFBF] transition duration-200"
               >
                 <div>
-                  <HiSearchIcon className="inline-block w-[24px] h-[24px] -ml-[1px] mr-[4%] fill-white" />
+                  <HiSearchIcon className="inline-block w-6 h-6 -ml-1 mr-1 fill-white" />
                   검색
                 </div>
               </button>

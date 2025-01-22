@@ -1,8 +1,16 @@
 import { IconType } from '@/types/icon/icon-type';
 
-const IoIosRemoveCircleOutlineIcon: React.FC<IconType> = (className) => {
+const IoIosRemoveCircleOutlineIcon: React.FC<IconType> = ({className, onClick}) => {
   return (
-    <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width="24"
+      height="25"
+      viewBox="0 0 24 25"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      onClick={onClick}
+    >
       <path
         d="M16.2422 11.75H7.75781C7.34531 11.75 7.00781 12.0312 7.00781 12.5C7.00781 12.9688 7.35938 13.25 7.75781 13.25H16.2422C16.6547 13.25 16.9922 12.9125 16.9922 12.5C16.9922 12.0875 16.6547 11.75 16.2422 11.75Z"
         fill="currentColor"

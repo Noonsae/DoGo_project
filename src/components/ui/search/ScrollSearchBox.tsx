@@ -57,9 +57,9 @@ const ScrollSearchBox = () => {
   const url = generateUrl({ location, checkIn, checkOut, stay, month, details }); // URL 생성
 
   console.log(url);
-  
+
   // 비동기로 전환 후 제대로 작동하는데 이유를 모르겠음;;
-  const handleSearchClick = async() => {
+  const handleSearchClick = async () => {
     const searchUrl = url;
     await router.push(searchUrl); // 페이지 이동
     inactiveSearchBox();
@@ -138,7 +138,7 @@ const ScrollSearchBox = () => {
             }`}
           >
             <div>
-              <HiSearchIcon className="w-[24px] h-[24px]" />
+              <HiSearchIcon className="w-6 h-6" />
             </div>
             <p className="text-[20px] font-semibold">검색</p>
           </button>
