@@ -1,17 +1,18 @@
 import React from 'react';
 import Slider from 'react-slick';
+
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import useHistoryStore from '@/store/useHistoryStore';
-
 import { HotelWithPriceOnly } from '@/types/supabase/hotel-type';
 
-import { CustomNextArrow, CustomPrevArrow } from '@/components/ui/slider/customArrow';
+import { CustomNextArrow, CustomPrevArrow } from '@/components/ui/slider/SlideCustomArrow';
 
-import { RiThumbUpFill } from 'react-icons/ri';
-import { useRouter } from 'next/navigation';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+
+import RiThumbUpFillIcon from '../icon/RiThumbUpFillIcon';
 
 const HotelListSlider = ({ hotels }: { hotels: HotelWithPriceOnly[] | undefined }) => {
   const router = useRouter();
@@ -74,7 +75,9 @@ const HotelListSlider = ({ hotels }: { hotels: HotelWithPriceOnly[] | undefined 
             <p className="mt-2 text-[18px] text-gray-600 font-medium">{hotel.address}</p>
 
             <div className="flex flex-row items-center gap-2  mt-2 text-[#D9D9D9]">
-              <RiThumbUpFill className="w-[20px] h-[20px] text-[#EEC18D]" />
+              <div>
+                <RiThumbUpFillIcon className="w-[20px] h-[20px] text-[#EEC18D]" />
+              </div>
               <span className="text-[18px] text-[#444] font-semibold">4.8</span>
               <span className="text-[#9E9E9E]"> (3,222) </span>
             </div>

@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
-import { HiSearch } from 'react-icons/hi';
 
 import { useRouter } from 'next/navigation';
 
@@ -13,6 +12,7 @@ import generateUrl from '@/utils/urlHelpers';
 import LocationModal from './LocationModal';
 import DurationModal from './DurationModal';
 import DetailsModal from './DetailsModal';
+import HiSearchIcon from '../icon/HiSearchIcon';
 
 const ScrollSearchBox = () => {
   const [searchUrl, setSearchUrl] = useState<string>('');
@@ -137,7 +137,9 @@ const ScrollSearchBox = () => {
               isSearchBoxClicked ? 'h-[68px]' : 'h-[48px]'
             }`}
           >
-            <HiSearch className="w-[24px] h-[24px]" />
+            <div>
+              <HiSearchIcon className="w-[24px] h-[24px]" />
+            </div>
             <p className="text-[20px] font-semibold">검색</p>
           </button>
         </div>

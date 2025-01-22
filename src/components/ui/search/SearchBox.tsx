@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
-import { HiSearch } from 'react-icons/hi';
 
 import { useRouter } from 'next/navigation';
 
@@ -15,6 +14,8 @@ import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
 import LocationModal from './LocationModal';
 import DurationModal from './DurationModal';
 import DetailsModal from './DetailsModal';
+
+import HiSearchIcon from '../icon/HiSearchIcon';
 
 const SearchBox = () => {
   const [searchUrl, setSearchUrl] = useState<string>('');
@@ -140,8 +141,10 @@ const SearchBox = () => {
                 onClick={handleSearchClick}
                 className="w-[11%] max-w-[124px] h-full flex flex-row justify-center items-center bg-[#B3916A] text-white text-[20px] text-center font-semibold rounded-[8px] outline-none hover:bg-[#8F7455] active:bg-[#6B573F] disabled:bg-[#EFEFEF] disabled:text-[#BFBFBF] transition duration-200"
               >
-                <HiSearch className="inline-block w-[24px] h-[24px] -ml-[1px] mr-[4%] fill-white" />
-                검색
+                <div>
+                  <HiSearchIcon className="inline-block w-[24px] h-[24px] -ml-[1px] mr-[4%] fill-white" />
+                  검색
+                </div>
               </button>
             </div>
 

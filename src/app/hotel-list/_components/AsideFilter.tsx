@@ -1,7 +1,8 @@
 'use client';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import React, { useState, useEffect, useCallback } from 'react';
-import { HiOutlineRefresh } from 'react-icons/hi';
+import HiOutlineRefreshIcon from '@/components/ui/icon/HiOutlineRefreshIcon';
+
 import DualSlider from './Dualslider';
 
 interface FilterObject {
@@ -96,7 +97,7 @@ const AsideFilter = ({ onFilterChange: onChangeFilter }: FilterProps) => {
       <div className="flex flex-row items-center justify-between mb-[70px]">
         <p className="text-[20px] font-bold">필터</p>
         <button className="flex flex-row items-center justify-between gap-[1.5px]">
-          <HiOutlineRefresh className="w-[20px] h-[20px] text-[#A0A0A0]" />
+          <HiOutlineRefreshIcon className="w-[20px] h-[20px] text-[#A0A0A0]" />
           <span className="text-base text-[#777] font-normal leading-[1.45]">필터 초기화</span>
         </button>
       </div>

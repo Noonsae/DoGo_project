@@ -9,8 +9,9 @@ import Swal from 'sweetalert2';
 
 import useAuthStore from '@/store/useAuth';
 
-import { HiOutlineMenu } from 'react-icons/hi';
-import { IoClose } from 'react-icons/io5';
+import HiOutlineMenuIcon from '@/components/ui/icon/HiOutlineMenuIcon';
+
+// import { IoClose } from 'react-icons/io5';
 
 const HamburgerBtn: React.FC = () => {
   const { user, signOutUser } = useAuthStore( state => state); // Zustand 상태 가져오기
@@ -48,9 +49,11 @@ const HamburgerBtn: React.FC = () => {
         aria-label="Toggle menu"
       >
         {isOpen ? (
-          <IoClose className="w-[24px] h-[24px] text-white" />
+          <div>{/* <IoClose className="w-[24px] h-[24px] text-white" /> */}</div>
         ) : (
-          <HiOutlineMenu className="w-[24px] h-[24px] text-white" />
+          <div>
+            <HiOutlineMenuIcon className="w-[24px] h-[24px] text-white" />
+          </div>
         )}
       </div>
 
