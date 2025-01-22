@@ -88,9 +88,8 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
           {!loading && (
             <div className="flex flex-row items-center">
               <p className="w-6 h-6 text-[#EEC18D]">{ratingIcon()}</p>
-
-              <p className="ml-1 text-[18px] font-semibold">35</p>
-              <span className="ml-2 text-[#A0A0A0]">(35)</span>
+              <p className="ml-1 text-[18px] font-semibold">{averageRating}</p>
+              <span className="ml-2 text-[#A0A0A0]">({totalReviews.toLocaleString()})</span>
             </div>
           )}
         </div>
