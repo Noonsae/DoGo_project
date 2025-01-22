@@ -8,15 +8,13 @@ import KakaoSignIn from './KakaoSignIn';
 import FindIdModal from './FindIdModal';
 import FindPasswordModal from './FindPasswordModal';
 import { browserSupabase } from '@/supabase/supabase-client';
-import { RxDividerVertical } from 'react-icons/rx';
+import DividerIcon from '@/components/ui/icon/DividerIcon';
 const Signin = () => {
   const [activeTab, setActiveTab] = useState<'user' | 'business'>('user');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // const { setUser } = useAuthStore();
   const [isFindIdModalOpen, setIsFindIdModalOpen] = useState(false);
   const [isFindPasswordOpen, setFindPasswordOpen] = useState(false);
-  // zustand 가져오기
   const router = useRouter();
   const setUser = useAuthStore((state) => state.setUser);
   const handleSignUp = () => {
@@ -36,7 +34,6 @@ const Signin = () => {
 
       const supabase = browserSupabase();
 
-      // 1. 이메일과 비밀번호로 로그인 시도
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password
@@ -51,7 +48,6 @@ const Signin = () => {
         return;
       }
 
-      // 2. 로그인 성공 시 role 확인
       const { data: userData, error: userError } = await supabase
         .from('users')
         .select('id, role')
@@ -68,7 +64,6 @@ const Signin = () => {
       }
 
       if (userData.role !== activeTab) {
-        // role과 선택한 탭(user/business)이 불일치할 경우
         await Swal.fire({
           icon: 'error',
           title: '로그인 실패',
@@ -77,7 +72,6 @@ const Signin = () => {
         return;
       }
 
-      // 3. 로그인 성공 처리
       setUser(data.user);
       document.cookie = `user=${encodeURIComponent(JSON.stringify(data.user))}; path=/;`;
 
@@ -153,7 +147,8 @@ const Signin = () => {
             <button type="button" onClick={() => setIsFindIdModalOpen(true)} className="m-[2px] hover:underline">
               아이디 찾기
             </button>
-            <RxDividerVertical className="text-[22px] text-neutral-400" />
+            <DividerIcon />
+
             <button type="button" onClick={() => setFindPasswordOpen(true)} className="hover:underline">
               비밀번호 찾기
             </button>
@@ -191,7 +186,8 @@ const Signin = () => {
           >
             개인정보처리방침
           </button>
-          <RxDividerVertical className="text-[22px] text-neutral-400" />
+          <DividerIcon />
+
           <button
             type="button"
             className="hover:underline"
