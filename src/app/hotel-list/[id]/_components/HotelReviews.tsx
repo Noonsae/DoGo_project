@@ -29,12 +29,12 @@ const HotelReviews = ({ loading, reviews, allReviews }: HotelReviewsProps) => {
       {loading ? (
         <p>Loading reviews...</p>
       ) : (
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {reviews.length > 0 ? (
             reviews.map((review) => (
               <div
                 key={review.id}
-                className="w-[585px] h-[368px] bg-white border border-gray-200 rounded-[12px] p-[20px] shadow-md flex flex-col gap-[20px]"
+                className="bg-white border border-gray-200 rounded-[12px] p-[20px] shadow-md flex flex-col gap-[20px]"
               >
                 {/* 프로필 섹션 */}
                 <div className="flex gap-4">
@@ -67,8 +67,8 @@ const HotelReviews = ({ loading, reviews, allReviews }: HotelReviewsProps) => {
                     )
                   )}
                 </div>
+                {/* 코멘트 */}
                 <div>
-                  {/* 코멘트 */}
                   <p className="text-sm text-gray-700 overflow-hidden line-clamp-2">{review.comment}</p>
                 </div>
               </div>

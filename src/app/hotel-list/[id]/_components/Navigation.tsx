@@ -9,7 +9,7 @@ const Navigation = ({ activeTab, scrollToSection }: NavigationType) => {
   return (
     <div>
       <div className="sticky top-0 z-10 bg-white border-b shadow-sm">
-        <div className="mx-[360px]">
+        <div>
           <ul className="flex space-x-6 py-4">
             {[
               { id: 'overview', label: '개요' },
