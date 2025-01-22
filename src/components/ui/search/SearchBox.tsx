@@ -75,6 +75,13 @@ const SearchBox = () => {
     closeModal();
   };
 
+  const handleKeyDownEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // 기본 엔터 키 동작 방지
+      handleSearchClick(); // 검색 함수 실행
+    }
+  };
+
   useEffect(() => {
     setSearchUrl(url); // 의존성 배열에서 searchUrl 제거
   }, [location, stay, month, details]); // 필요한 의존성만 포함
@@ -102,6 +109,7 @@ const SearchBox = () => {
                   placeholder="여행지 검색"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
+                  onKeyDown={handleKeyDownEnter}
                   className="w-full border-none outline-none"
                 />
               </label>
