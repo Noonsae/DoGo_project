@@ -49,6 +49,7 @@ const KakaoSignIn = () => {
               />
             </g>
           </svg>
+
           <p className="w-full"> 카카오로 시작하기</p>
         </div>
       </button>
