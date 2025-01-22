@@ -6,12 +6,6 @@ import WarningIcon from '@/components/ui/icon/WarningIcon';
 import React, { useEffect, useState } from 'react';
 
 const FindIdModal = ({ onClose }: { onClose: () => void }) => {
-  // const [name, setName] = useState('');
-  // const [phone, setPhone] = useState('');
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [activeTab, setActiveTab] = useState<'user' | 'business'>('user');
-  // const [modalType, setModalType] = useState<'input' | 'success' | 'failure'>('input');
-  // const [resultEmail, setResultEmail] = useState('');
   const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
 
   const [form, setForm] = useState({
@@ -31,7 +25,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
   }, []);
   const maskEmail = (email: string): string => {
     if (!email.includes('@')) {
-      return email; // 이메일 형식이 아니면 그대로 반환
+      return email;
     }
     const [localPart, domain] = email.split('@');
     const maskedLocal = localPart.slice(0, 3) + '***';
@@ -56,7 +50,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
       ...prevForm,
       isLoading: true
     }));
-    // setIsLoading(true);
+
     try {
       const response = await fetch('/api/auth/find-id', {
         method: 'POST',
@@ -73,15 +67,12 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
         }));
       } else {
         setForm((prevForm) => ({ ...prevForm, modalType: 'failure' }));
-        // setModalType('failure');
       }
     } catch (error) {
       console.error('아이디 찾기 실패:', error);
       setForm((prevForm) => ({ ...prevForm, modalType: 'failure' }));
-      // setModalType('failure');
     } finally {
       setForm((prevForm) => ({ ...prevForm, isLoading: false }));
-      // setIsLoading(false);
     }
   };
   const handleTabChange = (tab: 'user' | 'business') => {
@@ -92,9 +83,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
       phone: '',
       modalType: 'input'
     }));
-    // setActiveTab(tab);
-    // setName('');
-    // setPhone('');
+
     setErrors({});
   };
 
@@ -151,7 +140,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
                     value={form.name}
                     onChange={(e) => {
                       setForm((prevForm) => ({ ...prevForm, name: e.target.value }));
-                      // setName(e.target.value);
+
                       setErrors((prev) => ({ ...prev, name: undefined })); // 입력 시 에러 초기화
                     }}
                     className={`w-[352px] h-[48px] pl-[16px] pt-[8px] pb-[8px] border rounded-[8px] focus:outline-none focus:ring-2 ${
@@ -170,7 +159,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
                       ...prevForm,
                       phone: e.target.value
                     }));
-                    // setPhone(e.target.value);
+
                     setErrors((prev) => ({ ...prev, phone: undefined })); // 입력 시 에러 초기화
                   }}
                   className={`w-[352px] h-[48px] pl-[16px] pt-[8px] pb-[8px] border rounded-[8px] mb-1 focus:outline-none focus:ring-2 ${

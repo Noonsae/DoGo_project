@@ -221,10 +221,10 @@ const Signin = () => {
         {form.isFindPasswordOpen && (
           <FindPasswordModal
             onClose={() =>
-              setForm((prevForm) => ({
-                ...prevForm,
-                setFindPasswordOpen: false
-              }))
+              setForm({
+                ...form,
+                isFindPasswordOpen: false
+              })
             }
           />
         )}

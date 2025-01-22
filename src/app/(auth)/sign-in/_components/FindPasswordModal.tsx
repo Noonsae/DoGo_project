@@ -7,16 +7,6 @@ import OpenEyesIcon from '@/components/ui/icon/OpenEyesIcon';
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
-  // const [email, setEmail] = useState('');
-  // const [phone, setPhone] = useState('');
-  // const [otp, setOtp] = useState('');
-  // const [password, setPassword] = useState('');
-  // const [confirmPassword, setConfirmPassword] = useState('');
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [modalType, setModalType] = useState<'input' | 'reset' | 'success'>('input');
-  // const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  // const [showPassword, setShowPassword] = useState(false);
-
   const [form, setForm] = useState({
     email: '',
     phone: '',
@@ -59,8 +49,9 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
     if (Object.keys(newErrors).length > 0) {
       return;
     }
+
     setForm((prevForm) => ({ ...prevForm, isLoading: true }));
-    // setIsLoading(true);
+
     try {
       const response = await fetch('/api/auth/reset-password-request', {
         method: 'POST',
@@ -70,23 +61,26 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
 
       const { otp } = await response.json();
       if (response.ok) {
-        Swal.fire({
+        await Swal.fire({
           icon: 'success',
           title: '인증코드',
           text: `비밀번호 재설정을 위한 인증코드는: ${otp}`
         });
-        setForm((prevForm) => ({ ...prevForm, setModalType: 'reset' }));
-        // setModalType('reset');
+
+        setForm((prevForm) => ({
+          ...prevForm,
+          modalType: 'reset',
+          isLoading: false
+        }));
       } else {
         console.error('OTP 요청 실패:', response.statusText);
         setErrors({ email: 'OTP 요청에 실패했습니다.' });
+        setForm((prevForm) => ({ ...prevForm, isLoading: false }));
       }
     } catch (error) {
       console.error('OTP 요청 실패:', error);
       setErrors({ email: '서버 오류가 발생했습니다.' });
-    } finally {
-      setForm((prevForm) => ({ ...prevForm, setIsLoading: false }));
-      // setIsLoading(false);
+      setForm((prevForm) => ({ ...prevForm, isLoading: false }));
     }
   };
 
@@ -111,7 +105,7 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
       return;
     }
     setForm((prevForm) => ({ ...prevForm, setIsLoading: true }));
-    // setIsLoading(true);
+
     try {
       const response = await fetch('/api/auth/reset-password', {
         method: 'POST',
@@ -121,7 +115,6 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
 
       if (response.ok) {
         setForm((prevForm) => ({ ...prevForm, setModalType: 'success' }));
-        // setModalType('success');
       } else {
         const result = await response.json();
         setErrors({ otp: result.error || '비밀번호 재설정에 실패했습니다.' });
@@ -131,7 +124,6 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
       setErrors({ otp: '서버 오류가 발생했습니다.' });
     } finally {
       setForm((prevForm) => ({ ...prevForm, setIsLoading: false }));
-      // setIsLoading(false);
     }
   };
 
@@ -171,8 +163,7 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
                         email: e.target.value
                       }));
 
-                      // setEmail(e.target.value);
-                      setErrors((prev) => ({ ...prev, email: undefined })); // 에러 초기화
+                      setErrors((prev) => ({ ...prev, email: undefined }));
                     }}
                     className={`w-full p-[13px] border rounded-xl mb-2 focus:outline-none focus:ring-2 ${
                       errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-[#B3916A]'
@@ -190,8 +181,8 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
                         ...prevForm,
                         phone: e.target.value
                       }));
-                      // setPhone(e.target.value);
-                      setErrors((prev) => ({ ...prev, phone: undefined })); // 에러 초기화
+
+                      setErrors((prev) => ({ ...prev, phone: undefined }));
                     }}
                     className={`w-full p-[13px] border rounded-xl mb-2 focus:outline-none focus:ring-2 ${
                       errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-[#B3916A]'
@@ -199,7 +190,7 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
                   />
                   {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}
                 </div>
-                {/* <div className="flex flex-col"> */}
+
                 <button
                   type="submit"
                   className="w-full mt-[77px]  bg-[#B3916A] font-bold text-white py-[15px] rounded-xl hover:bg-[#a37e5f]"
@@ -207,7 +198,6 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
                 >
                   {form.isLoading ? '조회 중...' : '다음'}
                 </button>
-                {/* </div> */}
               </form>
             </div>
           </div>
@@ -246,6 +236,10 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
                 }
 
                 handleResetPassword();
+                setForm((prevForm) => ({
+                  ...prevForm,
+                  modalType: 'success'
+                }));
               }}
             >
               <div>
@@ -254,13 +248,13 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
                 <input
                   type="text"
                   placeholder="OTP를 입력해 주세요."
-                  value={otp}
+                  value={form.otp}
                   onChange={(e) => {
-                    setForm((prevForm) => ({
-                      ...prevForm,
-                      opt: e.target.value
-                    }));
-                    // setOtp(e.target.value);
+                    setForm({
+                      ...form,
+                      otp: e.target.value
+                    });
+
                     setErrors((prev) => ({ ...prev, otp: undefined }));
                   }}
                   className={`w-full p-[13px] border rounded-xl mb-2 focus:outline-none focus:ring-2 ${
@@ -276,14 +270,14 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
                     <input
                       type={form.showPassword ? 'text' : 'password'}
                       placeholder="새 비밀번호를 입력해 주세요."
-                      value={password}
+                      value={form.password}
                       onChange={(e) => {
                         setForm((prevForm) => ({
                           ...prevForm,
                           password: e.target.value
                         }));
-                        // setPassword(e.target.value);
-                        setErrors((prev) => ({ ...prev, password: undefined })); // 에러 초기화
+
+                        setErrors((prev) => ({ ...prev, password: undefined }));
                       }}
                       className={`w-full p-[13px] pr-10 border rounded-xl focus:outline-none focus:ring-2 ${
                         errors.password ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-[#B3916A]'
@@ -294,10 +288,9 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
                       onClick={() =>
                         setForm((prevForm) => ({
                           ...prevForm,
-                          showPasswordL: !prevForm.showPassword
+                          showPassword: !prevForm.showPassword
                         }))
                       }
-                      // setShowPassword((prev) => !prev)}
                       className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-black"
                     >
                       {form.showPassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
@@ -320,8 +313,7 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
                           confirmPassword: e.target.value
                         }));
 
-                        // setConfirmPassword(e.target.value);
-                        setErrors((prev) => ({ ...prev, confirmPassword: undefined })); // 에러 초기화
+                        setErrors((prev) => ({ ...prev, confirmPassword: undefined }));
                       }}
                       className={`w-full p-[13px] pr-10 border rounded-xl focus:outline-none focus:ring-2 ${
                         errors.confirmPassword
@@ -334,10 +326,9 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
                       onClick={() =>
                         setForm((prevForm) => ({
                           ...prevForm,
-                          showConfirmPassword: !prevForm.confirmPassword
+                          showConfirmPassword: !prevForm.showConfirmPassword
                         }))
                       }
-                      // setShowConfirmPassword((prev) => !prev)}
                       className="absolute  right-3 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-black"
                     >
                       {form.showConfirmPassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
