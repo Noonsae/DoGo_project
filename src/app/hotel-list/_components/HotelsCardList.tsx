@@ -5,6 +5,7 @@ import Image from 'next/image';
 import useHotelRooms from '@/hooks/room/useHotelRooms';
 import useSerViceFacility from '@/hooks/serviceFacility/useServiceFacility';
 import RenderStars from './RenderStars';
+import RiThumbUpFillIcon from '@/components/ui/icon/RiThumbUpFillIcon';
 
 interface HotelListItemProps {
   hotel: HotelType & { min_price?: number | null };
@@ -87,9 +88,9 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
           {/* 리뷰 */}
           {!loading && (
             <div className="flex flex-row items-center">
-              <p className="w-6 h-6 text-[#EEC18D]">{ratingIcon()}</p>
-              <p className="ml-1 text-[18px] font-semibold">{averageRating}</p>
-              <span className="ml-2 text-[#A0A0A0]">({totalReviews.toLocaleString()})</span>
+              <RiThumbUpFillIcon className="w-6 h-6 text-[#EEC18D]" />
+              <p className="ml-1 text-[18px] font-semibold">4.8</p>
+              <span className="ml-2 text-[#A0A0A0]">(3,222)</span>
             </div>
           )}
         </div>

@@ -9,11 +9,11 @@ import Swal from 'sweetalert2';
 
 import useAuthStore from '@/store/useAuth';
 
-import { HiOutlineMenu } from 'react-icons/hi';
-import { IoClose } from 'react-icons/io5';
+import HiOutlineMenuIcon from '@/components/ui/icon/HiOutlineMenuIcon';
+import IoCloseIcon from '@/components/ui/icon/IoCloseIcon';
 
 const HamburgerBtn: React.FC = () => {
-  const { user, signOutUser } = useAuthStore( state => state); // Zustand 상태 가져오기
+  const { user, signOutUser } = useAuthStore((state) => state); // Zustand 상태 가져오기
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -24,10 +24,10 @@ const HamburgerBtn: React.FC = () => {
 
   // 로그아웃 처리
   const handleLogout = () => {
-    signOutUser(null); // 유저 정보 초기화    
+    signOutUser(null); // 유저 정보 초기화
     Swal.fire({
       icon: 'success',
-      title: "로그아웃 되었습니다.",
+      title: '로그아웃 되었습니다.'
     });
   };
 
@@ -43,15 +43,11 @@ const HamburgerBtn: React.FC = () => {
     <div className="relative" ref={menuRef}>
       {/* 햄버거 버튼 */}
       <div
-        className="box-content flex flex-col justify-between w-[24px] h-[24px] p-[10px] cursor-pointer"
+        className="box-content flex flex-col justify-between w-6 h-6 p-[10px] cursor-pointer"
         onClick={toggleMenu}
         aria-label="Toggle menu"
       >
-        {isOpen ? (
-          <IoClose className="w-[24px] h-[24px] text-white" />
-        ) : (
-          <HiOutlineMenu className="w-[24px] h-[24px] text-white" />
-        )}
+        {isOpen ? <IoCloseIcon className="w-6 h-6 text-white" /> : <HiOutlineMenuIcon className="w-6 h-6 text-white" />}
       </div>
 
       {/* 토글 메뉴 */}
