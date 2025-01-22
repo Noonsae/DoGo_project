@@ -16,7 +16,6 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const openModal = (image: string) => {
-    console.log('openModal 호출됨, 이미지:', image); // 이미지 URL 출력
     setSelectedImage(image);
     setIsModalOpen(true);
   };
@@ -27,73 +26,82 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
   };
 
   return (
-    <div>
-      <section id="overview" className="scroll-mt-20">
-        <div className="flex gap-4">
-          <div className="rounded-lg shadow-md overflow-hidden relative">
-            <Image
-              src={hotelData.main_img_url || '/placeholder.png'}
-              alt={hotelData.name || 'Default Image'}
-              width={594}
-              height={363}
-              className="object-cover block rounded-md"
-              onClick={() => openModal(hotelData.main_img_url)}
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-2 w-[594px] h-[363px]">
-            {/* hotel_img_urls가 배열일 때만 slice를 사용 */}
-            {Array.isArray(hotelData.hotel_img_urls) &&
-              hotelData.hotel_img_urls.slice(1, 5).map((image, index) => (
-                <div
-                  key={index}
-                  className="relative bg-gray-200 rounded-lg shadow-md overflow-hidden"
-                  style={{ width: '291px', height: '190px' }}
-                  onClick={() => openModal(image as string)}
-                >
+    <section
+      id="overview"
+      className="scroll-mt-20 w-full max-w-[1200px] mx-auto px-[50px] lg:px-[30px] xl:px-[20px] 2xl:px-0"
+    >
+      <div className="flex flex-col lg:flex-row gap-4">
+        {/* 메인 이미지 */}
+        <div className="rounded-lg shadow-md overflow-hidden">
+          <Image
+            src={hotelData.main_img_url || '/placeholder.png'}
+            alt={hotelData.name || 'Default Image'}
+            width={594}
+            height={363}
+            className="object-cover w-full h-full cursor-pointer"
+            onClick={() => openModal(hotelData.main_img_url)}
+          />
+        </div>
+        {/* 추가 이미지 */}
+        <div className="grid grid-cols-2 gap-2">
+          {Array.isArray(hotelData.hotel_img_urls) &&
+            hotelData.hotel_img_urls.slice(1, 5).map((image, index) => (
+              <div
+                key={index}
+                className="relative  rounded-lg  overflow-hidden cursor-pointer"
+                onClick={() => openModal(image as string)}
+              >
+                <div className="w-full max-w-[300px] sm:w-[240px] md:w-[270px] lg:w-[300px] min-w-[300px] aspect-[16/9]">
                   <Image
                     src={image as string}
                     alt={`Image ${index + 1}`}
                     width={291}
-                    height={175.5}
-                    className="object-cover w-full h-full rounded-md"
+                    height={175}
+                    className="object-cover"
                   />
-                  {/* 두 번째 사진(index === 1)인 경우에만 즐겨찾기 버튼 렌더링 */}
-                  {index === 1 && (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation(); // 클릭 이벤트 전파 방지
-                        toggleFavorite(hotelId); // 즐겨찾기 버튼 클릭 시 상태 토글
-                      }}
-                      className={`absolute top-4 right-4 p-2 rounded-full shadow-md ${
-                        favoriteStatus[hotelId] ? 'bg-white text-white' : 'bg-gray-200 text-gray-600'
-                      }`}
-                    >
-                      {favoriteStatus[hotelId] ? '❤️' : '🤍'}
-                    </button>
-                  )}
                 </div>
-              ))}
-          </div>
+                {index === 1 && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleFavorite(hotelId);
+                    }}
+                    className={`absolute top-2 right-2 p-2 rounded-full shadow-md ${
+                      favoriteStatus[hotelId] ? 'bg-red-500 text-white' : 'bg-white text-gray-600'
+                    }`}
+                  >
+                    {favoriteStatus[hotelId] ? '❤️' : '🤍'}
+                  </button>
+                )}
+                {index === 3 && (
+                  <div className="absolute bottom-2 right-2 px-3 py-1 bg-[#777] text-white text-sm rounded-full">
+                    +26
+                  </div>
+                )}
+              </div>
+            ))}
         </div>
-        <div className="flex">
-          <h2 className="text-2xl font-bold mb-4 mt-2">{hotelData.name}</h2>
-          <h3 className="mt-3">
-            <RenderStars rating={hotelData.stars} /> {/* JSX 문법으로 RenderStars 사용 */}
-          </h3>
+      </div>
+      {/* 호텔 정보 */}
+      <div className="mt-4 text-center lg:text-left">
+        <h2 className="text-2xl font-bold">{hotelData.name}</h2>
+        <div className="mt-2">
+          <RenderStars rating={hotelData.stars} />
         </div>
-        <p className="mb-6">{hotelData.description}</p>
-        <UpModal
-          isOpen={isModalOpen}
-          onClose={closeModal}
-          images={
-            Array.isArray(hotelData?.hotel_img_urls)
-              ? (hotelData.hotel_img_urls.filter((url) => typeof url === 'string') as string[])
-              : []
-          }
-          name={hotelData?.name || ''} // name 컬럼 전달
-        />
-      </section>
-    </div>
+        <p className="mt-2 text-gray-700">{hotelData.description}</p>
+      </div>
+      {/* 모달 */}
+      <UpModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        images={
+          Array.isArray(hotelData?.hotel_img_urls)
+            ? (hotelData.hotel_img_urls.filter((url) => typeof url === 'string') as string[])
+            : []
+        }
+        name={hotelData?.name || ''}
+      />
+    </section>
   );
 };
 
