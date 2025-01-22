@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { SignUpProps } from '@/types/supabase/supabase-sign-up-type';
 import Error from '../error';
 import { useRouter } from 'next/navigation';
-import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
 import Image from 'next/image';
 const SignUpUser: React.FC<SignUpProps> = ({
   email,
