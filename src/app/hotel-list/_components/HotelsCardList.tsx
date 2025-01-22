@@ -1,4 +1,3 @@
-import useFormatCurrency from '@/hooks/formatCurrency/useFormatCurrency';
 import useHotelReviews from '@/hooks/review/useHotelReviews';
 import { HotelType } from '@/types/supabase/hotel-type';
 import Image from 'next/image';
@@ -14,7 +13,6 @@ interface HotelListItemProps {
 }
 
 const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
-  const formatKoreanCurrency = useFormatCurrency();
   const { reviews, allReviews, loading } = useHotelReviews(hotelId);
   const { roomsData } = useHotelRooms(hotelId);
   const { facilityData, serviceData } = useSerViceFacility(hotelId, 1);
@@ -34,26 +32,15 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
     return viewTranslationMap[view] || '알 수 없는 뷰';
   };
 
-  const ratingIcon = () => {
-    return (
-      <svg width="77" height="25" viewBox="0 0 77 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M2 9.49997H5V21.5H2C1.44772 21.5 1 21.0523 1 20.5V10.5C1 9.94769 1.44772 9.49997 2 9.49997ZM7.29289 8.20708L13.6934 1.80661C13.8693 1.63066 14.1479 1.61087 14.3469 1.76016L15.1995 2.3996C15.6842 2.76312 15.9026 3.38253 15.7531 3.96966L14.5998 8.49997H21C22.1046 8.49997 23 9.3954 23 10.5V12.6043C23 12.8656 22.9488 13.1243 22.8494 13.3658L19.755 20.8807C19.6007 21.2554 19.2355 21.5 18.8303 21.5H8C7.44772 21.5 7 21.0523 7 20.5V8.91419C7 8.64897 7.10536 8.39462 7.29289 8.20708Z"
-          fill="#EEC18D"
-        />
-      </svg>
-    );
-  };
-
   const totalReviews = allReviews.length;
 
   return (
     <li
-      className="w-[872px] h-full flex flex-row items-center rounded-[12px] shadow-[0px_4px_8px_rgba(0,0,0,0.1)] p-[16px] bg-white"
+      className="flex flex-row items-center rounded-[12px] shadow-[0px_4px_8px_rgba(0,0,0,0.1)] p-[16px] bg-white relative"
       style={{
-        width: '100%', // 기본적으로 100%로 설정
-        maxWidth: '872px', // 최대 너비는 기존 872px
-        minWidth: '300px' // 최소 너비를 설정 (너무 작아지지 않도록)
+        width: '100%', // 기본적으로 부모 요소에 맞춤
+        maxWidth: '872px', // 최대 너비 제한
+        minWidth: '300px' // 최소 너비 설정
       }}
     >
       {/* 왼쪽 이미지 */}
@@ -70,16 +57,14 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
       {/* 오른쪽 텍스트 */}
       <div className="w-[492px] h-[240px] ml-6 flex flex-col justify-between items-start">
         <div>
-          {/* 호텔 이름과 하트 */}
-          <div className="flex justify-between items-center">
-            <div className="flex flex-row gap-2 ">
+          {/* 호텔 이름과 별점 */}
+          <div className="flex items-start justify-between w-full">
+            <div className="flex flex-row gap-2">
               <h3 className="mb-1 text-[24px] font-bold text-[#232527]">{hotel.name}</h3>
               <div className="flex items-center">
                 <RenderStars rating={hotel.stars} />
               </div>
             </div>
-            {/* 상태 표시만 하는 하트 */}
-            <p className={`text-2xl ${isFavorite ? 'text-red-500' : 'text-gray-300'}`}>{isFavorite ? '❤️' : '🤍'}</p>
           </div>
 
           {/* 호텔 설명 */}
@@ -124,19 +109,16 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
           </div>
 
           {/* 가격 */}
-          <div className="">
-            {/* <span className="font-bold">
-                {hotel.min_price !== null && hotel.min_price !== undefined
-                  ? `${formatKoreanCurrency(hotel.min_price)}원`
-                  : ''}
-              </span> */}
+          <div>
             <span className="text-6 font-semibold">192,000원</span>
             <span className="text-[#A0A0A0] text-base font-medium">/1박</span>
-            {/* {hotel.min_price !== null && hotel.min_price !== undefined && (
-                <span className="ml-1 text-sm text-[#A0A0A0]">/1박</span>
-              )} */}
           </div>
         </div>
+      </div>
+
+      {/* 하트 아이콘 */}
+      <div className="absolute top-[25px] right-[16px] text-2xl" style={{ transform: 'translate(0, -50%)' }}>
+        <p className={`text-2xl ${isFavorite ? 'text-red-500' : 'text-gray-300'}`}>{isFavorite ? '❤️' : '🤍'}</p>
       </div>
     </li>
   );
