@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 
-import { useRouter, usePathname, useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import useAuthStore from '@/store/useAuth';
 import useHistoryStore from '@/store/useHistoryStore';
@@ -19,9 +19,9 @@ import HotelCardList from './_components/HotelsCardList';
 import AsideFilter from './_components/AsideFilter';
 import SortBtn from './_components/SortBtn';
 
-
 interface UserType {
   id: string;
+  stars: HotelType;
 }
 
 /**
@@ -30,20 +30,25 @@ interface UserType {
  */
 
 const HotelList = () => {
-
-   // TODO: 재사용 로직으로 변경
-   const searchParams = useSearchParams();
+  // TODO: 재사용 로직으로 변경
+  const searchParams = useSearchParams();
   const location = searchParams.get('location') || '';
   const checkIn = searchParams.get('checkIn') || '';
   const checkOut = searchParams.get('checkOut') || '';
-  // TODO: 추후 수정 
-  const stars = searchParams.get('stars')?.split(',').filter((star) => star !== "") || [];
+  // TODO: 추후 수정
+  const stars =
+    searchParams
+      .get('stars')
+      ?.split(',')
+      .filter((star) => star !== '')
+      .map((star) => parseInt(star, 10)) // 문자열을 숫자로 변환
+      .filter((star) => !isNaN(star)) || []; // NaN 값 필터링
   // const stars = searchParams.get('stars') ? searchParams.get('stars').split(',') : [];
   const minPrice = parseInt(searchParams.get('minPrice') || '0', 10);
   const maxPrice = parseInt(searchParams.get('maxPrice') || '10000000', 10);
   const facilities = searchParams.get('facilities')?.split(',') || [];
   const services = searchParams.get('services')?.split(',') || [];
-  const sort = searchParams.get("sort") || "";
+  const sort = searchParams.get('sort') || '';
 
   const [filters, setFilters] = useState<FiltersType>({
     location: '',
@@ -78,14 +83,20 @@ const HotelList = () => {
   // }, [user, initializeFavorites]);
 
   // 필터 데이터 호출
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useFetchHotelsFilter({ filters: {
-    location,
-    stars,
-    minPrice,
-    maxPrice,
-    facilities,
-    services
-  }, sortOrder: sort as sortOrder });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useFetchHotelsFilter({
+    filters: {
+      location,
+      stars,
+      minPrice,
+      maxPrice,
+      facilities,
+      services
+    },
+    sortOrder: sort as sortOrder
+  });
+
+  const hotels = data?.pages.flatMap((page) => page.items) || [];
+  const uniqueHotels = hotels.filter((hotel, index, self) => self.findIndex((h) => h.id === hotel.id) === index);
 
   // 무한 스크롤 Intersection Observer
   useEffect(() => {
@@ -105,7 +116,7 @@ const HotelList = () => {
     };
   }, [hasNextPage, isFetchingNextPage]);
 
-  console.log({data})
+  console.log({ data });
   return (
     <div className="w-full max-w-[1300px] mx-auto px-[50px] pt-[200px] pb-[50px] flex flex-row justify-between gap-[30px] ">
       <ScrollSearchBox />
@@ -118,22 +129,22 @@ const HotelList = () => {
             <p className="text-[24px] text-[#232527] font-semibold">
               {/* 결과의 대한 갯수 가져오기 */}총 {data?.pages[0].totalCount}개의 결과를 불러왔습니다.
             </p>
-            <p className='mt-2 text-base text-[#777] font-medium'>적용된 필터: {filters.stars.length > 0 ? `${filters.stars.join(', ')}성` : '전체'}</p>
+            <p className="mt-2 text-base text-[#777] font-medium">
+              적용된 필터: {filters.stars.length > 0 ? `${filters.stars.join(', ')}성` : '전체'}
+            </p>
           </div>
           <SortBtn sortOrder={sort as sortOrder} />
         </div>
 
         {/* hotel list card */}
         <ul className="flex flex-col gap-8">
-          {data?.pages?.flatMap((page) =>
-            page.items.map((hotel: HotelType) => (
-              <li key={hotel.id}>
-                <button onClick={() => handleSaveHistoryAndMoveDetailsPage(hotel)}>
-                  <HotelCardList hotel={hotel} isFavorite={favoriteStatus[hotel.id] || false} hotelId={hotel.id} />
-                </button>
-              </li>
-            ))
-          )}
+          {uniqueHotels.map((hotel: HotelType) => (
+            <li key={hotel.id}>
+              <button onClick={() => handleSaveHistoryAndMoveDetailsPage(hotel)}>
+                <HotelCardList hotel={hotel} isFavorite={favoriteStatus[hotel.id] || false} hotelId={hotel.id} />
+              </button>
+            </li>
+          ))}
         </ul>
 
         {/* infinity scroll event 감지 div */}
