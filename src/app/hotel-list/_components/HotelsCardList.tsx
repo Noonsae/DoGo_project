@@ -48,7 +48,14 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
   const totalReviews = allReviews.length;
 
   return (
-    <li className="w-[872px] h-full flex flex-row items-center rounded-[12px] shadow-[0px_4px_8px_rgba(0,0,0,0.1)] p-[16px] bg-white">
+    <li
+      className="w-[872px] h-full flex flex-row items-center rounded-[12px] shadow-[0px_4px_8px_rgba(0,0,0,0.1)] p-[16px] bg-white"
+      style={{
+        width: '100%', // 기본적으로 100%로 설정
+        maxWidth: '872px', // 최대 너비는 기존 872px
+        minWidth: '300px' // 최소 너비를 설정 (너무 작아지지 않도록)
+      }}
+    >
       {/* 왼쪽 이미지 */}
       <div className="relative">
         <Image
@@ -66,15 +73,11 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
           {/* 호텔 이름과 하트 */}
           <div className="flex justify-between items-center">
             <div className="flex flex-row gap-2 ">
-              <h3 className="mb-1 text-[24px] font-bold text-[#232527]">
-                {hotel.name}
-                {/* 별점 */}
-              </h3>
+              <h3 className="mb-1 text-[24px] font-bold text-[#232527]">{hotel.name}</h3>
               <div className="flex items-center">
                 <RenderStars rating={hotel.stars} />
               </div>
             </div>
-
             {/* 상태 표시만 하는 하트 */}
             <p className={`text-2xl ${isFavorite ? 'text-red-500' : 'text-gray-300'}`}>{isFavorite ? '❤️' : '🤍'}</p>
           </div>
@@ -89,8 +92,8 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
           {!loading && (
             <div className="flex flex-row items-center">
               <RiThumbUpFillIcon className="w-6 h-6 text-[#EEC18D]" />
-              <p className="ml-1 text-[18px] font-semibold">4.8</p>
-              <span className="ml-2 text-[#A0A0A0]">(3,222)</span>
+              <p className="ml-1 text-[18px] font-semibold">{averageRating}</p>
+              <span className="ml-2 text-[#A0A0A0]">({totalReviews.toLocaleString()})</span>
             </div>
           )}
         </div>
