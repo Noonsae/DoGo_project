@@ -37,13 +37,14 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
   const totalReviews = allReviews.length;
 
   return (
-    <li className="w-[872px] h-[277px] flex flex-row items-center rounded-[12px] shadow-[0px_4px_8px_rgba(0,0,0,0.1)] p-[16px] bg-white">
+    <li className="w-[872px] h-full flex flex-row items-center rounded-[12px] shadow-[0px_4px_8px_rgba(0,0,0,0.1)] p-[16px] bg-white">
       {/* 왼쪽 이미지 */}
-      <div className="w-[324px] h-[240px] relative">
+      <div className="relative">
         <Image
           src={hotel.main_img_url || '/default-hotel.jpg'}
           alt={hotel.name || 'Default Image'}
-          fill
+          width={324}
+          height={240}
           className="object-cover rounded-md"
         />
       </div>
@@ -83,47 +84,46 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
           )}
         </div>
 
-        
-          <div className="w-full h-8 flex flex-row justify-between items-center">
+        <div className="w-full h-8 flex flex-row justify-between items-center">
           {/* 태그들 */}
-            <div className="flex gap-2">
-              {/* 룸 뷰 */}
-              {roomsData.length > 0 && (
-                <span className="inline-flex items-center justify-center h-[28px] px-3 bg-[#FCF6EE] text-[#5A3B1A] border border-[#ECDDC8] rounded-md text-[14px] leading-none whitespace-nowrap">
-                  {translateView(roomsData[0]?.view || '')}
-                </span>
-              )}
+          <div className="flex gap-2">
+            {/* 룸 뷰 */}
+            {roomsData.length > 0 && (
+              <span className="inline-flex items-center justify-center h-[28px] px-3 bg-[#FCF6EE] text-[#5A3B1A] border border-[#ECDDC8] rounded-md text-[14px] leading-none whitespace-nowrap">
+                {translateView(roomsData[0]?.view || '')}
+              </span>
+            )}
 
-              {/* 퍼실리티 */}
-              {facilityData.length > 0 && (
-                <span className="inline-flex items-center justify-center h-[28px] px-3 bg-[#FCF6EE] text-[#5A3B1A] border border-[#ECDDC8] rounded-md text-[14px] leading-none whitespace-nowrap">
-                  {facilityData[0]?.name || '알 수 없는 시설'}
-                </span>
-              )}
+            {/* 퍼실리티 */}
+            {facilityData.length > 0 && (
+              <span className="inline-flex items-center justify-center h-[28px] px-3 bg-[#FCF6EE] text-[#5A3B1A] border border-[#ECDDC8] rounded-md text-[14px] leading-none whitespace-nowrap">
+                {facilityData[0]?.name || '알 수 없는 시설'}
+              </span>
+            )}
 
-              {/* 서비스 */}
-              {serviceData.length > 0 && (
-                <span className="inline-flex items-center justify-center h-[28px] px-3 bg-[#FCF6EE] text-[#5A3B1A] border border-[#ECDDC8] rounded-md text-[14px] leading-none whitespace-nowrap">
-                  {serviceData[0]?.name || '알 수 없는 서비스'}
-                </span>
-              )}
-            </div>
+            {/* 서비스 */}
+            {serviceData.length > 0 && (
+              <span className="inline-flex items-center justify-center h-[28px] px-3 bg-[#FCF6EE] text-[#5A3B1A] border border-[#ECDDC8] rounded-md text-[14px] leading-none whitespace-nowrap">
+                {serviceData[0]?.name || '알 수 없는 서비스'}
+              </span>
+            )}
+          </div>
 
-            {/* 가격 */}
-            <div className="">
-              {/* <span className="font-bold">
+          {/* 가격 */}
+          <div className="">
+            {/* <span className="font-bold">
                 {hotel.min_price !== null && hotel.min_price !== undefined
                   ? `${formatKoreanCurrency(hotel.min_price)}원`
                   : ''}
               </span> */}
-              <span className="text-6 font-semibold">192,000원</span>
-              <span className="text-[#A0A0A0] text-base font-medium">/1박</span>
-              {/* {hotel.min_price !== null && hotel.min_price !== undefined && (
+            <span className="text-6 font-semibold">192,000원</span>
+            <span className="text-[#A0A0A0] text-base font-medium">/1박</span>
+            {/* {hotel.min_price !== null && hotel.min_price !== undefined && (
                 <span className="ml-1 text-sm text-[#A0A0A0]">/1박</span>
               )} */}
-            </div>
           </div>
         </div>
+      </div>
     </li>
   );
 };
