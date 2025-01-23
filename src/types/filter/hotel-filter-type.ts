@@ -18,8 +18,8 @@ type HotelFilterResponseType = {
   id: string; // 고유 아이디
   name: string; // 호텔명
   address: string; // 호텔 상세 주소
-  nameOrAddress: string; // 호텔 이름 또는 상세주소
-  stars: number; // 호텔의 성급 4 or 5  
+  label: string; // 호텔 이름 또는 상세주소
+  stars: number; // 호텔의 성급 4 or 5
   description: string; // 호텔 상세 설명
   main_img_url: string; // 호텔 메인 사진
   hotel_img_urls: any | null; // 호텔 이미지 사진
@@ -37,7 +37,7 @@ export interface FetchHotelsFilterResponse {
 }
 
 export interface FiltersType {
-  nameOrAddress: string;
+  label: string;
   stars: number[];
   minPrice: number;
   maxPrice: number;
