@@ -36,36 +36,51 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
     >
       <div className="flex flex-col lg:flex-row gap-4">
         {/* 메인 이미지 */}
-        <div className="rounded-lg shadow-md overflow-hidden" style={{ aspectRatio: '16/9' }}>
-          {' '}
-          {/* 비율 고정 */}
+        <div
+          className="relative overflow-hidden"
+          style={{
+            aspectRatio: '16/9',
+            borderRadius: '16px 0 0 16px', // 좌측 상단과 좌측 하단 둥글게
+            boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' // 그림자 추가
+          }}
+        >
           <Image
             src={validImage(hotelData.main_img_url)}
             alt={hotelData.name || 'Default Image'}
-            width={594} // 기존 값 유지
-            height={363} // 기존 값 유지
-            className="object-cover w-full h-full cursor-pointer"
+            width={594} // 명확한 크기 설정
+            height={363}
+            className="object-cover"
             onClick={() => openModal(validImage(hotelData.main_img_url))}
           />
         </div>
+
         {/* 추가 이미지 */}
         <div className="grid grid-cols-2 gap-2">
           {(Array.isArray(hotelData.hotel_img_urls) ? hotelData.hotel_img_urls : [])
             .slice(1, 5)
-            .filter((image): image is string => typeof image === 'string') // string만 필터링
+            .filter((image): image is string => typeof image === 'string')
             .map((image, index) => (
               <div
                 key={index}
-                className="relative rounded-lg overflow-hidden cursor-pointer"
-                style={{ aspectRatio: '16/9' }} // 비율 고정
+                className="relative overflow-hidden"
+                style={{
+                  aspectRatio: '16/9',
+                  borderRadius:
+                    index === 1
+                      ? '0 16px 0 0' // 두 번째 이미지: 우측 상단 둥글게
+                      : index === 3
+                      ? '0 0 16px 0' // 네 번째 이미지: 우측 하단 둥글게
+                      : '0', // 나머지: 직선 처리
+                  boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' // 그림자 추가
+                }}
                 onClick={() => openModal(image)}
               >
                 <Image
                   src={image}
                   alt={`Image ${index + 1}`}
-                  width={291} // 기존 값 유지
-                  height={175} // 기존 값 유지
-                  className="object-cover w-full h-full"
+                  width={291} // 명확한 크기 설정
+                  height={175}
+                  className="object-cover"
                 />
                 {index === 1 && (
                   <button
