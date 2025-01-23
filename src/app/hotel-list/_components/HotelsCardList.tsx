@@ -44,13 +44,19 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
       }}
     >
       {/* 왼쪽 이미지 */}
-      <div className="relative">
+      <div
+        className="relative overflow-hidden rounded-md"
+        style={{
+          width: '324px', // 고정된 이미지 컨테이너 너비
+          height: '240px' // 고정된 이미지 컨테이너 높이
+        }}
+      >
         <Image
           src={hotel.main_img_url || '/default-hotel.jpg'}
           alt={hotel.name || 'Default Image'}
-          width={324}
-          height={240}
-          className="object-cover rounded-md"
+          width={324} // 이미지 고정 크기
+          height={240} // 이미지 고정 크기
+          className="object-cover w-full h-full" // 이미지가 컨테이너에 맞게 정렬
         />
       </div>
 

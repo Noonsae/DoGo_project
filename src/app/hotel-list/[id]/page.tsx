@@ -23,6 +23,9 @@ import HotelPolicies from './_components/HotelPolicies';
 import HotelRoom from './_components/HotelRoom';
 import HotelReviews from './_components/HotelReviews';
 import Navigation from './_components/Navigation';
+import NavigationSkeleton from '../../../components/ui/skeleton/HotelNavigationSkeleton';
+import HotelOverviewSkeleton from '@/components/ui/skeleton/HotelOverviewSkeleton';
+import HotelBoxSkeleton from '@/components/ui/skeleton/HotelBoxSkeleton';
 
 const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const hotelId = params?.id;
@@ -45,22 +48,16 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
 
   useEffect(() => {
     const fetchHotelData = async () => {
-      if (!hotelId) {
-        setLoading(false);
-        return;
-      }
-
+      setLoading(true);
       try {
         const response = await fetch(`/api/hotel/${hotelId}`);
         if (!response.ok) {
           throw new Error(`Failed to fetch hotel data. Status: ${response.status}`);
         }
-
         const data = await response.json();
-        // 호텔 이미지 URL 배열이 배열 형식이 아닌 경우 빈 배열로 강제
         setHotelData({
           ...data,
-          hotel_img_urls: Array.isArray(data.hotel_img_urls) ? data.hotel_img_urls : [], // 배열로 강제 변환
+          hotel_img_urls: Array.isArray(data.hotel_img_urls) ? data.hotel_img_urls : [],
           rooms: data.rooms || []
         });
       } catch (error) {
@@ -71,7 +68,9 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
       }
     };
 
-    fetchHotelData();
+    if (hotelId) {
+      fetchHotelData();
+    }
   }, [hotelId]);
 
   const selectedRoomId = roomsData.length > 0 ? roomsData[0]?.id : null;
@@ -98,8 +97,16 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
     setActiveTab(id);
   };
 
+  // 로딩 중 처리
   if (loading) {
-    return <p className="text-center mt-10">로딩 중...</p>;
+    return (
+      <div className="w-full max-w-[1200px] px-[350px] sm:px-[300px] md:px-[200px] lg:px-[100px] xl:px-[50px] xl:mx-auto pt-[78px] xl:max-w-[1200px] 2xl:px-0">
+        {/* 로딩 중 네비게이션 */}
+        <NavigationSkeleton />
+        <HotelOverviewSkeleton />
+        <HotelBoxSkeleton />
+      </div>
+    );
   }
 
   if (!hotelData) {
@@ -118,25 +125,35 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   return (
     <div className="w-full max-w-[1200px] px-[350px] sm:px-[300px] md:px-[200px] lg:px-[100px] xl:px-[50px] xl:mx-auto pt-[78px] xl:max-w-[1200px] 2xl:px-0">
       {/* 네비게이션 탭 */}
-      <Navigation activeTab={activeTab} scrollToSection={scrollToSection} />
+      <div>
+        {loading ? <NavigationSkeleton /> : <Navigation activeTab={activeTab} scrollToSection={scrollToSection} />}
+      </div>
 
       {/* 콘텐츠 영역 */}
       <div className="py-6 space-y-16">
         {/* 개요 섹션 */}
-        <HotelOverview
-          hotelData={hotelData}
-          toggleFavorite={toggleFavorite}
-          hotelId={hotelId}
-          favoriteStatus={favoriteStatus}
-        />
-        <HotelBox
-          facilityData={facilityData}
-          roomOption={roomOption}
-          hotelData={hotelData}
-          reviews={reviews}
-          allReviews={allReviews}
-        />
+        {loading ? (
+          <HotelOverviewSkeleton />
+        ) : (
+          <HotelOverview
+            hotelData={hotelData}
+            toggleFavorite={toggleFavorite}
+            hotelId={hotelId}
+            favoriteStatus={favoriteStatus}
+          />
+        )}
 
+        {loading ? (
+          <HotelBoxSkeleton />
+        ) : (
+          <HotelBox
+            facilityData={facilityData}
+            roomOption={roomOption}
+            hotelData={hotelData}
+            reviews={reviews}
+            allReviews={allReviews}
+          />
+        )}
         {/* 객실 섹션 */}
         <HotelRoom
           roomsData={roomsData}
