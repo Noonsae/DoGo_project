@@ -85,7 +85,7 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
             <button
               type="button"
               onClick={() => setShowPassword((prev) => !prev)}
-              className="absolute right-[16px] top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-black"
+              className="absolute right-[16px] top-6 transform -translate-y-1/2 text-gray-600 hover:text-black"
             >
               {showPassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
             </button>
