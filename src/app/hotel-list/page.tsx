@@ -18,7 +18,7 @@ import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
 import HotelCardList from './_components/HotelsCardList';
 import AsideFilter from './_components/AsideFilter';
 import SortBtn from './_components/SortBtn';
-import HotelListSkeleton from './_components/HotelListSkeleton';
+import HotelListSkeleton from '../../components/ui/skeleton/HotelListSkeleton';
 
 interface UserType {
   id: string;
