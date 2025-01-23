@@ -1,4 +1,4 @@
-const LikeIcon = () => {
+const ReviewThumbUpIcon = () => {
   return (
     <svg width="59" height="53" viewBox="0 0 59 53" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -9,4 +9,4 @@ const LikeIcon = () => {
   );
 };
 
-export default LikeIcon;
+export default ReviewThumbUpIcon;
