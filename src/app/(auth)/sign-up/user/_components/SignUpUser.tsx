@@ -85,7 +85,7 @@ const SignUpUser: React.FC<SignUpProps> = ({
             <button
               type="button"
               onClick={() => setUpdagePassword((prev) => !prev)}
-              className="absolute right-[20px] top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-black"
+              className="absolute right-[20px] top-6 transform -translate-y-1/2 text-gray-600 hover:text-black"
             >
               {updatePassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
             </button>
