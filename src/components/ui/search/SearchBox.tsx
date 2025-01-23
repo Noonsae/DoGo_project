@@ -67,12 +67,18 @@ const SearchBox = () => {
   );
 
   const url = generateUrl({ location, checkIn, checkOut, stay, month, details }); // URL 생성
-
-  // 비동기로 전환 후 제대로 작동하는데 이유를 모르겠음;;
+  
   const handleSearchClick = async () => {
     const searchUrl = url;
-    router.push(searchUrl); // 페이지 이동
+    await router.push(searchUrl); // 페이지 이동
     closeModal();
+  };
+
+  const handleKeyDownEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // 기본 엔터 키 동작 방지
+      handleSearchClick(); // 검색 함수 실행
+    }
   };
 
   useEffect(() => {
@@ -102,6 +108,7 @@ const SearchBox = () => {
                   placeholder="여행지 검색"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
+                  onKeyDown={handleKeyDownEnter}
                   className="w-full border-none outline-none"
                 />
               </label>

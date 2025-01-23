@@ -6,6 +6,7 @@ import { createClient } from '@supabase/supabase-js';
 import UserPage from '@/app/my-page/user/page';
 import BusinessPage from '@/app/my-page/business/page';
 import AdminPage from '@/app/my-page/admin/page';
+import useAuthStore from '@/store/useAuth';
 
 // Supabase 클라이언트 초기화
 if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
@@ -18,6 +19,8 @@ const supabase = createClient(
 );
 
 export default function MyPage() {
+  // TODO: 사용 예시
+  const user = useAuthStore((state) => state.user)
   const [role, setRole] = useState<'user' | 'business' | 'admin' | null>(null);
   const [userId, setUserId] = useState<string | null>(null); // 사용자 ID 상태 추가
   const [loading, setLoading] = useState(true);

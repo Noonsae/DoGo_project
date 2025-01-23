@@ -6,6 +6,7 @@ import localFont from 'next/font/local';
 
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import AuthProvider from './_provider/AuthProvider';
 
 import '../styles/globals.css';
 
@@ -43,14 +44,16 @@ const RootLayout = ({
 }>) => {
   return (
     <html lang="ko" className={`${pretendard.variable} leading-[1.35]`}>
-      <MyProvider>
-        <body className="font-pretendard">
-          <Header />
-          {children}
-          <Footer />
-        </body>
-      </MyProvider>
+      <AuthProvider>
+        <MyProvider>
+          <body className="font-pretendard">
+            <Header />
+            {children}
+            <Footer />
+          </body>
+        </MyProvider>
+      </AuthProvider>
     </html>
   );
-}
-  export default RootLayout;
+};
+export default RootLayout;

@@ -15,14 +15,15 @@ export default function SignUpUserPage() {
   const [phone, setPhone] = useState('');
   const [error, setError] = useState('');
   const [nickname, setNickname] = useState('');
-  const setUser = useAuthStore((state) => state.setUser);
+  // const setUser = useAuthStore((state) => state.setUser);
   const [isModlaOpen, setIsModalOpen] = useState(false);
   const [businessNumber, setBusinessNumber] = useState<string>('');
   const router = useRouter();
   const handleSignup = async () => {
     try {
-      const supabase = browserSupabase();
+      // const supabase = browserSupabase();
 
+      // 회원가입 시 자동 로그인
       const result = await handleSignupAction({
         email,
         password,
@@ -37,23 +38,28 @@ export default function SignUpUserPage() {
         return;
       }
       // commit용 주석
-      const { error: loinError } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
-      if (loinError) {
-        setError('로그인 중 오류가 발생했습니다.');
-        return;
-      }
+      // const { error: loinError } = await supabase.auth.signInWithPassword({
+      //   email,
+      //   password
+      // });
+      // if (loinError) {
+      //   setError('로그인 중 오류가 발생했습니다.');
+      //   return;
+      // }
 
-      setUser({
-        email,
-        name,
-        phone,
-        role: 'user'
-      });
+      // TODO: 나중에 자동으로 처리하도록 수정할 예정
+      // setUser({
+      //   email,
+      //   name,
+      //   phone,
+      //   role: 'user'
+      // });
 
-      setIsModalOpen(true);
+      // setIsModalOpen(true);
+
+      // TODO: 서버측에서 로그인을 시도할 예정 -> Header에서 인식 X
+      // router.push('/');
+      window.location.href = '/';
     } catch (err: any) {
       setError('회원가입 중 오류가 발생했습니다.');
       console.error(err);

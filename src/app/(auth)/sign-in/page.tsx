@@ -9,6 +9,8 @@ import DividerIcon from '@/components/ui/icon/DividerIcon';
 import FindIdModal from './_components/FindIdModal';
 import FindPasswordModal from './_components/FindPasswordModal';
 import KakaoSignIn from './_components/KakaoSignIn';
+import { login } from './actions/login';
+
 const SignInPage = () => {
   const [form, setForm] = useState({
     activeTab: 'user',
@@ -34,9 +36,11 @@ const SignInPage = () => {
         return;
       }
 
-      const supabase = browserSupabase();
-
-      const { data, error } = await supabase.auth.signInWithPassword({
+      // const { data, error } = await supabase.auth.signInWithPassword({
+      //   email: form.email,
+      //   password: form.password
+      // });
+      const { data, error } = await login({
         email: form.email,
         password: form.password
       });
@@ -50,6 +54,7 @@ const SignInPage = () => {
         return;
       }
 
+      const supabase = browserSupabase();
       const { data: userData, error: userError } = await supabase
         .from('users')
         .select('id, role')
@@ -74,8 +79,11 @@ const SignInPage = () => {
         return;
       }
 
-      setUser(data.user);
-      document.cookie = `user=${encodeURIComponent(JSON.stringify(data.user))}; path=/;`;
+      // TODO: 한 번에 관리 예정
+      // setUser(data.user);
+
+      //supabase는 로그인, 세션유지, 로그아웃 등 내장기능이 있기 때문에 아래 코드 제거함
+      // document.cookie = `user=${encodeURIComponent(JSON.stringify(data.user))}; path=/;`;
 
       await Swal.fire({
         icon: 'success',
@@ -83,7 +91,8 @@ const SignInPage = () => {
         text: `${data.user.email}님 환영합니다!`
       });
 
-      router.push('/');
+      // router.push('/');
+      window.location.href = '/';
     } catch (err) {
       console.error('예기치 않은 오류:', err);
       await Swal.fire({

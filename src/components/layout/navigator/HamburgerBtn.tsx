@@ -11,6 +11,7 @@ import useAuthStore from '@/store/useAuth';
 
 import HiOutlineMenuIcon from '@/components/ui/icon/HiOutlineMenuIcon';
 import IoCloseIcon from '@/components/ui/icon/IoCloseIcon';
+import { logout } from '@/actions/auth';
 
 const HamburgerBtn: React.FC = () => {
   const { user, signOutUser } = useAuthStore((state) => state); // Zustand 상태 가져오기
@@ -23,12 +24,16 @@ const HamburgerBtn: React.FC = () => {
   console.log(user);
 
   // 로그아웃 처리
-  const handleLogout = () => {
-    signOutUser(null); // 유저 정보 초기화
+
+  const handleLogout = async () => {
+    await logout();
+    // signOutUser(null); // 유저 정보 초기화
+
     Swal.fire({
       icon: 'success',
       title: '로그아웃 되었습니다.'
     });
+    location.reload();
   };
 
   // 햄버거 메뉴 토글

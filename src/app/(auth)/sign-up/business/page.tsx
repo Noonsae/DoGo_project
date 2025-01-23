@@ -39,17 +39,17 @@ export default function SignUpBusinessPage() {
         setError(result.message);
         return;
       }
-
+      // 서버액션을 쓰면 signInWithPassword 함수 안써도 돼서 지움
       // 자동 로그인
-      const { error: loginError } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
+      // const { error: loginError } = await supabase.auth.signInWithPassword({
+      //   email,
+      //   password
+      // });
 
-      if (loginError) {
-        setError('로그인 중 오류가 발생했습니다.');
-        return;
-      }
+      // if (loginError) {
+      //   setError('로그인 중 오류가 발생했습니다.');
+      //   return;
+      // }
 
       // store에 유저 정보 저장
       setUser({

@@ -1,6 +1,6 @@
 import { IconType } from '@/types/icon/icon-type';
 
-const FiChevronLeftIcon: React.FC<IconType> = ({className}) => {
+const FiChevronLeftIcon: React.FC<IconType> = ({ className }) => {
   return (
     <svg
       width="24"
@@ -13,12 +13,12 @@ const FiChevronLeftIcon: React.FC<IconType> = ({className}) => {
       <path
         d="M15 18.5L9 12.5L15 6.5"
         stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
-}
+};
 
-export default FiChevronLeftIcon
+export default FiChevronLeftIcon;
