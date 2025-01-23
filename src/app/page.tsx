@@ -19,7 +19,7 @@ export const metadata: Metadata = {
         height: 630,
         alt: 'DoGo: 호텔 예약 애플리케이션'
       }
-    ],
+    ]
   }
 };
 
@@ -28,7 +28,7 @@ const HomePage = () => {
     <div>
       <HeroSection />
       <EventSection />
-      <ContentsList />
+      {/* <ContentsList /> */}
     </div>
   );
 };
