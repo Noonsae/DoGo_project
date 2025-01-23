@@ -4,7 +4,7 @@ import { SearchState } from '@/types/zustand/search-state-type';
 
 const useSearchStore = create<SearchState>((set) => ({
   location: '',
-  hotelName: '',
+  label: '',
   checkIn: '',
   checkOut: '',
   stay: '',
@@ -15,7 +15,7 @@ const useSearchStore = create<SearchState>((set) => ({
   facilities: '',
   services: '',
   setLocation: (location) => set({ location }),
-  setHotelName: (hotelName) => set({ hotelName }),
+  setLabel: (label) => set({ label }),
   setCheckIn: (checkIn) => set({ checkIn }),
   setCheckOut: (checkOut) => set({ checkOut }),
   setStay: (stay) => set({ stay }),
