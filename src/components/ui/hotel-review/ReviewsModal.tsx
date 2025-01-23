@@ -172,7 +172,7 @@ const ReviewsModal = ({
               <div key={review.id} className="p-4 border-b border-gray-200">
                 <div className="flex gap-4 mb-2 items-center">
                   <Image
-                    src={review.users?.profile_img || '/placeholder-profile.png'}
+                    src={review.users?.profile_img || '/placeholder-profile.webp'}
                     alt="Profile"
                     height={80}
                     width={80}

@@ -88,7 +88,7 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
         return firstImage;
       }
     }
-    return '/placeholder.png';
+    return '/placeholder.webp';
   };
 
   const scrollToSection = (id: string) => {
