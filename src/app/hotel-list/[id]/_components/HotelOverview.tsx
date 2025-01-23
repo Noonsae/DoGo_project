@@ -26,7 +26,7 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
   };
 
   const validImage = (image: string | undefined) => {
-    return image && typeof image === 'string' ? image : '/placeholder.png';
+    return image && typeof image === 'string' ? image : '/placeholder.webp';
   };
 
   return (
