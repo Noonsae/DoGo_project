@@ -5,6 +5,7 @@ import Error from '../error';
 import Image from 'next/image';
 import CloseEyesIcon from '@/components/ui/icon/CloseEyesIcon';
 import OpenEyesIcon from '@/components/ui/icon/OpenEyesIcon';
+
 const SignUpUser: React.FC<SignUpProps> = ({
   email,
   setEmail,
