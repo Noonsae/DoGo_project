@@ -77,11 +77,11 @@ const HotelList = () => {
   };
 
   // 초기 즐겨찾기 상태 로드
-  // useEffect(() => {
-  //   if (user?.id) {
-  //     initializeFavorites(user.id);
-  //   }
-  // }, [user, initializeFavorites]);
+  useEffect(() => {
+    if (user?.id) {
+      initializeFavorites(user.id);
+    }
+  }, [user, initializeFavorites]);
 
   // 필터 데이터 호출
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useFetchHotelsFilter({
@@ -95,6 +95,16 @@ const HotelList = () => {
     },
     sortOrder: sort as sortOrder
   });
+
+  const [isLoading, setIsLoading] = useState(true); // 추가된 최소 로딩 상태
+
+  useEffect(() => {
+    if (data || !isFetchingNextPage) {
+      setTimeout(() => {
+        setIsLoading(false); // 최소 1초간 로딩 유지
+      }, 1000);
+    }
+  }, [data, isFetchingNextPage]);
 
   const hotels = data?.pages.flatMap((page) => page.items) || [];
   const uniqueHotels = hotels.filter((hotel, index, self) => self.findIndex((h) => h.id === hotel.id) === index);
@@ -119,6 +129,8 @@ const HotelList = () => {
 
   const isLoadingInitialData = !data && isFetchingNextPage;
 
+  console.log(`isLoadingInitialData`, isLoadingInitialData);
+
   return (
     <div className="w-full max-w-[1300px] mx-auto px-[50px] pt-[200px] pb-[50px] flex flex-row justify-between gap-[30px] ">
       <ScrollSearchBox />
@@ -140,8 +152,8 @@ const HotelList = () => {
 
         {/* hotel list card */}
         <ul className="flex flex-col gap-8">
-          {isLoadingInitialData
-            ? Array.from({ length: 5 }, (_, index) => <HotelListSkeleton key={index} />)
+          {isLoading
+            ? Array.from({ length: 10 }, (_, index) => <HotelListSkeleton key={index} />)
             : uniqueHotels.map((hotel) => (
                 <li key={hotel.id}>
                   <button onClick={() => handleSaveHistoryAndMoveDetailsPage(hotel)}>
