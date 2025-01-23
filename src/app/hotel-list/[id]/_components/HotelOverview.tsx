@@ -66,9 +66,7 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
                       e.stopPropagation();
                       toggleFavorite(hotelId);
                     }}
-                    className={`absolute top-2 right-2 p-2 rounded-full shadow-md ${
-                      favoriteStatus[hotelId] ? 'bg-red-500 text-white' : 'bg-white text-gray-600'
-                    }`}
+                    className={`absolute top-2 right-2 p-2 rounded-full shadow-md bg-white text-gray-600 ${favoriteStatus[hotelId]}`}
                   >
                     {favoriteStatus[hotelId] ? '❤️' : '🤍'}
                   </button>
