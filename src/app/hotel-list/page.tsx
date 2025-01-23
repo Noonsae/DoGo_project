@@ -18,6 +18,7 @@ import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
 import HotelCardList from './_components/HotelsCardList';
 import AsideFilter from './_components/AsideFilter';
 import SortBtn from './_components/SortBtn';
+import HotelListSkeleton from './_components/HotelListSkeleton';
 
 interface UserType {
   id: string;
@@ -116,7 +117,8 @@ const HotelList = () => {
     };
   }, [hasNextPage, isFetchingNextPage]);
 
-  console.log({ data });
+  const isLoadingInitialData = !data && isFetchingNextPage;
+
   return (
     <div className="w-full max-w-[1300px] mx-auto px-[50px] pt-[200px] pb-[50px] flex flex-row justify-between gap-[30px] ">
       <ScrollSearchBox />
@@ -138,13 +140,15 @@ const HotelList = () => {
 
         {/* hotel list card */}
         <ul className="flex flex-col gap-8">
-          {uniqueHotels.map((hotel: HotelType) => (
-            <li key={hotel.id}>
-              <button onClick={() => handleSaveHistoryAndMoveDetailsPage(hotel)}>
-                <HotelCardList hotel={hotel} isFavorite={favoriteStatus[hotel.id] || false} hotelId={hotel.id} />
-              </button>
-            </li>
-          ))}
+          {isLoadingInitialData
+            ? Array.from({ length: 5 }, (_, index) => <HotelListSkeleton key={index} />)
+            : uniqueHotels.map((hotel) => (
+                <li key={hotel.id}>
+                  <button onClick={() => handleSaveHistoryAndMoveDetailsPage(hotel)}>
+                    <HotelCardList hotel={hotel} isFavorite={favoriteStatus[hotel.id] || false} hotelId={hotel.id} />
+                  </button>
+                </li>
+              ))}
         </ul>
 
         {/* infinity scroll event 감지 div */}
