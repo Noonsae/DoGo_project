@@ -110,7 +110,7 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
 
           {/* 가격 */}
           <div>
-            <span className="text-6 font-semibold">192,000원</span>
+            <span className="text-6 font-semibold">112,000원</span>
             <span className="text-[#A0A0A0] text-base font-medium">/1박</span>
           </div>
         </div>
