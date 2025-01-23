@@ -44,7 +44,7 @@ const HotelList = () => {
       .filter((star) => star !== '')
       .map((star) => parseInt(star, 10)) // 문자열을 숫자로 변환
       .filter((star) => !isNaN(star)) || []; // NaN 값 필터링
-  const nameOrAddress = searchParams.get('nameOrAddress') || '';
+  const label = searchParams.get('label') || '';
   const minPrice = parseInt(searchParams.get('minPrice') || '0', 10);
   const maxPrice = parseInt(searchParams.get('maxPrice') || '10000000', 10);
   const facilities = searchParams.get('facilities')?.split(',') || [];
@@ -52,7 +52,7 @@ const HotelList = () => {
   const sort = searchParams.get('sort') || '';
 
   const [filters, setFilters] = useState<FiltersType>({
-    nameOrAddress: '',
+    label: '',
     stars: [],
     minPrice: 0,
     maxPrice: 10000000,
@@ -87,7 +87,7 @@ const HotelList = () => {
   // 필터 데이터 호출
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useFetchHotelsFilter({
     filters: {
-      nameOrAddress,
+      label,
       location,
       stars,
       minPrice,
