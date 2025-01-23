@@ -28,7 +28,7 @@ const HomePage = () => {
     <div>
       <HeroSection />
       <EventSection />
-      {/* <ContentsList /> */}
+      <ContentsList />
     </div>
   );
 };
