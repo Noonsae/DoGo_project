@@ -2,6 +2,7 @@
 
 import { createClient } from '@supabase/supabase-js';
 import { serverSupabase } from '@/supabase/supabase-server';
+import Swal from 'sweetalert2';
 
 export default async function handleSignupAction({
   email,

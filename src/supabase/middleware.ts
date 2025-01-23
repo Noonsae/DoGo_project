@@ -47,7 +47,10 @@ export async function updateSession(request: NextRequest) {
   // 이미 로그인을 했는데,
   // 로그인 혹은 회원가입 페이지로 이동한다면?
   // 강제로 메인페이지로 이동한다.
-  if (user && (request.nextUrl.pathname.startsWith('/sign-in') || request.nextUrl.pathname.startsWith('/sign-up'))) {
+  if (
+    user &&
+    (request.nextUrl.pathname.startsWith('/sign-in') || request.nextUrl.pathname.startsWith('/sign-up/business'))
+  ) {
     const url = request.nextUrl.clone();
     url.pathname = '/';
     return NextResponse.redirect(url);

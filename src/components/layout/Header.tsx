@@ -12,7 +12,6 @@ import { getUser } from '@/actions/auth';
 const Header = async () => {
   // const isLoggedIn = useAuthStore((state) => state.user !== null);
   const { data } = await getUser();
-  console.log({data})
 
   return (
     // header 전체 범위

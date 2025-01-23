@@ -5,7 +5,7 @@ import { create } from 'zustand';
 // Zustand store 생성
 const useAuthStore = create<AuthStateFace>((set) => ({
   user: null,
-  setUser: (user) => set({ user }),
+  // setUser: (user) => set({ user }),
   // TODO: setAuth
   setAuth: (user) => set({ user })
 

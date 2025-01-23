@@ -1,12 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { browserSupabase } from '@/supabase/supabase-client';
 import { useRouter } from 'next/navigation';
-import useAuthStore from '@/store/useAuth';
 import SignUpUser from './_components/SignUpUser';
 import handleSignupAction from '../actions/handleSignupAction';
-import SignupUserModal from '@/components/ui/sign-up/SignUpUserUi';
+import SignupUserModal from '@/components/ui/sign-up/SignUpUi';
+import Swal from 'sweetalert2';
 
 export default function SignUpUserPage() {
   const [email, setEmail] = useState('');
@@ -32,11 +31,19 @@ export default function SignUpUserPage() {
         phone,
         role: 'user'
       });
-
       if (!result.success) {
-        setError(result.message);
+        await Swal.fire({
+          icon: 'error',
+          title: '회원가입 실패',
+          text: result.message
+        });
         return;
       }
+      await Swal.fire({
+        icon: 'success',
+        title: '회원가입 성공',
+        text: `${name}님, 회원가입이 완료되었습니다!`
+      });
       // commit용 주석
       // const { error: loinError } = await supabase.auth.signInWithPassword({
       //   email,
@@ -56,7 +63,7 @@ export default function SignUpUserPage() {
       // });
 
       // setIsModalOpen(true);
-
+      // setTimeout(() => setIsModalOpen(), 1000);
       // TODO: 서버측에서 로그인을 시도할 예정 -> Header에서 인식 X
       // router.push('/');
       window.location.href = '/';
@@ -65,9 +72,11 @@ export default function SignUpUserPage() {
       console.error(err);
     }
   };
-  const closeModal = () => {
+  const closeModal = async () => {
     setIsModalOpen(false);
-    router.push('/');
+    // await router.push('/');
+    // console.log('??');
+    // window.location.href = '/';
   };
 
   return (

@@ -6,11 +6,9 @@ import Image from 'next/image';
 import DividerIcon from '@/components/ui/icon/DividerIcon';
 import BusinessIcon from '@/components/ui/icon/BusinessIcon';
 import UserIcon from '@/components/ui/icon/UserIcon';
-import useAuthStore from '@/store/useAuth';
 const Page = () => {
   const router = useRouter();
   const [userType, setUserType] = useState<string | null>(null);
-  const setUser = useAuthStore((state) => state.setUser);
 
   const handleSelect = (type: string) => {
     setUserType(type);
