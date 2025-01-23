@@ -5,10 +5,10 @@ import React, { useState } from 'react';
 import RenderStars from '../../_components/RenderStars';
 
 interface HotelOverviewProps {
-  hotelData: HotelType; // HotelType에 대한 정의를 가져옵니다.
-  toggleFavorite: (hotelId: string) => void; // 즐겨찾기 토글 함수
-  hotelId: string; // 호텔 ID
-  favoriteStatus: Record<string, boolean>; // 즐겨찾기 상태를 담은 객체
+  hotelData: HotelType;
+  toggleFavorite: (hotelId: string) => void;
+  hotelId: string;
+  favoriteStatus: Record<string, boolean>;
 }
 
 const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: HotelOverviewProps) => {
@@ -25,6 +25,10 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
     setSelectedImage(null);
   };
 
+  const validImage = (image: string | undefined) => {
+    return image && typeof image === 'string' ? image : '/placeholder.png';
+  };
+
   return (
     <section
       id="overview"
@@ -32,42 +36,45 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
     >
       <div className="flex flex-col lg:flex-row gap-4">
         {/* 메인 이미지 */}
-        <div className="rounded-lg shadow-md overflow-hidden">
+        <div className="rounded-lg shadow-md overflow-hidden" style={{ aspectRatio: '16/9' }}>
+          {' '}
+          {/* 비율 고정 */}
           <Image
-            src={hotelData.main_img_url || '/placeholder.png'}
+            src={validImage(hotelData.main_img_url)}
             alt={hotelData.name || 'Default Image'}
-            width={594}
-            height={363}
+            width={594} // 기존 값 유지
+            height={363} // 기존 값 유지
             className="object-cover w-full h-full cursor-pointer"
-            onClick={() => openModal(hotelData.main_img_url)}
+            onClick={() => openModal(validImage(hotelData.main_img_url))}
           />
         </div>
         {/* 추가 이미지 */}
         <div className="grid grid-cols-2 gap-2">
-          {Array.isArray(hotelData.hotel_img_urls) &&
-            hotelData.hotel_img_urls.slice(1, 5).map((image, index) => (
+          {(Array.isArray(hotelData.hotel_img_urls) ? hotelData.hotel_img_urls : [])
+            .slice(1, 5)
+            .filter((image): image is string => typeof image === 'string') // string만 필터링
+            .map((image, index) => (
               <div
                 key={index}
-                className="relative  rounded-lg  overflow-hidden cursor-pointer"
-                onClick={() => openModal(image as string)}
+                className="relative rounded-lg overflow-hidden cursor-pointer"
+                style={{ aspectRatio: '16/9' }} // 비율 고정
+                onClick={() => openModal(image)}
               >
-                <div className="w-full max-w-[300px] sm:w-[240px] md:w-[270px] lg:w-[300px] min-w-[300px] aspect-[16/9]">
-                  <Image
-                    src={image as string}
-                    alt={`Image ${index + 1}`}
-                    width={291}
-                    height={175}
-                    className="object-cover"
-                  />
-                </div>
+                <Image
+                  src={image}
+                  alt={`Image ${index + 1}`}
+                  width={291} // 기존 값 유지
+                  height={175} // 기존 값 유지
+                  className="object-cover w-full h-full"
+                />
                 {index === 1 && (
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       toggleFavorite(hotelId);
                     }}
-                    className={`absolute top-2 right-2 p-2 rounded-full shadow-md ${
-                      favoriteStatus[hotelId] ? 'bg-red-500 text-white' : 'bg-white text-gray-600'
+                    className={`absolute top-2 right-2 p-2 rounded-full shadow-md bg-white text-gray-600 ${
+                      favoriteStatus[hotelId] ? 'active' : ''
                     }`}
                   >
                     {favoriteStatus[hotelId] ? '❤️' : '🤍'}
@@ -84,11 +91,11 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
       </div>
       {/* 호텔 정보 */}
       <div className="mt-4 text-center lg:text-left">
-        <h2 className="text-2xl font-bold">{hotelData.name}</h2>
+        <h2 className="text-2xl font-bold">{hotelData.name || 'Hotel Name'}</h2>
         <div className="mt-2">
-          <RenderStars rating={hotelData.stars} />
+          <RenderStars rating={hotelData.stars || 0} />
         </div>
-        <p className="mt-2 text-gray-700">{hotelData.description}</p>
+        <p className="mt-2 text-gray-700">{hotelData.description || 'No description available.'}</p>
       </div>
       {/* 모달 */}
       <UpModal
@@ -96,10 +103,10 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
         onClose={closeModal}
         images={
           Array.isArray(hotelData?.hotel_img_urls)
-            ? (hotelData.hotel_img_urls.filter((url) => typeof url === 'string') as string[])
+            ? hotelData.hotel_img_urls.filter((url): url is string => typeof url === 'string')
             : []
         }
-        name={hotelData?.name || ''}
+        name={hotelData?.name || 'Default Name'}
       />
     </section>
   );
