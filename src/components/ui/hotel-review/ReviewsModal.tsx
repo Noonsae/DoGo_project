@@ -1,7 +1,7 @@
-import LikeIcon from '@/app/hotel-list/_components/LikeIcon';
 import { ReviewType } from '@/types/supabase/review-type';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
+import ReviewThumbUpIcon from '../icon/ReviewThumbUpIcon';
 
 const ReviewsModal = ({
   isOpen,
@@ -106,7 +106,7 @@ const ReviewsModal = ({
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-4">
               <div className="flex flex-col items-center">
-                <span className="text-4xl font-black">{LikeIcon()}</span>
+                <span className="text-4xl font-black">{ReviewThumbUpIcon()}</span>
               </div>
               <span className="text-5xl font-extrabold mt-1.5 -ml-2 text-[#232527]">{averageRating.toFixed(1)}</span>
             </div>
