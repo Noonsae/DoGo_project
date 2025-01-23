@@ -57,7 +57,7 @@ const SignUpUser: React.FC<SignUpProps> = ({
           <div className="w-full mt-[156px] mb-[40px] flex flex-col justify-center items-center">
             <Image src="/images/Dogo.png" alt="Dogo" priority width={140} height={37} />
           </div>
-          <p className="text-[18px] font-bold mb-[24px] text-center">일반 회원 회원가입</p>
+          <p className="text-[18px] font-bold mb-[24px]">일반 회원 회원가입</p>
 
           {/* 이메일 입력 */}
           <p className="font-pretendard text-[16px] font-semibold leading-[135%]">이메일</p>
