@@ -1,13 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { FiCalendar } from 'react-icons/fi';
 
 import useSearchStore from '@/store/useSearchStore';
 
 import { MonthList } from '@/constants/constant';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
+
+import FiCalendarIcon from '../icon/FiCalendarIcon';
 
 const DurationModal = ({ left = '36%', top, onClose }: { left?: string; top?: string; onClose: () => void }) => {
   const { setCheckIn, setCheckOut, setMonth, setStay } = useSearchStore();
@@ -89,10 +90,10 @@ const DurationModal = ({ left = '36%', top, onClose }: { left?: string; top?: st
               plugins={[dayGridPlugin]}
               initialView="dayGridMonth"
               dayCellContent={(arg) => {
-                console.log({arg})
+                console.log({ arg });
                 // arg.dayNumber는 날짜 숫자
                 return (
-                  // 버튼 onClick -> state 넣기 
+                  // 버튼 onClick -> state 넣기
                   <div className="custom-day-cell">
                     {/* <span>{arg.dayNumber}</span> */}
                     <span>{arg.date.getDate()}</span>
@@ -166,7 +167,7 @@ const DurationModal = ({ left = '36%', top, onClose }: { left?: string; top?: st
         selectedMonth.includes(month) ? 'bg-[#B3916A] text-white' : 'bg-white border border-[#e2e2e2] text-[#777]'
       } group`}
                 >
-                  <FiCalendar
+                  <FiCalendarIcon
                     className={`w-8 h-8 ${
                       selectedMonth.includes(month) ? 'text-white' : 'text-[#A0A0A0]'
                     } group-hover:text-white group-active:text-white`}

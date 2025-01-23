@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
-import { HiSearch } from 'react-icons/hi';
 
 import { useRouter } from 'next/navigation';
 
@@ -16,9 +15,11 @@ import LocationModal from './LocationModal';
 import DurationModal from './DurationModal';
 import DetailsModal from './DetailsModal';
 
+import HiSearchIcon from '../icon/HiSearchIcon';
+
 const SearchBox = () => {
   const [searchUrl, setSearchUrl] = useState<string>('');
-  const { location, checkIn, checkOut, details, schedule, setLocation } = useSearchStore();
+  const { location, checkIn, checkOut, details, stay, month, setLocation } = useSearchStore();
 
   const [isSticky, setIsSticky] = useState(false); // 스크롤 상태 관리
   const [activeModal, setActiveModal] = useState<'location' | 'duration' | 'details' | null>(null); // 모달 상태
@@ -65,18 +66,24 @@ const SearchBox = () => {
     ['mousedown', 'touchstart']
   );
 
-  const url = generateUrl({ location, checkIn, checkOut, schedule, details }); // URL 생성
-
-  // 비동기로 전환 후 제대로 작동하는데 이유를 모르겠음;;
+  const url = generateUrl({ location, checkIn, checkOut, stay, month, details }); // URL 생성
+  
   const handleSearchClick = async () => {
     const searchUrl = url;
-    router.push(searchUrl); // 페이지 이동
+    await router.push(searchUrl); // 페이지 이동
     closeModal();
+  };
+
+  const handleKeyDownEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // 기본 엔터 키 동작 방지
+      handleSearchClick(); // 검색 함수 실행
+    }
   };
 
   useEffect(() => {
     setSearchUrl(url); // 의존성 배열에서 searchUrl 제거
-  }, [location, schedule, details]); // 필요한 의존성만 포함
+  }, [location, stay, month, details]); // 필요한 의존성만 포함
 
   return (
     <>
@@ -101,6 +108,7 @@ const SearchBox = () => {
                   placeholder="여행지 검색"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
+                  onKeyDown={handleKeyDownEnter}
                   className="w-full border-none outline-none"
                 />
               </label>
@@ -140,8 +148,10 @@ const SearchBox = () => {
                 onClick={handleSearchClick}
                 className="w-[11%] max-w-[124px] h-full flex flex-row justify-center items-center bg-[#B3916A] text-white text-[20px] text-center font-semibold rounded-[8px] outline-none hover:bg-[#8F7455] active:bg-[#6B573F] disabled:bg-[#EFEFEF] disabled:text-[#BFBFBF] transition duration-200"
               >
-                <HiSearch className="inline-block w-[24px] h-[24px] -ml-[1px] mr-[4%] fill-white" />
-                검색
+                <div>
+                  <HiSearchIcon className="inline-block w-6 h-6 -ml-1 mr-1 fill-white" />
+                  검색
+                </div>
               </button>
             </div>
 

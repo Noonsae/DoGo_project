@@ -38,7 +38,7 @@ const ReviewsModal = ({
   const dropDownIcon = () => {
     return (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M6 9L12 15L18 9" stroke="#444444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M6 9L12 15L18 9" stroke="#444444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     );
   };
@@ -46,7 +46,7 @@ const ReviewsModal = ({
   const dropUpIcon = () => {
     return (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M18 15L12 9L6 15" stroke="#444444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M18 15L12 9L6 15" stroke="#444444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     );
   };
@@ -171,9 +171,11 @@ const ReviewsModal = ({
             sortedReviews.map((review) => (
               <div key={review.id} className="p-4 border-b border-gray-200">
                 <div className="flex gap-4 mb-2 items-center">
-                  <img
+                  <Image
                     src={review.users?.profile_img || '/placeholder-profile.png'}
                     alt="Profile"
+                    height={80}
+                    width={80}
                     className="w-[50px] h-[50px] rounded-full object-cover"
                   />
                   <div className="flex justify-between w-full">
@@ -182,6 +184,17 @@ const ReviewsModal = ({
                   </div>
                 </div>
                 <p>{renderStars(review.rating)}</p>
+                <div className="flex gap-1 h-[80px]">
+                  {Array.isArray(review.review_img_url) ? (
+                    review.review_img_url.map((url, index) =>
+                      typeof url === 'string' ? (
+                        <Image key={index} src={url} alt={`review-image-${index}`} height={80} width={80} />
+                      ) : null
+                    )
+                  ) : typeof review.review_img_url === 'string' ? (
+                    <Image src={review.review_img_url} alt="review-image" height={80} width={80} />
+                  ) : null}
+                </div>
                 <div className="mt-4">
                   <p className="text-sm text-gray-700 mb-2">{review.comment}</p>
                 </div>

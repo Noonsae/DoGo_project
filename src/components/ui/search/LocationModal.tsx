@@ -5,9 +5,8 @@ import { useState } from 'react';
 import useHistoryStore from '@/store/useHistoryStore';
 
 import { locations } from '@/constants/constant';
-
-import { IoMdPin } from 'react-icons/io';
-import { IoClose } from 'react-icons/io5';
+import IoMdPinIcon from '../icon/IoMdPinIcon';
+import IoCloseIcon from '../icon/IoCloseIcon';
 
 const LocationModal = ({ onSelectLocation, top, left }: { onSelectLocation: (label: string) => void; top?: string; left?: string; }) => {
   const history = useHistoryStore((state) => state.history);
@@ -57,14 +56,16 @@ const LocationModal = ({ onSelectLocation, top, left }: { onSelectLocation: (lab
               onClick={() => handleSelectHistory(history.location)}
             >
               <div className="flex flex-row items-center justify-start">
-                <IoMdPin className="w-6 h-6 text-[#777] mr-2" />
+                <IoMdPinIcon className="w-6 h-6 text-[#777] mr-2" />
                 <p className="p-2 text-[18px] text-[#636363] leading-[1.45] ">{getLocationLabel(history.location)}</p>
               </div>
               <button
                 type="button"
                 onClick={() => removeHotel(history.location)} // 삭제 버튼 동작
               >
-                <IoClose className="w-6 h-6 text-[#777]" />
+                <div>
+                  <IoCloseIcon className="w-6 h-6 text-[#777]" />
+                </div>
               </button>
             </div>
           ))}
