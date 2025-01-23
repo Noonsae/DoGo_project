@@ -108,7 +108,7 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
       <div className="mt-4 text-center lg:text-left">
         <h2 className="text-2xl font-bold">{hotelData.name || 'Hotel Name'}</h2>
         <div className="mt-2">
-          <RenderStars rating={hotelData.stars} />
+          <RenderStars stars={hotelData.stars} />
         </div>
         <p className="mt-2 text-gray-700">{hotelData.description || 'No description available.'}</p>
       </div>
