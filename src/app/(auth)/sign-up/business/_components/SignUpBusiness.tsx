@@ -57,7 +57,7 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
           <div className="w-full mt-[156px] mb-[40px] flex flex-col justify-center items-center">
             <Image src="/images/Dogo.png" alt="Dogo" priority width={140} height={37} />
           </div>
-          <h6 className="text-[18px] font-bold mb-[24px] text-center">사업자 회원 회원가입</h6>
+          <h6 className="text-[18px] font-bold mb-[24px]">사업자 회원 회원가입</h6>
 
           {/* 이메일 */}
           <p className="font-pretendard text-[16px] font-semibold leading-[135%]">사업자 이메일</p>
