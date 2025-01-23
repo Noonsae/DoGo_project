@@ -77,11 +77,11 @@ const HotelList = () => {
   };
 
   // 초기 즐겨찾기 상태 로드
-  useEffect(() => {
-    if (user?.id) {
-      initializeFavorites(user.id);
-    }
-  }, [user, initializeFavorites]);
+  // useEffect(() => {
+  //   if (user?.id) {
+  //     initializeFavorites(user.id);
+  //   }
+  // }, [user, initializeFavorites]);
 
   // 필터 데이터 호출
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useFetchHotelsFilter({
