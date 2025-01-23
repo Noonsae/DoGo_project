@@ -2,7 +2,7 @@
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import React, { useState, useEffect, useCallback } from 'react';
 import HiOutlineRefreshIcon from '@/components/ui/icon/HiOutlineRefreshIcon';
-import DualSlider from './Dualslider';
+import DualSlider from './DualSlider';
 
 interface FilterObject {
   grade: number[];
