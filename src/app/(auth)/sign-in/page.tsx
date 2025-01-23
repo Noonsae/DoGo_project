@@ -3,7 +3,6 @@
 import { browserSupabase } from '@/supabase/supabase-client';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import useAuthStore from '@/store/useAuth';
 import Swal from 'sweetalert2';
 import DividerIcon from '@/components/ui/icon/DividerIcon';
 import FindIdModal from './_components/FindIdModal';
@@ -21,7 +20,6 @@ const SignInPage = () => {
     isFindPasswordOpen: false
   });
   const router = useRouter();
-  const setUser = useAuthStore((state) => state.setUser);
   const handleSignUp = () => {
     router.push('/sign-up');
   };
@@ -37,10 +35,6 @@ const SignInPage = () => {
         return;
       }
 
-      // const { data, error } = await supabase.auth.signInWithPassword({
-      //   email: form.email,
-      //   password: form.password
-      // });
       const { data, error } = await login({
         email: form.email,
         password: form.password
@@ -83,16 +77,12 @@ const SignInPage = () => {
       // TODO: 한 번에 관리 예정
       // setUser(data.user);
 
-      //supabase는 로그인, 세션유지, 로그아웃 등 내장기능이 있기 때문에 아래 코드 제거함
-      // document.cookie = `user=${encodeURIComponent(JSON.stringify(data.user))}; path=/;`;
-
       await Swal.fire({
         icon: 'success',
         title: '로그인 성공',
         text: `${data.user.email}님 환영합니다!`
       });
 
-      // router.push('/');
       window.location.href = '/';
     } catch (err) {
       console.error('예기치 않은 오류:', err);

@@ -1,11 +1,12 @@
 'use client';
 
+import React, { useEffect, useState } from 'react';
 import CheckIcon from '@/components/ui/icon/CheckIcon';
 import CloseButtonIcon from '@/components/ui/icon/CloseButtonIcon';
 import CloseEyesIcon from '@/components/ui/icon/CloseEyesIcon';
 import OpenEyesIcon from '@/components/ui/icon/OpenEyesIcon';
-import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
+
 const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
   const [form, setForm] = useState({
     email: '',
