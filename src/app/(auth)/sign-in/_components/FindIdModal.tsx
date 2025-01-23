@@ -1,9 +1,9 @@
 'use client';
 
+import React, { useEffect, useState } from 'react';
 import CheckIcon from '@/components/ui/icon/CheckIcon';
 import CloseButtonIcon from '@/components/ui/icon/CloseButtonIcon';
 import WarningIcon from '@/components/ui/icon/WarningIcon';
-import React, { useEffect, useState } from 'react';
 
 const FindIdModal = ({ onClose }: { onClose: () => void }) => {
   const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
@@ -75,6 +75,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
       setForm((prevForm) => ({ ...prevForm, isLoading: false }));
     }
   };
+
   const handleTabChange = (tab: 'user' | 'business') => {
     setForm((prevForm) => ({
       ...prevForm,

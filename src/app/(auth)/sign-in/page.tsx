@@ -3,12 +3,12 @@
 import { browserSupabase } from '@/supabase/supabase-client';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import useAuthStore from '@/store/useAuth';
 import Swal from 'sweetalert2';
 import DividerIcon from '@/components/ui/icon/DividerIcon';
 import FindIdModal from './_components/FindIdModal';
 import FindPasswordModal from './_components/FindPasswordModal';
 import KakaoSignIn from './_components/KakaoSignIn';
+import Image from 'next/image';
 import { login } from './actions/login';
 
 const SignInPage = () => {
@@ -20,7 +20,6 @@ const SignInPage = () => {
     isFindPasswordOpen: false
   });
   const router = useRouter();
-  const setUser = useAuthStore((state) => state.setUser);
   const handleSignUp = () => {
     router.push('/sign-up');
   };
@@ -36,10 +35,6 @@ const SignInPage = () => {
         return;
       }
 
-      // const { data, error } = await supabase.auth.signInWithPassword({
-      //   email: form.email,
-      //   password: form.password
-      // });
       const { data, error } = await login({
         email: form.email,
         password: form.password
@@ -82,16 +77,12 @@ const SignInPage = () => {
       // TODO: 한 번에 관리 예정
       // setUser(data.user);
 
-      //supabase는 로그인, 세션유지, 로그아웃 등 내장기능이 있기 때문에 아래 코드 제거함
-      // document.cookie = `user=${encodeURIComponent(JSON.stringify(data.user))}; path=/;`;
-
       await Swal.fire({
         icon: 'success',
         title: '로그인 성공',
         text: `${data.user.email}님 환영합니다!`
       });
 
-      // router.push('/');
       window.location.href = '/';
     } catch (err) {
       console.error('예기치 않은 오류:', err);
@@ -107,8 +98,10 @@ const SignInPage = () => {
     <>
       <div className="flex justify-center items-center min-h-screen">
         <div className="justify-center items-center w-[400px] h-[637px]">
-          <h1 className="text-[40px] font-bold mb-[40px] text-center">DoGo</h1>
-          <div className="flex justify-between mb-8 border-b-2">
+          <div className=" mt-[94px] mb-[40px] flex flex-col justify-center items-center">
+            <Image src="/images/Dogo.png" alt="Dogo" priority width={140.6} height={39.9} />
+          </div>
+          <div className="flex justify-between mb-[40px] border-b-2">
             <button
               className={`pb-2 w-1/2 text-center ${
                 form.activeTab === 'user' ? 'border-b-2 border-neutral-800' : 'text-neutral-600'
@@ -157,7 +150,7 @@ const SignInPage = () => {
                   email: e.target.value
                 }))
               }
-              className="w-[400px]  p-3 border border-neutral-300 rounded-[8px] mb-4 focus:outline-none focus:ring-2 focus:ring-black"
+              className="items-center w-[400px] g-[4px] h-[48px] pt-[8px] pb-[8px] pr-[16px] pl-[16px] border border-neutral-300 rounded-[8px] mb-[12px] focus:outline-none focus:ring-2 focus:ring-black"
             />
             <input
               type="password"
@@ -169,7 +162,7 @@ const SignInPage = () => {
                   password: e.target.value
                 }))
               }
-              className="w-[400px] p-3 border border-neutral-300 rounded-[8px] mb-4 focus:outline-none focus:ring-2 focus:ring-black"
+              className="items-center w-[400px] g-[4px] h-[48px] pt-[8px] pb-[8px] pr-[16px] pl-[16px] border border-neutral-300 rounded-[8px] mb-[12px] focus:outline-none focus:ring-2 focus:ring-black"
             />
             <div className="flex w-[400px] justify-end text-sm text-gray-500 mb-4">
               <button
@@ -207,7 +200,7 @@ const SignInPage = () => {
             </button>
           </form>
           <p className="w-[400px] p-[12px] flex justify-center text-neutral-600">
-            이미 계정이 있으신가요?
+            계정이 없으신가요?
             <button onClick={handleSignUp} className="text-[#534431] ml-3 font-semibold">
               회원가입
             </button>

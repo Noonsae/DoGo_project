@@ -1,13 +1,10 @@
 'use client';
 
-import React from 'react';
-import { browserSupabase } from '@/supabase/supabase-client';
-import useAuthStore from '@/store/useAuth';
-import KaKaoIcon from '@/components/ui/icon/KaKaoIcon';
 import { kakaoLogin as kakaoLoginAction } from '@/actions/auth';
-const KakaoSignIn = () => {
-  // const setUser = useAuthStore((state) => state.setUser);
+import React from 'react';
+import KaKaoIcon from '@/components/ui/icon/KaKaoIcon';
 
+const KakaoSignIn = () => {
   const kakaoLogin = async () => {
     try {
       await kakaoLoginAction();
