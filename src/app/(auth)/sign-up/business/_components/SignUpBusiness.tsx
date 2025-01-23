@@ -79,7 +79,7 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
               onChange={(e) => handlePasswordChange(e.target.value)}
               className="w-full h-12 px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none"
             />
-            <p className="text-xs pb-[4px] text-gray-700 mb-[20px]">
+            <p className="text-xs pb-[4px] px-1 text-gray-700 mb-[20px]">
               영문 대•소문자/숫자/특수문자 중 2가지 이상 조합, 8자~32자
             </p>
             <button
