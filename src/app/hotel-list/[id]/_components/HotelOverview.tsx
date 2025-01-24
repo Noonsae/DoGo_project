@@ -1,15 +1,8 @@
 import UpModal from '@/components/ui/hotel-up-image/Modal';
-import { HotelType } from '@/types/supabase/hotel-type';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import RenderStars from '../../_components/RenderStars';
-
-interface HotelOverviewProps {
-  hotelData: HotelType;
-  toggleFavorite: (hotelId: string) => void;
-  hotelId: string;
-  favoriteStatus: Record<string, boolean>;
-}
+import { HotelOverviewProps } from '@/types/hotel/hotel-overview-type';
 
 const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: HotelOverviewProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);

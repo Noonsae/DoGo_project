@@ -1,9 +1,5 @@
 import React from 'react';
-
-interface NavigationType {
-  activeTab: string;
-  scrollToSection: (id: string) => void;
-}
+import { NavigationType } from '@/types/hotel/navigation-type';
 
 const Navigation = ({ activeTab, scrollToSection }: NavigationType) => {
   return (

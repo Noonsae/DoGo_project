@@ -1,16 +1,6 @@
 import RatingIcon from '@/components/ui/icon/RatingIcon';
-import { FacilitiesType } from '@/types/supabase/facilities-type';
-import { HotelType } from '@/types/supabase/hotel-type';
-import { ReviewType } from '@/types/supabase/review-type';
+import { HotelBoxProps } from '@/types/hotel/hotel-box-type';
 import React, { useEffect, useState } from 'react';
-
-type HotelBoxProps = {
-  facilityData: FacilitiesType[]; // 시설 데이터 배열
-  roomOption: JSX.Element; // JSX 요소 타입
-  hotelData: HotelType;
-  reviews: ReviewType[];
-  allReviews: ReviewType[];
-};
 
 const HotelBox = ({ facilityData, roomOption, hotelData, reviews, allReviews }: HotelBoxProps) => {
   const [averageRating, setAverageRating] = useState<number>(0);
