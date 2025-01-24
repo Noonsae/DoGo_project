@@ -29,11 +29,6 @@ export default function SignUpUserPage() {
         role: 'user'
       });
       if (!result.success) {
-        await Swal.fire({
-          icon: 'error',
-          title: '회원가입 실패',
-          text: '모두 입력해주세요!'
-        });
         return;
       }
       await Swal.fire({

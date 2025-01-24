@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { SignUpProps } from '@/types/supabase/supabase-sign-up-type';
 import { useRouter } from 'next/navigation';
-import Error from '../error';
 import Image from 'next/image';
 import CloseEyesIcon from '@/components/ui/icon/CloseEyesIcon';
 import OpenEyesIcon from '@/components/ui/icon/OpenEyesIcon';
@@ -22,34 +21,65 @@ const SignUpUser: React.FC<SignUpProps> = ({
   setError,
   handleSignup
 }) => {
-  // const [confirmPassword, setConfirmPassword] = useState('');
-  // const [updatePassword, setUpdagePassword] = useState(false);
-  // const [checkUpdatePassword, setCheckUpdatePassword] = useState(false);
   const [form, setForm] = useState({
-    confirmPassword: '',
-    updatePassword: false,
-    checkUpdatePassword: false
+    confirmPassword: '', // 비밀번호 확인
+    updatePassword: false, // 비밀번호 보기 toggle
+    checkUpdatePassword: false // 비밀번호 확인 보기 toggle
   });
+
+  const [errors, setErrors] = useState<{
+    email?: string;
+    phone?: string;
+    name?: string;
+    nickname?: string;
+    confirmPassword?: string;
+  }>({}); // 에러 메시지 상태
   const router = useRouter();
 
-  const handlePasswordChange = (value: string) => {
-    setPassword(value);
-    if (form.confirmPassword && value !== form.confirmPassword) {
-      setError('비밀번호가 일치하지 않습니다.');
-    } else {
-      setError('');
-    }
+  const handleSignUp = () => {
+    const newErrors: { email?: string; phone?: string; name?: string; nickname?: string; confirmPassword?: string } =
+      {};
+
+    if (!email) newErrors.email = '이메일은 필수 입력값입니다.';
+    if (!phone) newErrors.phone = '휴대폰 번호는 필수 입력값입니다.';
+    if (!name) newErrors.name = '이름은 필수 입력값입니다.';
+    if (!nickname) newErrors.nickname = '닉네임은 필수 입력값입니다.';
+    if (password !== form.confirmPassword) newErrors.confirmPassword = '비밀번호가 일치하지 않습니다.';
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) return;
+
+    handleSignup();
   };
 
-  const handleInputChange = (field: string, value: string | boolean) => {
-    setForm((prevForm) => ({ ...prevForm, [field]: value }));
-  };
-  const handleConfirmPasswordChange = (value: string) => {
-    handleInputChange('confirmPassword', value);
-    if (password && value !== password) {
-      setError('비밀번호가 일치하지 않습니다.');
-    } else {
-      setError('');
+  const handleInputChange = (field: 'email' | 'phone' | 'name' | 'nickname' | 'confirmPassword', value: string) => {
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [field]: undefined // 입력 시 해당 에러 제거
+    }));
+
+    switch (field) {
+      case 'email':
+        setEmail(value);
+        break;
+      case 'phone':
+        setPhone(value);
+        break;
+      case 'name':
+        setName(value);
+        break;
+      case 'nickname':
+        setNickname(value);
+        break;
+      case 'confirmPassword':
+        setForm((prevForm) => ({ ...prevForm, confirmPassword: value }));
+        if (password && value !== password) {
+          setErrors((prevErrors) => ({ ...prevErrors, confirmPassword: '비밀번호가 일치하지 않습니다.' }));
+        }
+        break;
+      default:
+        break;
     }
   };
 
@@ -57,7 +87,6 @@ const SignUpUser: React.FC<SignUpProps> = ({
     router.push('/sign-in');
   };
 
-  // 반응형 완료
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex justify-center items-center px-4 sm:px-6 lg:px-8">
@@ -67,22 +96,27 @@ const SignUpUser: React.FC<SignUpProps> = ({
           </div>
           <p className="text-[18px] font-bold mb-[24px]">일반 회원 회원가입</p>
 
+          {/* 이메일 */}
           <p className="font-pretendard text-[16px] font-semibold leading-[135%]">이메일</p>
           <input
             type="email"
             placeholder="이메일을 입력해 주세요."
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full mb-[20px] h-12 px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none"
+            onChange={(e) => handleInputChange('email', e.target.value)}
+            className={`w-full  h-12 px-3 border rounded-[8px] focus:outline-none ${
+              errors.email ? 'border-red-500 focus:ring-red-500' : 'border-[#BFBFBF] focus:ring-[#B3916A]'
+            }`}
           />
+          {errors.email && <p className="text-[14px] text-red-500">{errors.email}</p>}
 
-          <p className="font-pretendard text-[16px] font-semibold leading-[135%]">비밀번호</p>
+          {/* 비밀번호 */}
+          <p className="font-pretendard mt-[20px] text-[16px] font-semibold leading-[135%]">비밀번호</p>
           <div className="relative">
             <input
               type={form.updatePassword ? 'text' : 'password'}
               placeholder="비밀번호를 입력해 주세요."
               value={password}
-              onChange={(e) => handlePasswordChange(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full h-12 px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none"
             />
             <p className="text-xs pb-[4px] px-1 text-gray-700 mb-[20px]">
@@ -90,67 +124,81 @@ const SignUpUser: React.FC<SignUpProps> = ({
             </p>
             <button
               type="button"
-              onClick={() => handleInputChange('updatePassword', !form.updatePassword)}
+              onClick={() => setForm((prevForm) => ({ ...prevForm, updatePassword: !prevForm.updatePassword }))}
               className="absolute right-[20px] top-6 transform -translate-y-1/2 text-gray-600 hover:text-black"
             >
               {form.updatePassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
             </button>
           </div>
 
+          {/* 비밀번호 확인 */}
           <p className="font-pretendard text-[16px] font-semibold leading-[135%]">비밀번호 확인</p>
           <div className="relative">
             <input
               type={form.checkUpdatePassword ? 'text' : 'password'}
               placeholder="비밀번호를 다시 입력해 주세요."
               value={form.confirmPassword}
-              onChange={(e) => handleConfirmPasswordChange(e.target.value)}
+              onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
               className={`w-full h-12 px-3 border rounded-[8px] focus:outline-none ${
-                password && form.confirmPassword && password !== form.confirmPassword
-                  ? 'border-red-500 focus:ring-red-500'
-                  : 'border-[#BFBFBF] focus:ring-[#B3916A]'
+                errors.confirmPassword ? 'border-red-500 focus:ring-red-500' : 'border-[#BFBFBF] focus:ring-[#B3916A]'
               }`}
             />
-            {error && <Error message={error} />}
             <button
               type="button"
-              onClick={() => handleInputChange('checkUpdatePassword', !form.checkUpdatePassword)}
+              onClick={() =>
+                setForm((prevForm) => ({ ...prevForm, checkUpdatePassword: !prevForm.checkUpdatePassword }))
+              }
               className="absolute right-[20px] top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-black"
             >
               {form.checkUpdatePassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
             </button>
           </div>
+          {errors.confirmPassword && <p className="text-sm text-red-500">{errors.confirmPassword}</p>}
 
-          <p className="font-pretendard mt-1 text-[16px] font-semibold leading-[135%]">휴대폰 번호</p>
+          {/* 휴대폰 번호 */}
+          <p className="font-pretendard mt-[20px] text-[16px] font-semibold leading-[135%]">휴대폰 번호</p>
           <input
             type="tel"
             placeholder="휴대폰 번호를 입력해 주세요."
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="w-full mb-[20px] h-12 px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none"
+            onChange={(e) => handleInputChange('phone', e.target.value)}
+            className={`w-full  h-12 px-3 border rounded-[8px] focus:outline-none ${
+              errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-[#BFBFBF] focus:ring-[#B3916A]'
+            }`}
           />
+          {errors.phone && <p className="text-[14px] text-red-500">{errors.phone}</p>}
 
+          {/* 이름 */}
           <p className="font-pretendard text-[16px] font-semibold leading-[135%]">이름</p>
           <input
             type="text"
             placeholder="이름을 입력해 주세요."
             value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full mb-[20px] h-12 px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none"
+            onChange={(e) => handleInputChange('name', e.target.value)}
+            className={`w-full   h-12 px-3 border rounded-[8px] focus:outline-none ${
+              errors.name ? 'border-red-500 mb-[20px] focus:ring-red-500' : 'border-[#BFBFBF] focus:ring-[#B3916A]'
+            }`}
           />
+          {errors.name && <p className="text-[14px] text-red-500">{errors.name}</p>}
 
-          <p className="font-pretendard text-[16px] font-semibold leading-[135%]">닉네임</p>
+          {/* 닉네임 */}
+          <p className="font-pretendard  mt-[20px] text-[16px] font-semibold leading-[135%]">닉네임</p>
           <input
             type="text"
             placeholder="닉네임을 입력해 주세요."
             value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-            className="w-full mb-[20px] h-12 px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none"
+            onChange={(e) => handleInputChange('nickname', e.target.value)}
+            className={`w-full  h-12 px-3 border rounded-[8px] focus:outline-none ${
+              errors.nickname ? 'border-red-500  focus:ring-red-500' : 'border-[#BFBFBF] focus:ring-[#B3916A]'
+            }`}
           />
+          {errors.nickname && <p className="text-[14px] text-red-500">{errors.nickname}</p>}
 
+          {/* 완료 버튼 */}
           <button
             type="button"
-            onClick={handleSignup}
-            className="w-full bg-[#B3916A] text-white font-semibold py-3 px-4 rounded-md hover:bg-[#a37e5f] transition mb-4"
+            onClick={handleSignUp}
+            className="w-full mt-[20px] bg-[#B3916A] text-white font-semibold py-3 px-4 rounded-md hover:bg-[#a37e5f] transition mb-4"
           >
             완료
           </button>
