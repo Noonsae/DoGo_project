@@ -1,16 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import Modal from '@/components/ui/hotel-room/Modal';
-import { RoomType } from '@/types/supabase/room-type';
 import useFormatCurrency from '@/hooks/formatCurrency/useFormatCurrency';
-import { HotelType } from '@/types/supabase/hotel-type';
 
-type HotelRoomProps = {
-  roomsData: RoomType[];
-  getValidImageUrl: (roomImgUrls: RoomType['room_img_url']) => string;
-  roomOption: React.ReactNode;
-  hotelData: HotelType;
-};
+import { RoomType } from '@/types/supabase/room-type';
+import { HotelRoomProps } from '@/types/hotel/hotel-room-type';
 
 const HotelRoom = ({ roomsData, getValidImageUrl, roomOption, hotelData }: HotelRoomProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);

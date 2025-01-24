@@ -8,11 +8,8 @@ import useFavoriteStore from '@/hooks/favorite/useFavoriteStore';
 import useHotelReviews from '@/hooks/review/useHotelReviews';
 import useHotelRooms from '@/hooks/room/useHotelRooms';
 
-import { HotelType } from '@/types/supabase/hotel-type';
-import { FacilitiesType } from '@/types/supabase/facilities-type';
 import { Json } from '@/types/supabase/supabase-type';
 import { UserType } from '@/types/supabase/user-type';
-import { ServicesType } from '@/types/supabase/services-type';
 
 import HotelAttraction from './_components/HotelAttraction';
 import HotelBox from './_components/HotelBox';
@@ -26,16 +23,14 @@ import Navigation from './_components/Navigation';
 import NavigationSkeleton from '../../../components/ui/skeleton/HotelNavigationSkeleton';
 import HotelOverviewSkeleton from '@/components/ui/skeleton/HotelOverviewSkeleton';
 import HotelBoxSkeleton from '@/components/ui/skeleton/HotelBoxSkeleton';
+import useServiceFacility from '@/hooks/serviceFacility/useServiceFacility';
+import useHotelDetail from '@/hooks/hotel/useHotelDetail';
 
 const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const hotelId = params?.id;
 
-  const [hotelData, setHotelData] = useState<HotelType | null>(null);
-  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
-  const [facilityData, setFacilityData] = useState<FacilitiesType[]>([]);
   const user = useAuthStore((state) => state.user) as UserType | null;
-  const [servicesData, setServicesData] = useState<ServicesType[]>([]);
   const { favoriteStatus, toggleFavorite, initializeFavorites } = useFavoriteStore();
   const { reviews, allReviews } = useHotelReviews(hotelId);
   const { roomsData } = useHotelRooms(hotelId);
@@ -46,32 +41,9 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
     }
   }, [user, hotelId, initializeFavorites]);
 
-  useEffect(() => {
-    const fetchHotelData = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(`/api/hotel/${hotelId}`);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch hotel data. Status: ${response.status}`);
-        }
-        const data = await response.json();
-        setHotelData({
-          ...data,
-          hotel_img_urls: Array.isArray(data.hotel_img_urls) ? data.hotel_img_urls : [],
-          rooms: data.rooms || []
-        });
-      } catch (error) {
-        console.error('Error fetching hotel data:', error);
-        setHotelData(null);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const { hotelData, loading } = useHotelDetail(hotelId);
 
-    if (hotelId) {
-      fetchHotelData();
-    }
-  }, [hotelId]);
+  const { facilityData, serviceData } = useServiceFacility(hotelId);
 
   const selectedRoomId = roomsData.length > 0 ? roomsData[0]?.id : null;
 
@@ -167,10 +139,8 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
         <HotelFacility
           facilityData={facilityData}
           roomOption={roomOption}
-          setFacilityData={setFacilityData}
           hotelId={hotelId}
-          setServicesData={setServicesData}
-          serviceData={servicesData}
+          serviceData={serviceData}
         />
 
         {/* 숙소 정책 섹션 */}
