@@ -9,7 +9,7 @@ import BookingsContent from '@/app/my-page/_components/BookingsContent';
 import FavoritesContent from '@/app/my-page/_components/FavoritesContent';
 import ReviewsContent from '@/app/my-page/_components/ReviewsContent';
 import InquiryManagement from '@/app/my-page/_components/InquiryManagement';
-import UserSidebar from '../_components/Usersidebar';
+import UserSidebar from '../_components/UserSidebar';
 
 // Tab 타입 정의
 type TabType = 'profile' | 'bookings' | 'favorites' | 'reviews' | 'inquiries';

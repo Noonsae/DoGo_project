@@ -39,7 +39,7 @@ const HotelReviews = ({ loading, reviews, allReviews }: HotelReviewsProps) => {
                 {/* 프로필 섹션 */}
                 <div className="flex gap-4">
                   <img
-                    src={review.users?.profile_img || '/placeholder-profile.png'} // 프로필 이미지
+                    src={review.users?.profile_img || '/placeholder-profile.webp'} // 프로필 이미지
                     alt="Profile"
                     className="w-[50px] h-[50px] rounded-full object-cover"
                   />
@@ -58,7 +58,7 @@ const HotelReviews = ({ loading, reviews, allReviews }: HotelReviewsProps) => {
                     (url, index) => (
                       <Image
                         key={index}
-                        src={typeof url === 'string' ? url : '/placeholder-profile.png'}
+                        src={typeof url === 'string' ? url : '/placeholder-profile.webp'}
                         alt="Review Image"
                         width={80}
                         height={80}
