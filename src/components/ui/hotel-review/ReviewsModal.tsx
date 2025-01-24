@@ -1,7 +1,10 @@
 import { ReviewType } from '@/types/supabase/review-type';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReviewThumbUpIcon from '../icon/ReviewThumbUpIcon';
+import RenderStars from '../icon/RenderStars';
+import DropDownIcon from '../icon/DropDownIcon';
+import DropUpIcon from '../icon/DropUpIcon';
 
 const ReviewsModal = ({
   isOpen,
@@ -19,74 +22,53 @@ const ReviewsModal = ({
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [sortOption, setSortOption] = useState('추천순'); // 드롭다운 정렬 옵션
+  const [activeTab, setActiveTab] = useState('all');
 
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
   const handleSelectOption = (option: string) => {
     setSortOption(option);
+    filterAndSortReviews(option, activeTab);
     setIsDropdownOpen(false);
   };
 
-  const renderStars = (rating: number) => {
-    return Array.from({ length: 5 }).map((_, index) => (
-      <span key={index} className={`text-lg ${index < rating ? 'text-yellow-500' : 'text-gray-300'}`}>
-        ★
-      </span>
-    ));
-  };
+  const filterAndSortReviews = (sortOption: string, activeTab: string) => {
+    let filteredReviews = reviews.filter((review) => {
+      return (
+        activeTab === 'all' ||
+        (activeTab === 'photo' &&
+          review.review_img_url &&
+          (typeof review.review_img_url === 'string' || Array.isArray(review.review_img_url)) &&
+          review.review_img_url.length > 0)
+      );
+    });
 
-  const dropDownIcon = () => {
-    return (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M6 9L12 15L18 9" stroke="#444444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    );
-  };
+    if (sortOption === '추천순' || sortOption === '최신 작성 순') {
+      filteredReviews.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+    } else if (sortOption === '평점 높은 순') {
+      filteredReviews.sort((a, b) => b.rating - a.rating);
+    } else if (sortOption === '평점 낮은 순') {
+      filteredReviews.sort((a, b) => a.rating - b.rating);
+    }
 
-  const dropUpIcon = () => {
-    return (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M18 15L12 9L6 15" stroke="#444444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    );
+    // 별점 및 평가 통계 재계산
+    const totalRating = filteredReviews.reduce((sum, review) => sum + review.rating, 0);
+    const newAverageRating = filteredReviews.length > 0 ? totalRating / filteredReviews.length : 0;
+
+    const newRatingCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    filteredReviews.forEach((review) => {
+      newRatingCounts[review.rating] = (newRatingCounts[review.rating] || 0) + 1;
+    });
+
+    setSortedReviews(filteredReviews);
+    setRatingCounts(newRatingCounts);
+    setReviewCount(filteredReviews.length);
+    setAverageRating(newAverageRating);
   };
 
   useEffect(() => {
-    if (reviews && reviews.length > 0) {
-      let filteredReviews = [...reviews];
-
-      // 정렬 기준 적용
-      if (sortOption === '추천순' || sortOption === '최신 작성 순') {
-        filteredReviews.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-      } else if (sortOption === '평점 높은 순') {
-        filteredReviews.sort((a, b) => b.rating - a.rating);
-      } else if (sortOption === '평점 낮은 순') {
-        filteredReviews.sort((a, b) => a.rating - b.rating);
-      }
-
-      setSortedReviews(filteredReviews);
-
-      // 별점 및 평가 통계 계산
-      const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
-      const newAverageRating = reviews.length > 0 ? totalRating / reviews.length : 0;
-
-      const newRatingCounts: { [key: number]: number } = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
-      reviews.forEach((review) => {
-        if (newRatingCounts[review.rating] !== undefined) {
-          newRatingCounts[review.rating] += 1;
-        }
-      });
-
-      setRatingCounts(newRatingCounts);
-      setReviewCount(reviews.length);
-      setAverageRating(newAverageRating);
-    } else {
-      setSortedReviews([]);
-      setRatingCounts({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 });
-      setReviewCount(0);
-      setAverageRating(0);
-    }
-  }, [reviews, sortOption]);
+    filterAndSortReviews(sortOption, activeTab);
+  }, [reviews, sortOption, activeTab]);
 
   if (!isOpen) return null;
 
@@ -101,6 +83,32 @@ const ReviewsModal = ({
           </button>
         </div>
 
+        <div className="relative border-b border-gray-300">
+          {/* 버튼 그룹 */}
+          <div className="flex">
+            <button
+              className={`px-4 py-2 text-sm font-bold ${activeTab === 'all' ? 'text-[#B3916A]' : 'text-gray-500'}`}
+              onClick={() => setActiveTab('all')}
+            >
+              전체 리뷰
+            </button>
+            <button
+              className={`px-4 py-2 text-sm font-bold ${activeTab === 'photo' ? 'text-[#B3916A]' : 'text-gray-500'}`}
+              onClick={() => setActiveTab('photo')}
+            >
+              사진 리뷰
+            </button>
+          </div>
+
+          {/* Indicator */}
+          <div
+            className={`absolute bottom-0 h-1 bg-[#B3916A] transition-transform duration-300`}
+            style={{
+              width: '10%',
+              transform: `translateX(${activeTab === 'all' ? '28%' : '177%'})`
+            }}
+          ></div>
+        </div>
         {/* 별점 통계 */}
         <div className="flex justify-between items-start mt-10 ml-7">
           <div className="flex flex-col gap-4">
@@ -139,7 +147,7 @@ const ReviewsModal = ({
             >
               {sortOption}
               <span className="ml-2 transform transition-transform duration-300">
-                {isDropdownOpen ? dropUpIcon() : dropDownIcon()}
+                {isDropdownOpen ? DropUpIcon() : DropDownIcon()}
               </span>
             </button>
 
@@ -183,7 +191,7 @@ const ReviewsModal = ({
                     <p className="text-sm text-gray-500">작성일: {new Date(review.created_at).toLocaleDateString()}</p>
                   </div>
                 </div>
-                <p>{renderStars(review.rating)}</p>
+                <p>{RenderStars(review.rating)}</p>
                 <div className="flex gap-1 h-[80px]">
                   {Array.isArray(review.review_img_url) ? (
                     review.review_img_url.map((url, index) =>
