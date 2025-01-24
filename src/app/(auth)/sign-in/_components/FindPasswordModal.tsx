@@ -6,6 +6,7 @@ import CloseButtonIcon from '@/components/ui/icon/CloseButtonIcon';
 import CloseEyesIcon from '@/components/ui/icon/CloseEyesIcon';
 import OpenEyesIcon from '@/components/ui/icon/OpenEyesIcon';
 import Swal from 'sweetalert2';
+import { eventDragMutationMassager } from '@fullcalendar/core/internal';
 
 const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
   const [form, setForm] = useState({
@@ -17,7 +18,8 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
     isLoading: false,
     modalType: 'input',
     showConfirmPassword: false,
-    showPassword: false
+    showPassword: false,
+    activeTab: 'user'
   });
 
   const [errors, setErrors] = useState<{
@@ -127,7 +129,16 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
       setForm((prevForm) => ({ ...prevForm, setIsLoading: false }));
     }
   };
-
+  const handleTabChange = (tab: 'user' | 'business') => {
+    setForm((prevForm) => ({
+      ...prevForm,
+      activeTab: tab,
+      name: '',
+      phone: '',
+      modalType: 'input'
+    }));
+    setErrors({});
+  };
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="w-[424px] h-[635px] bg-white rounded-lg shadow-lg relative">
@@ -137,70 +148,85 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
         >
           <CloseButtonIcon />
         </button>
-
-        {/* 첫 번째 모달: 가입 정보 확인 */}
+        {/* tab구분점 */}
         {form.modalType === 'input' && (
-          <div className="m-10 flex flex-col ">
-            <h1 className="text-2xl font-bold mt-[50px] mb-[50px]">
-              비밀번호를 찾기 위해 <br /> 가입 정보를 입력해 주세요.
-            </h1>
-            <div className="flex mb-4">
-              <form
-                className="flex-grow flex flex-col justify-between "
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleFindPassword();
-                }}
+          <div className="m-10 flex flex-col h-full">
+            <p className="text-2xl font-bold mt-[36px] mb-[40px]">
+              비밀번호를 찾기 위해
+              <br />
+              가입 정보를 입력해 주세요.
+            </p>
+            <div>
+              <button
+                className={`flex-1 pb-2 text-center ${
+                  form.activeTab === 'user' ? 'border-2 border-gray-500 font-bold' : 'text-gray-400'
+                }`}
+                onClick={() => handleTabChange('user')}
               >
+                일반 회원 비밀번호
+              </button>
+              <button
+                className={`flex-1 pb-2 text-center ${
+                  form.activeTab === 'business' ? 'border-b-2 border-gray-500 font-bold' : 'text-gray-400'
+                }`}
+                onClick={() => handleTabChange('business')}
+              >
+                사업자 회원 비밀번호
+              </button>
+            </div>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleFindPassword();
+              }}
+            >
+              <div>
                 <div>
-                  <label className="block text-gray-700 mb-1">이메일</label>
+                  <label>이름</label>
                   <input
                     type="email"
-                    placeholder="이메일을 입력해 주세요."
+                    placeholder="이메일을 입력해주세요"
                     value={form.email}
                     onChange={(e) => {
-                      setForm((prevForm) => ({
-                        ...prevForm,
-                        email: e.target.value
-                      }));
-
+                      setForm((prevForm) => ({ ...prevForm, email: e.target.value }));
                       setErrors((prev) => ({ ...prev, email: undefined }));
                     }}
-                    className={`w-full p-[13px] border rounded-xl mb-2 focus:outline-none focus:ring-2 ${
-                      errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-[#B3916A]'
+                    className={`w-[352px] h-[48px] pl-[16px] pt-[8px] pb-[8px] border rounded-[8px] focus:outline-none focus:ring-2 ${
+                      errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-black'
                     }`}
                   />
-                  {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
-
-                  <label className="block text-gray-700 mt-4 mb-1">휴대폰 번호</label>
-                  <input
-                    type="tel"
-                    placeholder="휴대폰 번호를 입력해 주세요."
-                    value={form.phone}
-                    onChange={(e) => {
-                      setForm((prevForm) => ({
-                        ...prevForm,
-                        phone: e.target.value
-                      }));
-
-                      setErrors((prev) => ({ ...prev, phone: undefined }));
-                    }}
-                    className={`w-full p-[13px] border rounded-xl mb-2 focus:outline-none focus:ring-2 ${
-                      errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-[#B3916A]'
-                    }`}
-                  />
-                  {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}
                 </div>
-
+                {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
+                <label className="block mt-[20px] text-gray-700">담당자 번호</label>
+                <input
+                  type="number"
+                  placeholder="담당자 번호를 입력해 주세요."
+                  value={form.phone}
+                  onChange={(e) => {
+                    setForm((prevForm) => ({
+                      ...prevForm,
+                      phone: e.target.value
+                    }));
+                    setErrors((prev) => ({ ...prev, phone: undefined }));
+                  }}
+                  className={`appearance-none w-[352px] h-[48px] pl-[16px] pt-[8px] pb-[8px] border rounded-[8px] mb-1 focus:outline-none focus:ring-2 ${
+                    errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-black'
+                  }`}
+                  style={{
+                    appearance: 'textfield' // 화살표 제거
+                  }}
+                />
+                {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}
+              </div>
+              <div className="flex flex-col rounded">
                 <button
                   type="submit"
-                  className="w-full mt-[77px]  bg-[#B3916A] font-bold text-white py-[15px] rounded-xl hover:bg-[#a37e5f]"
-                  disabled={form.isLoading}
+                  className="w-full bg-[#B3916A] mt-[120px] font-bold text-white py-[15px] rounded-xl hover:bg-[#a37e5f] transition"
                 >
-                  {form.isLoading ? '조회 중...' : '다음'}
+                  {form.isLoading ? '조회중' : '비밀번호찾기'}
                 </button>
-              </form>
-            </div>
+              </div>
+            </form>
           </div>
         )}
 
