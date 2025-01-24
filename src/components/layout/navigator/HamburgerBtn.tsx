@@ -1,20 +1,18 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { useClickAway } from 'react-use';
 
 import Link from 'next/link';
 
-import Swal from 'sweetalert2';
-
 import useAuthStore from '@/store/useAuth';
+import { logout } from '@/actions/auth';
 
 import HiOutlineMenuIcon from '@/components/ui/icon/HiOutlineMenuIcon';
 import IoCloseIcon from '@/components/ui/icon/IoCloseIcon';
-import { logout } from '@/actions/auth';
 
 const HamburgerBtn: React.FC = () => {
-  const { user, signOutUser } = useAuthStore((state) => state); // Zustand 상태 가져오기
+  const { user } = useAuthStore((state) => state); // Zustand 상태 가져오기
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -27,12 +25,6 @@ const HamburgerBtn: React.FC = () => {
 
   const handleLogout = async () => {
     await logout();
-    // signOutUser(null); // 유저 정보 초기화
-
-    Swal.fire({
-      icon: 'success',
-      title: '로그아웃 되었습니다.'
-    });
     location.reload();
   };
 

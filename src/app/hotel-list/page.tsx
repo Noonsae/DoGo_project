@@ -11,7 +11,7 @@ import useFavoriteStore from '@/hooks/favorite/useFavoriteStore';
 import useFetchHotelsFilter from '@/hooks/hotel/useFetchHotelsFilter';
 
 import { HotelType, HotelWithPriceOnly } from '@/types/supabase/hotel-type';
-import { FiltersType, sortOrder } from '@/types/hotel-filter-type';
+import { FiltersType, sortOrder } from '@/types/filter/hotel-filter-type';
 
 import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
 
@@ -44,7 +44,7 @@ const HotelList = () => {
       .filter((star) => star !== '')
       .map((star) => parseInt(star, 10)) // 문자열을 숫자로 변환
       .filter((star) => !isNaN(star)) || []; // NaN 값 필터링
-  // const stars = searchParams.get('stars') ? searchParams.get('stars').split(',') : [];
+  const label = searchParams.get('label') || '';
   const minPrice = parseInt(searchParams.get('minPrice') || '0', 10);
   const maxPrice = parseInt(searchParams.get('maxPrice') || '10000000', 10);
   const facilities = searchParams.get('facilities')?.split(',') || [];
@@ -52,11 +52,12 @@ const HotelList = () => {
   const sort = searchParams.get('sort') || '';
 
   const [filters, setFilters] = useState<FiltersType>({
-    location: '',
+    label: '',
     stars: [],
     minPrice: 0,
     maxPrice: 10000000,
     facilities: [],
+    location: '',
     services: []
   });
 
@@ -86,6 +87,7 @@ const HotelList = () => {
   // 필터 데이터 호출
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useFetchHotelsFilter({
     filters: {
+      label,
       location,
       stars,
       minPrice,

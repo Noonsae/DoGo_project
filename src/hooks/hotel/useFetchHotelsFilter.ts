@@ -1,6 +1,10 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import fetchHotelsFilter from '@/utils/fetchHotelsFilter';
-import { UseFetchHotelsFilterParamsType, FetchHotelsFilterResponse, FiltersType } from '@/types/hotel-filter-type';
+import {
+  UseFetchHotelsFilterParamsType,
+  FetchHotelsFilterResponse,
+  FiltersType
+} from '@/types/filter/hotel-filter-type';
 
 /**
  * 페이지네이션 또는 인피니티 스크롤을 지원하는 React Query 훅
@@ -17,8 +21,7 @@ const fetchHotelsQueryFn = async ({
   pageParam: number;
   filters: FiltersType;
   sortOrder?: 'asc' | 'desc' | '';
-  }): Promise<FetchHotelsFilterResponse> => {
-  
+}): Promise<FetchHotelsFilterResponse> => {
   return await fetchHotelsFilter({ pageParam, filters, sortOrder });
 };
 
@@ -59,15 +62,13 @@ const useFetchHotelsFilter = ({ filters, sortOrder = '' }: UseFetchHotelsFilterP
 
     // queryFn -> fetchHotels가 실행된다. 이때 pageParam = 0이다.
     // 분리된 queryFn
-    queryFn: ({ pageParam = 0 }) =>
-    {
-      if (typeof pageParam === "number") {
-        return fetchHotelsQueryFn({ pageParam, filters, sortOrder }
-        );
+    queryFn: ({ pageParam = 0 }) => {
+      if (typeof pageParam === 'number') {
+        return fetchHotelsQueryFn({ pageParam, filters, sortOrder });
       } else {
-        return {items: [], totalCount: 0};
+        return { items: [], totalCount: 0 };
       }
-    }, 
+    },
 
     // 분리된 getNextPageParam
     getNextPageParam: getNextPageParamFn,
