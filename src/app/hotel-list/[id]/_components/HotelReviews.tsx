@@ -2,7 +2,6 @@ import ReviewsModal from '@/components/ui/hotel-review/ReviewsModal';
 import Image from 'next/image';
 
 import { useState } from 'react';
-import { ReviewType } from '@/types/supabase/review-type';
 import { HotelReviewsProps } from '@/types/hotel/hotel-review-type';
 
 const HotelReviews = ({ loading, reviews, allReviews }: HotelReviewsProps) => {
