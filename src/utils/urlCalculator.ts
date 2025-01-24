@@ -4,8 +4,7 @@ export const sanitizeInput = (text: string): string => {
 };
 
 // 1. 호텔 지역 정보(location) 칼큘레이터
-export const convertToEnglish = (text: string) => {
-  console.log('Converting text:', text);
+export const convertToEnglish = (text: string) => {  
 
   // 한글을 영어로 변환하는 로직 (예: 간단한 매핑)
   const conversionMap: { [key: string]: string } = {
@@ -23,12 +22,12 @@ export const convertToEnglish = (text: string) => {
   if (Object.keys(conversionMap).includes(text.trim())) {
     return conversionMap[text.trim()]; // 변환된 값을 반환
   }
-  return ''; // 변환되지 않은 경우 빈 문자열 반환  
+  return; // 변환되지 않을 경우 그대로 반환;
 };
 
 // 2. 호텔 이름 또는 주소(Label) 칼큘레이터
 export const parseLabel = (input: string): { label: string } => {
-  console.log('Parsing label:', input);
+  
   return {
     label: input // label로 설정
   };
@@ -36,12 +35,10 @@ export const parseLabel = (input: string): { label: string } => {
 
 // 3. 메인 로직: convertToEnglish or parseLabel 상황에 따라 나눠서 처리하기
 export const processInput = (text: string): { location: string; label: { label: string } } => {
-  console.log('Processing input:', text);
 
   const converted = convertToEnglish(text);
   if (converted) {
-    // 변환 가능한 경우 location으로 처리
-    console.log('Input is a location:', converted);
+    // 변환 가능한 경우 location으로 처리    
     return {
       location: converted,
       label: { label: '' }
@@ -50,7 +47,6 @@ export const processInput = (text: string): { location: string; label: { label: 
 
   // 변환이 불가능한 경우 label로 처리
   const parsedLabel = parseLabel(text);
-  console.log('Input is a label:', parsedLabel);
   return {
     location: '',
     label: parsedLabel
