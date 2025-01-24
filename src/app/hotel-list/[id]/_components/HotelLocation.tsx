@@ -1,7 +1,5 @@
 import KakaoTest from '@/hooks/map/kakaomap';
 
-import { useEffect, useState } from 'react';
-import { HotelType } from '@/types/supabase/hotel-type';
 import { HotelLocationProps } from '@/types/hotel/hotel-location.type';
 
 import CopyAddressIcon from '@/components/ui/icon/CopyAddressIcon';
