@@ -22,27 +22,52 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
   setError,
   handleSignup
 }) => {
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  // const [confirmPassword, setConfirmPassword] = useState('');
+  // const [showPassword, setShowPassword] = useState(false);
+  // const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const [form, setForm] = useState({
+    confirmPassword: '',
+    showPassword: false,
+    showConfirmPassword: false
+  });
 
   const router = useRouter();
 
   const handlePasswordChange = (value: string) => {
     setPassword(value);
-    if (confirmPassword && value !== confirmPassword) {
-      setError('비밀번호가 일치하지 않습니다.');
-    } else {
-      setError('');
-    }
+    setForm((prevForm) => ({
+      ...prevForm,
+      confirmPassword: form.confirmPassword && value !== form.confirmPassword ? '비밀번호가 일치하지 않습니다.' : ''
+    }));
+    if (value === form.confirmPassword) setError('');
   };
 
   const handleConfirmPasswordChange = (value: string) => {
-    setConfirmPassword(value);
-    if (password && value !== password) {
-      setError('비밀번호가 일치하지 않습니다.');
-    } else {
-      setError('');
+    setForm((prevForm) => ({
+      ...prevForm,
+      confirmPassword: value,
+      confirmPasswordError: paaaword && value !== password ? '비밀번호가 일치하지 않습니다.' : ''
+    }));
+    if (password === value) setError('');
+  };
+
+  const hanInputChange = (field: string, value: string) => {
+    switch (field) {
+      case 'email':
+        setEmail(value);
+        break;
+      case 'phone':
+        setPhone(value);
+        break;
+      case 'name':
+        setName(value);
+        break;
+      case 'businessNumber':
+        setBusinessNumber(value);
+        break;
+      default:
+        break;
     }
   };
 
@@ -73,7 +98,7 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
           <p className="font-pretendard text-[16px] font-semibold leading-[135%]">비밀번호</p>
           <div className="relative w-full">
             <input
-              type={showPassword ? 'text' : 'password'}
+              type={form.showPassword ? 'text' : 'password'}
               placeholder="비밀번호를 입력해주세요"
               value={password}
               onChange={(e) => handlePasswordChange(e.target.value)}
@@ -84,10 +109,15 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
             </p>
             <button
               type="button"
-              onClick={() => setShowPassword((prev) => !prev)}
+              onClick={() =>
+                setForm((prevForm) => ({
+                  ...prevForm,
+                  showPassword: !prevForm.showPassword
+                }))
+              }
               className="absolute right-[16px] top-6 transform -translate-y-1/2 text-gray-600 hover:text-black"
             >
-              {showPassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
+              {form.showPassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
             </button>
           </div>
 
@@ -95,22 +125,28 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
           <p className="font-pretendard text-[16px] font-semibold leading-[135%]">비밀번호 확인</p>
           <div className="relative w-full">
             <input
-              type={showConfirmPassword ? 'text' : 'password'}
+              type={form.showConfirmPassword ? 'text' : 'password'}
               placeholder="비밀번호를 다시 입력해주세요"
-              value={confirmPassword}
+              value={form.confirmPassword}
               onChange={(e) => handleConfirmPasswordChange(e.target.value)}
               className={`w-full h-12 px-3 border rounded-[8px] focus:outline-none ${
-                password && confirmPassword && password !== confirmPassword
+                password && form.confirmPassword && password !== form.confirmPassword
                   ? 'border-red-500 focus:ring-red-500'
                   : 'border-[#BFBFBF] focus:ring-[#B3916A]'
               }`}
             />
             <button
               type="button"
-              onClick={() => setShowConfirmPassword((prev) => !prev)}
+              onClick={() =>
+                setForm((prevForm) => ({
+                  ...prevForm,
+                  showConfirmPassword: !prevForm.confirmPassword
+                }))
+              }
+              // onClick={() => setShowConfirmPassword((prev) => !prev)}
               className="absolute right-[16px] top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-black"
             >
-              {showConfirmPassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
+              {form.showConfirmPassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
             </button>
           </div>
 
