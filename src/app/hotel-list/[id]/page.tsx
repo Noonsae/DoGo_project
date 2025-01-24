@@ -27,12 +27,11 @@ import NavigationSkeleton from '../../../components/ui/skeleton/HotelNavigationS
 import HotelOverviewSkeleton from '@/components/ui/skeleton/HotelOverviewSkeleton';
 import HotelBoxSkeleton from '@/components/ui/skeleton/HotelBoxSkeleton';
 import useServiceFacility from '@/hooks/serviceFacility/useServiceFacility';
+import useHotelDetail from '@/hooks/hotel/useHotelDetail';
 
 const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const hotelId = params?.id;
 
-  const [hotelData, setHotelData] = useState<HotelType | null>(null);
-  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
   const user = useAuthStore((state) => state.user) as UserType | null;
   const { favoriteStatus, toggleFavorite, initializeFavorites } = useFavoriteStore();
@@ -45,32 +44,7 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
     }
   }, [user, hotelId, initializeFavorites]);
 
-  useEffect(() => {
-    const fetchHotelData = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(`/api/hotel/${hotelId}`);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch hotel data. Status: ${response.status}`);
-        }
-        const data = await response.json();
-        setHotelData({
-          ...data,
-          hotel_img_urls: Array.isArray(data.hotel_img_urls) ? data.hotel_img_urls : [],
-          rooms: data.rooms || []
-        });
-      } catch (error) {
-        console.error('Error fetching hotel data:', error);
-        setHotelData(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (hotelId) {
-      fetchHotelData();
-    }
-  }, [hotelId]);
+  const { hotelData, loading } = useHotelDetail(hotelId);
 
   const { facilityData, serviceData } = useServiceFacility(hotelId);
 
