@@ -33,7 +33,7 @@ export const kakaoLogin = async () => {
 
 export const getUserRole = async (userId: string | undefined) => {
   if (!userId) {
-    throw new Error('userId가 존재하지 않습니다.');
+    return { data: null };
   }
   const supabase = await serverSupabase();
   // 현재 role을 찾는 API 요청
