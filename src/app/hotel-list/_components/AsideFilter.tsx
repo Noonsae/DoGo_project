@@ -61,7 +61,6 @@ const AsideFilter = ({ onFilterChange: onChangeFilter }: FilterProps) => {
     } else {
       stars.push(String(grade));
     }
-    console.log({ stars });
     router.push(pathname + '?' + createQueryString('stars', stars.join(',')));
   };
 

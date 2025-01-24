@@ -79,8 +79,6 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
     return <p>No rooms found for this hotel.</p>;
   }
 
-  console.log('Selected roomId:', selectedRoomId); // 디버깅용 콘솔
-
   const getValidImageUrl = (imageData: Json): string => {
     if (Array.isArray(imageData) && imageData.length > 0) {
       const firstImage = imageData[0];
@@ -88,7 +86,7 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
         return firstImage;
       }
     }
-    return '/placeholder.png';
+    return '/placeholder.webp';
   };
 
   const scrollToSection = (id: string) => {

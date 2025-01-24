@@ -116,7 +116,6 @@ const HotelList = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-          console.log('Fetching next page...');
           fetchNextPage();
         }
       },
@@ -130,8 +129,6 @@ const HotelList = () => {
   }, [hasNextPage, isFetchingNextPage]);
 
   const isLoadingInitialData = !data && isFetchingNextPage;
-
-  console.log(`isLoadingInitialData`, isLoadingInitialData);
 
   return (
     <div className="w-full max-w-[1300px] mx-auto px-[50px] pt-[200px] pb-[50px] flex flex-row justify-between gap-[30px] ">
