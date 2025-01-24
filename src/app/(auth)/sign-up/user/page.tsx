@@ -14,14 +14,11 @@ export default function SignUpUserPage() {
   const [phone, setPhone] = useState('');
   const [error, setError] = useState('');
   const [nickname, setNickname] = useState('');
-  // const setUser = useAuthStore((state) => state.setUser);
   const [isModlaOpen, setIsModalOpen] = useState(false);
   const [businessNumber, setBusinessNumber] = useState<string>('');
   const router = useRouter();
   const handleSignup = async () => {
     try {
-      // const supabase = browserSupabase();
-
       // 회원가입 시 자동 로그인
       const result = await handleSignupAction({
         email,
@@ -35,7 +32,7 @@ export default function SignUpUserPage() {
         await Swal.fire({
           icon: 'error',
           title: '회원가입 실패',
-          text: result.message
+          text: '모두 입력해주세요!'
         });
         return;
       }
