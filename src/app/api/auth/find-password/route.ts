@@ -3,9 +3,9 @@ import { createClient } from '@supabase/supabase-js';
 
 export async function POST(request: Request) {
   try {
-    const { email, phone } = await request.json();
+    const { email, phone, role } = await request.json();
 
-    if (!email || !phone) {
+    if (!email || !phone || !role) {
       return NextResponse.json({ error: '이메일과 휴대폰 번호는 필수입니다.' }, { status: 400 });
     }
 
@@ -16,6 +16,7 @@ export async function POST(request: Request) {
       .select('id')
       .eq('email', email)
       .eq('phone_number', phone)
+      .eq('role', role)
       .single();
 
     if (error || !data) {

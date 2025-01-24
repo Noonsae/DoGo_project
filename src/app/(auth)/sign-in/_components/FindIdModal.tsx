@@ -23,6 +23,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
       document.body.style.overflow = 'auto';
     };
   }, []);
+  
   const maskEmail = (email: string): string => {
     if (!email.includes('@')) {
       return email;

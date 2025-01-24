@@ -6,7 +6,6 @@ import CloseButtonIcon from '@/components/ui/icon/CloseButtonIcon';
 import CloseEyesIcon from '@/components/ui/icon/CloseEyesIcon';
 import OpenEyesIcon from '@/components/ui/icon/OpenEyesIcon';
 import Swal from 'sweetalert2';
-import { eventDragMutationMassager } from '@fullcalendar/core/internal';
 
 const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
   const [form, setForm] = useState({
@@ -59,7 +58,7 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
       const response = await fetch('/api/auth/reset-password-request', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: form.email, phone: form.phone })
+        body: JSON.stringify({ email: form.email, phone: form.phone, role: form.activeTab })
       });
 
       const { otp } = await response.json();
@@ -113,7 +112,7 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
       const response = await fetch('/api/auth/reset-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ otp: form.otp, newPassword: form.password })
+        body: JSON.stringify({ otp: form.otp, newPassword: form.password, role: form.activeTab })
       });
 
       if (response.ok) {
@@ -156,7 +155,7 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
               <br />
               가입 정보를 입력해 주세요.
             </p>
-            <div>
+            <div className="flex border-b-2 w-[352px]">
               <button
                 className={`flex-1 pb-2 text-center ${
                   form.activeTab === 'user' ? 'border-2 border-gray-500 font-bold' : 'text-gray-400'
@@ -175,14 +174,15 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
               </button>
             </div>
             <form
+              className="flex flex-col justify-between"
               onSubmit={(e) => {
                 e.preventDefault();
                 handleFindPassword();
               }}
             >
               <div>
-                <div>
-                  <label>이름</label>
+                <div className="mt-[30px]">
+                  <label className="block text-gray-700 mb-1 ">이메일</label>
                   <input
                     type="email"
                     placeholder="이메일을 입력해주세요"

@@ -18,7 +18,6 @@ export async function POST(request: Request) {
       .eq('user_name', name)
       .eq('phone_number', phone)
       .eq('role', role)
-
       .single();
 
     if (error || !data) {
