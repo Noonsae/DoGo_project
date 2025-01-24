@@ -1,60 +1,6 @@
-import { useEffect } from 'react';
 import { HotelFacilityProps } from '@/types/hotel/hotel-facility-type';
 
-const HotelFacility = ({
-  facilityData,
-  roomOption,
-  setFacilityData,
-  hotelId,
-  setServicesData,
-  serviceData
-}: HotelFacilityProps) => {
-  useEffect(() => {
-    const fetchFacilitiesData = async () => {
-      if (!hotelId) {
-        console.error('hotelId가 없습니다.');
-        return;
-      }
-
-      try {
-        const response = await fetch(`/api/hotel-facility?hotel_id=${hotelId}`); // 쿼리 파라미터 이름 일치
-        if (!response.ok) {
-          throw new Error('Failed to fetch facilities data');
-        }
-        const data = await response.json();
-        setFacilityData(data); // 데이터 설정
-      } catch (error) {
-        console.error('Error fetching facilities data:', error);
-        setFacilityData([]); // 에러 발생 시 빈 배열로 초기화
-      }
-    };
-
-    fetchFacilitiesData();
-  }, [hotelId]);
-
-  useEffect(() => {
-    const fetchServicesData = async () => {
-      if (!hotelId) {
-        console.error('hotelId가 없습니다.');
-        return;
-      }
-
-      try {
-        const response = await fetch(`/api/hotel-service?hotel_id=${hotelId}`); // 쿼리 파라미터 이름 일치
-        if (!response.ok) {
-          throw new Error('Failed to fetch services data');
-        }
-        const data = await response.json();
-        setServicesData(data); // 상태 업데이트
-      } catch (error) {
-        console.error('Error fetching services data:', error);
-        setServicesData([]); // 에러 발생 시 빈 배열로 초기화
-      }
-    };
-
-    fetchServicesData();
-  }, [hotelId]);
-
+const HotelFacility = ({ facilityData, roomOption, hotelId, serviceData }: HotelFacilityProps) => {
   return (
     <div>
       <section id="services" className="scroll-mt-20">

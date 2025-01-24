@@ -26,6 +26,7 @@ import Navigation from './_components/Navigation';
 import NavigationSkeleton from '../../../components/ui/skeleton/HotelNavigationSkeleton';
 import HotelOverviewSkeleton from '@/components/ui/skeleton/HotelOverviewSkeleton';
 import HotelBoxSkeleton from '@/components/ui/skeleton/HotelBoxSkeleton';
+import useServiceFacility from '@/hooks/serviceFacility/useServiceFacility';
 
 const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const hotelId = params?.id;
@@ -33,9 +34,7 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const [hotelData, setHotelData] = useState<HotelType | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
-  const [facilityData, setFacilityData] = useState<FacilitiesType[]>([]);
   const user = useAuthStore((state) => state.user) as UserType | null;
-  const [servicesData, setServicesData] = useState<ServicesType[]>([]);
   const { favoriteStatus, toggleFavorite, initializeFavorites } = useFavoriteStore();
   const { reviews, allReviews } = useHotelReviews(hotelId);
   const { roomsData } = useHotelRooms(hotelId);
@@ -72,6 +71,8 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
       fetchHotelData();
     }
   }, [hotelId]);
+
+  const { facilityData, serviceData } = useServiceFacility(hotelId);
 
   const selectedRoomId = roomsData.length > 0 ? roomsData[0]?.id : null;
 
@@ -167,10 +168,8 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
         <HotelFacility
           facilityData={facilityData}
           roomOption={roomOption}
-          setFacilityData={setFacilityData}
           hotelId={hotelId}
-          setServicesData={setServicesData}
-          serviceData={servicesData}
+          serviceData={serviceData}
         />
 
         {/* 숙소 정책 섹션 */}
