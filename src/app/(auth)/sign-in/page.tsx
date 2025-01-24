@@ -20,6 +20,7 @@ const SignInPage = () => {
     isFindPasswordOpen: false
   });
   const router = useRouter();
+
   const handleSignUp = () => {
     router.push('/sign-up');
   };
@@ -74,9 +75,6 @@ const SignInPage = () => {
         return;
       }
 
-      // TODO: 한 번에 관리 예정
-      // setUser(data.user);
-
       await Swal.fire({
         icon: 'success',
         title: '로그인 성공',
@@ -93,12 +91,12 @@ const SignInPage = () => {
       });
     }
   };
-
+  // 반응형 완료
   return (
     <>
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="justify-center items-center w-[400px] h-[637px]">
-          <div className=" mt-[94px] mb-[40px] flex flex-col justify-center items-center">
+      <div className="flex justify-center items-center min-h-screen px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-[400px] lg:h-auto">
+          <div className="mt-[94px] mb-[40px] flex flex-col justify-center items-center">
             <Image src="/images/Dogo.png" alt="Dogo" priority width={140.6} height={39.9} />
           </div>
           <div className="flex justify-between mb-[40px] border-b-2">
@@ -150,7 +148,7 @@ const SignInPage = () => {
                   email: e.target.value
                 }))
               }
-              className="items-center w-[400px] g-[4px] h-[48px] pt-[8px] pb-[8px] pr-[16px] pl-[16px] border border-neutral-300 rounded-[8px] mb-[12px] focus:outline-none focus:ring-2 focus:ring-black"
+              className="w-full sm:w-[400px] h-[48px] pt-[8px] pb-[8px] px-[16px] border border-neutral-300 rounded-[8px] mb-[12px] focus:outline-none focus:ring-2 focus:ring-black"
             />
             <input
               type="password"
@@ -162,9 +160,9 @@ const SignInPage = () => {
                   password: e.target.value
                 }))
               }
-              className="items-center w-[400px] g-[4px] h-[48px] pt-[8px] pb-[8px] pr-[16px] pl-[16px] border border-neutral-300 rounded-[8px] mb-[12px] focus:outline-none focus:ring-2 focus:ring-black"
+              className="w-full sm:w-[400px] h-[48px] pt-[8px] pb-[8px] px-[16px] border border-neutral-300 rounded-[8px] mb-[12px] focus:outline-none focus:ring-2 focus:ring-black"
             />
-            <div className="flex w-[400px] justify-end text-sm text-gray-500 mb-4">
+            <div className="flex justify-end text-sm text-gray-500 mb-4">
               <button
                 type="button"
                 onClick={() =>
@@ -178,7 +176,6 @@ const SignInPage = () => {
                 아이디 찾기
               </button>
               <DividerIcon />
-
               <button
                 type="button"
                 onClick={() =>
@@ -194,18 +191,19 @@ const SignInPage = () => {
             </div>
             <button
               type="submit"
-              className="w-[400px]  bg-[#B3916A] font-bold text-white py-[15px] rounded-[8px] hover:bg-[#a37e5f] transition"
+              className="w-full sm:w-[400px] bg-[#B3916A] font-bold text-white py-[15px] rounded-[8px] hover:bg-[#a37e5f] transition"
             >
               로그인
             </button>
           </form>
-          <p className="w-[400px] p-[12px] flex justify-center text-neutral-600">
+
+          <p className="w-full sm:w-[400px] p-[12px] flex justify-center text-neutral-600">
             계정이 없으신가요?
             <button onClick={handleSignUp} className="text-[#534431] ml-3 font-semibold">
               회원가입
             </button>
           </p>
-          <div className="w-[400px] flex items-center my-6">
+          <div className="w-full sm:w-[400px] flex items-center my-6">
             <hr className="flex-grow border-neutral-300" />
             <span className="px-4 text-sm text-neutral-400">간편 로그인</span>
             <hr className="flex-grow border-neutral-300" />
@@ -235,7 +233,7 @@ const SignInPage = () => {
           <div className="text-center mt-8">
             <KakaoSignIn />
           </div>
-          <div className="flex w-[400px] justify-center text-sm text-gray-500 mt-4">
+          <div className="flex w-full sm:w-[400px] justify-center text-sm text-gray-500 mt-4">
             <button
               type="button"
               className="m-[2px] hover:underline"
@@ -244,7 +242,6 @@ const SignInPage = () => {
               개인정보처리방침
             </button>
             <DividerIcon />
-
             <button
               type="button"
               className="hover:underline"
