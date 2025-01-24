@@ -59,9 +59,10 @@ const fetchHotelsFilter = async ({
   }
 
   // 4. 상세주소 or 이름 필터링
-  if (filters.label) {
-    query = query.ilike('name', `&{filters.name}%, 'address', &{filters.address}`); // 부분 일치 검색
+  if (filters.label && filters.label.trim()) {
+    query = query.or(`name.ilike.%${filters.label.trim()}%,address.ilike.%${filters.label.trim()}%`);
   }
+  
 
   // 5. 제공 시설 처리
   if (filters.facilities.length > 0) {
