@@ -1,3 +1,9 @@
+/**
+ * 유저 마이페이지 -> 일반 사용자로 로그인한 당사자만 들어갈 수 있다. -> 비즈니스 마이페이지 X, 어드민 X
+ * 비즈니스 마이페이지 -> 비즈니스 사용자로 로그인한 당사자만 들어갈 수 있다. -> 일반 마이페이지 X, 어드민 X
+ * 어드민 마이페이지 -> 어드민 사용자만 접근 가능
+ */
+
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -13,14 +19,11 @@ if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_A
   throw new Error('Supabase 환경 변수가 설정되지 않았습니다.');
 }
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
+const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
 export default function MyPage() {
   // TODO: 사용 예시
-  const user = useAuthStore((state) => state.user)
+  const user = useAuthStore((state) => state.user);
   const [role, setRole] = useState<'user' | 'business' | 'admin' | null>(null);
   const [userId, setUserId] = useState<string | null>(null); // 사용자 ID 상태 추가
   const [loading, setLoading] = useState(true);
@@ -32,7 +35,7 @@ export default function MyPage() {
         // 현재 인증된 사용자 정보 가져오기
         const {
           data: { user },
-          error: authError,
+          error: authError
         } = await supabase.auth.getUser();
 
         if (authError || !user) throw new Error('로그인된 사용자가 없습니다.');
@@ -40,11 +43,7 @@ export default function MyPage() {
         setUserId(user.id); // 사용자 ID 저장
 
         // 사용자 역할 가져오기
-        const { data, error: userError } = await supabase
-          .from('users')
-          .select('role')
-          .eq('id', user.id)
-          .single();
+        const { data, error: userError } = await supabase.from('users').select('role').eq('id', user.id).single();
 
         if (userError) throw userError;
 
