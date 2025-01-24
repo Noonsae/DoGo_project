@@ -1,15 +1,6 @@
-import { FacilitiesType } from '@/types/supabase/facilities-type';
-import { ServicesType } from '@/types/supabase/services-type';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
+import { HotelFacilityProps } from '@/types/hotel/hotel-facility-type';
 
-interface HotelFacilityProps {
-  facilityData: FacilitiesType[];
-  roomOption: React.ReactNode;
-  setFacilityData: React.Dispatch<React.SetStateAction<FacilitiesType[]>>;
-  hotelId: string;
-  setServicesData: React.Dispatch<React.SetStateAction<ServicesType[]>>; // 수정: 상태 관리 함수로 정의
-  serviceData: ServicesType[];
-}
 const HotelFacility = ({
   facilityData,
   roomOption,
