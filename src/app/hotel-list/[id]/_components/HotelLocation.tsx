@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { HotelType } from '@/types/supabase/hotel-type';
 import KakaoTest from '@/hooks/map/kakaomap';
 
-interface HotelLocationProps {
-  id: string;
-}
+import { useEffect, useState } from 'react';
+import { HotelType } from '@/types/supabase/hotel-type';
+import { HotelLocationProps } from '@/types/hotel/hotel-location.type';
 
 const CopyAddressIcon = () => {
   return (
