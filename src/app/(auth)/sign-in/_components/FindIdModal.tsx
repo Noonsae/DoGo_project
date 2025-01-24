@@ -1,18 +1,22 @@
 'use client';
 
+import React, { useEffect, useState } from 'react';
 import CheckIcon from '@/components/ui/icon/CheckIcon';
 import CloseButtonIcon from '@/components/ui/icon/CloseButtonIcon';
 import WarningIcon from '@/components/ui/icon/WarningIcon';
-import React, { useEffect, useState } from 'react';
 
 const FindIdModal = ({ onClose }: { onClose: () => void }) => {
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState<'user' | 'business'>('user');
-  const [modalType, setModalType] = useState<'input' | 'success' | 'failure'>('input');
-  const [resultEmail, setResultEmail] = useState('');
   const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
+
+  const [form, setForm] = useState({
+    name: '',
+    phone: '',
+    isLoading: false,
+    activeTab: 'user',
+    modalType: 'input',
+    resultEmail: ''
+  });
+
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
@@ -21,7 +25,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
   }, []);
   const maskEmail = (email: string): string => {
     if (!email.includes('@')) {
-      return email; // 이메일 형식이 아니면 그대로 반환
+      return email;
     }
     const [localPart, domain] = email.split('@');
     const maskedLocal = localPart.slice(0, 3) + '***';
@@ -30,10 +34,10 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
   const handleFindId = async () => {
     const newErrors: { name?: string; phone?: string } = {};
 
-    if (!name) {
+    if (!form.name) {
       newErrors.name = '이름은 필수 입력값입니다.';
     }
-    if (!phone) {
+    if (!form.phone) {
       newErrors.phone = '휴대폰 번호는 필수 입력값입니다.';
     }
 
@@ -42,33 +46,45 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
     if (Object.keys(newErrors).length > 0) {
       return;
     }
+    setForm((prevForm) => ({
+      ...prevForm,
+      isLoading: true
+    }));
 
-    setIsLoading(true);
     try {
       const response = await fetch('/api/auth/find-id', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, phone })
+        body: JSON.stringify({ name: form.name, phone: form.phone })
       });
       const result = await response.json();
 
       if (response.ok && result.email) {
-        setResultEmail(maskEmail(result.email));
-        setModalType('success');
+        setForm((prevForm) => ({
+          ...prevForm,
+          resultEmail: maskEmail(result.email),
+          modalType: 'success'
+        }));
       } else {
-        setModalType('failure');
+        setForm((prevForm) => ({ ...prevForm, modalType: 'failure' }));
       }
     } catch (error) {
       console.error('아이디 찾기 실패:', error);
-      setModalType('failure');
+      setForm((prevForm) => ({ ...prevForm, modalType: 'failure' }));
     } finally {
-      setIsLoading(false);
+      setForm((prevForm) => ({ ...prevForm, isLoading: false }));
     }
   };
+
   const handleTabChange = (tab: 'user' | 'business') => {
-    setActiveTab(tab);
-    setName('');
-    setPhone('');
+    setForm((prevForm) => ({
+      ...prevForm,
+      activeTab: tab,
+      name: '',
+      phone: '',
+      modalType: 'input'
+    }));
+
     setErrors({});
   };
 
@@ -83,7 +99,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
           <CloseButtonIcon />
         </button>
 
-        {modalType === 'input' && (
+        {form.modalType === 'input' && (
           <div className="m-10 flex flex-col h-full">
             <p className="text-2xl font-bold mt-[36px] mb-[40px]">
               DoGo 가입 정보로 <br /> 아이디를 확인하세요.
@@ -92,7 +108,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
             <div className="flex border-b-2 w-[352px]">
               <button
                 className={`flex-1 pb-2 text-center  ${
-                  activeTab === 'user' ? 'border-b-2 border-gray-500 font-bold' : 'text-gray-400'
+                  form.activeTab === 'user' ? 'border-b-2 border-gray-500 font-bold' : 'text-gray-400'
                 }`}
                 onClick={() => handleTabChange('user')}
               >
@@ -100,7 +116,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
               </button>
               <button
                 className={`flex-1 pb-2 text-center ${
-                  activeTab === 'business' ? 'border-b-2 border-gray-500 font-bold' : 'text-gray-400'
+                  form.activeTab === 'business' ? 'border-b-2 border-gray-500 font-bold' : 'text-gray-400'
                 }`}
                 onClick={() => handleTabChange('business')}
               >
@@ -122,9 +138,10 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
                   <input
                     type="text"
                     placeholder="이름을 입력해 주세요."
-                    value={name}
+                    value={form.name}
                     onChange={(e) => {
-                      setName(e.target.value);
+                      setForm((prevForm) => ({ ...prevForm, name: e.target.value }));
+
                       setErrors((prev) => ({ ...prev, name: undefined })); // 입력 시 에러 초기화
                     }}
                     className={`w-[352px] h-[48px] pl-[16px] pt-[8px] pb-[8px] border rounded-[8px] focus:outline-none focus:ring-2 ${
@@ -137,9 +154,13 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
                 <input
                   type="tel"
                   placeholder="휴대폰 번호를 입력해 주세요."
-                  value={phone}
+                  value={form.phone}
                   onChange={(e) => {
-                    setPhone(e.target.value);
+                    setForm((prevForm) => ({
+                      ...prevForm,
+                      phone: e.target.value
+                    }));
+
                     setErrors((prev) => ({ ...prev, phone: undefined })); // 입력 시 에러 초기화
                   }}
                   className={`w-[352px] h-[48px] pl-[16px] pt-[8px] pb-[8px] border rounded-[8px] mb-1 focus:outline-none focus:ring-2 ${
@@ -153,16 +174,16 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
                 <button
                   type="submit"
                   className="w-full bg-[#B3916A]  mt-[120px] font-bold text-white py-[15px] rounded-xl hover:bg-[#a37e5f] transition"
-                  disabled={isLoading}
+                  disabled={form.isLoading}
                 >
-                  {isLoading ? '조회 중...' : '아이디 찾기'}
+                  {form.isLoading ? '조회 중...' : '아이디 찾기'}
                 </button>
               </div>
             </form>
           </div>
         )}
 
-        {modalType === 'success' && (
+        {form.modalType === 'success' && (
           <div className="w-[424px] h-[635px] p-[30px] flex flex-col items-center">
             <div className="mt-[142px] p-[33px]">
               {/* 체크아이콘 */}
@@ -171,10 +192,10 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
 
             <div className="text-center">
               <p className="text-xl font-semibold">
-                <span style={{ color: '#B3916A' }}>{name}</span>님의 아이디는
+                <span style={{ color: '#B3916A' }}>{form.name}</span>님의 아이디는
               </p>
               <p className="text-xl font-semibold">
-                <span style={{ color: '#B3916A' }}>{resultEmail}</span>입니다.
+                <span style={{ color: '#B3916A' }}>{form.resultEmail}</span>입니다.
               </p>
               <p className="text-[15px] text-gray-500 mt-2">정보 보호를 위해 아이디의 일부만 보여집니다.</p>
             </div>
@@ -187,7 +208,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
           </div>
         )}
 
-        {modalType === 'failure' && (
+        {form.modalType === 'failure' && (
           <div className="w-[424px] mt-[50px] h-[635px] flex flex-col items-center justify-center p-[30px]">
             {/* 경고아이콘 */}
             <WarningIcon />

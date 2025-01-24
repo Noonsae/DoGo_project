@@ -5,7 +5,7 @@ const HotelAttraction = () => {
     <div>
       <section id="nearby" className="scroll-mt-20">
         <h2 className="text-2xl font-bold mb-6">호텔 주변 명소</h2>
-        <div className="grid grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* 첫 번째 카드 */}
           <a
             href="https://map.naver.com/p/search/%EC%B2%AD%EB%8B%B4%EB%8F%99%20%ED%8C%8C%EC%9D%B8%EB%8B%A4%EC%9D%B4%EB%8B%9D/place/1388486977?c=18.14,0,0,0,dh&placePath=%3Fentry%253Dpll"
@@ -14,7 +14,7 @@ const HotelAttraction = () => {
             className="flex flex-col items-center bg-white rounded-lg shadow-lg p-4 hover:shadow-xl cursor-pointer transition-shadow"
           >
             <div
-              className="w-[350px] h-[200px] bg-cover bg-center rounded-lg"
+              className="w-full max-w-[350px] h-[200px] bg-cover bg-center rounded-lg"
               style={{ backgroundImage: "url('/images/greee.webp')" }}
             ></div>
             <div className="mt-4 text-left w-full">
@@ -36,7 +36,7 @@ const HotelAttraction = () => {
             className="flex flex-col items-center bg-white rounded-lg shadow-lg p-4 hover:shadow-xl cursor-pointer transition-shadow"
           >
             <div
-              className="w-[350px] h-[200px] bg-cover bg-center rounded-lg"
+              className="w-full max-w-[350px] h-[200px] bg-cover bg-center rounded-lg"
               style={{ backgroundImage: "url('/images/olheum.webp')" }}
             ></div>
             <div className="mt-4 text-left w-full">
@@ -58,7 +58,7 @@ const HotelAttraction = () => {
             className="flex flex-col items-center bg-white rounded-lg shadow-lg p-4 hover:shadow-xl cursor-pointer transition-shadow"
           >
             <div
-              className="w-[350px] h-[200px] bg-cover bg-center rounded-lg"
+              className="w-full max-w-[350px] h-[200px] bg-cover bg-center rounded-lg"
               style={{ backgroundImage: "url('/images/trid.webp')" }}
             ></div>
             <div className="mt-4 text-left w-full">

@@ -1,6 +1,12 @@
-// 1. 호텔 지역 정보 칼큘레이터
-export const convertToEnglish = (text: string): string => {
-  // 한글을 영어로 변환하는 로직 (예: 라이브러리 활용 또는 간단한 매핑)
+// 공통) 빈칸 및 특수문자를 제거
+export const sanitizeInput = (text: string): string => {
+  return text.replace(/[^a-zA-Z0-9가-힣]/g, '');
+};
+
+// 1. 호텔 지역 정보(location) 칼큘레이터
+export const convertToEnglish = (text: string) => {  
+
+  // 한글을 영어로 변환하는 로직 (예: 간단한 매핑)
   const conversionMap: { [key: string]: string } = {
     제주: 'jeju',
     서울: 'seoul',
@@ -9,17 +15,45 @@ export const convertToEnglish = (text: string): string => {
     인천: 'incheon',
     울산: 'ulsan',
     대전: `daejeon`,
-    대구: 'daegu',
+    대구: 'daegu'
   };
-  return conversionMap[text] || text;
+
+  // 예외 처리: 변환할 필요가 없는 경우 (매핑되지 않은 경우)
+  if (Object.keys(conversionMap).includes(text.trim())) {
+    return conversionMap[text.trim()]; // 변환된 값을 반환
+  }
+  return; // 변환되지 않을 경우 그대로 반환;
 };
 
-// 공통) 빈칸 및 특수문자를 제거
-export const sanitizeInput = (text: string): string => {
-  return text.replace(/[^a-zA-Z0-9가-힣]/g, '');
+// 2. 호텔 이름 또는 주소(Label) 칼큘레이터
+export const parseLabel = (input: string): { label: string } => {
+  
+  return {
+    label: input // label로 설정
+  };
 };
 
-// 2. 여행 기간 정보 칼큘레이터
+// 3. 메인 로직: convertToEnglish or parseLabel 상황에 따라 나눠서 처리하기
+export const processInput = (text: string): { location: string; label: { label: string } } => {
+
+  const converted = convertToEnglish(text);
+  if (converted) {
+    // 변환 가능한 경우 location으로 처리    
+    return {
+      location: converted,
+      label: { label: '' }
+    };
+  }
+
+  // 변환이 불가능한 경우 label로 처리
+  const parsedLabel = parseLabel(text);
+  return {
+    location: '',
+    label: parsedLabel
+  };
+};
+
+// 3. 여행 기간 정보 칼큘레이터
 export const parseSchedule = (stayInput: string, monthInput: string): { stay: string; month: string } => {
   const removeKorean = (text: string): string => text.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, ''); // 한글 제거
 
@@ -32,9 +66,8 @@ export const parseSchedule = (stayInput: string, monthInput: string): { stay: st
   return { stay: stay || '', month: month || '' };
 };
 
-// 3. 예약 정보 디테일 칼큘레이터
+// 4. 예약 정보 디테일 칼큘레이터
 export const parseDetails = (details: string): { room: string; adult: string; child: string; pet: string } => {
-  console.log(details);
 
   const extractedDetails = {
     room: '0',
@@ -79,7 +112,7 @@ export const parseDetails = (details: string): { room: string; adult: string; ch
   return extractedDetails;
 };
 
-// 4. 호텔 성급 칼큘레이터
+// 5. 호텔 성급 칼큘레이터
 export const parseStars = (details: string): number => {
   const match = details.match(/성급:\s*(\d+)/);
   if (match) {
@@ -89,7 +122,7 @@ export const parseStars = (details: string): number => {
   return 0; // 기본값
 };
 
-// 5. 호텔 객실 가격 칼큘레이터
+// 6. 호텔 객실 가격 칼큘레이터
 export const parsePrices = (price: string): { minPrice: number; maxPrice: number } => {
   const minMatch = price.match(/최저가:\s*(\d+)/);
   const maxMatch = price.match(/최고가:\s*(\d+)/);
@@ -99,13 +132,13 @@ export const parsePrices = (price: string): { minPrice: number; maxPrice: number
   };
 };
 
-// 6. 편의시설(facilities) 칼큘레이터
+// 7. 편의시설(facilities) 칼큘레이터
 export const parseFacilities = (facilities: string): string[] => {
   // 쉼표로 구분된 문자열을 배열로 변환
   return facilities ? facilities.split(',').map((item) => item.trim()) : [];
 };
 
-// 7. 호텔 제공 서비스(services) 칼큘레이터
+// 8. 호텔 제공 서비스(services) 칼큘레이터
 export const parseServices = (services: string): string[] => {
   // 쉼표로 구분된 문자열을 배열로 변환
   return services ? services.split(',').map((item) => item.trim()) : [];

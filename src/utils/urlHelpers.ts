@@ -1,12 +1,21 @@
-import { SearchState } from "@/types/zustand/search-state-type";
-import { convertToEnglish, parseDetails, parseFacilities, parsePrices, parseSchedule, parseServices, parseStars, sanitizeInput } from "./urlCalculator";
+import { SearchState } from '@/types/zustand/search-state-type';
+import {
+  processInput,
+  parseDetails,
+  parseFacilities,
+  parsePrices,
+  parseSchedule,
+  parseServices,
+  parseStars,
+  sanitizeInput
+} from './urlCalculator';
 
 const generateUrl = ({
   location = '',
   checkIn = '',
   checkOut = '',
-  stay : stayInput = '',
-  month : monthInput = '',
+  stay: stayInput = '',
+  month: monthInput = '',
   details = '',
   stars: starsInput = '', // 입력값과 결과값 변수 이름 구분
   prices: pricesInput = '',
@@ -14,18 +23,25 @@ const generateUrl = ({
   services: servicesInput = ''
 }: Partial<SearchState>): string => {
   try {
-    // 데이터 처리
-    const sanitizedLocation = convertToEnglish(sanitizeInput(location)); // 위치 정보 처리
-    const { stay, month } = parseSchedule(stayInput, monthInput); // 예약 일정 처리
-    const { room, adult, child, pet } = parseDetails(details); // 예약 정보 디테일 처리
-    const parsedStars = parseStars(starsInput); // 성급 처리
-    const { minPrice, maxPrice } = parsePrices(pricesInput); // 가격 처리
-    const parsedFacilities = parseFacilities(facilitiesInput).join(','); // 배열 -> 문자열
-    const parsedServices = parseServices(servicesInput).join(','); // 배열 -> 문자열
+    // location과 label 처리
+    const { location: processedLocation, label } = processInput(location);
+    // 예약 일정 처리
+    const { stay, month } = parseSchedule(stayInput, monthInput);
+    // 예약 정보 디테일 처리
+    const { room, adult, child, pet } = parseDetails(details);
+    // 성급 처리
+    const parsedStars = parseStars(starsInput);
+    // 가격 처리
+    const { minPrice, maxPrice } = parsePrices(pricesInput);
+    // 배치 시설 처리
+    const parsedFacilities = parseFacilities(facilitiesInput).join(',');
+    // 제공 서비스 처리
+    const parsedServices = parseServices(servicesInput).join(',');
 
     // 쿼리 파라미터 생성
     const queryParams = [
-      sanitizedLocation && `location=${encodeURIComponent(sanitizedLocation)}`,
+      processedLocation && `location=${encodeURIComponent(processedLocation)}`,
+      label.label && `label=${encodeURIComponent(label.label)}`,
       checkIn && `checkIn=${encodeURIComponent(sanitizeInput(checkIn))}`,
       checkOut && `checkOut=${encodeURIComponent(sanitizeInput(checkOut))}`,
       stay && `stay=${encodeURIComponent(stay)}`,
@@ -52,4 +68,3 @@ const generateUrl = ({
 };
 
 export default generateUrl;
-

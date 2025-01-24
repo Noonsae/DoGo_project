@@ -1,5 +1,6 @@
 export interface SearchState {
   location: string;
+  label: string;
   checkIn: string;
   checkOut: string;
   details: string;
@@ -10,6 +11,7 @@ export interface SearchState {
   facilities: string;
   services: string;
   setLocation: (location: string) => void;
+  setLabel: (label: string) => void;
   setCheckIn: (checkIn: string) => void;
   setCheckOut: (checkOut: string) => void;
   setStay: (stay: string) => void;

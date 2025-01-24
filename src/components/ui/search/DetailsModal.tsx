@@ -1,7 +1,10 @@
 'use client';
 import React from 'react';
-import { IoIosAddCircleOutline, IoIosRemoveCircleOutline } from 'react-icons/io';
+
 import useSearchStore from '@/store/useSearchStore'; // zustand store import
+
+import IoIosRemoveCircleOutlineIcon from '../icon/IoIosRemoveCircleOutlineIcon';
+import IoIosAddCircleOutlineIcon from '../icon/IoIosAddCircleOutlineIcon';
 
 const DetailsModal = ({ right = '360px', top, onClose }: { right?: string; top?: string; onClose: () => void }) => {
   const { setDetails } = useSearchStore(); // zustand의 setDetails 사용
@@ -70,15 +73,19 @@ const DetailsModal = ({ right = '360px', top, onClose }: { right?: string; top?:
               </p>
             </div>
             <div className="flex items-center space-x-2">
-              <IoIosRemoveCircleOutline
-                onClick={() => handleChange(key as keyof typeof filters, false)}
-                className="text-[#B3916A] text-[25px] cursor-pointer"
-              />
+              <div>
+                <IoIosRemoveCircleOutlineIcon
+                  onClick={() => handleChange(key as keyof typeof filters, false)}
+                  className="text-[#B3916A] text-[25px] cursor-pointer"
+                />
+              </div>
               <span className="text-lg">{filters[key as keyof typeof filters]}</span>
-              <IoIosAddCircleOutline
-                onClick={() => handleChange(key as keyof typeof filters, true)}
-                className="text-[#B3916A] text-[25px] cursor-pointer"
-              />
+              <div>
+                <IoIosAddCircleOutlineIcon
+                  onClick={() => handleChange(key as keyof typeof filters, true)}
+                  className="text-[#B3916A] text-[25px] cursor-pointer"
+                />
+              </div>
             </div>
           </div>
           {/* 문구 */}

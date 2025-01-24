@@ -1,4 +1,4 @@
-'use client';
+// 'use client';
 
 import Link from 'next/link';
 
@@ -7,9 +7,11 @@ import useAuthStore from '@/store/useAuth';
 import Logo from './Logo';
 import MyPageIcon from './navigator/MyPageIcon';
 import HamburgerBtn from './navigator/HamburgerBtn';
+import { getUser } from '@/actions/auth';
 
-const Header = () => {
-  const isLoggedIn = useAuthStore((state) => state.user !== null);
+const Header = async () => {
+  // const isLoggedIn = useAuthStore((state) => state.user !== null);
+  const { data } = await getUser();
 
   return (
     // header 전체 범위
@@ -28,7 +30,7 @@ const Header = () => {
         <div className="flex flex-row">
           <div className="flex flex-row items-center">
             {/* 클릭 시 마이페이지로 이동 (로그인 상태일 때만 노출) */}
-            {isLoggedIn && (
+            {data?.user && (
               <Link href="/my-page" className="p-[10px]">
                 <MyPageIcon />
               </Link>
