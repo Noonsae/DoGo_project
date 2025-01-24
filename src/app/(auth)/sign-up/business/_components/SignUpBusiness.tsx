@@ -3,10 +3,10 @@
 import React, { useState } from 'react';
 import { SignUpProps } from '@/types/supabase/supabase-sign-up-type';
 import { useRouter } from 'next/navigation';
-import Error from '../error';
 import CloseEyesIcon from '@/components/ui/icon/CloseEyesIcon';
 import OpenEyesIcon from '@/components/ui/icon/OpenEyesIcon';
 import Image from 'next/image';
+
 const SignUpBusiness: React.FC<SignUpProps> = ({
   email,
   setEmail,
@@ -18,41 +18,55 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
   setName,
   businessNumber,
   setBusinessNumber,
-  error,
-  setError,
   handleSignup
 }) => {
-  // const [confirmPassword, setConfirmPassword] = useState('');
-  // const [showPassword, setShowPassword] = useState(false);
-  // const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
   const [form, setForm] = useState({
     confirmPassword: '',
     showPassword: false,
     showConfirmPassword: false
   });
 
+  const [errors, setErrors] = useState<{
+    email?: string;
+    phone?: string;
+    name?: string;
+    businessNumber?: string;
+    confirmPassword?: string;
+  }>({});
+
   const router = useRouter();
 
-  const handlePasswordChange = (value: string) => {
-    setPassword(value);
-    setForm((prevForm) => ({
-      ...prevForm,
-      confirmPassword: form.confirmPassword && value !== form.confirmPassword ? '비밀번호가 일치하지 않습니다.' : ''
-    }));
-    if (value === form.confirmPassword) setError('');
+  const handleSignUp = () => {
+    const newErrors: {
+      email?: string;
+      phone?: string;
+      name?: string;
+      businessNumber?: string;
+      confirmPassword?: string;
+    } = {};
+
+    if (!email) newErrors.email = '이메일은 필수 입력값입니다.';
+    if (!phone) newErrors.phone = '휴대폰 번호는 필수 입력값입니다.';
+    if (!name) newErrors.name = '이름은 필수 입력값입니다.';
+    if (!businessNumber) newErrors.businessNumber = '사업자 번호는 필수 입력값입니다.';
+    if (password !== form.confirmPassword) newErrors.confirmPassword = '비밀번호가 일치하지 않습니다.';
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) return;
+
+    handleSignup();
   };
 
-  const handleConfirmPasswordChange = (value: string) => {
-    setForm((prevForm) => ({
-      ...prevForm,
-      confirmPassword: value,
-      confirmPasswordError: paaaword && value !== password ? '비밀번호가 일치하지 않습니다.' : ''
+  const handleInputChange = (
+    field: 'email' | 'phone' | 'name' | 'businessNumber' | 'confirmPassword',
+    value: string
+  ) => {
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [field]: undefined // 입력 시 해당 에러 제거
     }));
-    if (password === value) setError('');
-  };
 
-  const hanInputChange = (field: string, value: string) => {
     switch (field) {
       case 'email':
         setEmail(value);
@@ -66,6 +80,12 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
       case 'businessNumber':
         setBusinessNumber(value);
         break;
+      case 'confirmPassword':
+        setForm((prevForm) => ({ ...prevForm, confirmPassword: value }));
+        if (password && value !== password) {
+          setErrors((prevErrors) => ({ ...prevErrors, confirmPassword: '비밀번호가 일치하지 않습니다.' }));
+        }
+        break;
       default:
         break;
     }
@@ -74,7 +94,7 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
   const handelSignIn = () => {
     router.push('/sign-in');
   };
-  // 반응형 완료
+
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex justify-center items-center px-4 sm:px-6 lg:px-8">
@@ -90,9 +110,12 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
             type="email"
             placeholder="이메일을 입력해주세요"
             value={email}
-            className="w-full mb-[20px] h-12 px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => handleInputChange('email', e.target.value)}
+            className={`w-full mb-[20px] h-12 px-3 border rounded-[8px] focus:outline-none ${
+              errors.email ? 'border-red-500 focus:ring-red-500' : 'border-[#BFBFBF] focus:ring-[#B3916A]'
+            }`}
           />
+          {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
 
           {/* 비밀번호 */}
           <p className="font-pretendard text-[16px] font-semibold leading-[135%]">비밀번호</p>
@@ -101,7 +124,7 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
               type={form.showPassword ? 'text' : 'password'}
               placeholder="비밀번호를 입력해주세요"
               value={password}
-              onChange={(e) => handlePasswordChange(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full h-12 px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none"
             />
             <p className="text-xs pb-[4px] px-1 text-gray-700 mb-[20px]">
@@ -128,11 +151,9 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
               type={form.showConfirmPassword ? 'text' : 'password'}
               placeholder="비밀번호를 다시 입력해주세요"
               value={form.confirmPassword}
-              onChange={(e) => handleConfirmPasswordChange(e.target.value)}
+              onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
               className={`w-full h-12 px-3 border rounded-[8px] focus:outline-none ${
-                password && form.confirmPassword && password !== form.confirmPassword
-                  ? 'border-red-500 focus:ring-red-500'
-                  : 'border-[#BFBFBF] focus:ring-[#B3916A]'
+                errors.confirmPassword ? 'border-red-500 focus:ring-red-500' : 'border-[#BFBFBF] focus:ring-[#B3916A]'
               }`}
             />
             <button
@@ -140,17 +161,15 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
               onClick={() =>
                 setForm((prevForm) => ({
                   ...prevForm,
-                  showConfirmPassword: !prevForm.confirmPassword
+                  showConfirmPassword: !prevForm.showConfirmPassword
                 }))
               }
-              // onClick={() => setShowConfirmPassword((prev) => !prev)}
               className="absolute right-[16px] top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-black"
             >
               {form.showConfirmPassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
             </button>
           </div>
-
-          {error && <Error message={error} />}
+          {errors.confirmPassword && <p className="text-sm text-red-500">{errors.confirmPassword}</p>}
 
           {/* 담당자 이름 */}
           <p className="mb-2 font-semibold text-gray-700">담당자 이름</p>
@@ -158,9 +177,12 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
             type="text"
             placeholder="이름을 입력해주세요"
             value={name}
-            className="w-full mb-[20px] h-12 px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none"
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => handleInputChange('name', e.target.value)}
+            className={`w-full mb-[20px] h-12 px-3 border rounded-[8px] focus:outline-none ${
+              errors.name ? 'border-red-500 focus:ring-red-500' : 'border-[#BFBFBF] focus:ring-[#B3916A]'
+            }`}
           />
+          {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
 
           {/* 담당자 번호 */}
           <p className="font-pretendard text-[16px] font-semibold leading-[135%]">담당자 번호</p>
@@ -168,9 +190,12 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
             type="tel"
             placeholder="휴대폰 번호를 입력해주세요"
             value={phone}
-            className="w-full mb-[20px] h-12 px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none"
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={(e) => handleInputChange('phone', e.target.value)}
+            className={`w-full mb-[20px] h-12 px-3 border rounded-[8px] focus:outline-none ${
+              errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-[#BFBFBF] focus:ring-[#B3916A]'
+            }`}
           />
+          {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}
 
           {/* 사업자 번호 */}
           <p className="font-pretendard text-[16px] font-semibold leading-[135%]">사업자 번호</p>
@@ -178,13 +203,16 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
             type="text"
             placeholder="사업자 번호를 입력해주세요"
             value={businessNumber}
-            className="w-full mb-[20px] h-12 px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none"
-            onChange={(e) => setBusinessNumber(e.target.value)}
+            onChange={(e) => handleInputChange('businessNumber', e.target.value)}
+            className={`w-full mb-[20px] h-12 px-3 border rounded-[8px] focus:outline-none ${
+              errors.businessNumber ? 'border-red-500 focus:ring-red-500' : 'border-[#BFBFBF] focus:ring-[#B3916A]'
+            }`}
           />
+          {errors.businessNumber && <p className="text-sm text-red-500">{errors.businessNumber}</p>}
 
           {/* 회원가입 버튼 */}
           <button
-            onClick={handleSignup}
+            onClick={handleSignUp}
             className="w-full bg-[#B3916A] text-white font-semibold py-3 px-4 rounded-md hover:bg-[#a37e5f] transition mb-4"
           >
             완료
