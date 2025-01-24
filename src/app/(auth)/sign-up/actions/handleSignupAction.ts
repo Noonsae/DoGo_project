@@ -22,19 +22,7 @@ export default async function handleSignupAction({
 }) {
   const supabaseAdmin = await serverSupabase();
 
-  // single =>단일 데이터, 데이터가 없거나 여러 개일 경우 에러를 반환
-  // maybeSingle =>단일 데이터를 가져오지만, 데이터가 없더라도 에러를 발생 X
-  //eq()=> 배열형태,여러 개의 데이터 또는 데이터가 없더라도 에러가 발생 X
   try {
-    // signUp 에서 이미 확인함 -> 에러 메세지: User Already Exists
-    // const { data: existingUser, error: fetchError } = await supabaseAdmin.from('users').select('id').eq('email', email);
-
-    // if (fetchError) {
-    //   throw new Error('데이터 조회 중 오류가 발생했습니다.');
-    // }
-    // if (existingUser.length > 0) {
-    //   throw new Error('이미 등록된 이메일입니다.');
-    // }
     const { data: authData, error: authError } = await supabaseAdmin.auth.signUp({
       email,
       password

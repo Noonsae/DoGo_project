@@ -1,9 +1,6 @@
+import { HotelPoliciesProps } from '@/types/hotel/hotel-policy-type';
 import { PolicyType } from '@/types/supabase/policy-type';
-import React, { useEffect, useState } from 'react';
-
-interface HotelPoliciesProps {
-  hotelId: string; // 호텔 ID를 문자열로 전달
-}
+import { useEffect, useState } from 'react';
 
 const HotelPolicies = ({ hotelId }: HotelPoliciesProps) => {
   const [policies, setPolicies] = useState<PolicyType[]>([]); // 상태 타입을 배열로 설정

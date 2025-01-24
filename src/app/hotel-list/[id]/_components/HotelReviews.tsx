@@ -1,13 +1,8 @@
 import ReviewsModal from '@/components/ui/hotel-review/ReviewsModal';
-import { ReviewType } from '@/types/supabase/review-type';
 import Image from 'next/image';
-import React, { useState } from 'react';
 
-interface HotelReviewsProps {
-  loading: boolean;
-  reviews: ReviewType[];
-  allReviews: ReviewType[]; // 전체 리뷰
-}
+import { useState } from 'react';
+import { HotelReviewsProps } from '@/types/hotel/hotel-review-type';
 
 const HotelReviews = ({ loading, reviews, allReviews }: HotelReviewsProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
