@@ -205,10 +205,12 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
                   />
                 </div>
                 {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
-                <label className="block mt-[20px] text-gray-700">담당자 번호</label>
+                <label className="block mt-[20px] text-gray-700">
+                  {form.activeTab === 'user' ? '휴대폰 번호' : '담당자 번호'}
+                </label>
                 <input
                   type="number"
-                  placeholder="담당자 번호를 입력해 주세요."
+                  placeholder={`${form.activeTab === 'user' ? '휴대폰 번호를' : '담당자 휴대폰 번호를'} 입력해주세요`}
                   value={form.phone}
                   onChange={(e) => {
                     setForm((prevForm) => ({
