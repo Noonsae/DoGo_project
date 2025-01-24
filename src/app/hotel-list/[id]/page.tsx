@@ -8,11 +8,8 @@ import useFavoriteStore from '@/hooks/favorite/useFavoriteStore';
 import useHotelReviews from '@/hooks/review/useHotelReviews';
 import useHotelRooms from '@/hooks/room/useHotelRooms';
 
-import { HotelType } from '@/types/supabase/hotel-type';
-import { FacilitiesType } from '@/types/supabase/facilities-type';
 import { Json } from '@/types/supabase/supabase-type';
 import { UserType } from '@/types/supabase/user-type';
-import { ServicesType } from '@/types/supabase/services-type';
 
 import HotelAttraction from './_components/HotelAttraction';
 import HotelBox from './_components/HotelBox';
