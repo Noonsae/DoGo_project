@@ -55,7 +55,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
       const response = await fetch('/api/auth/find-id', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: form.name, phone: form.phone })
+        body: JSON.stringify({ name: form.name, phone: form.phone, role: form.activeTab })
       });
       const result = await response.json();
 

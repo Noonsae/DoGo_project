@@ -16,14 +16,9 @@ export default function SignUpBusinessPage() {
   const [nickname, setNickname] = useState('');
   const [businessNumber, setBusinessNumber] = useState('');
   const [isModlaOpen, setIsModalOpen] = useState(false);
-  // const setUser = useAuthStore((state) => state.setUser);
-
-  const router = useRouter();
 
   const handleSignup = async () => {
     try {
-      // const supabase = browserSupabase(); // 클라이언트 생성
-
       const result = await handleSignupAction({
         email,
         password,
@@ -72,9 +67,6 @@ export default function SignUpBusinessPage() {
       // });
       // setIsModalOpen(true);
       window.location.href = '/';
-
-      // 모달을 살리고 싶은데, 뭘해도 안됨.⭐
-      // setTimeout(setIsModalOpen, 2000);
     } catch (err: any) {
       setError('회원가입 중 오류가 발생했습니다.');
       console.error(err);
@@ -82,8 +74,6 @@ export default function SignUpBusinessPage() {
   };
   const closeModal = () => {
     setIsModalOpen(false);
-    // window.location.href = '/';
-    // router.push('/');
   };
 
   return (

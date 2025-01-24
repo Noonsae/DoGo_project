@@ -75,7 +75,7 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
         }));
       } else {
         console.error('OTP 요청 실패:', response.statusText);
-        setErrors({ email: 'OTP 요청에 실패했습니다.' });
+        setErrors({ email: '일치하지않습니다.' });
         setForm((prevForm) => ({ ...prevForm, isLoading: false }));
       }
     } catch (error) {
