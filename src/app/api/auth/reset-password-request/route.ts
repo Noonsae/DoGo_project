@@ -16,7 +16,7 @@ export async function POST(request: Request) {
     // 사용자 조회
     const { data: user, error } = await supabase
       .from('users')
-      .select('id')
+      .select('id, user_name')
       .eq('email', email)
       .eq('phone_number', phone)
       .eq('role', role)
@@ -31,8 +31,6 @@ export async function POST(request: Request) {
     const expiresAt = new Date();
     expiresAt.setMinutes(expiresAt.getMinutes() + 10); // OTP 만료 시간 (10분 후)
 
-    console.log('Generated OTP:', otp);
-
     // OTP를 password_reset_requests 테이블에 저장
     const { error: insertError } = await supabase.from('password_reset_requests').insert({
       user_id: user.id,
@@ -44,8 +42,12 @@ export async function POST(request: Request) {
       console.error('OTP 저장 오류:', insertError);
       return NextResponse.json({ error: 'OTP 저장에 실패했습니다.' }, { status: 500 });
     }
-
-    return NextResponse.json({ otp, message: 'OTP가 성공적으로 생성되었습니다.' }, { status: 200 });
+    // api호출url을 잘못 설정해줘놓고 안되네~이러고있었음
+    // 아래 코드는 클라이언트로 보내주는 건데 안넣어줘놓고 안되네~이러고있었음
+    return NextResponse.json(
+      { otp, user_name: user.user_name, message: 'OTP가 성공적으로 생성되었습니다.' },
+      { status: 200 }
+    );
   } catch (error) {
     console.error('OTP 생성 오류:', error);
     return NextResponse.json({ error: '서버 오류가 발생했습니다.' }, { status: 500 });

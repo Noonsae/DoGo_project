@@ -17,7 +17,7 @@ export async function POST(request: Request) {
       .from('password_reset_requests')
       .select('user_id, expires_at')
       .eq('otp', otp)
-      .eq('role', role)
+      // .eq('role', role)
       .single();
 
     if (otpError || !resetRequest) {

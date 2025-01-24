@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-
 export async function POST(request: Request) {
   try {
     const { email, phone, role } = await request.json();
@@ -13,7 +12,7 @@ export async function POST(request: Request) {
 
     const { data, error } = await supabase
       .from('users')
-      .select('id')
+      .select('id, user_name')
       .eq('email', email)
       .eq('phone_number', phone)
       .eq('role', role)
@@ -23,7 +22,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: '입력한 정보와 일치하는 계정을 찾을 수 없습니다.' }, { status: 404 });
     }
 
-    return NextResponse.json({ userId: data.id }, { status: 200 });
+    return NextResponse.json({ userId: data.id, userName: data.user_name }, { status: 200 });
   } catch (error) {
     console.error('서버 오류:', error);
     return NextResponse.json({ error: '서버 오류가 발생했습니다.' }, { status: 500 });
