@@ -37,11 +37,13 @@ export interface FetchHotelsFilterResponse {
 }
 
 export interface FiltersType {
+  location?: string;
   label: string;
+  name?: string;
+  address?: string;
   stars: number[];
   minPrice: number;
   maxPrice: number;
-  location?: string;
   facilities: string[]; // 중첩 구조에 맞게 수정
   services: string[]; // 중첩 구조에 맞게 수정
 }
