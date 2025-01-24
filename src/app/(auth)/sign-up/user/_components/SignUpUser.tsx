@@ -49,7 +49,7 @@ const SignUpUser: React.FC<SignUpProps> = ({
   const handelSignIn = () => {
     router.push('/sign-in');
   };
-
+  // 반응형 완료
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex justify-center items-center px-4 sm:px-6 lg:px-8">
@@ -59,7 +59,6 @@ const SignUpUser: React.FC<SignUpProps> = ({
           </div>
           <p className="text-[18px] font-bold mb-[24px]">일반 회원 회원가입</p>
 
-          {/* 이메일 입력 */}
           <p className="font-pretendard text-[16px] font-semibold leading-[135%]">이메일</p>
           <input
             type="email"
@@ -69,7 +68,6 @@ const SignUpUser: React.FC<SignUpProps> = ({
             className="w-full mb-[20px] h-12 px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none"
           />
 
-          {/* 비밀번호 입력 */}
           <p className="font-pretendard text-[16px] font-semibold leading-[135%]">비밀번호</p>
           <div className="relative">
             <input
@@ -91,7 +89,6 @@ const SignUpUser: React.FC<SignUpProps> = ({
             </button>
           </div>
 
-          {/* 비밀번호 확인 */}
           <p className="font-pretendard text-[16px] font-semibold leading-[135%]">비밀번호 확인</p>
           <div className="relative">
             <input
@@ -115,7 +112,6 @@ const SignUpUser: React.FC<SignUpProps> = ({
             </button>
           </div>
 
-          {/* 휴대폰 입력 */}
           <p className="font-pretendard mt-1 text-[16px] font-semibold leading-[135%]">휴대폰 번호</p>
           <input
             type="tel"
@@ -125,7 +121,6 @@ const SignUpUser: React.FC<SignUpProps> = ({
             className="w-full mb-[20px] h-12 px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none"
           />
 
-          {/* 이름 입력 */}
           <p className="font-pretendard text-[16px] font-semibold leading-[135%]">이름</p>
           <input
             type="text"
@@ -135,7 +130,6 @@ const SignUpUser: React.FC<SignUpProps> = ({
             className="w-full mb-[20px] h-12 px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none"
           />
 
-          {/* 닉네임 입력 */}
           <p className="font-pretendard text-[16px] font-semibold leading-[135%]">닉네임</p>
           <input
             type="text"
@@ -145,7 +139,6 @@ const SignUpUser: React.FC<SignUpProps> = ({
             className="w-full mb-[20px] h-12 px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none"
           />
 
-          {/* 회원가입 버튼 */}
           <button
             type="button"
             onClick={handleSignup}
