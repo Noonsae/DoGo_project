@@ -14,11 +14,7 @@ export async function POST(request: Request) {
   }
 
   // 중복 이메일 체크
-  const { data: existingUser, error: fetchError } = await supabase
-    .from('users')
-    .select('id')
-    .eq('email', email)
-    .single();
+  const { data: existingUser } = await supabase.from('users').select('id').eq('email', email).single();
 
   if (existingUser) {
     return NextResponse.json({ error: '이미 등록된 이메일입니다.' }, { status: 400 });

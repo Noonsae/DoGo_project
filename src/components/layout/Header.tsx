@@ -33,7 +33,7 @@ const Header = async () => {
             {/* 클릭 시 마이페이지로 이동 (로그인 상태일 때만 노출) */}
             {/* 일반 사용자 -> my-page/user */}
             {/* 비즈니스 사용자 -> my-page/business */}
-            {data?.user && (
+            {data?.user && userRole && (
               <Link href={`/my-page/${userRole.role}`} className="p-[10px]">
                 <MyPageIcon />
               </Link>

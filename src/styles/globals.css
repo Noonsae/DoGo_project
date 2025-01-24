@@ -13,20 +13,32 @@
   gap: 30px !important;
 }
 
-input[type="range"] {
+input[type='range'] {
   -webkit-appearance: none; /* 브라우저 기본 스타일 제거 */
   appearance: none;
   height: 4px;
   background: transparent;
 }
 
-input[type="range"]::-webkit-slider-thumb {
+input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   height: 12px;
   width: 12px;
   background-color: #fff;
-  border: 1.5px solid #B3916A;
+  border: 1.5px solid #b3916a;
   border-radius: 50%;
   cursor: pointer;
+}
+
+/* 숫자 입력 화살표 제거 */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
 }
