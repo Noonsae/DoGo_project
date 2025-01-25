@@ -1,10 +1,17 @@
 'use client';
+import { FormState, ErrorState } from '@/types/SignIn/FindPasswordModalTypes';
 
 import CloseEyesIcon from '@/components/ui/icon/CloseEyesIcon';
 import OpenEyesIcon from '@/components/ui/icon/OpenEyesIcon';
 import React from 'react';
-
-const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: any) => (
+interface ResetModalProps {
+  form: FormState;
+  errors: ErrorState;
+  setForm: React.Dispatch<React.SetStateAction<FormState>>;
+  setErrors: React.Dispatch<React.SetStateAction<ErrorState>>;
+  handleResetPassword: () => void;
+}
+const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: ResetModalProps) => (
   <div className="m-10 flex flex-col">
     {form.modalType === 'reset' && (
       <div className="flex flex-col">

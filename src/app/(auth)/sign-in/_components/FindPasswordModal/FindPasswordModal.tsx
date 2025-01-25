@@ -1,17 +1,15 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import CheckIcon from '@/components/ui/icon/CheckIcon';
 import CloseButtonIcon from '@/components/ui/icon/CloseButtonIcon';
-import CloseEyesIcon from '@/components/ui/icon/CloseEyesIcon';
-import OpenEyesIcon from '@/components/ui/icon/OpenEyesIcon';
 import Swal from 'sweetalert2';
 import InputModal from './InputModal';
 import ResetModal from './ResetModal';
 import SuccessModal from './SuccessModal';
+import { FormState } from '@/types/SignIn/FindPasswordModalTypes';
 
 const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<FormState>({
     email: '',
     phone: '',
     otp: '',
@@ -33,6 +31,7 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
     password?: string;
     confirmPassword?: string;
   }>({});
+
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
