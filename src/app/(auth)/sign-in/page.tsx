@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import DividerIcon from '@/components/ui/icon/DividerIcon';
 import FindIdModal from './_components/FindIdModal';
-import FindPasswordModal from './_components/FindPasswordModal';
+import FindPasswordModal from './_components/FindPasswordModal/FindPasswordModal';
 import KakaoSignIn from './_components/KakaoSignIn';
 import Image from 'next/image';
 import { login } from './actions/login';
