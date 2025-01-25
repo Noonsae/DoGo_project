@@ -4,21 +4,15 @@ import CloseEyesIcon from '@/components/ui/icon/CloseEyesIcon';
 import OpenEyesIcon from '@/components/ui/icon/OpenEyesIcon';
 import React from 'react';
 
-const ResetModal = ({
-    form, errors, setForm, setErrors, handleResetPassword
-}: any) => (
+const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: any) => (
   <div className="m-10 flex flex-col">
-    <h1 className="font-semibold text-[24px] mt-[30px] mb-[30px]">
-      가입정보가 <br /> 인증되었습니다.
-    </h1>
     {form.modalType === 'reset' && (
-      <div className="m-10 flex flex-col">
+      <div className="flex flex-col">
         <h1 className="font-semibold text-[24px] mt-[30px] mb-[30px]">
-          가입정보가 <br />
-          인증 되었습니다.
+          가입정보가 <br /> 인증되었습니다.
         </h1>
         <form
-          className="flex-grow flex flex-col justify-between"
+          className="flex flex-col justify-between"
           onSubmit={(e) => {
             e.preventDefault();
             const newErrors: { otp?: string; password?: string; confirmPassword?: string } = {};
