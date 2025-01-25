@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     // OTP 생성 및 만료 시간 설정
     const otp = crypto.randomInt(100000, 999999).toString();
     const expiresAt = new Date();
-    expiresAt.setMinutes(expiresAt.getMinutes() + 10); // OTP 만료 시간 (10분 후)
+    expiresAt.setMinutes(expiresAt.getMinutes() + 10);
 
     // OTP를 password_reset_requests 테이블에 저장
     const { error: insertError } = await supabase.from('password_reset_requests').insert({

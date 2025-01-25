@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { FormState } from '@/types/SignIn/FindPasswordModalTypes';
 import CloseButtonIcon from '@/components/ui/icon/CloseButtonIcon';
 import Swal from 'sweetalert2';
 import InputModal from './InputModal';
 import ResetModal from './ResetModal';
 import SuccessModal from './SuccessModal';
-import { FormState } from '@/types/SignIn/FindPasswordModalTypes';
 
 const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
   const [form, setForm] = useState<FormState>({
@@ -56,7 +56,6 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
     }
 
     setForm((prevForm) => ({ ...prevForm, isLoading: true }));
-    console.log({ form });
     try {
       const response = await fetch('/api/auth/reset-password-request', {
         method: 'POST',
@@ -113,7 +112,6 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
       return;
     }
     setForm((prevForm) => {
-      console.log({ prevForm });
       return { ...prevForm, setIsLoading: true };
     });
 
