@@ -185,7 +185,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
 
         {form.modalType === 'success' && (
           <div className="w-full max-w-[424px] p-6 sm:p-[30px] flex flex-col items-center">
-            <div className="mt-[142px] p-[33px]">
+            <div className="mt-[142px] ">
               <CheckIcon />
             </div>
 
@@ -200,7 +200,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
             </div>
             <button
               onClick={onClose}
-              className="w-full sm:mt-[120px] bg-[#B3916A] font-bold text-white py-4 rounded-xl hover:bg-[#a37e5f] transition"
+              className="w-full max-w-[352px] sm:mt-[120px] bg-[#B3916A] font-bold text-white py-4 rounded-xl hover:bg-[#a37e5f] transition"
             >
               확인
             </button>
@@ -221,7 +221,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
             </div>
             <button
               onClick={onClose}
-              className="w-full mt-[120px] sm:mt-[180px] bg-[#B3916A] font-bold text-white py-4 rounded-xl hover:bg-[#a37e5f] transition"
+              className="w-full max-w-[352px] mt-[120px] sm:mt-[180px] bg-[#B3916A] font-bold text-white py-4 rounded-xl hover:bg-[#a37e5f] transition"
             >
               확인
             </button>
