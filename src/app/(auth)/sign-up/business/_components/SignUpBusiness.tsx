@@ -64,7 +64,7 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
   ) => {
     setErrors((prevErrors) => ({
       ...prevErrors,
-      [field]: undefined // 입력 시 해당 에러 제거
+      [field]: undefined 
     }));
 
     switch (field) {
@@ -104,7 +104,6 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
           </div>
           <h6 className="text-[18px] font-bold mb-[24px]">사업자 회원 회원가입</h6>
 
-          {/* 이메일 */}
           <p className="font-pretendard text-[16px] font-semibold leading-[135%]">사업자 이메일</p>
           <input
             type="email"
@@ -117,7 +116,6 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
           />
           {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
 
-          {/* 비밀번호 */}
           <p className="font-pretendard text-[16px] font-semibold leading-[135%]">비밀번호</p>
           <div className="relative w-full">
             <input
@@ -144,7 +142,6 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
             </button>
           </div>
 
-          {/* 비밀번호 확인 */}
           <p className="font-pretendard text-[16px] font-semibold leading-[135%]">비밀번호 확인</p>
           <div className="relative w-full">
             <input
@@ -171,7 +168,6 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
           </div>
           {errors.confirmPassword && <p className="text-sm text-red-500">{errors.confirmPassword}</p>}
 
-          {/* 담당자 이름 */}
           <p className="mb-2 font-semibold text-gray-700">담당자 이름</p>
           <input
             type="text"
@@ -184,7 +180,6 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
           />
           {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
 
-          {/* 담당자 번호 */}
           <p className="font-pretendard text-[16px] font-semibold leading-[135%]">담당자 번호</p>
           <input
             type="tel"
@@ -197,7 +192,6 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
           />
           {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}
 
-          {/* 사업자 번호 */}
           <p className="font-pretendard text-[16px] font-semibold leading-[135%]">사업자 번호</p>
           <input
             type="text"
@@ -210,7 +204,6 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
           />
           {errors.businessNumber && <p className="text-sm text-red-500">{errors.businessNumber}</p>}
 
-          {/* 회원가입 버튼 */}
           <button
             onClick={handleSignUp}
             className="w-full bg-[#B3916A] text-white font-semibold py-3 px-4 rounded-md hover:bg-[#a37e5f] transition mb-4"

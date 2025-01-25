@@ -1,6 +1,5 @@
 'use server';
 
-import { createClient } from '@supabase/supabase-js';
 import { serverSupabase } from '@/supabase/supabase-server';
 
 export default async function handleSignupAction({
