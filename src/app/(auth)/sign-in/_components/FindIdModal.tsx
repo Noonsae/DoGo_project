@@ -99,11 +99,10 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
         >
           <CloseButtonIcon />
         </button>
-
         {form.modalType === 'input' && (
           <div className="flex flex-col h-full">
-            <p className="text-xl sm:text-2xl font-bold mt-8 sm:mt-[36px] mb-8 sm:mb-[40px]">
-              DoGo 가입 정보로 <br className="hidden sm:block" /> 아이디를 확인하세요.
+            <p className="text-xl sm:text-2xl font-bold mt-20 sm:mt-[36px] mb-8 sm:mb-[40px]">
+              DoGo 가입 정보로 <br /> 아이디를 확인하세요.
             </p>
 
             <div className="flex border-b-2 w-full max-w-[352px]">
