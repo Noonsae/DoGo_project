@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
 
-import UserSidebar from '@/app/my-page/_components/Usersidebar';
+import UserSidebar from '../_components/UserSidebar';
 import ProfileContent from '@/app/my-page/_components/ProfileContent';
 import BookingsContent from '@/app/my-page/_components/BookingsContent';
 import FavoritesContent from '@/app/my-page/_components/FavoritesContent';
