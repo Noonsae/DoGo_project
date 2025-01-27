@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'; // Supabase 클라이언트 초기화
+import React, { useState } from 'react';
+import { browserSupabase } from '@/supabase/supabase-client'; // SSR Supabase 클라이언트 임포트
 import { Database } from '@/types/supabase/supabase-type';
 
 // User 데이터 타입 정의
@@ -17,51 +17,26 @@ interface User {
 
 // ProfileContent 컴포넌트 정의
 interface ProfileContentProps {
-  userId: string;
+  user: User;
 }
 
-const ProfileContent: React.FC<ProfileContentProps> = ({ userId }) => {
-  const supabase = createClientComponentClient<Database>();
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+const ProfileContent: React.FC<ProfileContentProps> = ({ user: initialUser }) => {
+  const [user, setUser] = useState<User | null>(initialUser);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        setLoading(true);
-        const { data, error } = await supabase
-          .from('users')
-          .select('id, user_name, phone_number, email, role, business_number, created_at')
-          .eq('id', userId)
-          .single();
-
-        if (error) throw error;
-
-        setUser(data);
-      } catch (err) {
-        console.error('Error fetching user:', err);
-        setError('사용자 정보를 불러오는 중 오류가 발생했습니다.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUser();
-  }, [supabase, userId]);
+  const [error, setError] = useState<string | null>(null);
 
   const handleUpdate = async () => {
     if (!user) return;
 
     try {
+      const supabase = await browserSupabase();
       const { error } = await supabase
         .from('users')
         .update({
           user_name: user.user_name,
           phone_number: user.phone_number,
         })
-        .eq('id', userId);
+        .eq('id', user.id);
 
       if (error) throw error;
 
@@ -73,8 +48,6 @@ const ProfileContent: React.FC<ProfileContentProps> = ({ userId }) => {
     }
   };
 
-  if (loading) return <p className="text-center text-gray-600">Loading...</p>;
-  if (error) return <p className="text-center text-red-500">{error}</p>;
   if (!user) return <p className="text-center text-gray-600">사용자 정보를 불러올 수 없습니다.</p>;
 
   return (
@@ -158,42 +131,33 @@ const ProfileContent: React.FC<ProfileContentProps> = ({ userId }) => {
 };
 
 // ProfilePage 컴포넌트 정의
-const ProfilePage: React.FC = () => {
-  const supabase = createClientComponentClient<Database>();
-  const [userId, setUserId] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+const ProfilePage = async () => {
+  const supabase = await browserSupabase();
 
-  useEffect(() => {
-    const fetchSession = async () => {
-      try {
-        const {
-          data: { session },
-          error,
-        } = await supabase.auth.getSession();
+  try {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
 
-        if (error || !session?.user) {
-          setError('사용자를 찾을 수 없습니다.');
-          return;
-        }
+    if (!session?.user) {
+      throw new Error('사용자를 찾을 수 없습니다.');
+    }
 
-        setUserId(session.user.id);
-      } catch (err) {
-        console.error('Error fetching session:', err);
-        setError('세션을 가져오는 중 오류가 발생했습니다.');
-      } finally {
-        setLoading(false);
-      }
-    };
+    const { data: user, error: userError } = await supabase
+      .from('users')
+      .select('id, user_name, phone_number, email, role, business_number, created_at')
+      .eq('id', session.user.id)
+      .single();
 
-    fetchSession();
-  }, [supabase]);
+    if (userError || !user) {
+      throw new Error('사용자 정보를 가져오는 중 오류가 발생했습니다.');
+    }
 
-  if (loading) return <p>로딩 중...</p>;
-  if (error) return <p className="text-red-500">{error}</p>;
-  if (!userId) return <p>사용자 ID를 찾을 수 없습니다.</p>;
-
-  return <ProfileContent userId={userId} />;
+    return <ProfileContent user={user} />;
+  } catch (error: any) {
+    console.error(error.message);
+    return <p className="text-red-500 text-center">{error.message}</p>;
+  }
 };
 
 export default ProfilePage;

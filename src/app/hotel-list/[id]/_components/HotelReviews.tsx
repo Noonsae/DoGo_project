@@ -1,13 +1,8 @@
 import ReviewsModal from '@/components/ui/hotel-review/ReviewsModal';
-import { ReviewType } from '@/types/supabase/review-type';
 import Image from 'next/image';
-import React, { useState } from 'react';
 
-interface HotelReviewsProps {
-  loading: boolean;
-  reviews: ReviewType[];
-  allReviews: ReviewType[]; // 전체 리뷰
-}
+import { useState } from 'react';
+import { HotelReviewsProps } from '@/types/hotel/hotel-review-type';
 
 const HotelReviews = ({ loading, reviews, allReviews }: HotelReviewsProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
@@ -39,7 +34,7 @@ const HotelReviews = ({ loading, reviews, allReviews }: HotelReviewsProps) => {
                 {/* 프로필 섹션 */}
                 <div className="flex gap-4">
                   <img
-                    src={review.users?.profile_img || '/placeholder-profile.png'} // 프로필 이미지
+                    src={review.users?.profile_img || '/placeholder-profile.webp'} // 프로필 이미지
                     alt="Profile"
                     className="w-[50px] h-[50px] rounded-full object-cover"
                   />
@@ -58,7 +53,7 @@ const HotelReviews = ({ loading, reviews, allReviews }: HotelReviewsProps) => {
                     (url, index) => (
                       <Image
                         key={index}
-                        src={typeof url === 'string' ? url : '/placeholder-profile.png'}
+                        src={typeof url === 'string' ? url : '/placeholder-profile.webp'}
                         alt="Review Image"
                         width={80}
                         height={80}

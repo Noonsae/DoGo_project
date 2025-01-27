@@ -1,9 +1,6 @@
+import { HotelPoliciesProps } from '@/types/hotel/hotel-policy-type';
 import { PolicyType } from '@/types/supabase/policy-type';
-import React, { useEffect, useState } from 'react';
-
-interface HotelPoliciesProps {
-  hotelId: string; // 호텔 ID를 문자열로 전달
-}
+import { useEffect, useState } from 'react';
 
 const HotelPolicies = ({ hotelId }: HotelPoliciesProps) => {
   const [policies, setPolicies] = useState<PolicyType[]>([]); // 상태 타입을 배열로 설정
@@ -36,7 +33,7 @@ const HotelPolicies = ({ hotelId }: HotelPoliciesProps) => {
         setPolicies(data); // 상태 업데이트
       } catch (err: any) {
         console.error('Error fetching policies:', err.message);
-        setError(err.message || '데이터 로드 중 오류 발생');
+        setError(null); // 에러 메시지를 표시하지 않음
       } finally {
         setLoading(false);
       }
@@ -47,7 +44,6 @@ const HotelPolicies = ({ hotelId }: HotelPoliciesProps) => {
 
   // 로딩 상태 처리
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
 
   // 정책 데이터 렌더링
   return (
@@ -100,7 +96,7 @@ const HotelPolicies = ({ hotelId }: HotelPoliciesProps) => {
                     ))}
                   </ul>
                 ) : (
-                  <p>해당 정책 정보가 없습니다.</p>
+                  <p>정보가 없습니다.</p> // 값이 없을 경우 표시
                 )}
               </div>
             )}

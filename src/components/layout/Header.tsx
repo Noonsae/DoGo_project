@@ -7,12 +7,12 @@ import useAuthStore from '@/store/useAuth';
 import Logo from './Logo';
 import MyPageIcon from './navigator/MyPageIcon';
 import HamburgerBtn from './navigator/HamburgerBtn';
-import { getUser } from '@/actions/auth';
+import { getUser, getUserRole } from '@/actions/auth';
 
 const Header = async () => {
   // const isLoggedIn = useAuthStore((state) => state.user !== null);
   const { data } = await getUser();
-  console.log({data})
+  const { data: userRole } = await getUserRole(data?.user?.id);
 
   return (
     // header 전체 범위
@@ -31,8 +31,10 @@ const Header = async () => {
         <div className="flex flex-row">
           <div className="flex flex-row items-center">
             {/* 클릭 시 마이페이지로 이동 (로그인 상태일 때만 노출) */}
-            {data?.user && (
-              <Link href="/my-page" className="p-[10px]">
+            {/* 일반 사용자 -> my-page/user */}
+            {/* 비즈니스 사용자 -> my-page/business */}
+            {data?.user && userRole && (
+              <Link href={`/my-page/${userRole.role}`} className="p-[10px]">
                 <MyPageIcon />
               </Link>
             )}

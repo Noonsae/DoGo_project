@@ -1,29 +1,9 @@
-import { FacilitiesType } from '@/types/supabase/facilities-type';
-import { HotelType } from '@/types/supabase/hotel-type';
-import { ReviewType } from '@/types/supabase/review-type';
+import RatingIcon from '@/components/ui/icon/RatingIcon';
+import { HotelBoxProps } from '@/types/hotel/hotel-box-type';
 import React, { useEffect, useState } from 'react';
-
-type HotelBoxProps = {
-  facilityData: FacilitiesType[]; // 시설 데이터 배열
-  roomOption: JSX.Element; // JSX 요소 타입
-  hotelData: HotelType;
-  reviews: ReviewType[];
-  allReviews: ReviewType[];
-};
 
 const HotelBox = ({ facilityData, roomOption, hotelData, reviews, allReviews }: HotelBoxProps) => {
   const [averageRating, setAverageRating] = useState<number>(0);
-
-  const addressIcon = () => {
-    return (
-      <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M7 0.25C3.56234 0.25 0.75 3.00613 0.75 6.37504C0.75 10.9687 7 17.75 7 17.75C7 17.75 13.25 10.9687 13.25 6.37504C13.25 3.00613 10.4377 0.25 7 0.25ZM7 8.56254C5.75016 8.56254 4.76781 7.59984 4.76781 6.37504C4.76781 5.15016 5.75012 4.18754 7 4.18754C8.24988 4.18754 9.23219 5.15016 9.23219 6.37504C9.23219 7.59984 8.24984 8.56254 7 8.56254Z"
-          fill="#777777"
-        />
-      </svg>
-    );
-  };
 
   useEffect(() => {
     if (reviews && reviews.length > 0) {
@@ -39,7 +19,7 @@ const HotelBox = ({ facilityData, roomOption, hotelData, reviews, allReviews }: 
         <div className="flex items-center mb-4">
           <div className="bg-[#FFE9D5] p-2 rounded-full">
             <span className="text-[#444] w-[65px] h-[18px] font-semibold text-lg flex justify-center items-center">
-              {addressIcon()}
+              {RatingIcon()}
               {averageRating.toFixed(1)}
             </span>
           </div>

@@ -10,7 +10,7 @@ import useHistoryStore from '@/store/useHistoryStore';
 import useFavoriteStore from '@/hooks/favorite/useFavoriteStore';
 import useFetchHotelsFilter from '@/hooks/hotel/useFetchHotelsFilter';
 
-import { HotelType, HotelWithPriceOnly } from '@/types/supabase/hotel-type';
+import { HotelWithPriceOnly } from '@/types/supabase/hotel-type';
 import { FiltersType, sortOrder } from '@/types/filter/hotel-filter-type';
 
 import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
@@ -19,11 +19,7 @@ import HotelCardList from './_components/HotelsCardList';
 import AsideFilter from './_components/AsideFilter';
 import SortBtn from './_components/SortBtn';
 import HotelListSkeleton from '../../components/ui/skeleton/HotelListSkeleton';
-
-interface UserType {
-  id: string;
-  stars: HotelType;
-}
+import { UserType } from '@/types/supabase/user-type';
 
 /**
  * 1. url에서 필터 조건을 가져온다. useSearchParams 활용
@@ -116,7 +112,6 @@ const HotelList = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-          console.log('Fetching next page...');
           fetchNextPage();
         }
       },
@@ -130,8 +125,6 @@ const HotelList = () => {
   }, [hasNextPage, isFetchingNextPage]);
 
   const isLoadingInitialData = !data && isFetchingNextPage;
-
-  console.log(`isLoadingInitialData`, isLoadingInitialData);
 
   return (
     <div className="w-full max-w-[1300px] mx-auto px-[50px] pt-[200px] pb-[50px] flex flex-row justify-between gap-[30px] ">

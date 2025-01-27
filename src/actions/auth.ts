@@ -30,3 +30,17 @@ export const kakaoLogin = async () => {
     redirect(data.url);
   }
 };
+
+export const getUserRole = async (userId: string | undefined) => {
+  if (!userId) {
+    return { data: null };
+  }
+  const supabase = await serverSupabase();
+  // 현재 role을 찾는 API 요청
+  const { data, error } = await supabase.from('users').select('role').eq('id', userId).single();
+  if (error) {
+    throw new Error(`유저 역할 가져오기 실패: ${error?.message}`);
+  }
+
+  return { data };
+};
