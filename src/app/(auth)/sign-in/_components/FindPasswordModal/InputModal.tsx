@@ -1,5 +1,5 @@
 'use client';
-import { FormState, ErrorState } from '@/types/SignIn/FindPasswordModalTypes';
+import { FormState, ErrorState } from '@/types/signIn/FindPasswordModalTypes';
 interface InputModalProps {
   form: FormState;
   errors: ErrorState;
