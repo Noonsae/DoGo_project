@@ -22,15 +22,15 @@ const ServiceList: React.FC<ServicesFilterProps> = ({ selectedServices, onServic
       <ul className="flex flex-wrap gap-2">
         {services?.map((service) => (
           <li key={service}>
-            <button
+            {/* <button
               type="button"
               onClick={() => onServiceChange(service.id)}
               className={`px-3 py-1 rounded-full border ${
                 selectedServices.includes(service.id) ? 'bg-[#B3916A] text-white' : 'bg-white text-gray-700'
               }`}
-            >
-              {service.name}
-            </button>
+            > */}
+              {/* {service.name} */}
+            {/* </button> */}
           </li>
         ))}
       </ul>
