@@ -129,12 +129,12 @@ const SignInPage = () => {
           </div>
           <button
             type="submit"
-            className="w-full sm:w-[400px] bg-[#B3916A] font-bold text-white py-[15px] rounded-[8px] hover:bg-[#a37e5f] transition"
+            className="mb-[12px] sm:mb-[16px] w-full sm:w-[400px] bg-[#B3916A] font-bold text-white py-[15px] rounded-[8px] hover:bg-[#a37e5f] transition"
           >
             로그인
           </button>
         </form>
-        <p className="w-full sm:w-[400px] p-[12px] flex justify-center text-neutral-600">
+        <p className=" w-full sm:w-[400px] p-[12px] flex justify-center text-neutral-600">
           계정이 없으신가요?
           <button onClick={handleSignUp} className="text-[#534431] ml-3 font-semibold">
             회원가입
