@@ -128,7 +128,7 @@ export const parsePrices = (price: string): { minPrice: number; maxPrice: number
   const maxMatch = price.match(/최고가:\s*(\d+)/);
   return {
     minPrice: minMatch ? parseInt(minMatch[1], 10) : 0,
-    maxPrice: maxMatch ? parseInt(maxMatch[1], 10) : 10000000
+    maxPrice: maxMatch ? parseInt(maxMatch[1], 10) : 5000000
   };
 };
 

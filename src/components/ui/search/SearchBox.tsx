@@ -42,7 +42,7 @@ const SearchBox = () => {
   // 스크롤 이벤트 핸들러
   useEffect(() => {
     const handleScroll = () => {
-      setIsSticky(window.scrollY >= 10);
+      setIsSticky(window.scrollY >= 300);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);

@@ -1,9 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { IoClose } from 'react-icons/io5';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import { IoCheckmarkCircle } from 'react-icons/io5';
+
+import IoCloseIcon from '../icon/IoCloseIcon';
+
+// import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+// import { IoCheckmarkCircle } from 'react-icons/io5';
 import { Database } from '@/types/supabase/supabase-type';
 type RoomType = Database['public']['Tables']['rooms']['Row'];
 interface ModalProps {
@@ -57,7 +59,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, room }) => {
         {/* 닫기 버튼 */}
         <div className="sticky top-0 z-10 bg-[#221A1A] text-white">
           <h2 className="text-xl font-bold p-4 text-center">{room.room_name}</h2>
-          <IoClose onClick={onClose} className="absolute top-4 right-4 text-2xl cursor-pointer" />
+          <IoCloseIcon onClick={onClose} className="absolute top-4 right-4 text-2xl cursor-pointer" />
         </div>
 
         {/* 네비게이션 탭 */}
@@ -95,13 +97,13 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, room }) => {
                     onClick={showPreviousImage}
                     className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
                   >
-                    <FiChevronLeft />
+                    {/* <FiChevronLeft /> */}
                   </button>
                   <button
                     onClick={showNextImage}
                     className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
                   >
-                    <FiChevronRight />
+                    {/* <FiChevronRight /> */}
                   </button>
                 </>
               ) : (
@@ -125,7 +127,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, room }) => {
               {Array.isArray(room.option) && room.option.length > 0 ? (
                 room.option.map((item, index) => (
                   <li key={index} className="flex items-center space-x-2 p-2">
-                    <IoCheckmarkCircle />
+                    {/* <IoCheckmarkCircle /> */}
                     <span>{item}</span>
                   </li>
                 ))
