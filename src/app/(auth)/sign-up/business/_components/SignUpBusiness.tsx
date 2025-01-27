@@ -102,7 +102,9 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
           <div className="w-full mt-[156px] mb-[40px] flex flex-col justify-center items-center">
             <LogoAuth />
           </div>
-          <h6 className="text-[18px] font-bold mb-[12px] sm:mb-[16px] ">사업자 회원 회원가입</h6>
+          <h6 className="text-neutral-800 text-[24px] sm:text-[28px] font-bold mb-[12px] sm:mb-[16px] ">
+            사업자 회원 회원가입
+          </h6>
 
           <p className="font-pretendard mb-[12px] sm:mb-[16px] text-[16px] font-semibold leading-[135%]">
             사업자 이메일
@@ -220,14 +222,14 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
 
           <button
             onClick={handleSignUp}
-            className="w-full bg-[#B3916A] text-white font-semibold py-3 px-4 rounded-md hover:bg-[#a37e5f] transition mb-4"
+            className="w-full mt-[24px] sm:mt-[32px] mb-[40px] sm:mb-[48px] bg-[#B3916A] text-white font-semibold py-3 px-4 rounded-md hover:bg-[#a37e5f] transition mb-4"
           >
             완료
           </button>
 
           <div className="w-full flex flex-row justify-center mb-[80px]">
             <span className="text-center text-gray-500">이미 계정이 있으신가요?</span>
-            <button onClick={handelSignIn} className="text-[#B3916A] font-semibold underline">
+            <button onClick={handelSignIn} className=" text-[#B3916A] font-semibold underline">
               로그인
             </button>
           </div>

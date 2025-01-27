@@ -95,7 +95,9 @@ const SignUpUser: React.FC<SignUpProps> = ({
           <div className="w-full mt-[156px] mb-[40px] flex flex-col justify-center items-center">
             <LogoAuth />
           </div>
-          <p className="text-[18px] font-bold mb-[12px] sm:mb-[16px]">일반 회원 회원가입</p>
+          <p className="text-neutral-800 text-[24px] sm:text-[28px] font-bold mb-[12px] sm:mb-[16px]">
+            일반 회원 회원가입
+          </p>
 
           {/* 이메일 */}
           <p className=" mb-[12px] sm:mb-[16px] font-pretendard text-[16px] font-semibold leading-[135%]">이메일</p>
@@ -217,7 +219,7 @@ const SignUpUser: React.FC<SignUpProps> = ({
           <button
             type="button"
             onClick={handleSignUp}
-            className="w-full mt-[20px] bg-[#B3916A] text-white font-semibold py-3 px-4 rounded-md focus:border-[#B3916A] focus:outline-none"
+            className="mt-[24px] sm:mt-[32px] mb-[40px] sm:mb-[48px] w-full bg-[#B3916A] text-white font-semibold py-3 px-4 rounded-md focus:border-[#B3916A] focus:outline-none"
           >
             완료
           </button>
