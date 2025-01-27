@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import SignUpUser from './_components/SignUpUser';
 import handleSignupAction from '../actions/handleSignupAction';
 import SignupUserModal from '@/components/ui/sign-up/SignUpUi';
@@ -16,10 +15,8 @@ export default function SignUpUserPage() {
   const [nickname, setNickname] = useState('');
   const [isModlaOpen, setIsModalOpen] = useState(false);
   const [businessNumber, setBusinessNumber] = useState<string>('');
-  const router = useRouter();
   const handleSignup = async () => {
     try {
-      // 회원가입 시 자동 로그인
       const result = await handleSignupAction({
         email,
         password,
@@ -36,28 +33,7 @@ export default function SignUpUserPage() {
         title: '회원가입 성공',
         text: `${name}님, 회원가입이 완료되었습니다!`
       });
-      // commit용 주석
-      // const { error: loinError } = await supabase.auth.signInWithPassword({
-      //   email,
-      //   password
-      // });
-      // if (loinError) {
-      //   setError('로그인 중 오류가 발생했습니다.');
-      //   return;
-      // }
 
-      // TODO: 나중에 자동으로 처리하도록 수정할 예정
-      // setUser({
-      //   email,
-      //   name,
-      //   phone,
-      //   role: 'user'
-      // });
-
-      // setIsModalOpen(true);
-      // setTimeout(() => setIsModalOpen(), 1000);
-      // TODO: 서버측에서 로그인을 시도할 예정 -> Header에서 인식 X
-      // router.push('/');
       window.location.href = '/';
     } catch (err: any) {
       setError('회원가입 중 오류가 발생했습니다.');
@@ -65,8 +41,6 @@ export default function SignUpUserPage() {
   };
   const closeModal = async () => {
     setIsModalOpen(false);
-    // await router.push('/');
-    // window.location.href = '/';
   };
 
   return (
