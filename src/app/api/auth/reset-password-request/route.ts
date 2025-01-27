@@ -39,7 +39,6 @@ export async function POST(request: Request) {
     });
 
     if (insertError) {
-      console.error('OTP 저장 오류:', insertError);
       return NextResponse.json({ error: 'OTP 저장에 실패했습니다.' }, { status: 500 });
     }
     // api호출url을 잘못 설정해줘놓고 안되네~이러고있었음
@@ -49,7 +48,6 @@ export async function POST(request: Request) {
       { status: 200 }
     );
   } catch (error) {
-    console.error('OTP 생성 오류:', error);
     return NextResponse.json({ error: '서버 오류가 발생했습니다.' }, { status: 500 });
   }
 }

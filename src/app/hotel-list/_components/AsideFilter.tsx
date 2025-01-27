@@ -4,13 +4,16 @@ import { useState, useEffect, useCallback } from 'react';
 import HiOutlineRefreshIcon from '@/components/ui/icon/HiOutlineRefreshIcon';
 import DualSlider from './DualSlider';
 import generateUrl from '@/utils/urlHelpers';
+import FacilityList from './FacilityList';
+import ServiceList from './ServiceList';
+import { FacilitiesType } from '@/types/supabase/facilities-type';
 
 interface FilterObject {
   grade: number[];
   minPrice: number;
   maxPrice: number;
-  facilities: string[];
   services: string[];
+  facilityIds: string[];
 }
 
 interface FilterProps {
@@ -37,8 +40,8 @@ const AsideFilter = ({ onFilterChange: onChangeFilter }: FilterProps) => {
   const [selectedGrade, setSelectedGrade] = useState<number[]>([]);
   const [filterMinPrice, setFilterMinPrice] = useState(0);
   const [filterMaxPrice, setFilterMaxPrice] = useState(5000000); // 초기값 500만원
-  const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [selectedFacilities, setSelectedFacilities] = useState<FacilitiesType[]>([]);
   const [generatedUrl, setGeneratedUrl] = useState<string>(''); // URL 저장 상태
 
   useEffect(() => {
@@ -47,8 +50,8 @@ const AsideFilter = ({ onFilterChange: onChangeFilter }: FilterProps) => {
       grade: selectedGrade,
       minPrice: filterMinPrice,
       maxPrice: filterMaxPrice,
-      facilities: selectedFacilities,
-      services: selectedServices
+      services: selectedServices,
+      facilityIds: selectedFacilities.map((fac) => fac.id),
     });
   }, [selectedGrade, filterMinPrice, filterMaxPrice, selectedFacilities, selectedServices]);
 
@@ -60,14 +63,8 @@ const AsideFilter = ({ onFilterChange: onChangeFilter }: FilterProps) => {
       facilities: selectedFacilities.join(','),
       services: selectedServices.join(',')
     });
-
     setGeneratedUrl(newUrl); // 상태에 URL 저장
   }, [selectedGrade, filterMinPrice, filterMaxPrice, selectedFacilities, selectedServices]);
-
-  // 필터 상태가 변경될 때 URL 업데이트
-  useEffect(() => {
-    updateUrl();
-  }, [updateUrl]);
 
   // 성급 필터
   const handleHotelGradeChange = (grade: number) => {
@@ -75,9 +72,9 @@ const AsideFilter = ({ onFilterChange: onChangeFilter }: FilterProps) => {
   };
 
   // 시설 필터
-  const handleFacilityChange = (facility: string) => {
+  const handleFacilityChange = (facility: FacilitiesType) => {
     setSelectedFacilities((prev) =>
-      prev.includes(facility) ? prev.filter((item) => item !== facility) : [...prev, facility]
+      prev.includes(facility) ? prev.filter((fac) => fac.id !== facility.id) : [...prev, facility]
     );
   };
 
@@ -139,46 +136,10 @@ const AsideFilter = ({ onFilterChange: onChangeFilter }: FilterProps) => {
       </div>
 
       {/* 시설 필터 */}
-      <div className="mt-6">
-        <h3 className="text-lg font-semibold mb-2">편의 시설</h3>
-        <ul className="flex flex-wrap gap-2">
-          {['사우나', '수영장', '스키장', '골프장', '바베큐', '레스토랑', '피트니스', '주방/식당', 'BAR', '주차장'].map(
-            (facility) => (
-              <li key={facility}>
-                <button
-                  type="button"
-                  onClick={() => handleFacilityChange(facility)}
-                  className={`px-3 py-1 rounded-full border ${
-                    selectedFacilities.includes(facility) ? 'bg-[#B3916A] text-white' : 'bg-white text-gray-700'
-                  }`}
-                >
-                  {facility}
-                </button>
-              </li>
-            )
-          )}
-        </ul>
-      </div>
+      <FacilityList selectedFacilities={selectedFacilities} onFacilityChange={handleFacilityChange} />
 
       {/* 서비스 필터 */}
-      <div className="mt-6">
-        <h3 className="text-lg font-semibold mb-2">서비스</h3>
-        <ul className="flex flex-wrap gap-2">
-          {['조식제공', '무료주차', '발렛', '반려견동반', '장애인편의', '유모차', '애기침대'].map((service) => (
-            <li key={service}>
-              <button
-                type="button"
-                onClick={() => handleServiceChange(service)}
-                className={`px-3 py-1 rounded-full border ${
-                  selectedServices.includes(service) ? 'bg-[#B3916A] text-white' : 'bg-white text-gray-700'
-                }`}
-              >
-                {service}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <ServiceList selectedServices={selectedFacilities} onFacilityChange={handleFacilityChange} />
     </aside>
   );
 };

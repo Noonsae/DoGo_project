@@ -36,7 +36,6 @@ const SearchBox = () => {
   // 모달 닫기
   const closeModal = () => {
     setActiveModal(null);
-    console.log('Modal closed, activeModal:', activeModal);
   };
 
   // 스크롤 이벤트 핸들러

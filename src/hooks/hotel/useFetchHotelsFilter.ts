@@ -36,9 +36,6 @@ const fetchHotelsQueryFn = async ({
 const getNextPageParamFn = (lastPage: FetchHotelsFilterResponse, allPages: FetchHotelsFilterResponse[]) => {
   const totalLoaded = allPages.flatMap((page) => page.items).length;
 
-  console.log('totalLoaded:', totalLoaded);
-  console.log('lastPage.totalCount:', lastPage.totalCount);
-
   // 만약 로딩해야 할 데이터가 남아있다면
   if (totalLoaded >= lastPage.totalCount) return undefined;
 

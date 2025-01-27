@@ -90,7 +90,6 @@ const DurationModal = ({ left = '36%', top, onClose }: { left?: string; top?: st
               plugins={[dayGridPlugin]}
               initialView="dayGridMonth"
               dayCellContent={(arg) => {
-                console.log({ arg });
                 // arg.dayNumber는 날짜 숫자
                 return (
                   // 버튼 onClick -> state 넣기

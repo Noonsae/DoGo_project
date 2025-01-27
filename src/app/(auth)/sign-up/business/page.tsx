@@ -28,7 +28,6 @@ export default function SignUpBusinessPage() {
         nickname,
         role: 'business'
       });
-      console.log({ result });
       if (!result.success) {
         await Swal.fire({
           icon: 'error',
@@ -45,7 +44,6 @@ export default function SignUpBusinessPage() {
       window.location.href = '/';
     } catch (err: any) {
       setError('회원가입 중 오류가 발생했습니다.');
-      console.error(err);
     }
   };
 
