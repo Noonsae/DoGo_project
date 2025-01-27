@@ -106,7 +106,7 @@ const SignUpUser: React.FC<SignUpProps> = ({
             placeholder="이메일을 입력해 주세요."
             value={email}
             onChange={(e) => handleInputChange('email', e.target.value)}
-            className={`w-full mb-[8px] sm:mb-[12px]  h-12 px-3 border rounded-[8px] focus:outline-none ${
+            className={`mb-[20px] sm:mb-[24px] w-full  h-12 px-3 border rounded-[8px] focus:outline-none ${
               errors.email
                 ? 'border-red-500 focus:ring-red-500'
                 : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
@@ -115,16 +115,14 @@ const SignUpUser: React.FC<SignUpProps> = ({
           {errors.email && <p className="text-[14px] text-red-500">{errors.email}</p>}
 
           {/* 비밀번호 */}
-          <p className="mb-[12px] sm:mb-[16px] font-pretendard mt-[20px] text-[16px] font-semibold leading-[135%]">
-            비밀번호
-          </p>
+          <p className="mb-[12px] sm:mb-[16px] font-pretendard  text-[16px] font-semibold leading-[135%]">비밀번호</p>
           <div className="relative">
             <input
               type={form.updatePassword ? 'text' : 'password'}
               placeholder="비밀번호를 입력해 주세요."
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full mb-[8px] sm:mb-[12px] h-12 px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none"
+              className="mb-[20px] sm:mb-[24px] w-full h-12 px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none"
             />
             <p className="text-xs pb-[4px] mb-[12px] sm:mb-[16px] px-1 text-gray-700">
               영문 대•소문자/숫자/특수문자 중 2가지 이상 조합, 8자~32자
@@ -148,7 +146,7 @@ const SignUpUser: React.FC<SignUpProps> = ({
               placeholder="비밀번호를 다시 입력해 주세요."
               value={form.confirmPassword}
               onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-              className={`mb-[8px] sm:mb-[12px] w-full h-12 px-3 border rounded-[8px] focus:outline-none ${
+              className={`mb-[20px] sm:mb-[24px]  w-full h-12 px-3 border rounded-[8px] focus:outline-none ${
                 errors.confirmPassword
                   ? 'border-red-500 focus:ring-red-500'
                   : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
@@ -167,15 +165,13 @@ const SignUpUser: React.FC<SignUpProps> = ({
           {errors.confirmPassword && <p className="text-sm  text-red-500">{errors.confirmPassword}</p>}
 
           {/* 휴대폰 번호 */}
-          <p className="mb-[12px] sm:mb-[16px] font-pretendard mt-[20px] text-[16px] font-semibold leading-[135%]">
-            휴대폰 번호
-          </p>
+          <p className="mb-[12px] sm:mb-[16px] font-pretendard text-[16px] font-semibold leading-[135%]">휴대폰 번호</p>
           <input
             type="tel"
             placeholder="휴대폰 번호를 입력해 주세요."
             value={phone}
             onChange={(e) => handleInputChange('phone', e.target.value)}
-            className={`w-full mb-[8px] sm:mb-[12px] h-12 px-3 border rounded-[8px] focus:outline-none ${
+            className={`mb-[20px] sm:mb-[24px] w-full h-12 px-3 border rounded-[8px] focus:outline-none ${
               errors.phone
                 ? 'border-red-500 focus:ring-red-500'
                 : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
@@ -190,7 +186,7 @@ const SignUpUser: React.FC<SignUpProps> = ({
             placeholder="이름을 입력해 주세요."
             value={name}
             onChange={(e) => handleInputChange('name', e.target.value)}
-            className={`w-full mb-[8px] sm:mb-[12px]  h-12 px-3 border rounded-[8px] focus:outline-none ${
+            className={`mb-[20px] sm:mb-[24px] w-full  h-12 px-3 border rounded-[8px] focus:outline-none ${
               errors.name
                 ? 'border-red-500 mb-[20px] focus:ring-red-500'
                 : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
@@ -199,15 +195,13 @@ const SignUpUser: React.FC<SignUpProps> = ({
           {errors.name && <p className="text-[14px] text-red-500">{errors.name}</p>}
 
           {/* 닉네임 */}
-          <p className="font-pretendard mb-[12px] sm:mb-[16px] mt-[20px] text-[16px] font-semibold leading-[135%]">
-            닉네임
-          </p>
+          <p className="font-pretendard mb-[12px] sm:mb-[16px]  text-[16px] font-semibold leading-[135%]">닉네임</p>
           <input
             type="text"
             placeholder="닉네임을 입력해 주세요."
             value={nickname}
             onChange={(e) => handleInputChange('nickname', e.target.value)}
-            className={`w-full mb-[8px] sm:mb-[12px]  h-12 px-3 border rounded-[8px] focus:outline-none ${
+            className={`mb-[20px] sm:mb-[24px] w-full h-12 px-3 border rounded-[8px] focus:outline-none ${
               errors.nickname
                 ? 'border-red-500  focus:ring-red-500'
                 : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
@@ -219,7 +213,7 @@ const SignUpUser: React.FC<SignUpProps> = ({
           <button
             type="button"
             onClick={handleSignUp}
-            className="text-white text-center font-pretendard text-[20px] font-semibold leading-[135%] w-full mt-[24px] sm:mt-[32px] mb-[40px] sm:mb-[48px] bg-[#B3916A]  py-3 px-4 rounded-md hover:bg-[#a37e5f] transition "
+            className="text-white text-center font-pretendard text-[20px] font-semibold leading-[135%] w-full  mb-[40px] sm:mb-[48px] bg-[#B3916A]  py-3 px-4 rounded-md hover:bg-[#a37e5f] transition "
           >
             완료
           </button>
