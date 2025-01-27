@@ -33,7 +33,8 @@ const BookingManager: React.FC = () => {
 
       const { data, error } = await browserSupabase()
         .from('bookings')
-        .select(`
+        .select(
+          `
           id,
           user_id,
           room_id,
@@ -45,7 +46,8 @@ const BookingManager: React.FC = () => {
             room_name,
             price
           )
-        `)
+        `
+        )
         .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1)
         .order('created_at', { ascending: false });
 
@@ -63,8 +65,8 @@ const BookingManager: React.FC = () => {
         created_at: booking.created_at,
         room_details: {
           room_name: booking.rooms?.room_name ?? 'N/A',
-          price: booking.rooms?.price ?? 0,
-        },
+          price: booking.rooms?.price ?? 0
+        }
       }));
 
       setBookings((prev) => [...prev, ...formattedData]);
@@ -80,13 +82,9 @@ const BookingManager: React.FC = () => {
     fetchBookings(1);
   }, []);
 
-  if (loading && bookings.length === 0)
-    return <p className="text-center text-gray-600">로딩 중...</p>;
+  if (loading && bookings.length === 0) return <p className="text-center text-gray-600">로딩 중...</p>;
 
   if (error) return <p className="text-center text-red-500">{error}</p>;
-
-  if (bookings.length === 0)
-    return <p className="text-center text-gray-600">등록된 예약이 없습니다.</p>;
 
   return (
     <div className="p-6 bg-white rounded-lg shadow">
@@ -104,20 +102,15 @@ const BookingManager: React.FC = () => {
           </tr>
         </thead>
         <tbody>
+          {bookings.length === 0 && <p className="text-center text-gray-600">등록된 예약이 없습니다.</p>}
           {bookings.map((booking) => (
             <tr key={booking.id}>
               <td className="border p-2">{booking.id}</td>
               <td className="border p-2">{booking.user_id}</td>
               <td className="border p-2">{booking.room_details.room_name}</td>
-              <td className="border p-2">
-                {booking.room_details.price.toLocaleString()}원
-              </td>
-              <td className="border p-2">
-                {new Date(booking.check_in_date).toLocaleDateString()}
-              </td>
-              <td className="border p-2">
-                {new Date(booking.check_out_date).toLocaleDateString()}
-              </td>
+              <td className="border p-2">{booking.room_details.price.toLocaleString()}원</td>
+              <td className="border p-2">{new Date(booking.check_in_date).toLocaleDateString()}</td>
+              <td className="border p-2">{new Date(booking.check_out_date).toLocaleDateString()}</td>
               <td className="border p-2">{booking.status}</td>
             </tr>
           ))}

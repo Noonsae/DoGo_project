@@ -26,7 +26,7 @@ const UserPage: React.FC = () => {
         // Supabase에서 인증된 사용자 정보 가져오기
         const {
           data: { user },
-          error: authError,
+          error: authError
         } = await browserSupabase().auth.getUser();
 
         // 인증 오류 또는 사용자 데이터가 없을 경우 예외 처리
@@ -74,23 +74,9 @@ const UserPage: React.FC = () => {
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
-    <div className="flex h-screen translate-y-6">
-      {/* 사이드바 */}
-      <aside className="w-64 bg-gray-100 h-full shadow-md fixed">
-        <UserSidebar
-          userId={userId!} // userId를 UserSidebar에 전달
-          currentTab={currentTab}
-          setCurrentTab={(tab) => setCurrentTab(tab as TabType)} // 문자열을 TabType으로 캐스팅
-        />
-      </aside>
-
-      {/* 메인 콘텐츠 */}
-      <main className="flex-1 ml-64 p-6 overflow-auto">
-        <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-8">
-          <h1 className="text-2xl font-bold mb-4">사용자 페이지</h1>
-          {renderContent()}
-        </div>
-      </main>
+    <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-8">
+      <h1 className="text-2xl font-bold mb-4">사용자 페이지</h1>
+      {renderContent()}
     </div>
   );
 };
