@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { FiChevronLeft } from 'react-icons/fi';
-import { FiChevronRight } from 'react-icons/fi';
+import FiChevronLeftIcon from '../icon/FiChevronLeftIcon';
+import FiChevronRightIcon from '../icon/FiChevronRightIcon';
 import { IoClose } from 'react-icons/io5';
 interface ModalProps {
   isOpen: boolean;
@@ -54,7 +54,7 @@ const UpModal = ({ isOpen, onClose, images = [], name }: ModalProps) => {
 
         {/* 메인 이미지 */}
         <div className="bg-[#FAFAFA] w-full relative flex justify-center items-center h-[540px] ">
-          <FiChevronLeft
+          <FiChevronLeftIcon
             onClick={handlePrev}
             className="text-[48px] absolute left-[24px] top-1/2 transform -translate-y-1/2 text-gray-500 bg-white shadow-md rounded-full p-2 hover:shadow-lg hover:text-gray-700 focus:ring cursor-pointer "
             aria-label="Previous image"
@@ -67,7 +67,7 @@ const UpModal = ({ isOpen, onClose, images = [], name }: ModalProps) => {
             height={540}
             className="object-contain w-full h-full rounded-md"
           />
-          <FiChevronRight
+          <FiChevronRightIcon
             onClick={handleNext}
             className="text-[48px] absolute right-[24px] top-1/2 transform -translate-y-1/2 text-gray-500 bg-white shadow-md rounded-full p-2 hover:shadow-lg hover:text-gray-700 focus:ring cursor-pointer "
             aria-label="Next image"
