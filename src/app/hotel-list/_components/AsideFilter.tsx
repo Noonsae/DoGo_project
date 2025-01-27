@@ -1,8 +1,9 @@
 'use client';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import HiOutlineRefreshIcon from '@/components/ui/icon/HiOutlineRefreshIcon';
 import DualSlider from './DualSlider';
+import generateUrl from '@/utils/urlHelpers';
 
 interface FilterObject {
   grade: number[];
@@ -35,9 +36,10 @@ const AsideFilter = ({ onFilterChange: onChangeFilter }: FilterProps) => {
 
   const [selectedGrade, setSelectedGrade] = useState<number[]>([]);
   const [filterMinPrice, setFilterMinPrice] = useState(0);
-  const [filterMaxPrice, setFilterMaxPrice] = useState(10000000); // 초기값 50만 원
+  const [filterMaxPrice, setFilterMaxPrice] = useState(5000000); // 초기값 500만원
   const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [generatedUrl, setGeneratedUrl] = useState<string>(''); // URL 저장 상태
 
   useEffect(() => {
     // 변경 사항이 있을 때만 onFilterChange 호출
@@ -50,39 +52,45 @@ const AsideFilter = ({ onFilterChange: onChangeFilter }: FilterProps) => {
     });
   }, [selectedGrade, filterMinPrice, filterMaxPrice, selectedFacilities, selectedServices]);
 
-  const handleHotelGradeChange = (grade: number) => {
-    // setSelectedGrade((prev) => (prev.includes(grade) ? prev.filter((item) => item !== grade) : [...prev, grade]));
-    const urlStars = searchParams.get('stars');
+  // 필터 상태가 변경될 때 URL 생성
+  const updateUrl = useCallback(() => {
+    const newUrl = generateUrl({
+      stars: selectedGrade.join(','),
+      prices: `${filterMinPrice}-${filterMaxPrice}`,
+      facilities: selectedFacilities.join(','),
+      services: selectedServices.join(',')
+    });
 
-    const stars = urlStars?.split(',') || [];
-    const index = stars.findIndex((star) => Number(star) === grade);
-    if (index !== -1) {
-      stars.splice(index, 1);
-    } else {
-      stars.push(String(grade));
-    }
-    console.log({ stars });
-    router.push(pathname + '?' + createQueryString('stars', stars.join(',')));
+    setGeneratedUrl(newUrl); // 상태에 URL 저장
+  }, [selectedGrade, filterMinPrice, filterMaxPrice, selectedFacilities, selectedServices]);
+
+  // 필터 상태가 변경될 때 URL 업데이트
+  useEffect(() => {
+    updateUrl();
+  }, [updateUrl]);
+
+  // 성급 필터
+  const handleHotelGradeChange = (grade: number) => {
+    setSelectedGrade((prev) => (prev.includes(grade) ? prev.filter((item) => item !== grade) : [...prev, grade]));
   };
 
+  // 시설 필터
   const handleFacilityChange = (facility: string) => {
     setSelectedFacilities((prev) =>
       prev.includes(facility) ? prev.filter((item) => item !== facility) : [...prev, facility]
     );
   };
 
+  // 서비스 필터
   const handleServiceChange = (service: string) => {
     setSelectedServices((prev) =>
       prev.includes(service) ? prev.filter((item) => item !== service) : [...prev, service]
     );
   };
 
-  const handlePriceChange = (type: 'min' | 'max', value: number) => {
-    if (type === 'min') {
-      setFilterMinPrice(value > filterMaxPrice ? filterMaxPrice - 1 : value); // max 값 초과 방지
-    } else if (type === 'max') {
-      setFilterMaxPrice(value < filterMinPrice ? filterMinPrice + 1 : value); // min 값 초과 방지
-    }
+  const handlePriceChange = (min: number, max: number) => {
+    setFilterMinPrice(min);
+    setFilterMaxPrice(max);
   };
 
   useEffect(() => {
