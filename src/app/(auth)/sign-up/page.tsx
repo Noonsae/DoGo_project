@@ -72,13 +72,17 @@ const Page = () => {
         {/* 다음 버튼 */}
         <button
           onClick={handleNext}
-          className="w-full max-w-[400px] text-[20px] bg-[#B3916A] font-pretendard font-semibold leading-[135%] not-italic text-white py-3 rounded-lg hover:bg-[#a37e5f] transition mb-8"
+          className="w-full max-w-[400px] text-[20px] bg-[#B3916A] font-pretendard font-semibold leading-[135%] not-italic text-white py-3 rounded-lg hover:bg-[#a37e5f] transition mb-[12px] sm:mb-[16px]
+"
         >
           다음
         </button>
-        <p className="w-full max-w-[400px] flex justify-center text-neutral-600">
+        <p className="w-full sm:w-[400px]  flex justify-center text-neutral-600">
           이미 계정이 있으신가요?
-          <button onClick={handleSignIn} className="text-[#534431] ml-3">
+          <button
+            onClick={handleSignIn}
+            className="ml-[8px] sm:ml-[12px]  text-[16px] sm:text-[18px] text-[var(--brand-Darker,#534431)] font-semibold font-pretendard leading-[135%]"
+          >
             로그인
           </button>
         </p>
