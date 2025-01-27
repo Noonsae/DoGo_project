@@ -19,7 +19,6 @@ export async function POST(req: Request) {
         .eq('hotel_id', hotelId);
 
       if (error) {
-        console.error('Status Error:', error);
         return NextResponse.json({ error: error.message || '즐겨찾기 조회 중 오류 발생' }, { status: 500 });
       }
 
@@ -35,7 +34,6 @@ export async function POST(req: Request) {
         .eq('hotel_id', hotelId);
 
       if (existingError) {
-        console.error('Existing Check Error:', existingError);
         return NextResponse.json({ error: existingError.message || '즐겨찾기 조회 중 오류 발생' }, { status: 500 });
       }
 
@@ -54,7 +52,6 @@ export async function POST(req: Request) {
       ]);
 
       if (error) {
-        console.error('Insert Error:', error);
         return NextResponse.json({ error: error.message || '즐겨찾기 추가 중 오류 발생' }, { status: 500 });
       }
 
@@ -65,7 +62,6 @@ export async function POST(req: Request) {
       const { error } = await supabase.from('favorites').delete().eq('user_id', userId).eq('hotel_id', hotelId);
 
       if (error) {
-        console.error('Remove Error:', error);
         return NextResponse.json({ error: error.message || '즐겨찾기 삭제 중 오류 발생' }, { status: 500 });
       }
 
@@ -74,7 +70,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ error: 'Invalid action (status, add 또는 remove를 사용하세요)' }, { status: 400 });
   } catch (error: any) {
-    console.error('API Error:', error);
     return NextResponse.json(
       {
         error: 'Internal Server Error',
@@ -102,13 +97,11 @@ export async function GET(req: Request) {
       .eq('user_id', userId);
 
     if (error) {
-      console.error('Error fetching favorites:', error);
       return NextResponse.json({ error: error.message || '즐겨찾기 데이터를 가져오는 중 오류 발생' }, { status: 500 });
     }
 
     return NextResponse.json(data || []);
   } catch (error: any) {
-    console.error('API Error:', error);
     return NextResponse.json(
       {
         error: 'Internal Server Error',

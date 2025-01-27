@@ -19,7 +19,6 @@ const HamburgerBtn: React.FC = () => {
   // 로그인 상태 확인
   const isLoggedIn = user !== null;
 
-  console.log(user);
 
   // 로그아웃 처리
 

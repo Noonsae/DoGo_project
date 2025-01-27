@@ -20,7 +20,6 @@ const HotelPolicies = ({ hotelId }: HotelPoliciesProps) => {
   useEffect(() => {
     const loadData = async () => {
       try {
-        console.log('Fetching policies for hotelId:', hotelId); // hotelId 확인용 로그
 
         const response = await fetch(`/api/policy?hotel_id=${hotelId}`); // API 호출
         if (!response.ok) {
@@ -29,7 +28,6 @@ const HotelPolicies = ({ hotelId }: HotelPoliciesProps) => {
         }
 
         const data: PolicyType[] = await response.json();
-        console.log('Fetched policies:', data); // 데이터 확인
         setPolicies(data); // 상태 업데이트
       } catch (err: any) {
         console.error('Error fetching policies:', err.message);
@@ -51,7 +49,6 @@ const HotelPolicies = ({ hotelId }: HotelPoliciesProps) => {
       <h2 className="text-2xl font-bold mb-4">숙소 정책</h2>
 
       {sections.map((section) => {
-        console.log('Current Section:', section); // 현재 섹션 확인
         const policy = policies.find((p) => p.policy_name.trim() === section.trim());
 
         return (

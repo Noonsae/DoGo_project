@@ -37,7 +37,6 @@ export default function SignUpUserPage() {
       window.location.href = '/';
     } catch (err: any) {
       setError('회원가입 중 오류가 발생했습니다.');
-      console.error(err);
     }
   };
   const closeModal = async () => {

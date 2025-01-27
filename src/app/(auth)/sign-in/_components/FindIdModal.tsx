@@ -71,7 +71,6 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
         setForm((prevForm) => ({ ...prevForm, modalType: 'failure' }));
       }
     } catch (error) {
-      console.error('아이디 찾기 실패:', error);
       setForm((prevForm) => ({ ...prevForm, modalType: 'failure' }));
     } finally {
       setForm((prevForm) => ({ ...prevForm, isLoading: false }));

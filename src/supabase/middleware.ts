@@ -70,7 +70,7 @@ export async function updateSession(request: NextRequest) {
     (request.nextUrl.pathname.startsWith('/my-page/business') || request.nextUrl.pathname.startsWith('/my-page/admin'))
   ) {
     const url = request.nextUrl.clone();
-    url.pathname = '/my-page/user';
+    url.pathname = '/my-page/user/profile';
     return NextResponse.redirect(url);
   }
   // 이미 로그인을 했고,
@@ -81,10 +81,11 @@ export async function updateSession(request: NextRequest) {
   if (
     user &&
     userRole?.role === 'business' &&
-    (request.nextUrl.pathname.startsWith('/my-page/user') || request.nextUrl.pathname.startsWith('/my-page/admin'))
+    (request.nextUrl.pathname.startsWith('/my-page/user/profile') ||
+      request.nextUrl.pathname.startsWith('/my-page/admin'))
   ) {
     const url = request.nextUrl.clone();
-    url.pathname = '/my-page/business';
+    url.pathname = '/my-page/business/profile';
     return NextResponse.redirect(url);
   }
 

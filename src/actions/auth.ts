@@ -19,7 +19,7 @@ export const kakaoLogin = async () => {
   const supabase = await serverSupabase();
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'kakao',
-    options: { redirectTo: 'http://localhost:3000/api/auth/kakao' }
+    options: { redirectTo: 'https://dsggwbvtcrwuopwelpxy.supabase.co/auth/v1/callback' }
   });
 
   if (error) {

@@ -85,7 +85,6 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
         name: result.user_name || '' // userName이 없으면 빈 문자열
       }));
     } catch (error) {
-      console.error('OTP 요청 실패:', error);
       setErrors({ email: '서버 오류가 발생했습니다.' });
       setForm((prevForm) => ({ ...prevForm, isLoading: false }));
     }
@@ -129,7 +128,6 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
         setErrors({ otp: result.error || '비밀번호 재설정에 실패했습니다.' });
       }
     } catch (error) {
-      console.error('비밀번호 재설정 실패:', error);
       setErrors({ otp: '서버 오류가 발생했습니다.' });
     } finally {
       setForm((prevForm) => ({ ...prevForm, setIsLoading: false }));

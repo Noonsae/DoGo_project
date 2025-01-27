@@ -27,7 +27,6 @@ const HotelListSlider = ({ hotels }: { hotels: HotelWithPriceOnly[] | undefined 
     return <div className="mt-5 text-red-600">해당하는 조건에 맞는 호텔 데이터가 존재하지 않습니다.</div>; // 데이터가 없을 때 처리
   }
 
-  console.log(hotels);
 
   const settings = {
     infinite: hotels.length > 3, // 슬라이드가 3개 이상일 때만 무한 반복

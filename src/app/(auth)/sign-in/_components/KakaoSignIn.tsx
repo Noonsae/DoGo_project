@@ -8,9 +8,7 @@ const KakaoSignIn = () => {
   const kakaoLogin = async () => {
     try {
       await kakaoLoginAction();
-    } catch (err) {
-      console.error('예기치 않은 오류:', err);
-    }
+    } catch (err) {}
   };
 
   return (

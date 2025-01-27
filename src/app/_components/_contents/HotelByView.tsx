@@ -21,7 +21,6 @@ const HotelByView = () => {
 
   // 에러 처리
   if (isError) {
-    console.error('Error fetching hotels:', error);
     return <div className="text-red-500">호텔 데이터를 불러오는 중 오류가 발생했습니다. {error.message}</div>;
   }
 
