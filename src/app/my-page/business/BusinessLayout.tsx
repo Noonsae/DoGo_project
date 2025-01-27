@@ -1,5 +1,3 @@
-// layout.tsx
-
 import BusinessSidebar from '../_components/BusinessSidebar';
 
 const BusinessLayout = ({ children }: { children: React.ReactNode }) => {
