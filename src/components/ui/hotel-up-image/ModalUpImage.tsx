@@ -2,9 +2,9 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { FiChevronLeft } from 'react-icons/fi';
-import { FiChevronRight } from 'react-icons/fi';
-import { IoClose } from 'react-icons/io5';
+import FiChevronLeftIcon from '../icon/FiChevronLeftIcon';
+import FiChevronRightIcon from '../icon/FiChevronRightIcon';
+import IoCloseIcon from '../icon/IoCloseIcon';
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -48,7 +48,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, images = [], name }) => 
         {/* 헤더 */}
         <div className="flex justify-center items-center px-6 py-4 bg-gray-900 text-white rounded-t-lg">
           <h2 className="text-lg font-semibold ">{name}</h2>
-          <IoClose
+          <IoCloseIcon
             onClick={onClose}
             className="absolute top-4 right-4 text-2xl cursor-pointer"
             aria-label="Close modal"
@@ -57,7 +57,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, images = [], name }) => 
 
         {/* 메인 이미지 */}
         <div className="relative flex justify-center items-center p-4">
-          <FiChevronLeft
+          <FiChevronLeftIcon
             onClick={handlePrev}
             className="text-[50px] absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 bg-white shadow-md rounded-full p-2 hover:shadow-lg hover:text-gray-700 focus:ring cursor-pointer "
             aria-label="Previous image"
@@ -70,7 +70,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, images = [], name }) => 
             height={400}
             className="object-contain max-h-[400px] rounded-md"
           />
-          <FiChevronRight
+          <FiChevronRightIcon
             onClick={handleNext}
             className="text-[50px] absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 bg-white shadow-md rounded-full p-2 hover:shadow-lg hover:text-gray-700 focus:ring cursor-pointer "
             aria-label="Next image"

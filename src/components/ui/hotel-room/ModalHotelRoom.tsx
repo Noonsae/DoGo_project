@@ -1,10 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { IoClose } from 'react-icons/io5';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import { IoCheckmarkCircle } from 'react-icons/io5';
+import IoCloseIcon from '../icon/IoCloseIcon';
 import { Database } from '@/types/supabase/supabase-type';
+import FiChevronRight from '../icon/FiChevronRight';
+import FiChevronLeft from '../icon/FiChevronLeft';
+import IoCheckmarkCircle from '../icon/IoCheckmarkCircle';
 type RoomType = Database['public']['Tables']['rooms']['Row'];
 interface ModalProps {
   isOpen: boolean;
@@ -42,15 +43,16 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, room }) => {
   };
 
   const showNextImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % room.room_img_url.length);
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % (room.room_img_url as string[]).length);
   };
 
   const showPreviousImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex === 0 ? room.room_img_url.length - 1 : prevIndex - 1));
+    setCurrentImageIndex((prevIndex) => (prevIndex === 0 ? (room.room_img_url as string[]).length - 1 : prevIndex - 1));
   };
 
   const totalPrice = room.price - room.tax_and_fee;
   const finalPrice = totalPrice;
+  (room.room_img_url as string[]).length;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
@@ -58,7 +60,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, room }) => {
         {/* 닫기 버튼 */}
         <div className="sticky top-0 z-10 bg-[#221A1A] text-white">
           <h2 className="text-xl font-bold p-4 text-center">{room.room_name}</h2>
-          <IoClose onClick={onClose} className="absolute top-4 right-4 text-2xl cursor-pointer" />
+          <IoCloseIcon onClick={onClose} className="absolute top-4 right-4 text-2xl cursor-pointer" />
         </div>
 
         {/* 네비게이션 탭 */}
@@ -85,10 +87,10 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, room }) => {
           {/* 객실 정보 */}
           <section id="info" className="space-y-4">
             <div className="relative w-full h-64 bg-gray-100 rounded-md">
-              {room.room_img_url.length > 0 ? (
+              {(room.room_img_url as string[]).length > 0 ? (
                 <>
                   <img
-                    src={room.room_img_url[currentImageIndex]}
+                    src={(room.room_img_url as string[])[currentImageIndex]}
                     alt="Room"
                     className="object-cover w-full h-full rounded-md"
                   />
@@ -127,7 +129,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, room }) => {
                 room.option.map((item, index) => (
                   <li key={index} className="flex items-center space-x-2 p-2">
                     <IoCheckmarkCircle />
-                    <span>{item}</span>
+                    <span>{item as string}</span>
                   </li>
                 ))
               ) : (
