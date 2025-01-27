@@ -94,18 +94,20 @@ const Page = () => {
         <KakaoSignIn />
 
         {/* 하단 링크 */}
-        <div className="flex w-full max-w-[400px] justify-center text-sm text-gray-500 mt-4">
+        <div className="flex w-full max-w-[400px] justify-center items-center text-sm text-gray-500 mt-4">
           <button
             type="button"
-            className="m-[2px] hover:underline"
+            className="flex-1 text-right m-[2px] hover:underline"
             onClick={() => window.open('https://www.kakao.com/policy/privacy', '_blank')}
           >
             개인정보처리방침
           </button>
+
           <DividerIcon />
+
           <button
             type="button"
-            className="hover:underline"
+            className="flex-1 text-left hover:underline"
             onClick={() => window.open('https://www.kakao.com/policy/terms?type=a&lang=ko', '_blank')}
           >
             이용약관
