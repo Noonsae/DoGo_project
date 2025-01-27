@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 import { browserSupabase } from '@/supabase/supabase-client';
 
 export async function POST(request: Request) {
@@ -10,7 +9,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: '이름과 휴대폰 번호는 필수입니다.' }, { status: 400 });
     }
 
-    const supabase = browserSupabase({ headers: request.headers, cookies });
+    const supabase = browserSupabase();
 
     const { data, error } = await supabase
       .from('users')

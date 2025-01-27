@@ -4,7 +4,7 @@ import {
   UseFetchHotelsFilterParamsType,
   FetchHotelsFilterResponse,
   FiltersType
-} from '@/types/filter/hotel-filter-type';
+} from '@/types/hotel/hotel-filter-type';
 
 /**
  * 페이지네이션 또는 인피니티 스크롤을 지원하는 React Query 훅

@@ -4,20 +4,17 @@ import { createClient } from '@supabase/supabase-js';
 export async function POST(request: Request) {
   try {
     const { otp, newPassword, role } = await request.json();
-    // 문제점
-    // 비밀번호 불일치 에러메시지 없음
+
     if (!otp || !newPassword || !role) {
       return NextResponse.json({ error: 'OTP와 새 비밀번호는 필수입니다.' }, { status: 400 });
     }
 
     const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
 
-    // OTP 검증
     const { data: resetRequest, error: otpError } = await supabase
       .from('password_reset_requests')
       .select('user_id, expires_at')
       .eq('otp', otp)
-      // .eq('role', role)
       .single();
 
     if (otpError || !resetRequest) {
