@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { IoClose } from 'react-icons/io5';
 // 커밋용 주석
+// 커밋용 주석
 interface DownModalProps {
   isOpen: boolean;
   onClose: () => void;
