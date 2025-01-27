@@ -106,7 +106,7 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
             사업자 회원 회원가입
           </h6>
 
-          <p className="font-pretendard mb-[12px] sm:mb-[16px] text-[16px] font-semibold leading-[135%]">
+          <p className="text-neutral-800 font-semibold text-[16px] leading-[135%] font-pretendard  mb-[12px] sm:mb-[16px] ">
             사업자 이메일
           </p>
           <input
@@ -122,7 +122,9 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
           />
           {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
 
-          <p className="font-pretendard mb-[12px] sm:mb-[16px] text-[16px] font-semibold leading-[135%]">비밀번호</p>
+          <p className="text-neutral-800 font-semibold text-[16px] leading-[135%] font-pretendard  mb-[12px] sm:mb-[16px] ">
+            비밀번호
+          </p>
           <div className="relative w-full">
             <input
               type={form.showPassword ? 'text' : 'password'}
@@ -148,7 +150,7 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
             </button>
           </div>
 
-          <p className="font-pretendard mb-[12px] sm:mb-[16px] text-[16px] font-semibold leading-[135%]">
+          <p className="text-neutral-800 font-semibold text-[16px] leading-[135%] font-pretendard  mb-[12px] sm:mb-[16px] ">
             비밀번호 확인
           </p>
           <div className="relative w-full">
@@ -171,14 +173,16 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
                   showConfirmPassword: !prevForm.showConfirmPassword
                 }))
               }
-              className="absolute right-[16px] top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-black"
+              className="absolute right-[16px] top-6 transform -translate-y-1/2 text-gray-600 hover:text-black"
             >
               {form.showConfirmPassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
             </button>
           </div>
           {errors.confirmPassword && <p className="text-sm text-red-500">{errors.confirmPassword}</p>}
 
-          <p className="mb-[12px] sm:mb-[16px]  font-semibold text-gray-700">담당자 이름</p>
+          <p className="text-neutral-800 font-semibold text-[16px] leading-[135%] font-pretendard  mb-[12px] sm:mb-[16px] ">
+            담당자 이름
+          </p>
           <input
             type="text"
             placeholder="이름을 입력해주세요"
@@ -192,7 +196,9 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
           />
           {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
 
-          <p className="font-pretendard mb-[12px] sm:mb-[16px] text-[16px] font-semibold leading-[135%]">담당자 번호</p>
+          <p className="text-neutral-800 font-semibold text-[16px] leading-[135%] font-pretendard  mb-[12px] sm:mb-[16px] ">
+            담당자 번호
+          </p>
           <input
             type="tel"
             placeholder="휴대폰 번호를 입력해주세요"
@@ -206,7 +212,9 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
           />
           {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}
 
-          <p className="font-pretendard mb-[12px] sm:mb-[16px] text-[16px] font-semibold leading-[135%]">사업자 번호</p>
+          <p className="text-neutral-800 font-semibold text-[16px] leading-[135%] font-pretendard  mb-[12px] sm:mb-[16px] ">
+            사업자 번호
+          </p>
           <input
             type="text"
             placeholder="사업자 번호를 입력해주세요"
@@ -222,7 +230,7 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
 
           <button
             onClick={handleSignUp}
-            className="w-full mt-[24px] sm:mt-[32px] mb-[40px] sm:mb-[48px] bg-[#B3916A] text-white font-semibold py-3 px-4 rounded-md hover:bg-[#a37e5f] transition mb-4"
+            className="text-white text-center font-pretendard text-[20px] font-semibold leading-[135%] w-full mt-[24px] sm:mt-[32px] mb-[40px] sm:mb-[48px] bg-[#B3916A]  py-3 px-4 rounded-md hover:bg-[#a37e5f] transition "
           >
             완료
           </button>

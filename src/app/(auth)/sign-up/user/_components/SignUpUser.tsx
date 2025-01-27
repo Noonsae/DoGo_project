@@ -219,7 +219,7 @@ const SignUpUser: React.FC<SignUpProps> = ({
           <button
             type="button"
             onClick={handleSignUp}
-            className="mt-[24px] sm:mt-[32px] mb-[40px] sm:mb-[48px] w-full bg-[#B3916A] text-white font-semibold py-3 px-4 rounded-md focus:border-[#B3916A] focus:outline-none"
+            className="text-white text-center font-pretendard text-[20px] font-semibold leading-[135%] w-full mt-[24px] sm:mt-[32px] mb-[40px] sm:mb-[48px] bg-[#B3916A]  py-3 px-4 rounded-md hover:bg-[#a37e5f] transition "
           >
             완료
           </button>
