@@ -68,14 +68,12 @@ const HotelManagement: React.FC = () => {
   return (
     <div className="flex min-h-screen">
       {/* BusinessSidebar 추가 */}
-      <BusinessSidebar userId="your-user-id" currentTab="hotel" /> {/* userId를 동적으로 설정 */}
       {/* 메인 컨텐츠 */}
       <main className="flex-1 p-8 bg-gray-50">
         <h1 className="text-3xl font-bold mb-8">호텔 관리</h1>
         <div className="bg-white p-6 rounded-lg shadow-md">
-          {loading ? (
-            <p className="text-center text-gray-600">로딩 중...</p>
-          ) : (
+          {loading && <p className="text-center text-gray-600">로딩 중...</p>}
+          {hotel ? (
             <>
               <div className="mb-6">
                 <h2 className="text-xl font-semibold mb-2">기본 정보</h2>
@@ -126,20 +124,15 @@ const HotelManagement: React.FC = () => {
                       ))}
                 </ul>
               </div>
-
-              {!hotel && (
-                <div className="text-center mt-8">
-                  <button
-                    onClick={() => setIsModalOpen(true)}
-                    className="mt-4 bg-blue-500 text-white px-6 py-2 rounded-lg"
-                  >
-                    호텔 등록하기
-                  </button>
-                </div>
-              )}
             </>
+          ) : (
+            <div className="text-center mt-8">
+              <button onClick={() => setIsModalOpen(true)} className="mt-4 bg-blue-500 text-white px-6 py-2 rounded-lg">
+                호텔 등록하기
+              </button>
+            </div>
           )}
-        </div>        
+        </div>
       </main>
     </div>
   );

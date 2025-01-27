@@ -30,7 +30,7 @@ const UserFavoritePage: React.FC = () => {
 
         const {
           data: { user },
-          error: authError,
+          error: authError
         } = await browserSupabase().auth.getUser();
 
         if (authError || !user) {
@@ -40,7 +40,8 @@ const UserFavoritePage: React.FC = () => {
         // Supabase에서 즐겨찾기 데이터와 호텔 데이터를 조인하여 가져옴
         const { data, error } = await browserSupabase()
           .from('favorites')
-          .select(`
+          .select(
+            `
             id,
             hotel_id,
             is_favorite,
@@ -50,7 +51,8 @@ const UserFavoritePage: React.FC = () => {
               main_img_url,
               stars
             )
-          `)
+          `
+          )
           .eq('user_id', user.id);
 
         if (error) throw error;
@@ -65,8 +67,8 @@ const UserFavoritePage: React.FC = () => {
               name: favorite.hotels?.name || 'N/A',
               address: favorite.hotels?.address || 'N/A',
               main_img_url: favorite.hotels?.main_img_url || null,
-              stars: favorite.hotels?.stars || 0,
-            },
+              stars: favorite.hotels?.stars || 0
+            }
           })) || [];
 
         setFavorites(formattedData);
@@ -83,12 +85,12 @@ const UserFavoritePage: React.FC = () => {
 
   if (loading) return <p className="text-center text-gray-500">로딩 중...</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>;
-  if (favorites.length === 0) return <p className="text-center text-gray-500">즐겨찾기한 호텔이 없습니다.</p>;
 
   return (
     <div className="p-6 bg-white rounded-lg shadow">
       <h1 className="text-2xl font-bold mb-4">내 즐겨찾기</h1>
       <ul className="space-y-4">
+        {favorites.length === 0 && <p className="text-center text-gray-500">즐겨찾기한 호텔이 없습니다.</p>}
         {favorites.map((favorite) => (
           <li key={favorite.id} className="p-4 border rounded shadow">
             <div className="flex items-center space-x-4">
@@ -103,9 +105,7 @@ const UserFavoritePage: React.FC = () => {
               <div className="flex-1">
                 <h3 className="font-bold text-lg">{favorite.hotel_details.name}</h3>
                 <p className="text-sm text-gray-600">{favorite.hotel_details.address}</p>
-                <p className="text-sm text-yellow-500">
-                  평점: {favorite.hotel_details.stars} / 5
-                </p>
+                <p className="text-sm text-yellow-500">평점: {favorite.hotel_details.stars} / 5</p>
               </div>
             </div>
           </li>

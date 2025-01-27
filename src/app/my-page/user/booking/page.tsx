@@ -105,26 +105,32 @@ const UserBookingPage: React.FC = () => {
 
   if (loading) return <p className="text-center text-gray-500">로딩 중...</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>;
-  if (bookings.length === 0)
-    return (
-      <div className="flex items-center justify-center h-screen bg-gray-100">
-        <div className="p-6 bg-white rounded-lg shadow text-center flex flex-col items-center">
-          <h1 className="text-2xl font-bold mb-4">내 예약</h1>
-          <p className="text-[50px] font-medium text-gray-500">예약이 되어 있지 않습니다.</p>
-          <Link
-            href="/"
-            className="mt-8 inline-block p-4 bg-[#B3916A] rounded-[12px] text-white text-[20px] font-medium hover:bg-[#8F7455] active:bg-[#6B573F]"
-          >
-            홈페이지로 돌아가기
-          </Link>
-        </div>
-      </div>
-    );
+  // if (bookings.length === 0)
+  //   return (
+  //     <div className="flex items-center justify-center h-screen bg-gray-100">
+  //       <div className="p-6 bg-white rounded-lg shadow text-center flex flex-col items-center">
+  //         <h1 className="text-2xl font-bold mb-4">내 예약</h1>
+  //         <p className="text-[50px] font-medium text-gray-500">예약이 되어 있지 않습니다.</p>
+  //         <Link
+  //           href="/"
+  //           className="mt-8 inline-block p-4 bg-[#B3916A] rounded-[12px] text-white text-[20px] font-medium hover:bg-[#8F7455] active:bg-[#6B573F]"
+  //         >
+  //           홈페이지로 돌아가기
+  //         </Link>
+  //       </div>
+  //     </div>
+  //   );
 
   return (
     <div className="p-6 bg-white rounded-lg shadow">
       <h1 className="text-2xl font-bold mb-4">내 예약</h1>
       <ul className="space-y-4">
+        {bookings.length === 0 && (
+          <>
+            <h1 className="text-2xl font-bold mb-4">내 예약</h1>
+            <p className="text-[50px] font-medium text-gray-500">예약이 되어 있지 않습니다.</p>
+          </>
+        )}
         {bookings.map((booking) => (
           <li key={booking.id} className="p-4 border rounded shadow">
             <div className="flex items-center space-x-4">

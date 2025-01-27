@@ -74,23 +74,9 @@ const UserPage: React.FC = () => {
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
-    <div className="flex h-screen translate-y-20 mt-12">
-      {/* 사이드바 */}
-      <aside className="w-64 bg-gray-100 fixed top-0 left-0 h-screen overflow-auto shadow-md fixed">
-        <UserSidebar
-          userId={userId!} // userId를 UserSidebar에 전달
-          currentTab={currentTab}
-          setCurrentTab={(tab) => setCurrentTab(tab as TabType)} // 문자열을 TabType으로 캐스팅
-        />
-      </aside>
-
-      {/* 메인 콘텐츠 */}
-      <main className="flex-1 ml-64 p-6 overflow-auto">
-        <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-8">
-          <h1 className="text-2xl font-bold mb-4">사용자 페이지</h1>
-          {renderContent()}
-        </div>
-      </main>
+    <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-8">
+      <h1 className="text-2xl font-bold mb-4">사용자 페이지</h1>
+      {renderContent()}
     </div>
   );
 };
