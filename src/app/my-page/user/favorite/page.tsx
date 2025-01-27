@@ -1,4 +1,4 @@
-//유저 찜 목록 페이지
+//
 'use client';
 
 import React, { useState, useEffect } from 'react';

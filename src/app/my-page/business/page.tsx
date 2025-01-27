@@ -88,7 +88,7 @@ const BusinessPage: React.FC<BusinessPageProps> = ({ userId }) => {
   };
 
   return (
-    <div className="flex h-screen translate-y-6">
+    <div className="flex h-screen translate-y-20 mt-12">
       {/* Sidebar */}
       <aside className="w-64 bg-gray-100 fixed top-0 left-0 h-screen overflow-auto">
         <BusinessSidebar

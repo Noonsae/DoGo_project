@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 
-
 import ProfileContent from '@/app/my-page/_components/ProfileContent';
 import BookingsContent from '@/app/my-page/_components/BookingsContent';
 import FavoritesContent from '@/app/my-page/_components/FavoritesContent';
@@ -27,7 +26,7 @@ const UserPage: React.FC = () => {
         // Supabase에서 인증된 사용자 정보 가져오기
         const {
           data: { user },
-          error: authError,
+          error: authError
         } = await browserSupabase().auth.getUser();
 
         // 인증 오류 또는 사용자 데이터가 없을 경우 예외 처리
@@ -75,9 +74,9 @@ const UserPage: React.FC = () => {
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
-    <div className="flex h-screen translate-y-6">
+    <div className="flex h-screen translate-y-20 mt-12">
       {/* 사이드바 */}
-      <aside className="w-64 bg-gray-100 h-full shadow-md fixed">
+      <aside className="w-64 bg-gray-100 fixed top-0 left-0 h-screen overflow-auto shadow-md fixed">
         <UserSidebar
           userId={userId!} // userId를 UserSidebar에 전달
           currentTab={currentTab}

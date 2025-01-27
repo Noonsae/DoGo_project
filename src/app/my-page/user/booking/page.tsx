@@ -19,6 +19,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link'; // Next.js의 Link 컴포넌트
 import { browserSupabase } from '@/supabase/supabase-client';
 
 // 예약 데이터 타입 정의
@@ -47,7 +48,7 @@ const UserBookingPage: React.FC = () => {
         setLoading(true);
         const {
           data: { user },
-          error: authError,
+          error: authError
         } = await browserSupabase().auth.getUser();
 
         if (authError || !user) {
@@ -57,7 +58,8 @@ const UserBookingPage: React.FC = () => {
         // Supabase에서 예약 데이터와 객실 데이터를 조인하여 가져옴
         const { data, error } = await browserSupabase()
           .from('bookings')
-          .select(`
+          .select(
+            `
             id,
             room_id,
             check_in_date,
@@ -68,7 +70,8 @@ const UserBookingPage: React.FC = () => {
               price,
               room_img_url
             )
-          `)
+          `
+          )
           .eq('user_id', user.id);
 
         if (error) throw error;
@@ -80,15 +83,12 @@ const UserBookingPage: React.FC = () => {
             room_id: booking.room_id,
             check_in_date: booking.check_in_date,
             check_out_date: booking.check_out_date,
-            status: booking.status as 'confirmed' | 'pending' | 'cancelled', // 상태를 명시적으로 타입 캐스팅
+            status: booking.status as 'confirmed' | 'pending' | 'cancelled',
             room_details: {
               room_name: booking.rooms?.room_name || 'N/A',
               price: booking.rooms?.price || 0,
-              room_img_url:
-                typeof booking.rooms?.room_img_url === 'string'
-                  ? booking.rooms.room_img_url
-                  : null,
-            },
+              room_img_url: typeof booking.rooms?.room_img_url === 'string' ? booking.rooms.room_img_url : null
+            }
           })) || [];
 
         setBookings(formattedData);
@@ -105,7 +105,21 @@ const UserBookingPage: React.FC = () => {
 
   if (loading) return <p className="text-center text-gray-500">로딩 중...</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>;
-  if (bookings.length === 0) return <p className="text-center text-gray-500">등록된 예약이 없습니다.</p>;
+  if (bookings.length === 0)
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-100">
+        <div className="p-6 bg-white rounded-lg shadow text-center flex flex-col items-center">
+          <h1 className="text-2xl font-bold mb-4">내 예약</h1>
+          <p className="text-[50px] font-medium text-gray-500">예약이 되어 있지 않습니다.</p>
+          <Link
+            href="/"
+            className="mt-8 inline-block p-4 bg-[#B3916A] rounded-[12px] text-white text-[20px] font-medium hover:bg-[#8F7455] active:bg-[#6B573F]"
+          >
+            홈페이지로 돌아가기
+          </Link>
+        </div>
+      </div>
+    );
 
   return (
     <div className="p-6 bg-white rounded-lg shadow">
@@ -128,9 +142,7 @@ const UserBookingPage: React.FC = () => {
                   체크인: {new Date(booking.check_in_date).toLocaleDateString()} <br />
                   체크아웃: {new Date(booking.check_out_date).toLocaleDateString()}
                 </p>
-                <p className={`mt-2 font-semibold ${getStatusClass(booking.status)}`}>
-                  상태: {booking.status}
-                </p>
+                <p className={`mt-2 font-semibold ${getStatusClass(booking.status)}`}>상태: {booking.status}</p>
               </div>
               <p className="font-bold">{booking.room_details.price.toLocaleString()}원/박</p>
             </div>

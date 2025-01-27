@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
+import BusinessHotelModal from '@/app/my-page/_components/BusinessHotelModal';
+import BusinessSidebar from '@/app/my-page/_components/BusinessSidebar';
 
-// 타입 정의
 interface Hotel {
   id: string;
   name: string;
@@ -17,9 +18,8 @@ interface Hotel {
 const HotelManagement: React.FC = () => {
   const [hotel, setHotel] = useState<Hotel | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  //데이터 가져오기
   useEffect(() => {
     const fetchHotel = async () => {
       try {
@@ -44,7 +44,6 @@ const HotelManagement: React.FC = () => {
 
         if (error) throw error;
 
-        // 데이터 가공
         const formattedHotel: Hotel = {
           id: data.id,
           name: data.name,
@@ -52,13 +51,12 @@ const HotelManagement: React.FC = () => {
           description: data.description,
           main_img_url: data.main_img_url,
           facilities: data.hotel_facility.map((facility: any) => facility.facility_id),
-          services: data.hotel_service.map((service: any) => service.service_id),
+          services: data.hotel_service.map((service: any) => service.service_id)
         };
 
         setHotel(formattedHotel);
       } catch (err) {
-        console.error('Error fetching hotel data:', err);
-        setError('호텔 데이터를 불러오는 중 오류가 발생했습니다.');
+        setHotel(null);
       } finally {
         setLoading(false);
       }
@@ -67,61 +65,82 @@ const HotelManagement: React.FC = () => {
     fetchHotel();
   }, []);
 
-  // 로딩 중 상태 처리
-  if (loading) {
-    return <p className="text-center text-gray-600">로딩 중...</p>;
-  }
-
-  // 에러 발생 시 처리
-  if (error) {
-    return <p className="text-center text-red-500">{error}</p>;
-  }
-
-  // 데이터 없을 때 처리
-  if (!hotel) {
-    return <p className="text-center text-gray-600">호텔 정보가 없습니다.</p>;
-  }
-
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold mb-4">호텔 관리</h1>
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">기본 정보</h2>
-        <p>
-          <strong>호텔명:</strong> {hotel.name}
-        </p>
-        <p>
-          <strong>주소:</strong> {hotel.address}
-        </p>
-        <p>
-          <strong>설명:</strong> {hotel.description}
-        </p>
-        {hotel.main_img_url && (
-          <img
-            src={hotel.main_img_url}
-            alt={`${hotel.name} 이미지`}
-            className="mt-4 rounded-lg shadow-md w-full max-w-md"
-          />
-        )}
-      </div>
+    <div className="flex min-h-screen">
+      {/* BusinessSidebar 추가 */}
+      <BusinessSidebar userId="your-user-id" currentTab="hotel" /> {/* userId를 동적으로 설정 */}
+      {/* 메인 컨텐츠 */}
+      <main className="flex-1 p-8 bg-gray-50">
+        <h1 className="text-3xl font-bold mb-8">호텔 관리</h1>
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          {loading ? (
+            <p className="text-center text-gray-600">로딩 중...</p>
+          ) : (
+            <>
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold mb-2">기본 정보</h2>
+                <p>
+                  <strong>호텔명:</strong> {hotel ? hotel.name : 'Hotel Name'}
+                </p>
+                <p>
+                  <strong>주소:</strong> {hotel ? hotel.address : 'Hotel Address'}
+                </p>
+                <p>
+                  <strong>설명:</strong> {hotel ? hotel.description : '호텔 설명을 입력하세요.'}
+                </p>
+                {hotel?.main_img_url ? (
+                  <img
+                    src={hotel.main_img_url}
+                    alt={`${hotel.name} 이미지`}
+                    className="mt-4 w-64 h-40 object-cover rounded-lg"
+                  />
+                ) : (
+                  <div className="mt-4 w-64 h-40 bg-gray-200 flex items-center justify-center rounded-lg">
+                    <span className="text-gray-500">이미지를 추가해주세요</span>
+                  </div>
+                )}
+              </div>
 
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">편의 시설</h2>
-        <ul>
-          {hotel.facilities.map((facility, index) => (
-            <li key={index}>- {facility}</li>
-          ))}
-        </ul>
-      </div>
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold mb-2">편의 시설</h2>
+                <ul>
+                  {hotel
+                    ? hotel.facilities.map((facility, index) => <li key={index}>- {facility}</li>)
+                    : ['공용 시설', '기타 시설'].map((facility, index) => (
+                        <li key={index} className="text-gray-400">
+                          - {facility}
+                        </li>
+                      ))}
+                </ul>
+              </div>
 
-      <div>
-        <h2 className="text-xl font-semibold mb-2">서비스</h2>
-        <ul>
-          {hotel.services.map((service, index) => (
-            <li key={index}>- {service}</li>
-          ))}
-        </ul>
-      </div>
+              <div>
+                <h2 className="text-xl font-semibold mb-2">서비스</h2>
+                <ul>
+                  {hotel
+                    ? hotel.services.map((service, index) => <li key={index}>- {service}</li>)
+                    : ['서비스'].map((service, index) => (
+                        <li key={index} className="text-gray-400">
+                          - {service}
+                        </li>
+                      ))}
+                </ul>
+              </div>
+
+              {!hotel && (
+                <div className="text-center mt-8">
+                  <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="mt-4 bg-blue-500 text-white px-6 py-2 rounded-lg"
+                  >
+                    호텔 등록하기
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+        </div>        
+      </main>
     </div>
   );
 };
