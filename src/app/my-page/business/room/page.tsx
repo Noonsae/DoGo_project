@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
-
+import useAuthStore from '@/store/useAuth';
 interface Room {
   id: string;
   room_name: string;
@@ -26,29 +26,50 @@ const RoomPage = () => {
     is_breakfast_included: 'false', // string 타입으로 유지
     view: '' // view 속성 초기화
   });
+  const user = useAuthStore((state) => state.user);
+  const userId = user?.id;
 
   // 방 목록 가져오기
-  // useEffect(() => {
-  //   const fetchRooms = async () => {
-  //     try {
-  //       const { data, error } = await browserSupabase()
-  //         .from('rooms')
-  //         .select('id, room_name, room_type, price, bed_type, is_breakfast_included, view, created_at')
-  //         .eq('hotel_id', hotelId);
+  useEffect(() => {
+    const supabase = browserSupabase();
+    const fetchRooms = async () => {
+      try {
+        if (!userId) {
+          return;
+        }
 
-  //       if (error) throw error;
+        const { data: hotelIdData, error: hotelIdError } = await supabase
+          .from('hotels')
+          .select('id')
+          .eq('user_id', userId)
+          .maybeSingle();
 
-  //       setRooms(data || []);
-  //     } catch (err) {
-  //       console.error('Error fetching rooms:', err);
-  //       setError('방 데이터를 불러오는 중 오류가 발생했습니다.');
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+        if (hotelIdData === null) {
+          return;
+        }
 
-  //   fetchRooms();
-  // }, [hotelId]);
+        if (hotelIdData.id) {
+          return;
+        }
+
+        const { data, error } = await supabase
+          .from('rooms')
+          .select('id, room_name, room_type, price, bed_type, is_breakfast_included, view, created_at')
+          .eq('hotel_id', hotelIdData.id);
+
+        if (error) throw error;
+
+        setRooms(data || []);
+      } catch (err) {
+        console.error('Error fetching rooms:', err);
+        setError('방 데이터를 불러오는 중 오류가 발생했습니다.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRooms();
+  }, [userId]);
 
   // 방 추가하기
   // const handleAddRoom = async () => {

@@ -30,7 +30,7 @@ const UserInquiryPage: React.FC = () => {
         setLoading(true);
         const {
           data: { user },
-          error: authError,
+          error: authError
         } = await browserSupabase().auth.getUser();
 
         if (authError || !user) {
@@ -39,18 +39,20 @@ const UserInquiryPage: React.FC = () => {
 
         const { data, error } = await browserSupabase()
           .from('contacts')
-          .select(`
+          .select(
+            `
             id,
             title,
             content,
             created_at,
-            status,
             answers (
               content,
               created_at
             )
-          `)
+          `
+          )
           .eq('user_id', user.id);
+        console.log({ data, error });
 
         if (error) throw error;
 
@@ -61,7 +63,7 @@ const UserInquiryPage: React.FC = () => {
           content: inquiry.content,
           created_at: inquiry.created_at,
           status: inquiry.status,
-          answer: inquiry.answers?.[0] || null,
+          answer: inquiry.answers?.[0] || null
         }));
 
         setInquiries(formattedData);
@@ -82,7 +84,6 @@ const UserInquiryPage: React.FC = () => {
 
   if (loading) return <p className="text-center text-gray-500">로딩 중...</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>;
-  if (inquiries.length === 0) return <p className="text-center text-gray-500">등록된 문의가 없습니다.</p>;
 
   return (
     <div className="p-6 bg-white rounded-lg shadow">
@@ -93,6 +94,7 @@ const UserInquiryPage: React.FC = () => {
         <div>
           <h2 className="text-lg font-semibold mb-2">문의 목록</h2>
           <ul className="space-y-4">
+            {inquiries.length === 0 && <p className="text-center text-gray-500">등록된 문의가 없습니다.</p>}
             {inquiries.map((inquiry) => (
               <li
                 key={inquiry.id}

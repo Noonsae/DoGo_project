@@ -10,10 +10,13 @@ import HamburgerBtn from './navigator/HamburgerBtn';
 import { getUser, getUserRole } from '@/actions/auth';
 
 const Header = async () => {
-  // const isLoggedIn = useAuthStore((state) => state.user !== null);
   const { data } = await getUser();
   const { data: userRole } = await getUserRole(data?.user?.id);
 
+  const mypageLink =
+    userRole?.role !== null && userRole?.role === 'admin'
+      ? `/my-page/${userRole.role}`
+      : `/my-page/${userRole?.role}/profile`;
   return (
     // header 전체 범위
     <div className="w-full h-[76px] fixed bg-[#221A1A] z-50">
@@ -34,7 +37,7 @@ const Header = async () => {
             {/* 일반 사용자 -> my-page/user */}
             {/* 비즈니스 사용자 -> my-page/business */}
             {data?.user && userRole && (
-              <Link href={`/my-page/${userRole.role}`} className="p-[10px]">
+              <Link href={mypageLink} className="p-[10px]">
                 <MyPageIcon />
               </Link>
             )}

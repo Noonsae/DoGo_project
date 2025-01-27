@@ -32,7 +32,7 @@ const AdminPage: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen translate-y-6">
+    <div className="flex h-screen translate-y-20">
       {/* 사이드바 */}
       <AdminSidebar currentTab={currentTab} setCurrentTab={setCurrentTab} />
 

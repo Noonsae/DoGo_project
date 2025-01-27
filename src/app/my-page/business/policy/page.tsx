@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
-// import useAuthStore from '@/store/useAuth';
+import useAuthStore from '@/store/useAuth';
 
 interface Policy {
   id: string;
@@ -17,30 +17,52 @@ const PolicyPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [newPolicy, setNewPolicy] = useState({ policy_name: '', description: '' });
+  const user = useAuthStore((state) => state.user);
+  const userId = user?.id;
 
+  // 내 유저 정보 + 내 호텔 정보 -> 정책을 가져와야 한다.
   // 정책 데이터 가져오기
-  // useEffect(() => {
-  //   const fetchPolicies = async () => {
-  //     try {
-  //       const { data, error } = await browserSupabase()
-  //         .from('policies')
-  //         .select('id, policy_name, description, created_at')
-  //         .eq('hotel_id', hotelId);
+  useEffect(() => {
+    const supabase = browserSupabase();
+    const fetchPolicies = async () => {
+      try {
+        if (!userId) {
+          return;
+        }
 
-  //       if (error) throw error;
+        const { data: hotelIdData, error: hotelIdError } = await supabase
+          .from('hotels')
+          .select('id')
+          .eq('user_id', userId)
+          .maybeSingle();
 
-  //       // 데이터가 null일 가능성 처리
-  //       setPolicies(data || []);
-  //     } catch (err) {
-  //       console.error('Error fetching policies:', err);
-  //       setError('정책 데이터를 불러오는 중 오류가 발생했습니다.');
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+        if (hotelIdData === null) {
+          return;
+        }
 
-  //   fetchPolicies();
-  // }, [hotelId]);
+        if (hotelIdData.id) {
+          return;
+        }
+
+        const { data, error } = await supabase
+          .from('policies')
+          .select('id, policy_name, description, created_at')
+          .eq('hotel_id', hotelIdData.id);
+
+        if (error) throw error;
+
+        // 데이터가 null일 가능성 처리
+        setPolicies(data || []);
+      } catch (err) {
+        console.error('Error fetching policies:', err);
+        setError('정책 데이터를 불러오는 중 오류가 발생했습니다.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPolicies();
+  }, [userId]);
 
   // // 정책 추가 함수
   // const handleAddPolicy = async () => {

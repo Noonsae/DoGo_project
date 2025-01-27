@@ -6,6 +6,8 @@ import IoCloseIcon from '../icon/IoCloseIcon';
 import IoCheckmarkCircle from '../icon/IoCheckmarkCircle';
 import FiChevronLeft from '../icon/FiChevronLeft';
 import FiChevronRight from '../icon/FiChevronRight';
+import FiChevronLeftIcon from '../icon/FiChevronLeftIcon';
+import FiChevronRightIcon from '../icon/FiChevronRightIcon';
 type RoomType = Database['public']['Tables']['rooms']['Row'];
 interface ModalProps {
   isOpen: boolean;
@@ -96,13 +98,13 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, room }) => {
                     onClick={showPreviousImage}
                     className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
                   >
-                    {/* <FiChevronLeft /> */}
+                    <FiChevronLeftIcon />
                   </button>
                   <button
                     onClick={showNextImage}
                     className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
                   >
-                    {/* <FiChevronRight /> */}
+                    <FiChevronRightIcon />
                   </button>
                 </>
               ) : (
