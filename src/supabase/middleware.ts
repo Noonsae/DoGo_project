@@ -66,7 +66,7 @@ export async function updateSession(request: NextRequest) {
   // 강제로 user 마이페이지로 간다.
   if (
     user &&
-    userRole.role === 'user' &&
+    userRole?.role === 'user' &&
     (request.nextUrl.pathname.startsWith('/my-page/business') || request.nextUrl.pathname.startsWith('/my-page/admin'))
   ) {
     const url = request.nextUrl.clone();
@@ -80,7 +80,7 @@ export async function updateSession(request: NextRequest) {
 
   if (
     user &&
-    userRole.role === 'business' &&
+    userRole?.role === 'business' &&
     (request.nextUrl.pathname.startsWith('/my-page/user') || request.nextUrl.pathname.startsWith('/my-page/admin'))
   ) {
     const url = request.nextUrl.clone();
