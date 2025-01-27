@@ -1,9 +1,12 @@
-'use client';
-
 import { browserSupabase } from '@/supabase/supabase-client';
 import { FetchHotelsFilterResponse, UseFetchHotelsFilterParamsType } from '@/types/hotel/hotel-filter-type';
 
-// 필터 타입 정의
+// 계획
+// 1,2 가 포함되느냐?
+// hotels.facility_ids.contains -> 
+// hotels: { id: ~, name: ~, facility_ids: [1, 2, 3] -> text -> defined as array , service_ids: []  }
+// rooms: { id: ~~~, hotel_id: ~~, price: ~~~ }
+// facilities: { id: uuid~~,  name: ~~~ }
 
 // fetchHotelsFilter 함수
 const fetchHotelsFilter = async ({
@@ -13,9 +16,11 @@ const fetchHotelsFilter = async ({
     stars: [],
     location: '',
     minPrice: 0,
-    maxPrice: 10000000,
+    maxPrice: 5000000,
     facilities: [], // 중첩 구조에 맞게 수정
-    services: []
+    services: [],
+    facilityIds: [],
+    serviceIds: []
   },
   sortOrder = ''
 }: UseFetchHotelsFilterParamsType): Promise<FetchHotelsFilterResponse> => {
@@ -25,14 +30,14 @@ const fetchHotelsFilter = async ({
   let query = supabase.from('hotels').select(
     `
       *,
-      rooms(price, view),
-      hotel_service:hotel_service(
-        service_id,
-        services(name)
-      ),
-      hotel_facility:hotel_facility(
+      rooms!inner(price, view),
+      hotel_facility(
         facility_id,
         facilities(name)
+      ),
+      hotel_service(
+        service_id,
+        services(name)
       )
     `,
     { count: 'exact', head: false }
@@ -62,26 +67,13 @@ const fetchHotelsFilter = async ({
   }
 
   // 5. 제공 시설 처리
-  // TODO 테이터 형식을 정하고 테스트 한번 해보는게 좋음
-  // eq -> map
+  if (filters.facilityIds.length !== 0) {
+    query = query.contains('facility_ids', filters.facilityIds);
+  }
 
-  // if (filters.facilities.length > 0) {
-  // query = query.contains('hotel_facility.facilities.name', "주차장");
-  // let test = [{name: "주차장"}]
-  // test.forEach((fac) => {
-  //   query = query.eq('hotel_facility.facilities.name', fac.name);
-  // })
-  // }
-  // [{name: "주차장"}, { name: "바(BAR)"}]
-  // query = query.eq('hotel_facility.facilities.name', "주차장");
-
-  // query = query.eq("hotel_facility.facilities.name", "주차장")
-  // query = query.contains('hotel_facility.facilities.name', "주차장");
-
-  // 6. 서비스 조건 처리
-  // TODO 테이터 형식을 정하고 테스트 한번 해보는게 좋음
-  if (filters.services.length > 0) {
-    query = query.contains('hotel_service.services.name', filters.services);
+  // 6. 제공 서비스 처리
+  if (filters.serviceIds.length !== 0) {
+    query = query.contains('service_ids', filters.serviceIds);
   }
 
   // 7. 정렬 조건 처리
@@ -91,7 +83,8 @@ const fetchHotelsFilter = async ({
 
   // 8. 페이지네이션 처리
   const { count } = await query;
-  query = query.range(pageParam * 3, pageParam * 3 + 3); // 한 번에 3개씩 가져오기
+
+  query = query.range(pageParam ? 4 * (pageParam - 1) : 0 , 4 * pageParam  - 1); // 한 번에 4개씩 가져오기
 
   // 9. 쿼리 실행
   const { data, error } = await query;
@@ -100,47 +93,25 @@ const fetchHotelsFilter = async ({
     throw new Error(`Failed to fetch hotels: ${error.message}`);
   }
 
-  console.log(data);
-
-  // console.log((data || []).map((hotel) => ({
-  //   id: hotel.id,
-  //   name: hotel.name,
-  //   stars: hotel.stars,
-  //   address: hotel.address,
-  //   description: hotel.description,
-  //   main_img_url: hotel.main_img_url,
-  //   hotel_img_urls: hotel.hotel_img_urls || null,
-  //   check_in: hotel.check_in,
-  //   check_out: hotel.check_out,
-  //   location: hotel.location,
-  //   user_id: hotel.user_id,
-  //   facilities: hotel.hotel_facility.filter((fac) => fac.facilities.name !== null),
-  //   services: hotel.hotel_service,
-  //   label: `${hotel.name} ${hotel.address}`,
-  //   rooms: hotel.rooms,
-  // })).filter((data) => data.rooms.length !== 0 ));
-
   // 10. 결과 반환
   return {
-    items: (data || [])
-      .map((hotel) => ({
-        id: hotel.id,
-        name: hotel.name,
-        stars: hotel.stars,
-        address: hotel.address,
-        description: hotel.description,
-        main_img_url: hotel.main_img_url,
-        hotel_img_urls: hotel.hotel_img_urls || null,
-        check_in: hotel.check_in,
-        check_out: hotel.check_out,
-        location: hotel.location,
-        user_id: hotel.user_id,
-        facilities: hotel.hotel_facility.filter((fac) => !!fac.facilities?.name),
-        services: hotel.hotel_service,
-        label: `${hotel.name} ${hotel.address}`,
-        rooms: hotel.rooms
-      }))
-      .filter((data) => data.rooms.length !== 0 && data.facilities.length !== 0),
+    items: (data || []).map((hotel) => ({
+      id: hotel.id,
+      name: hotel.name,
+      stars: hotel.stars,
+      address: hotel.address,
+      description: hotel.description,
+      main_img_url: hotel.main_img_url,
+      hotel_img_urls: hotel.hotel_img_urls || null,
+      check_in: hotel.check_in,
+      check_out: hotel.check_out,
+      location: hotel.location,
+      user_id: hotel.user_id,
+      facilities: hotel.hotel_facility.filter((fac) => !!fac.facilities?.name),
+      services: hotel.hotel_service,
+      label: `${hotel.name} ${hotel.address}`,
+      rooms: hotel.rooms
+    })),
     totalCount: count || 0
   };
 };

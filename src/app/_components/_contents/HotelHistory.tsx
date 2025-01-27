@@ -10,8 +10,6 @@ const HotelHistory = () => {
 
   const reversedHistory = [...history].reverse();
 
-  console.log(reversedHistory);
-
   // 로딩 중 상태 처리
   if (!history) {
     return <RecommendSkeletonUI />;

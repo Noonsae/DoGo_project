@@ -30,7 +30,7 @@ const MENUS = [
   { id: 'profile', label: '프로필 관리' }
 ];
 
-const BusinessSidebar = () => {
+const BusinessSidebar: React.FC<BusinessSidebarProps> = () => {
   const [currentTab, setCurrentTab] = useState('');
   const user = useAuthStore((state) => state.user);
   const [businessInfo, setBusinessInfo] = useState<BusinessUser | null>(null); // 사업자 정보 상태

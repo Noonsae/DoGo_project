@@ -9,6 +9,7 @@ import FindPasswordModal from './_components/FindPasswordModal/FindPasswordModal
 import KakaoSignIn from './_components/KakaoSignIn';
 import Image from 'next/image';
 import { login } from './actions/login';
+import LogoAuth from '@/components/ui/icon/LogoAuth';
 
 const SignInPage = () => {
   const [form, setForm] = useState({
@@ -48,9 +49,7 @@ const SignInPage = () => {
         });
         return;
       }
-      // commit을 위한 주석
-      // commit을 위한 주석
-      // commit을 위한 주석
+
       await Swal.fire({
         icon: 'success',
         title: '로그인 성공',
@@ -59,7 +58,6 @@ const SignInPage = () => {
 
       window.location.href = '/';
     } catch (err) {
-      console.error('오류 발생:', err);
       await Swal.fire({
         icon: 'error',
         title: '오류 발생',
@@ -72,7 +70,7 @@ const SignInPage = () => {
     <div className="flex justify-center items-center min-h-screen px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-[400px] lg:h-auto">
         <div className="mt-[94px] mb-[40px] flex flex-col justify-center items-center">
-          <Image src="/images/DoGo.png" alt="Dogo" priority width={140.6} height={39.9} />
+          <LogoAuth />
         </div>
         <div className="flex justify-between mb-[40px] border-b-2">
           <button
