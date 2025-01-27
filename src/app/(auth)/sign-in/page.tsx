@@ -49,7 +49,7 @@ const SignInPage = () => {
         });
         return;
       }
-
+      // 커밋용 주석
       await Swal.fire({
         icon: 'success',
         title: '로그인 성공',
@@ -75,7 +75,7 @@ const SignInPage = () => {
         <div className="flex justify-between mb-[40px] border-b-2">
           <button
             className={`pb-2 w-1/2 text-center ${
-              form.activeTab === 'user' ? 'border-b-2 border-neutral-800' : 'text-neutral-600'
+              form.activeTab === 'user' ? 'border-b-2 border-neutral-800' : 'text-neutral-400'
             }`}
             onClick={() => setForm({ ...form, activeTab: 'user', email: '', password: '' })}
           >
@@ -83,7 +83,7 @@ const SignInPage = () => {
           </button>
           <button
             className={`pb-2 w-1/2 text-center ${
-              form.activeTab === 'business' ? 'border-b-2 border-black' : 'text-gray-400'
+              form.activeTab === 'business' ? 'border-b-2 border-neutral-800' : 'text-neutral-400'
             }`}
             onClick={() => setForm({ ...form, activeTab: 'business', email: '', password: '' })}
           >
