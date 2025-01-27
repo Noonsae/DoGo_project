@@ -30,7 +30,7 @@ const Page = () => {
   return (
     <div className="flex flex-col justify-center items-center min-h-screen px-4 sm:px-6 lg:px-8">
       <div className="mt-[156px] mb-[40px]">
-        <Image src="/images/Dogo.png" alt="Dogo" priority width={140} height={37} />
+        <Image src="/images/DoGo.png" alt="Dogo" priority width={140} height={37} unoptimized />
       </div>
       <p className="w-full max-w-[400px] text-[24px] font-pretendard font-semibold leading-[135%] not-italic">
         회원 유형 선택
