@@ -72,17 +72,17 @@ const SignInPage = () => {
         <div className="mt-[94px] mb-[40px] flex flex-col justify-center items-center">
           <LogoAuth />
         </div>
-        <div className="flex justify-between mb-[40px] border-b-2">
+        <div className="flex justify-between mb-[40px] border-b-2 ">
           <button
-            className={`pb-2 w-1/2 text-center ${
-              form.activeTab === 'user' ? 'border-b-2 border-neutral-800' : 'text-neutral-400'
+            className={`mb-[10px] sm:mb-[14px] pb-2 w-1/2 text-center ${
+              form.activeTab === 'user' ? ' border-b-2 border-neutral-800  ' : 'text-neutral-400'
             }`}
             onClick={() => setForm({ ...form, activeTab: 'user', email: '', password: '' })}
           >
             일반 회원
           </button>
           <button
-            className={`pb-2 w-1/2 text-center ${
+            className={`mb-[10px] sm:mb-[14px] pb-2 w-1/2 text-center ${
               form.activeTab === 'business' ? 'border-b-2 border-neutral-800' : 'text-neutral-400'
             }`}
             onClick={() => setForm({ ...form, activeTab: 'business', email: '', password: '' })}
