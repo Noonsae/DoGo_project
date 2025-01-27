@@ -1,68 +1,56 @@
 'use client';
 
-import { useState } from 'react';
-import useAuthStore from '@/store/useAuth';
-import Swal from 'sweetalert2';
-import handleSignupAction from '../actions/handleSignupAction';
 import { useRouter } from 'next/navigation';
-import SignUpBusiness from './_components/sign-up-business';
-import { browserSupabase } from '@/supabase/supabase-client';
+import { useState } from 'react';
+import handleSignupAction from '../actions/handleSignupAction';
+import SignUpBusiness from './_components/SignUpBusiness';
+import SignupModal from '@/components/ui/sign-up/SignUpUi';
+import Swal from 'sweetalert2';
+
 export default function SignUpBusinessPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [error, setError] = useState('');
+  const [nickname, setNickname] = useState('');
   const [businessNumber, setBusinessNumber] = useState('');
-  const setUser = useAuthStore((state) => state.setUser);
-
-  const router = useRouter();
+  const [isModlaOpen, setIsModalOpen] = useState(false);
 
   const handleSignup = async () => {
     try {
-      const supabase = browserSupabase(); // 클라이언트 생성
-
       const result = await handleSignupAction({
         email,
         password,
         name,
         phone,
-        business_number: businessNumber,
+        businessNumber,
+        nickname,
         role: 'business'
       });
-
+      console.log({ result });
       if (!result.success) {
-        setError(result.message);
+        await Swal.fire({
+          icon: 'error',
+          title: '회원가입 실패',
+          text: '모두 작성해주세요!'
+        });
         return;
       }
-
-      // 자동 로그인
-      const { error: loginError } = await supabase.auth.signInWithPassword({
-        email,
-        password
+      await Swal.fire({
+        icon: 'success',
+        title: '회원가입 성공',
+        text: `${name}님, 회원가입이 완료되었습니다!`
       });
-
-      if (loginError) {
-        setError('로그인 중 오류가 발생했습니다.');
-        return;
-      }
-
-      // store에 유저 정보 저장
-      setUser({
-        email,
-        name,
-        phone,
-        role: 'business'
-      });
-
-      Swal.fire('회원가입 성공!', '로그인 되었습니다.', 'success');
-
-      // '/' 경로로 이동
-      router.push('/');
+      window.location.href = '/';
     } catch (err: any) {
       setError('회원가입 중 오류가 발생했습니다.');
       console.error(err);
     }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -76,9 +64,11 @@ export default function SignUpBusinessPage() {
         setPhone={setPhone}
         name={name}
         setName={setName}
+        nickname={nickname}
         businessNumber={businessNumber}
         setBusinessNumber={setBusinessNumber}
         error={error}
+        setNickname={setNickname}
         setError={setError}
         handleSignup={handleSignup}
       />

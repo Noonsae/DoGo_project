@@ -1,36 +1,39 @@
 'use client';
+
 import React, { useEffect, useState } from 'react';
+
 import useAuthStore from '@/store/useAuth';
-import { HotelType } from '@/types/supabase/hotel-type';
-import { RoomType } from '@/types/supabase/room-type';
-import HotelRoom from './_components/HotelRoom';
-import HotelLocation from './_components/HotelLocation';
-import HotelBox from './_components/HotelBox';
-import { FacilitiesType } from '@/types/supabase/facilities-type';
+
+import useFavoriteStore from '@/hooks/favorite/useFavoriteStore';
+import useHotelReviews from '@/hooks/review/useHotelReviews';
+import useHotelRooms from '@/hooks/room/useHotelRooms';
+
 import { Json } from '@/types/supabase/supabase-type';
 import { UserType } from '@/types/supabase/user-type';
-import Navigation from './_components/Navigation';
-import HotelOverview from './_components/HotelOverview';
+
+import HotelAttraction from './_components/HotelAttraction';
+import HotelBox from './_components/HotelBox';
 import HotelFacility from './_components/HotelFacility';
-import { ServicesType } from '@/types/supabase/services-type';
-import useFavoriteStore from '@/hooks/favorite/useFavoriteStore';
+import HotelLocation from './_components/HotelLocation';
+import HotelOverview from './_components/HotelOverview';
+import HotelPolicies from './_components/HotelPolicies';
+import HotelRoom from './_components/HotelRoom';
+import HotelReviews from './_components/HotelReviews';
+import Navigation from './_components/Navigation';
+import NavigationSkeleton from '../../../components/ui/skeleton/HotelNavigationSkeleton';
+import HotelOverviewSkeleton from '@/components/ui/skeleton/HotelOverviewSkeleton';
+import HotelBoxSkeleton from '@/components/ui/skeleton/HotelBoxSkeleton';
+import useServiceFacility from '@/hooks/serviceFacility/useServiceFacility';
+import useHotelDetail from '@/hooks/hotel/useHotelDetail';
 
 const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const hotelId = params?.id;
 
-  const [hotelData, setHotelData] = useState<HotelType | null>(null);
-  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
-  const [roomsData, setRoomsData] = useState<RoomType[]>([]);
-  const [facilityData, setFacilityData] = useState<FacilitiesType[]>([]);
   const user = useAuthStore((state) => state.user) as UserType | null;
-  const [servicesData, setServicesData] = useState<ServicesType[]>([]);
-
-  const loadUserFromCookie = useAuthStore((state) => state.loadUserFromCookie);
   const { favoriteStatus, toggleFavorite, initializeFavorites } = useFavoriteStore();
-  useEffect(() => {
-    loadUserFromCookie();
-  }, [loadUserFromCookie]);
+  const { reviews, allReviews } = useHotelReviews(hotelId);
+  const { roomsData } = useHotelRooms(hotelId);
 
   useEffect(() => {
     if (user?.id && hotelId) {
@@ -38,56 +41,15 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
     }
   }, [user, hotelId, initializeFavorites]);
 
-  useEffect(() => {
-    const fetchHotelData = async () => {
-      if (!hotelId) {
-        setLoading(false);
-        return;
-      }
+  const { hotelData, loading } = useHotelDetail(hotelId);
 
-      try {
-        const response = await fetch(`/api/hotel/${hotelId}`);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch hotel data. Status: ${response.status}`);
-        }
+  const { facilityData, serviceData } = useServiceFacility(hotelId);
 
-        const data = await response.json();
-        // 호텔 이미지 URL 배열이 배열 형식이 아닌 경우 빈 배열로 강제
-        setHotelData({
-          ...data,
-          hotel_img_urls: Array.isArray(data.hotel_img_urls) ? data.hotel_img_urls : [], // 배열로 강제 변환
-          rooms: data.rooms || []
-        });
-      } catch (error) {
-        console.error('Error fetching hotel data:', error);
-        setHotelData(null);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const selectedRoomId = roomsData.length > 0 ? roomsData[0]?.id : null;
 
-    fetchHotelData();
-  }, [hotelId]);
-
-  useEffect(() => {
-    const fetchRoomsData = async () => {
-      if (!hotelId) return;
-
-      try {
-        const response = await fetch(`/api/rooms?hotelId=${hotelId}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch rooms data');
-        }
-        const data = await response.json();
-        const sortedData = data.sort((a: RoomType, b: RoomType) => a.price - b.price);
-        setRoomsData(sortedData);
-      } catch (error) {
-        console.error('Error fetching rooms data:', error);
-      }
-    };
-
-    fetchRoomsData();
-  }, [hotelId]);
+  if (!selectedRoomId) {
+    return <p>No rooms found for this hotel.</p>;
+  }
 
   const getValidImageUrl = (imageData: Json): string => {
     if (Array.isArray(imageData) && imageData.length > 0) {
@@ -96,7 +58,7 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
         return firstImage;
       }
     }
-    return '/placeholder.png';
+    return '/placeholder.webp';
   };
 
   const scrollToSection = (id: string) => {
@@ -105,8 +67,16 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
     setActiveTab(id);
   };
 
+  // 로딩 중 처리
   if (loading) {
-    return <p className="text-center mt-10">로딩 중...</p>;
+    return (
+      <div className="w-full max-w-[1200px] px-[350px] sm:px-[300px] md:px-[200px] lg:px-[100px] xl:px-[50px] xl:mx-auto pt-[78px] xl:max-w-[1200px] 2xl:px-0">
+        {/* 로딩 중 네비게이션 */}
+        <NavigationSkeleton />
+        <HotelOverviewSkeleton />
+        <HotelBoxSkeleton />
+      </div>
+    );
   }
 
   if (!hotelData) {
@@ -123,64 +93,64 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   );
 
   return (
-    <div className="bg-gray-100 min-h-screen">
-      <div className="h-[60px]"></div>
-
+    <div className="w-full max-w-[1200px] px-[350px] sm:px-[300px] md:px-[200px] lg:px-[100px] xl:px-[50px] xl:mx-auto pt-[78px] xl:max-w-[1200px] 2xl:px-0">
       {/* 네비게이션 탭 */}
-      <Navigation activeTab={activeTab} scrollToSection={scrollToSection} />
+      <div>
+        {loading ? <NavigationSkeleton /> : <Navigation activeTab={activeTab} scrollToSection={scrollToSection} />}
+      </div>
 
       {/* 콘텐츠 영역 */}
-      <div className="mx-[360px] py-6 space-y-16">
+      <div className="py-6 space-y-16">
         {/* 개요 섹션 */}
-        <HotelOverview
-          hotelData={hotelData}
-          toggleFavorite={toggleFavorite}
-          hotelId={hotelId}
-          favoriteStatus={favoriteStatus}
-        />
-        <HotelBox facilityData={facilityData} roomOption={roomOption} />
+        {loading ? (
+          <HotelOverviewSkeleton />
+        ) : (
+          <HotelOverview
+            hotelData={hotelData}
+            toggleFavorite={toggleFavorite}
+            hotelId={hotelId}
+            favoriteStatus={favoriteStatus}
+          />
+        )}
 
+        {loading ? (
+          <HotelBoxSkeleton />
+        ) : (
+          <HotelBox
+            facilityData={facilityData}
+            roomOption={roomOption}
+            hotelData={hotelData}
+            reviews={reviews}
+            allReviews={allReviews}
+          />
+        )}
         {/* 객실 섹션 */}
-        <HotelRoom roomsData={roomsData} getValidImageUrl={getValidImageUrl} roomOption={roomOption} />
+        <HotelRoom
+          roomsData={roomsData}
+          getValidImageUrl={getValidImageUrl}
+          roomOption={roomOption}
+          hotelData={hotelData}
+        />
 
         {/* 이용 후기 섹션 */}
-        <section id="reviews" className="scroll-mt-20">
-          <h2 className="text-2xl font-bold mb-4">이용 후기</h2>
-          <div className="flex gap-[30px]">
-            <p className="w-[585px] h-[368px] bg-slate-400">이곳은 이용 후기를 보여주는 콘텐츠 영역입니다.</p>
-            <p className="w-[585px] h-[368px] bg-slate-400">이곳은 이용 후기를 보여주는 콘텐츠 영역입니다.</p>
-          </div>
-          <div className="flex justify-center mt-4">
-            <button className="px-6 py-2 bg-[#B3916A] text-white rounded-lg shadow-md hover:bg-brown-500">
-              전체 후기 보러가기
-            </button>
-          </div>
-        </section>
+        <HotelReviews loading={loading} reviews={reviews} allReviews={allReviews} />
 
         {/* 시설/서비스 섹션 */}
         <HotelFacility
           facilityData={facilityData}
           roomOption={roomOption}
-          setFacilityData={setFacilityData}
           hotelId={hotelId}
-          setServicesData={setServicesData}
-          serviceData={servicesData}
+          serviceData={serviceData}
         />
 
         {/* 숙소 정책 섹션 */}
-        <section id="policies" className="scroll-mt-20">
-          <h2 className="text-2xl font-bold mb-4">숙소 정책</h2>
-          <p>이곳은 숙소 정책을 보여주는 콘텐츠 영역입니다.</p>
-        </section>
+        <HotelPolicies hotelId={hotelId} />
 
         {/* 위치 섹션 */}
         <HotelLocation id={hotelId} />
 
         {/* 호텔 주변 명소 섹션 */}
-        <section id="nearby" className="scroll-mt-20">
-          <h2 className="text-2xl font-bold mb-4">호텔 주변 명소</h2>
-          <p>이곳은 호텔 주변 명소를 보여주는 콘텐츠 영역입니다.</p>
-        </section>
+        <HotelAttraction />
       </div>
     </div>
   );

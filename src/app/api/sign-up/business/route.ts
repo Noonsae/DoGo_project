@@ -15,7 +15,7 @@ export async function POST(request: Request) {
   }
 
   // 중복 사업자 번호 체크
-  const { data: existingBusiness, error: fetchError } = await supabase
+  const { data: existingBusiness } = await supabase
     .from('users')
     .select('id')
     .eq('business_number', business_number)
@@ -26,11 +26,7 @@ export async function POST(request: Request) {
   }
 
   // 중복 이메일 체크
-  const { data: existingEmail, error: emailError } = await supabase
-    .from('users')
-    .select('id')
-    .eq('email', email)
-    .single();
+  const { data: existingEmail } = await supabase.from('users').select('id').eq('email', email).single();
 
   if (existingEmail) {
     return NextResponse.json({ error: '이미 등록된 이메일입니다.' }, { status: 400 });
@@ -54,7 +50,7 @@ export async function POST(request: Request) {
       role: 'business',
       user_name,
       business_number,
-      user_info: null 
+      user_info: null
     }
   ]);
 

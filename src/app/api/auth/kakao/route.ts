@@ -9,7 +9,6 @@ export async function GET(request: Request) {
   if (code) {
     const supabase = await serverSupabase();
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-    console.log('exchangeCodeForSession 결과:', data, error); // 추가 로그
 
     if (!error) {
       const forwardedHost = request.headers.get('x-forwarded-host');

@@ -3,16 +3,14 @@ import { createClient } from '@supabase/supabase-js';
 
 export async function POST(request: Request) {
   try {
-    const { otp, newPassword } = await request.json();
+    const { otp, newPassword, role } = await request.json();
 
-    if (!otp || !newPassword) {
+    if (!otp || !newPassword || !role) {
       return NextResponse.json({ error: 'OTP와 새 비밀번호는 필수입니다.' }, { status: 400 });
     }
 
-    // const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
     const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
 
-    // OTP 검증
     const { data: resetRequest, error: otpError } = await supabase
       .from('password_reset_requests')
       .select('user_id, expires_at')
@@ -31,7 +29,6 @@ export async function POST(request: Request) {
     const { error: updateError } = await supabase.auth.admin.updateUserById(resetRequest.user_id, {
       password: newPassword
     });
-    // 로그인된 상태에서 마이페이지에서만 가능하게 만들어야 함...
     if (updateError) {
       console.error('비밀번호 재설정 오류:', updateError);
       return NextResponse.json({ error: '비밀번호 재설정에 실패했습니다.' }, { status: 500 });
