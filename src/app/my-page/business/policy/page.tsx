@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
+// import useAuthStore from '@/store/useAuth';
 
 interface Policy {
   id: string;
@@ -10,62 +11,63 @@ interface Policy {
   created_at: string;
 }
 
-interface PolicyPageProps {
-  userId: string;
-  hotelId: string;
-}
-
-const PolicyPage: React.FC<PolicyPageProps> = ({ userId, hotelId }) => {
+// 현재 로그인한 사용자 -> 사용자가 소유하는 호텔 데이터 가져오기 -> 호텔 id 가져오기
+const PolicyPage = () => {
   const [policies, setPolicies] = useState<Policy[]>([]);
   const [loading, setLoading] = useState(true);
+  console.log(setLoading);
   const [error, setError] = useState<string | null>(null);
   const [newPolicy, setNewPolicy] = useState({ policy_name: '', description: '' });
 
   // 정책 데이터 가져오기
-  useEffect(() => {
-    const fetchPolicies = async () => {
-      try {
-        const { data, error } = await browserSupabase()
-          .from('policies')
-          .select('id, policy_name, description, created_at')
-          .eq('hotel_id', hotelId);
+  // useEffect(() => {
+  //   const fetchPolicies = async () => {
+  //     try {
+  //       const { data, error } = await browserSupabase()
+  //         .from('policies')
+  //         .select('id, policy_name, description, created_at')
+  //         .eq('hotel_id', hotelId);
 
-        if (error) throw error;
+  //       if (error) throw error;
 
-        // 데이터가 null일 가능성 처리
-        setPolicies(data || []);
-      } catch (err) {
-        console.error('Error fetching policies:', err);
-        setError('정책 데이터를 불러오는 중 오류가 발생했습니다.');
-      } finally {
-        setLoading(false);
-      }
-    };
+  //       // 데이터가 null일 가능성 처리
+  //       setPolicies(data || []);
+  //     } catch (err) {
+  //       console.error('Error fetching policies:', err);
+  //       setError('정책 데이터를 불러오는 중 오류가 발생했습니다.');
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchPolicies();
-  }, [hotelId]);
+  //   fetchPolicies();
+  // }, [hotelId]);
 
-  // 정책 추가 함수
-  const handleAddPolicy = async () => {
-    try {
-      const { data, error } = await browserSupabase().from('policies').insert([{
-        policy_name: newPolicy.policy_name,
-        description: newPolicy.description || null, // null을 허용하도록 처리
-        hotel_id: hotelId,
-        created_at: new Date().toISOString(),
-      }]);
+  // // 정책 추가 함수
+  // const handleAddPolicy = async () => {
+  //   try {
+  //     const { data, error } = await browserSupabase()
+  //       .from('policies')
+  //       .insert([
+  //         {
+  //           policy_name: newPolicy.policy_name,
+  //           description: newPolicy.description || null, // null을 허용하도록 처리
+  //           hotel_id: hotelId,
+  //           created_at: new Date().toISOString()
+  //         }
+  //       ]);
 
-      if (error) throw error;
+  //     if (error) throw error;
 
-      if (data) {
-        setPolicies((prev) => [...prev, data[0]]);
-        setNewPolicy({ policy_name: '', description: '' });
-      }
-    } catch (err) {
-      console.error('Error adding policy:', err);
-      setError('정책 추가 중 오류가 발생했습니다.');
-    }
-  };
+  //     if (data) {
+  //       setPolicies((prev) => [...prev, data[0]]);
+  //       setNewPolicy({ policy_name: '', description: '' });
+  //     }
+  //   } catch (err) {
+  //     console.error('Error adding policy:', err);
+  //     setError('정책 추가 중 오류가 발생했습니다.');
+  //   }
+  // };
 
   // 정책 삭제 함수
   const handleDeletePolicy = async (policyId: string) => {
@@ -105,12 +107,9 @@ const PolicyPage: React.FC<PolicyPageProps> = ({ userId, hotelId }) => {
             onChange={(e) => setNewPolicy({ ...newPolicy, description: e.target.value })}
             className="border p-2 rounded"
           ></textarea>
-          <button
-            onClick={handleAddPolicy}
-            className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-          >
+          {/* <button onClick={handleAddPolicy} className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
             정책 추가
-          </button>
+          </button> */}
         </div>
       </div>
 
@@ -133,9 +132,7 @@ const PolicyPage: React.FC<PolicyPageProps> = ({ userId, hotelId }) => {
               <tr key={policy.id}>
                 <td className="border p-2">{policy.policy_name}</td>
                 <td className="border p-2">{policy.description || '설명 없음'}</td>
-                <td className="border p-2">
-                  {new Date(policy.created_at).toLocaleDateString()}
-                </td>
+                <td className="border p-2">{new Date(policy.created_at).toLocaleDateString()}</td>
                 <td className="border p-2">
                   <button
                     onClick={() => handleDeletePolicy(policy.id)}

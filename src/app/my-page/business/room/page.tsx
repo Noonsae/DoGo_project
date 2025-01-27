@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 
 interface Room {
@@ -14,13 +14,10 @@ interface Room {
   created_at: string | null;
 }
 
-interface RoomPageProps {
-  hotelId: string;
-}
-
-const RoomPage: React.FC<RoomPageProps> = ({ hotelId }) => {
+const RoomPage = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(true);
+  console.log(setLoading);
   const [error, setError] = useState<string | null>(null);
   const [newRoom, setNewRoom] = useState({
     room_name: '',
@@ -28,58 +25,58 @@ const RoomPage: React.FC<RoomPageProps> = ({ hotelId }) => {
     price: 0,
     bed_type: '',
     is_breakfast_included: 'false', // string 타입으로 유지
-    view: '', // view 속성 초기화
+    view: '' // view 속성 초기화
   });
 
   // 방 목록 가져오기
-  useEffect(() => {
-    const fetchRooms = async () => {
-      try {
-        const { data, error } = await browserSupabase()
-          .from('rooms')
-          .select('id, room_name, room_type, price, bed_type, is_breakfast_included, view, created_at')
-          .eq('hotel_id', hotelId);
+  // useEffect(() => {
+  //   const fetchRooms = async () => {
+  //     try {
+  //       const { data, error } = await browserSupabase()
+  //         .from('rooms')
+  //         .select('id, room_name, room_type, price, bed_type, is_breakfast_included, view, created_at')
+  //         .eq('hotel_id', hotelId);
 
-        if (error) throw error;
+  //       if (error) throw error;
 
-        setRooms(data || []);
-      } catch (err) {
-        console.error('Error fetching rooms:', err);
-        setError('방 데이터를 불러오는 중 오류가 발생했습니다.');
-      } finally {
-        setLoading(false);
-      }
-    };
+  //       setRooms(data || []);
+  //     } catch (err) {
+  //       console.error('Error fetching rooms:', err);
+  //       setError('방 데이터를 불러오는 중 오류가 발생했습니다.');
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchRooms();
-  }, [hotelId]);
+  //   fetchRooms();
+  // }, [hotelId]);
 
   // 방 추가하기
-  const handleAddRoom = async () => {
-    try {
-      const { data, error } = await browserSupabase().from('rooms').insert([{
-        ...newRoom,
-        hotel_id: hotelId, // hotel_id 추가
-      }]);
+  // const handleAddRoom = async () => {
+  //   try {
+  //     const { data, error } = await browserSupabase().from('rooms').insert([{
+  //       ...newRoom,
+  //       hotel_id: hotelId, // hotel_id 추가
+  //     }]);
 
-      if (error) throw error;
+  //     if (error) throw error;
 
-      if (data) {
-        setRooms((prev) => [...prev, data[0]]);
-      }
-      setNewRoom({
-        room_name: '',
-        room_type: '',
-        price: 0,
-        bed_type: '',
-        is_breakfast_included: 'false',
-        view: '',
-      });
-    } catch (err) {
-      console.error('Error adding room:', err);
-      setError('방 추가 중 오류가 발생했습니다.');
-    }
-  };
+  //     if (data) {
+  //       setRooms((prev) => [...prev, data[0]]);
+  //     }
+  //     setNewRoom({
+  //       room_name: '',
+  //       room_type: '',
+  //       price: 0,
+  //       bed_type: '',
+  //       is_breakfast_included: 'false',
+  //       view: '',
+  //     });
+  //   } catch (err) {
+  //     console.error('Error adding room:', err);
+  //     setError('방 추가 중 오류가 발생했습니다.');
+  //   }
+  // };
 
   // 방 삭제하기
   const handleDeleteRoom = async (roomId: string) => {
@@ -145,18 +142,13 @@ const RoomPage: React.FC<RoomPageProps> = ({ hotelId }) => {
             <input
               type="checkbox"
               checked={newRoom.is_breakfast_included === 'true'}
-              onChange={(e) =>
-                setNewRoom({ ...newRoom, is_breakfast_included: e.target.checked ? 'true' : 'false' })
-              }
+              onChange={(e) => setNewRoom({ ...newRoom, is_breakfast_included: e.target.checked ? 'true' : 'false' })}
             />
             조식 포함 여부
           </label>
-          <button
-            onClick={handleAddRoom}
-            className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-          >
+          {/* <button onClick={handleAddRoom} className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
             객실 추가
-          </button>
+          </button> */}
         </div>
       </div>
 

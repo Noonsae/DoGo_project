@@ -2,9 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client'; // Supabase 클라이언트
-
 import BusinessSidebar from '@/app/my-page/_components/BusinessSidebar'; // 사업자용 사이드바
-import UserSidebar from './Usersidebar';
+import UserSidebar from './UserSidebar';
 
 
 // Props 타입 정의

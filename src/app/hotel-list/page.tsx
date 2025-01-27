@@ -11,7 +11,7 @@ import useFavoriteStore from '@/hooks/favorite/useFavoriteStore';
 import useFetchHotelsFilter from '@/hooks/hotel/useFetchHotelsFilter';
 
 import { HotelWithPriceOnly } from '@/types/supabase/hotel-type';
-import { FiltersType, sortOrder } from '@/types/filter/hotel-filter-type';
+import { FiltersType, sortOrder } from '@/types/hotel/hotel-filter-type';
 
 import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
 
