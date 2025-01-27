@@ -4,9 +4,9 @@ import useAuthStore from '@/store/useAuth';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
-import KakaoSignIn from './kakao-sign-in';
-import FindIdModal from './find-id-modal';
-import FindPasswordModal from './find-password-modal';
+import KakaoSignIn from './KakaoSignIn';
+import FindIdModal from './FindIdModal';
+import FindPasswordModal from './FindPasswordModal/FindPasswordModal';
 import { browserSupabase } from '@/supabase/supabase-client';
 
 const Signin = () => {
@@ -18,7 +18,7 @@ const Signin = () => {
   const [isFindPasswordOpen, setFindPasswordOpen] = useState(false);
   // zustand 가져오기
   const router = useRouter();
-  const setUser = useAuthStore((state) => state.setUser);
+  const setUser = useAuthStore((state) => state.setAuth);
   const handleLogin = async () => {
     try {
       if (!email || !password) {
@@ -45,7 +45,7 @@ const Signin = () => {
       }
 
       const { data: userTypeData, error: userTypeError } = await supabase
-        .from(activeTab === 'user' ? 'users' : 'businesses')
+        .from('users')
         .select('id')
         .eq('email', email)
         .single();
