@@ -52,9 +52,10 @@ const HotelList = () => {
     stars: [],
     minPrice: 0,
     maxPrice: 10000000,
-    facilities: [],
     location: '',
-    services: []
+    services: [],
+    facilityIds: [],
+    serviceIds: []
   });
 
   const observerRef = useRef<HTMLDivElement | null>(null);
@@ -89,7 +90,9 @@ const HotelList = () => {
       minPrice,
       maxPrice,
       facilities,
-      services
+      services,
+      facilityIds: filters.facilityIds,
+      serviceIds: filters.serviceIds
     },
     sortOrder: sort as sortOrder
   });
@@ -159,17 +162,7 @@ const HotelList = () => {
         </ul>
 
         {/* infinity scroll event 감지 div */}
-        <div ref={observerRef} className="w-full h-[50px] mt-10 items-center text-center ">
-          {/* <span className="text-sm text-gray-600 leading-[50px]">
-            저는 Infinity scroll event를 감지하는 Box입니당! 저한테 잘보이셔야 해요! 😂
-          </span> */}
-        </div>
-
-        {/* 여기에 스켈레톤 ui 만들면 좋을 듯 */}
-        {/* {isFetchingNextPage && <p>Loading more...</p>} */}
-
-        {/* 얘는 !hasNextPage뿐 아니라 다른 장치도 필요할 듯. */}
-        {/* {!hasNextPage && <p>모든 호텔 데이터를 불러왔습니다.</p>} */}
+        <div ref={observerRef} className="w-full h-[50px] mt-10 items-center text-center "></div>
       </div>
     </div>
   );
