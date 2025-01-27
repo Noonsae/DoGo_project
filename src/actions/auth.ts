@@ -19,7 +19,7 @@ export const kakaoLogin = async () => {
   const supabase = await serverSupabase();
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'kakao',
-    options: { redirectTo: 'https://https://do-go-project.vercel.app/api/auth/kakao' }
+    options: { redirectTo: 'https://do-go-project.vercel.app/api/auth/kakao' }
   });
 
   if (error) {
