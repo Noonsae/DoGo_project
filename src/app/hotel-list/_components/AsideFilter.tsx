@@ -139,7 +139,7 @@ const AsideFilter = ({ onFilterChange: onChangeFilter }: FilterProps) => {
       <FacilityList selectedFacilities={selectedFacilities} onFacilityChange={handleFacilityChange} />
 
       {/* 서비스 필터 */}
-      <ServiceList selectedServices={selectedFacilities} onFacilityChange={handleFacilityChange} />
+      {/* <ServiceList selectedServices={selectedFacilities} onFacilityChange={handleFacilityChange} /> */}
     </aside>
   );
 };
