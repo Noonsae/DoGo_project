@@ -105,7 +105,9 @@ const SignUpUser: React.FC<SignUpProps> = ({
             value={email}
             onChange={(e) => handleInputChange('email', e.target.value)}
             className={`w-full mb-[8px] sm:mb-[12px]  h-12 px-3 border rounded-[8px] focus:outline-none ${
-              errors.email ? 'border-red-500 focus:ring-red-500' : 'border-[#BFBFBF] focus:ring-[#B3916A]'
+              errors.email
+                ? 'border-red-500 focus:ring-red-500'
+                : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
             }`}
           />
           {errors.email && <p className="text-[14px] text-red-500">{errors.email}</p>}
@@ -145,7 +147,9 @@ const SignUpUser: React.FC<SignUpProps> = ({
               value={form.confirmPassword}
               onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
               className={`mb-[8px] sm:mb-[12px] w-full h-12 px-3 border rounded-[8px] focus:outline-none ${
-                errors.confirmPassword ? 'border-red-500 focus:ring-red-500' : 'border-[#BFBFBF] focus:ring-[#B3916A]'
+                errors.confirmPassword
+                  ? 'border-red-500 focus:ring-red-500'
+                  : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
               }`}
             />
             <button
@@ -170,7 +174,9 @@ const SignUpUser: React.FC<SignUpProps> = ({
             value={phone}
             onChange={(e) => handleInputChange('phone', e.target.value)}
             className={`w-full mb-[8px] sm:mb-[12px] h-12 px-3 border rounded-[8px] focus:outline-none ${
-              errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-[#BFBFBF] focus:ring-[#B3916A]'
+              errors.phone
+                ? 'border-red-500 focus:ring-red-500'
+                : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
             }`}
           />
           {errors.phone && <p className="text-[14px] mb-[12px] sm:mb-[16px] text-red-500">{errors.phone}</p>}
@@ -183,7 +189,9 @@ const SignUpUser: React.FC<SignUpProps> = ({
             value={name}
             onChange={(e) => handleInputChange('name', e.target.value)}
             className={`w-full mb-[8px] sm:mb-[12px]  h-12 px-3 border rounded-[8px] focus:outline-none ${
-              errors.name ? 'border-red-500 mb-[20px] focus:ring-red-500' : 'border-[#BFBFBF] focus:ring-[#B3916A]'
+              errors.name
+                ? 'border-red-500 mb-[20px] focus:ring-red-500'
+                : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
             }`}
           />
           {errors.name && <p className="text-[14px] text-red-500">{errors.name}</p>}
@@ -198,7 +206,9 @@ const SignUpUser: React.FC<SignUpProps> = ({
             value={nickname}
             onChange={(e) => handleInputChange('nickname', e.target.value)}
             className={`w-full mb-[8px] sm:mb-[12px]  h-12 px-3 border rounded-[8px] focus:outline-none ${
-              errors.nickname ? 'border-red-500  focus:ring-red-500' : 'border-[#BFBFBF] focus:ring-[#B3916A]'
+              errors.nickname
+                ? 'border-red-500  focus:ring-red-500'
+                : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
             }`}
           />
           {errors.nickname && <p className="text-[14px] text-red-500">{errors.nickname}</p>}
@@ -207,7 +217,7 @@ const SignUpUser: React.FC<SignUpProps> = ({
           <button
             type="button"
             onClick={handleSignUp}
-            className="w-full mt-[20px] bg-[#B3916A] text-white font-semibold py-3 px-4 rounded-md hover:bg-[#a37e5f] transition mb-4"
+            className="w-full mt-[20px] bg-[#B3916A] text-white font-semibold py-3 px-4 rounded-md focus:border-[#B3916A] focus:outline-none"
           >
             완료
           </button>

@@ -113,7 +113,9 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
             value={email}
             onChange={(e) => handleInputChange('email', e.target.value)}
             className={`mb-[12px] sm:mb-[16px]  w-full h-12 px-3 border rounded-[8px] focus:outline-none ${
-              errors.email ? 'border-red-500 focus:ring-red-500' : 'border-[#BFBFBF] focus:ring-[#B3916A]'
+              errors.email
+                ? 'border-red-500 focus:ring-red-500'
+                : 'border-[#BFBFBF]  focus:border-[#B3916A] focus:outline-none'
             }`}
           />
           {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
@@ -154,7 +156,9 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
               value={form.confirmPassword}
               onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
               className={`mb-[12px] sm:mb-[16px] w-full h-12 px-3 border rounded-[8px] focus:outline-none ${
-                errors.confirmPassword ? 'border-red-500 focus:ring-red-500' : 'border-[#BFBFBF] focus:ring-[#B3916A]'
+                errors.confirmPassword
+                  ? 'border-red-500 focus:ring-red-500'
+                  : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
               }`}
             />
             <button
@@ -179,7 +183,9 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
             value={name}
             onChange={(e) => handleInputChange('name', e.target.value)}
             className={`mb-[8px] sm:mb-[12px] w-full h-12 px-3 border rounded-[8px] focus:outline-none ${
-              errors.name ? 'border-red-500 focus:ring-red-500' : 'border-[#BFBFBF] focus:ring-[#B3916A]'
+              errors.name
+                ? 'border-red-500 focus:ring-red-500'
+                : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
             }`}
           />
           {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
@@ -191,7 +197,9 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
             value={phone}
             onChange={(e) => handleInputChange('phone', e.target.value)}
             className={`mb-[12px] sm:mb-[16px] w-full  h-12 px-3 border rounded-[8px] focus:outline-none ${
-              errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-[#BFBFBF] focus:ring-[#B3916A]'
+              errors.phone
+                ? 'border-red-500 focus:ring-red-500'
+                : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
             }`}
           />
           {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}
@@ -203,7 +211,9 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
             value={businessNumber}
             onChange={(e) => handleInputChange('businessNumber', e.target.value)}
             className={`mb-[8px] sm:mb-[12px] w-full h-12 px-3 border rounded-[8px] focus:outline-none ${
-              errors.businessNumber ? 'border-red-500 focus:ring-red-500' : 'border-[#BFBFBF] focus:ring-[#B3916A]'
+              errors.businessNumber
+                ? 'border-red-500 focus:ring-red-500'
+                : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
             }`}
           />
           {errors.businessNumber && <p className="text-sm text-red-500">{errors.businessNumber}</p>}
