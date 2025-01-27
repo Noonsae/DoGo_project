@@ -14,17 +14,6 @@ export const GET = async (req: Request) => {
     const services = url.searchParams.get('services')?.split(',') || [];
     const sortOrder = url.searchParams.get('sortOrder');
 
-    console.log('Query Parameters:', {
-      offset,
-      limit,
-      gradeQuery,
-      minPrice,
-      maxPrice,
-      facilities,
-      services,
-      sortOrder
-    });
-
     let query = supabase
       .from('hotels')
       .select(
@@ -62,7 +51,6 @@ export const GET = async (req: Request) => {
       });
     }
     if (services.length > 0) {
-      console.log('Services Filter:', services);
 
       // UUID 배열을 IN 조건으로 필터링
       query = query.in('hotel_service.service_id', services);
@@ -71,7 +59,6 @@ export const GET = async (req: Request) => {
     const { data, error, count } = await query;
 
     if (error) {
-      console.error('Supabase Query Error:', error.message);
       return new Response(JSON.stringify({ error: error.message }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' }

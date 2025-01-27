@@ -33,7 +33,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, room }) => {
 
   const scrollToSection = (id: string) => {
     const section = document.getElementById(id);
-    console.log(`섹션 ID: ${id}`, section); // 섹션 ID와 DOM 확인
     if (section) {
       section.scrollIntoView({ behavior: 'smooth', block: 'start' });
       setActiveTab(id); // 활성 탭 설정

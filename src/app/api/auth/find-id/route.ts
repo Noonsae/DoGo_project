@@ -25,7 +25,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ email: data.email }, { status: 200 });
   } catch (err) {
-    console.error('아이디 찾기 오류:', err);
     return NextResponse.json({ error: '서버 오류가 발생했습니다.' }, { status: 500 });
   }
 }

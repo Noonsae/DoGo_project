@@ -57,7 +57,6 @@ const SignInPage = () => {
 
       window.location.href = '/';
     } catch (err) {
-      console.error('오류 발생:', err);
       await Swal.fire({
         icon: 'error',
         title: '오류 발생',

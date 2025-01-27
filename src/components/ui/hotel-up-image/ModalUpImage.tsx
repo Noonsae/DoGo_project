@@ -15,10 +15,9 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, images = [], name }) => {
   const [currentIndex, setCurrentIndex] = useState(0); // 현재 이미지 인덱스
 
-  console.log('Modal Props:', { isOpen, images });
 
   if (!isOpen || !images || images.length === 0) {
-    console.log('모달이 렌더링되지 않음:', { isOpen, images });
+
     return null;
   }
 

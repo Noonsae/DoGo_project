@@ -43,7 +43,6 @@ const fetchRoomDataByView = async (view: string): Promise<RoomHotelsWithView[]> 
     throw new Error(`호텔 데이터를 가져오는 중 오류 발생: ${error.message}`);
   }
 
-  console.log('Fetching hotels for view:', view);
 
   return data;
 };

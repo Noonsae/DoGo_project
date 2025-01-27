@@ -17,7 +17,6 @@ interface Room {
 const RoomPage = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(true);
-  console.log(setLoading);
   const [error, setError] = useState<string | null>(null);
   const [newRoom, setNewRoom] = useState({
     room_name: '',

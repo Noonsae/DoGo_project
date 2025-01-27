@@ -64,11 +64,6 @@ const AsideFilter = ({ onFilterChange: onChangeFilter }: FilterProps) => {
     setGeneratedUrl(newUrl); // 상태에 URL 저장
   }, [selectedGrade, filterMinPrice, filterMaxPrice, selectedFacilities, selectedServices]);
 
-  // 필터 상태가 변경될 때 URL 업데이트
-  useEffect(() => {
-    updateUrl();
-  }, [updateUrl]);
-
   // 성급 필터
   const handleHotelGradeChange = (grade: number) => {
     setSelectedGrade((prev) => (prev.includes(grade) ? prev.filter((item) => item !== grade) : [...prev, grade]));
@@ -142,6 +137,11 @@ const AsideFilter = ({ onFilterChange: onChangeFilter }: FilterProps) => {
       <div className="mt-6">
         <h3 className="text-lg font-semibold mb-2">편의 시설</h3>
         <ul className="flex flex-wrap gap-2">
+          {/* TODO:
+              1. DB에서 facilities를 다 가져온다.
+              2. 가져온 데이터를 렌더링한다.
+              3. onClick 시에 id를 넣는다. (state)
+          */}
           {['사우나', '수영장', '스키장', '골프장', '바베큐', '레스토랑', '피트니스', '주방/식당', 'BAR', '주차장'].map(
             (facility) => (
               <li key={facility}>

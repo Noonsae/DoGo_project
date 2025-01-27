@@ -15,7 +15,6 @@ interface Policy {
 const PolicyPage = () => {
   const [policies, setPolicies] = useState<Policy[]>([]);
   const [loading, setLoading] = useState(true);
-  console.log(setLoading);
   const [error, setError] = useState<string | null>(null);
   const [newPolicy, setNewPolicy] = useState({ policy_name: '', description: '' });
 

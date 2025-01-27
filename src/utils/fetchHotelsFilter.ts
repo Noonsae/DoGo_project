@@ -5,6 +5,15 @@ import { FetchHotelsFilterResponse, UseFetchHotelsFilterParamsType } from '@/typ
 
 // 필터 타입 정의
 
+
+// 계획
+// 1,2 가 포함되느냐?
+// hotels.facility_ids.contains -> 
+// hotels: { id: ~, name: ~, facility_ids: [1, 2, 3] -> text -> defined as array , service_ids: []  }
+// rooms: { id: ~~~, hotel_id: ~~, price: ~~~ }
+// facilities: { id: uuid~~,  name: ~~~ }
+// hotel_facilities X 
+
 // fetchHotelsFilter 함수
 const fetchHotelsFilter = async ({
   pageParam = 0,
@@ -15,7 +24,9 @@ const fetchHotelsFilter = async ({
     minPrice: 0,
     maxPrice: 10000000,
     facilities: [], // 중첩 구조에 맞게 수정
-    services: []
+    services: [],
+    facilityIds: [],
+    serviceIds: [],
   },
   sortOrder = ''
 }: UseFetchHotelsFilterParamsType): Promise<FetchHotelsFilterResponse> => {
@@ -25,14 +36,14 @@ const fetchHotelsFilter = async ({
   let query = supabase.from('hotels').select(
     `
       *,
-      rooms(price, view),
-      hotel_service:hotel_service(
+      rooms!inner(price, view),
+      hotel_facility!inner(
+        facility_id,
+        facilities!inner(name)
+      ),
+      hotel_service(
         service_id,
         services(name)
-      ),
-      hotel_facility:hotel_facility(
-        facility_id,
-        facilities(name)
       )
     `,
     { count: 'exact', head: false }
@@ -45,12 +56,23 @@ const fetchHotelsFilter = async ({
 
   // 2. 가격 조건 처리
   if (filters.minPrice != null && filters.minPrice >= 0) {
-    query = query.gte('rooms.price', filters.minPrice);
+    query = query.gte('rooms.price', 300000);
   }
   if (filters.maxPrice != null && filters.maxPrice > 0) {
     query = query.lte('rooms.price', filters.maxPrice);
   }
 
+  // 예시
+  // let a  = [
+  //     "23c143b4-cc1e-4972-b4e6-558f85483b4f",
+  // "7ceeb937-0ba8-48bd-b301-59dcd015f038",
+  // "7ce9323a-9182-4398-908e-419ea2aa4904",
+  //   ];
+
+  if (filters.facilityIds.length !== 0) {
+    query = query.contains('facility_ids', filters.facilityIds);
+  }
+  
   // 3. 지역 필터 처리
   if (filters.location) {
     query = query.eq('location', filters.location);
@@ -78,11 +100,16 @@ const fetchHotelsFilter = async ({
   // query = query.eq("hotel_facility.facilities.name", "주차장")
   // query = query.contains('hotel_facility.facilities.name', "주차장");
 
+  // console.log(filters.services)
   // 6. 서비스 조건 처리
   // TODO 테이터 형식을 정하고 테스트 한번 해보는게 좋음
-  if (filters.services.length > 0) {
-    query = query.contains('hotel_service.services.name', filters.services);
-  }
+  // if (filters.services.length > 0) {
+    
+  // let a = ["룸서비스", "무료주차"]
+  // a.forEach((service) => {
+  //     query = query.eq('hotel_service.services.name', service)
+  //   })
+  // }
 
   // 7. 정렬 조건 처리
   if (sortOrder) {
@@ -95,30 +122,11 @@ const fetchHotelsFilter = async ({
 
   // 9. 쿼리 실행
   const { data, error } = await query;
+  console.log({data})
 
   if (error) {
     throw new Error(`Failed to fetch hotels: ${error.message}`);
   }
-
-  console.log(data);
-
-  // console.log((data || []).map((hotel) => ({
-  //   id: hotel.id,
-  //   name: hotel.name,
-  //   stars: hotel.stars,
-  //   address: hotel.address,
-  //   description: hotel.description,
-  //   main_img_url: hotel.main_img_url,
-  //   hotel_img_urls: hotel.hotel_img_urls || null,
-  //   check_in: hotel.check_in,
-  //   check_out: hotel.check_out,
-  //   location: hotel.location,
-  //   user_id: hotel.user_id,
-  //   facilities: hotel.hotel_facility.filter((fac) => fac.facilities.name !== null),
-  //   services: hotel.hotel_service,
-  //   label: `${hotel.name} ${hotel.address}`,
-  //   rooms: hotel.rooms,
-  // })).filter((data) => data.rooms.length !== 0 ));
 
   // 10. 결과 반환
   return {
@@ -139,8 +147,7 @@ const fetchHotelsFilter = async ({
         services: hotel.hotel_service,
         label: `${hotel.name} ${hotel.address}`,
         rooms: hotel.rooms
-      }))
-      .filter((data) => data.rooms.length !== 0 && data.facilities.length !== 0),
+      })),
     totalCount: count || 0
   };
 };
