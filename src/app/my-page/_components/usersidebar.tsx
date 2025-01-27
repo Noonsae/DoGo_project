@@ -50,10 +50,10 @@ const UserSidebar: React.FC<UserSidebarProps> = ({ userId, currentTab, setCurren
 
   const tabs = [
     { id: 'profile', label: '프로필 관리' },
-    { id: 'bookings', label: '예약 목록' },
-    { id: 'favorites', label: '찜 목록' },
-    { id: 'reviews', label: '작성한 후기' },
-    { id: 'inquiries', label: '1:1 문의' },
+    { id: 'booking', label: '예약 목록' },
+    { id: 'favorite', label: '찜 목록' },
+    { id: 'review', label: '작성한 후기' },
+    { id: 'inquiry', label: '1:1 문의' }
   ];
 
   return (
@@ -75,7 +75,7 @@ const UserSidebar: React.FC<UserSidebarProps> = ({ userId, currentTab, setCurren
             }`}
             onClick={() => {
               setCurrentTab(tab.id); // 탭 변경
-              router.push(`/my-page/${tab.id}`); // 라우팅 처리
+              router.push(`/my-page/user/${tab.id}`); // 라우팅 처리
             }}
           >
             {tab.label}
