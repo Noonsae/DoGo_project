@@ -25,7 +25,6 @@ export default function MyPage() {
   // TODO: 사용 예시
   const user = useAuthStore((state) => state.user);
   const [role, setRole] = useState<'user' | 'business' | 'admin' | null>(null);
-  const [userId, setUserId] = useState<string | null>(null); // 사용자 ID 상태 추가
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -33,14 +32,10 @@ export default function MyPage() {
     const fetchUserRole = async () => {
       try {
         // 현재 인증된 사용자 정보 가져오기
-        const {
-          data: { user },
-          error: authError
-        } = await supabase.auth.getUser();
 
-        if (authError || !user) throw new Error('로그인된 사용자가 없습니다.');
-
-        setUserId(user.id); // 사용자 ID 저장
+        if (!user) {
+          return;
+        }
 
         // 사용자 역할 가져오기
         const { data, error: userError } = await supabase.from('users').select('role').eq('id', user.id).single();
@@ -75,7 +70,7 @@ export default function MyPage() {
     case 'user':
       return <UserPage />;
     case 'business':
-      return <BusinessPage userId={userId!} />; // `userId`를 `BusinessPage`로 전달
+      return <BusinessPage />; // `userId`를 `BusinessPage`로 전달
     case 'admin':
       return <AdminPage />;
     default:

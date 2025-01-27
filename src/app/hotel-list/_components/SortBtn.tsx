@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { sortOrder } from '@/types/filter/hotel-filter-type';
+import { sortOrder } from '@/types/hotel/hotel-filter-type';  
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 
 interface SortBtnType {
