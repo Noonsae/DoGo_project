@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import CloseEyesIcon from '@/components/ui/icon/CloseEyesIcon';
 import OpenEyesIcon from '@/components/ui/icon/OpenEyesIcon';
+import LogoAuth from '@/components/ui/icon/LogoAuth';
 
 const SignUpUser: React.FC<SignUpProps> = ({
   email,
@@ -92,7 +93,7 @@ const SignUpUser: React.FC<SignUpProps> = ({
       <div className="flex justify-center items-center px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-[400px] lg:h-auto">
           <div className="w-full mt-[156px] mb-[40px] flex flex-col justify-center items-center">
-            <Image src="/images/Dogo.png" alt="Dogo" priority width={140} height={37} />
+            <LogoAuth />
           </div>
           <p className="text-[18px] font-bold mb-[24px]">일반 회원 회원가입</p>
 
