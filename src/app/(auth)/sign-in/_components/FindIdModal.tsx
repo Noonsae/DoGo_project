@@ -99,23 +99,27 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
           <CloseButtonIcon />
         </button>
         {form.modalType === 'input' && (
-          <div className="flex flex-col h-full">
-            <p className="text-xl sm:text-2xl font-bold mt-20 sm:mt-[36px] mb-8 sm:mb-[40px]">
+          <div className="flex flex-col h-full ">
+            <p className="text-xl sm:text-2xl font-bold mt-20 sm:mt-[36px] mb-10 sm:mb-[40px]">
               DoGo 가입 정보로 <br /> 아이디를 확인하세요.
             </p>
 
-            <div className="flex border-b-2 w-full max-w-[352px]">
+            <div className="flex border-b-2 w-full max-w-[352px] ">
               <button
-                className={`flex-1 pb-2 text-center  ${
-                  form.activeTab === 'user' ? 'border-b-2 border-gray-500 font-bold' : 'text-gray-400'
+                className={`flex-1 pb-2 sm:pb-[10px] text-center  ${
+                  form.activeTab === 'user'
+                    ? 'border-b-2 border-gray-500 font-bold text-neutral-800'
+                    : 'text-neutral-400'
                 }`}
                 onClick={() => handleTabChange('user')}
               >
                 일반 회원 아이디
               </button>
               <button
-                className={`flex-1 pb-2 text-center ${
-                  form.activeTab === 'business' ? 'border-b-2 border-gray-500 font-bold' : 'text-gray-400'
+                className={`flex-1 pb-2 sm:pb-[10px] text-center ${
+                  form.activeTab === 'business'
+                    ? 'border-b-2 border-gray-500 font-bold text-neutral-800'
+                    : 'text-neutral-400'
                 }`}
                 onClick={() => handleTabChange('business')}
               >
