@@ -1,5 +1,5 @@
 'use client';
-import { FormState, ErrorState } from '@/types/signIn/FindPasswordModalTypes';
+import { FormState, ErrorState } from '@/types/auth/FindPasswordModalTypes';
 import CloseEyesIcon from '@/components/ui/icon/CloseEyesIcon';
 import OpenEyesIcon from '@/components/ui/icon/OpenEyesIcon';
 import React from 'react';

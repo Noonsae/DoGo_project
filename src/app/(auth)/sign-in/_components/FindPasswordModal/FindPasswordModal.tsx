@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { FormState } from '@/types/signIn/FindPasswordModalTypes';
+import { FormState } from '@/types/auth/FindPasswordModalTypes';
 import CloseButtonIcon from '@/components/ui/icon/CloseButtonIcon';
 import Swal from 'sweetalert2';
 import InputModal from './InputModal';
