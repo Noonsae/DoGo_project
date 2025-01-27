@@ -96,13 +96,13 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, room }) => {
                     onClick={showPreviousImage}
                     className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
                   >
-                    <FiChevronLeft />
+                    {/* <FiChevronLeft /> */}
                   </button>
                   <button
                     onClick={showNextImage}
                     className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
                   >
-                    <FiChevronRight />
+                    {/* <FiChevronRight /> */}
                   </button>
                 </>
               ) : (

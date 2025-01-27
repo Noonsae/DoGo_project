@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import FiChevronLeftIcon from '../icon/FiChevronLeftIcon';
 import FiChevronRightIcon from '../icon/FiChevronRightIcon';
-import { IoClose } from 'react-icons/io5';
+import IoCloseIcon from '../icon/IoCloseIcon';
+
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -45,7 +46,7 @@ const UpModal = ({ isOpen, onClose, images = [], name }: ModalProps) => {
         {/* 헤더 */}
         <div className="flex justify-center items-center px-6 bg-gray-900 text-white rounded-t-lg h-[67px]">
           <h2 className="text-lg font-semibold ">{name}</h2>
-          <IoClose
+          <IoCloseIcon
             onClick={onClose}
             className="absolute top-4 right-4 text-2xl cursor-pointer"
             aria-label="Close modal"
@@ -67,6 +68,7 @@ const UpModal = ({ isOpen, onClose, images = [], name }: ModalProps) => {
             height={540}
             className="object-contain w-full h-full rounded-md"
           />
+
           <FiChevronRightIcon
             onClick={handleNext}
             className="text-[48px] absolute right-[24px] top-1/2 transform -translate-y-1/2 text-gray-500 bg-white shadow-md rounded-full p-2 hover:shadow-lg hover:text-gray-700 focus:ring cursor-pointer "
