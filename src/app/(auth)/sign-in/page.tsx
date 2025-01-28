@@ -74,7 +74,7 @@ const SignInPage = () => {
         </div>
         <div className="flex justify-between mb-[40px] border-b-2 ">
           <button
-            className={`mb-[10px] sm:mb-[14px] pb-2 w-1/2 text-center ${
+            className={`pb-2 w-1/2 text-center ${
               form.activeTab === 'user' ? ' border-b-2 border-neutral-800  ' : 'text-neutral-400'
             }`}
             onClick={() => setForm({ ...form, activeTab: 'user', email: '', password: '' })}
@@ -82,7 +82,7 @@ const SignInPage = () => {
             일반 회원
           </button>
           <button
-            className={`mb-[10px] sm:mb-[14px] pb-2 w-1/2 text-center ${
+            className={`pb-2 w-1/2 text-center ${
               form.activeTab === 'business' ? 'border-b-2 border-neutral-800' : 'text-neutral-400'
             }`}
             onClick={() => setForm({ ...form, activeTab: 'business', email: '', password: '' })}
@@ -140,16 +140,16 @@ const SignInPage = () => {
             회원가입
           </button>
         </p>
-        <div className="w-full sm:w-[400px] flex items-center my-6">
+        {/* <div className="w-full sm:w-[400px] flex items-center my-6">
           <hr className="flex-grow border-neutral-300" />
           <span className="px-4 text-sm text-neutral-400">간편 로그인</span>
           <hr className="flex-grow border-neutral-300" />
-        </div>
+        </div> */}
         {form.isFindIdModalOpen && <FindIdModal onClose={() => setForm({ ...form, isFindIdModalOpen: false })} />}
         {form.isFindPasswordOpen && (
           <FindPasswordModal onClose={() => setForm({ ...form, isFindPasswordOpen: false })} />
         )}
-        <div className="text-center mt-8">
+        {/* <div className="text-center mt-8">
           <KakaoSignIn />
         </div>
         <div className="flex w-full max-w-[400px] justify-center items-center text-sm text-gray-500 mt-4">
@@ -170,7 +170,7 @@ const SignInPage = () => {
           >
             이용약관
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
