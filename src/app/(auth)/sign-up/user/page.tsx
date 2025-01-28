@@ -23,7 +23,8 @@ export default function SignUpUserPage() {
         name,
         nickname,
         phone,
-        role: 'user'
+        role: 'user',
+        
       });
       if (!result.success) {
         return;
@@ -46,6 +47,7 @@ export default function SignUpUserPage() {
   return (
     <div>
       <SignUpUser
+        
         email={email}
         setEmail={setEmail}
         password={password}
