@@ -50,7 +50,7 @@ const Page = () => {
             <UserIcon />
             <p className="font-medium text-neutral-800 text-[18px] m-[4px]">일반 회원가입</p>
             <p
-              className={`text-[16px] sm:text-[18px] text-xs mt-1 ${
+              className={`text-[16px] sm:text-[16px] text-xs mt-1 ${
                 userType === 'user' ? 'text-[#B3916A]' : 'text-gray-500'
               }`}
             >
@@ -68,7 +68,7 @@ const Page = () => {
             <BusinessIcon />
             <p className=" font-medium text-neutral-800 text-[18px] m-[4px]">사업자 회원가입</p>
             <p
-              className={`text-[16px] sm:text-[18px] text-xs mt-1 ${
+              className={`text-[16px] sm:text-[16px] text-xs mt-1 ${
                 userType === 'business' ? 'text-[#B3916A]' : 'text-gray-500'
               }`}
             >
@@ -97,17 +97,17 @@ const Page = () => {
         </p>
 
         {/* 간편 회원가입 구분선 */}
-        <div className="w-full max-w-[400px] flex items-center my-6">
+        {/* <div className="w-full max-w-[400px] flex items-center my-6">
           <hr className="flex-grow border-gray-300" />
           <span className="px-4 text-sm text-neutral-400">간편 회원가입</span>
           <hr className="flex-grow border-gray-300" />
-        </div>
+        </div> */}
 
         {/* 카카오 로그인 */}
-        <KakaoSignIn />
+        {/* <KakaoSignIn /> */}
 
         {/* 하단 링크 */}
-        <div className="flex w-full max-w-[400px] justify-center items-center text-sm text-gray-500 mt-4">
+        {/* <div className="flex w-full max-w-[400px] justify-center items-center text-sm text-gray-500 mt-4">
           <button
             type="button"
             className="flex-1 text-right m-[2px] hover:underline"
@@ -125,7 +125,7 @@ const Page = () => {
           >
             이용약관
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
