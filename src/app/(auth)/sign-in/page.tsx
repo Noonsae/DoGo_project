@@ -149,7 +149,7 @@ const SignInPage = () => {
         {form.isFindPasswordOpen && (
           <FindPasswordModal onClose={() => setForm({ ...form, isFindPasswordOpen: false })} />
         )}
-        <div className="text-center mt-8">
+        {/* <div className="text-center mt-8">
           <KakaoSignIn />
         </div>
         <div className="flex w-full max-w-[400px] justify-center items-center text-sm text-gray-500 mt-4">
@@ -170,7 +170,7 @@ const SignInPage = () => {
           >
             이용약관
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
