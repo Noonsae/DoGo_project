@@ -16,15 +16,15 @@ const HotelLocation = ({ id: hotelId }: HotelLocationProps) => {
   return (
     <div>
       <section id="location" className="scroll-mt-20">
-        <h2 className="text-2xl font-bold mb-4">위치</h2>
+        <h2 className="text-neutral-900 text-[28px] font-semibold mb-4">위치</h2>
         <KakaoTest address={hotelData.address} />
-        <p className="flex  gap-1 mt-1">
+        <p className="flex text-xl text-neutral-800 font-semibold gap-1 mt-1">
           {hotelData.address}
           {CopyAddressIcon()}
           주소복사
         </p>
-        <p className="flex gap-1 mt-1">{SubwayIcon()}아오역 1번 출구 도보 60분</p>
-        <p className="flex gap-1 mt-1">{RunningIcon()}대전아오백화점 도보 4시간</p>
+        <p className="flex text-neutral-700 gap-1 mt-1">{SubwayIcon()}아오역 1번 출구 도보 60분</p>
+        <p className="flex text-neutral-700 gap-1 mt-1">{RunningIcon()}대전아오백화점 도보 4시간</p>
       </section>
     </div>
   );

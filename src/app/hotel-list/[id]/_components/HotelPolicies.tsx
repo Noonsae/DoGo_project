@@ -20,7 +20,6 @@ const HotelPolicies = ({ hotelId }: HotelPoliciesProps) => {
   useEffect(() => {
     const loadData = async () => {
       try {
-
         const response = await fetch(`/api/policy?hotel_id=${hotelId}`); // API 호출
         if (!response.ok) {
           const errorData = await response.json();
@@ -45,62 +44,69 @@ const HotelPolicies = ({ hotelId }: HotelPoliciesProps) => {
 
   // 정책 데이터 렌더링
   return (
-    <div className="w-full mx-auto mt-10">
-      <h2 className="text-2xl font-bold mb-4">숙소 정책</h2>
+    <>
+      <div className="w-full mx-auto" style={{ marginBottom: '120px' }}>
+        <h2 className="text-neutral-900 text-[28px] font-semibold mb-4">숙소 정책</h2>
 
-      {sections.map((section) => {
-        const policy = policies.find((p) => p.policy_name.trim() === section.trim());
+        {sections.map((section, index) => {
+          const policy = policies.find((p) => p.policy_name.trim() === section.trim());
 
-        return (
-          <div key={section} className="border-b border-gray-300">
+          return (
             <div
-              className="cursor-pointer py-3 flex justify-between items-center"
-              onClick={() => toggleSection(section)}
+              key={section}
+              className={`${
+                index !== sections.length - 1 ? 'border-b border-gray-300' : '' // 마지막 항목은 border 제거
+              }`}
             >
-              <span>{section}</span>
-              <span>
-                {openSection === section ? (
-                  <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M18 15.5L12 9.5L6 15.5"
-                      stroke="#A0A0A0"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                ) : (
-                  <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M6 9.5L12 15.5L18 9.5"
-                      stroke="#A0A0A0"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                )}
-              </span>
-            </div>
-            {openSection === section && (
-              <div className="p-4 text-gray-600">
-                {policy?.description && Array.isArray(policy.description) && policy.description.length > 0 ? (
-                  <ul className="list-disc pl-5">
-                    {policy.description.map((item: string, index: number) => (
-                      <li className="mb-1" key={index}>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>정보가 없습니다.</p> // 값이 없을 경우 표시
-                )}
+              <div
+                className="cursor-pointer py-3 flex justify-between items-center"
+                onClick={() => toggleSection(section)}
+              >
+                <span>{section}</span>
+                <span>
+                  {openSection === section ? (
+                    <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M18 15.5L12 9.5L6 15.5"
+                        stroke="#A0A0A0"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  ) : (
+                    <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M6 9.5L12 15.5L18 9.5"
+                        stroke="#A0A0A0"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  )}
+                </span>
               </div>
-            )}
-          </div>
-        );
-      })}
-    </div>
+              {openSection === section && (
+                <div className="p-4 text-gray-600">
+                  {policy?.description && Array.isArray(policy.description) && policy.description.length > 0 ? (
+                    <ul className="list-disc pl-5">
+                      {policy.description.map((item: string, index: number) => (
+                        <li className="mb-1" key={index}>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>정보가 없습니다.</p> // 값이 없을 경우 표시
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </>
   );
 };
 
