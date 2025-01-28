@@ -20,7 +20,6 @@ const HotelPolicies = ({ hotelId }: HotelPoliciesProps) => {
   useEffect(() => {
     const loadData = async () => {
       try {
-
         const response = await fetch(`/api/policy?hotel_id=${hotelId}`); // API 호출
         if (!response.ok) {
           const errorData = await response.json();
@@ -46,7 +45,7 @@ const HotelPolicies = ({ hotelId }: HotelPoliciesProps) => {
   // 정책 데이터 렌더링
   return (
     <div className="w-full mx-auto mt-10">
-      <h2 className="text-2xl font-bold mb-4">숙소 정책</h2>
+      <h2 className="text-neutral-900 text-[28px] font-semibold mb-4">숙소 정책</h2>
 
       {sections.map((section) => {
         const policy = policies.find((p) => p.policy_name.trim() === section.trim());

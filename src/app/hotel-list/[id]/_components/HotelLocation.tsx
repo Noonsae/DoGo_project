@@ -16,7 +16,7 @@ const HotelLocation = ({ id: hotelId }: HotelLocationProps) => {
   return (
     <div>
       <section id="location" className="scroll-mt-20">
-        <h2 className="text-2xl font-bold mb-4">위치</h2>
+        <h2 className="text-neutral-900 text-[28px] font-semibold mb-4">위치</h2>
         <KakaoTest address={hotelData.address} />
         <p className="flex  gap-1 mt-1">
           {hotelData.address}

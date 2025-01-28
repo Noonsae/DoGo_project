@@ -25,7 +25,7 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
   return (
     <section
       id="overview"
-      className="scroll-mt-20 w-full max-w-[1200px] mx-auto px-[50px] lg:px-[30px] xl:px-[20px] 2xl:px-0"
+      className="scroll-mt-20 w-full mt-[60px] max-w-[1200px] mx-auto px-[50px] lg:px-[30px] xl:px-[20px] 2xl:px-0"
     >
       <div className="flex flex-col lg:flex-row gap-4">
         {/* 메인 이미지 */}
@@ -99,7 +99,7 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
       </div>
       {/* 호텔 정보 */}
       <div className="mt-4 text-center lg:text-left">
-        <h2 className="text-2xl font-bold">{hotelData.name || 'Hotel Name'}</h2>
+        <h2 className="text-neutral-900 text-[28px] font-semibold">{hotelData.name || 'Hotel Name'}</h2>
         <div className="mt-2">
           <RenderStars stars={hotelData.stars} />
         </div>

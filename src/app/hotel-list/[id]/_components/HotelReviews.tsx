@@ -20,7 +20,7 @@ const HotelReviews = ({ loading, reviews, allReviews }: HotelReviewsProps) => {
 
   return (
     <section id="reviews" className="scroll-mt-20">
-      <h2 className="text-2xl font-bold mb-4">이용 후기</h2>
+      <h2 className="text-neutral-900 text-[28px] font-semibold mb-4">이용 후기</h2>
       {loading ? (
         <p>Loading reviews...</p>
       ) : (

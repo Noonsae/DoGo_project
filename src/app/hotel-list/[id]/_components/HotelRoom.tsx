@@ -24,7 +24,7 @@ const HotelRoom = ({ roomsData, getValidImageUrl, roomOption, hotelData }: Hotel
   return (
     <div>
       <section id="rooms" className="scroll-mt-20">
-        <h2 className="text-2xl font-bold mb-4">객실 선택</h2>
+        <h2 className="text-neutral-900 text-[28px] font-semibold mb-4">객실 선택</h2>
         <div>
           <ul className="space-y-6">
             {roomsData.map((room) => (
