@@ -8,6 +8,7 @@ import { serverSupabase } from '@/supabase/supabase-server';
 // 해결책
 // 1. trigger는 그대로 두되, id, email 만 trigger로 users 테이블에 추가
 // 2. kakao 회원가입 혹은 일반 회원가입 후 users 테이블을 update 한다.
+// 커밋용
 export default async function handleSignupAction({
   email,
   password,
