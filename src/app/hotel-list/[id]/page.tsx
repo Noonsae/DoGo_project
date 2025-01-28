@@ -25,32 +25,35 @@ import HotelOverviewSkeleton from '@/components/ui/skeleton/HotelOverviewSkeleto
 import HotelBoxSkeleton from '@/components/ui/skeleton/HotelBoxSkeleton';
 import useServiceFacility from '@/hooks/serviceFacility/useServiceFacility';
 import useHotelDetail from '@/hooks/hotel/useHotelDetail';
+import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
 
 const HotelDetailPage = ({ params }: { params: { id: string } }) => {
-  const hotelId = params?.id;
+  const hotelId = params?.id; // URL 파라미터에서 호텔 ID 추출
 
-  const [activeTab, setActiveTab] = useState('overview');
-  const user = useAuthStore((state) => state.user) as UserType | null;
-  const { favoriteStatus, toggleFavorite, initializeFavorites } = useFavoriteStore();
-  const { reviews, allReviews } = useHotelReviews(hotelId);
-  const { roomsData } = useHotelRooms(hotelId);
+  const [activeTab, setActiveTab] = useState('overview'); // 활성화된 네비게이션 탭 상태
+  const user = useAuthStore((state) => state.user) as UserType | null; // 사용자 정보 가져오기
+  const { favoriteStatus, toggleFavorite, initializeFavorites } = useFavoriteStore(); // 즐겨찾기 관련 상태와 함수 가져오기
+  const { reviews, allReviews } = useHotelReviews(hotelId); // 리뷰 데이터 가져오기
+  const { roomsData } = useHotelRooms(hotelId); // 객실 데이터 가져오기
 
+  // 사용자 로그인 상태에 따라 즐겨찾기 초기화
   useEffect(() => {
     if (user?.id && hotelId) {
-      initializeFavorites(user.id); // 사용자가 로그인되어 있으면 즐겨찾기 상태 초기화
+      initializeFavorites(user.id);
     }
   }, [user, hotelId, initializeFavorites]);
 
-  const { hotelData, loading } = useHotelDetail(hotelId);
+  const { hotelData, loading } = useHotelDetail(hotelId); // 호텔 상세 데이터 가져오기
 
-  const { facilityData, serviceData } = useServiceFacility(hotelId);
+  const { facilityData, serviceData } = useServiceFacility(hotelId); // 시설 및 서비스 데이터 가져오기
 
-  const selectedRoomId = roomsData.length > 0 ? roomsData[0]?.id : null;
+  const selectedRoomId = roomsData.length > 0 ? roomsData[0]?.id : null; // 첫 번째 객실 ID 가져오기
 
   if (!selectedRoomId) {
-    return <p>No rooms found for this hotel.</p>;
+    return <p>No rooms found for this hotel.</p>; // 객실 정보가 없을 때 처리
   }
 
+  // 이미지 URL 검증 함수
   const getValidImageUrl = (imageData: Json): string => {
     if (Array.isArray(imageData) && imageData.length > 0) {
       const firstImage = imageData[0];
@@ -61,10 +64,11 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
     return '/placeholder.webp';
   };
 
+  // 특정 섹션으로 스크롤 이동 함수
   const scrollToSection = (id: string) => {
     const section = document.getElementById(id);
-    section?.scrollIntoView({ behavior: 'smooth' });
-    setActiveTab(id);
+    section?.scrollIntoView({ behavior: 'smooth' }); // 부드럽게 스크롤 이동
+    setActiveTab(id); // 활성화된 탭 업데이트
   };
 
   // 로딩 중 처리
@@ -79,10 +83,12 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
     );
   }
 
+  // 호텔 데이터가 없을 때 처리
   if (!hotelData) {
     return <p className="text-center mt-10">호텔 정보를 불러올 수 없습니다.</p>;
   }
 
+  // 객실 옵션 렌더링
   const roomOption = (
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -93,9 +99,15 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   );
 
   return (
-    <div className="w-full max-w-[1200px] px-[350px] sm:px-[300px] md:px-[200px] lg:px-[100px] xl:px-[50px] xl:mx-auto pt-[78px] xl:max-w-[1200px] 2xl:px-0">
-      {/* 네비게이션 탭 */}
-      <div>
+    <div className="w-full max-w-[1200px] px-[350px] sm:px-[300px] md:px-[200px] lg:px-[100px] xl:px-[50px] xl:mx-auto pt-[200px] xl:max-w-[1200px] 2xl:px-0">
+      {/* AlwaysVisibleSearchBox를 항상 화면 상단에 고정 */}
+      <div className="fixed top-0 left-0 w-full z-50 bg-white border-b-0">
+        <div className="[&>div]:border-b-0">
+          <ScrollSearchBox />
+        </div>
+      </div>
+      {/* 나머지 콘텐츠 */}
+      <div className="">
         {loading ? <NavigationSkeleton /> : <Navigation activeTab={activeTab} scrollToSection={scrollToSection} />}
       </div>
 
