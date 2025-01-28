@@ -27,7 +27,7 @@ export const kakaoLogin = async () => {
           : 'https://do-go-project.vercel.app/auth/callback' // 배포 환경
     }
   });
-
+  // 커밋용
   if (error) {
     throw new Error(`소셜 로그인 실패: ${error.message}`);
   }
