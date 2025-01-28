@@ -95,12 +95,14 @@ const SignUpUser: React.FC<SignUpProps> = ({
           <div className="w-full mt-[156px] mb-[40px] flex flex-col justify-center items-center">
             <LogoAuth />
           </div>
-          <p className="text-neutral-800 text-[24px] sm:text-[28px] font-bold mb-[12px] sm:mb-[16px]">
+          <p className="text-neutral-800  text-[24px] sm:text-[28px] font-bold mb-[12px] sm:mb-[16px]">
             일반 회원 회원가입
           </p>
 
           {/* 이메일 */}
-          <p className=" mb-[12px] sm:mb-[16px] font-pretendard text-[16px] font-semibold leading-[135%]">이메일</p>
+          <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px] font-pretendard text-[16px] font-semibold leading-[135%]">
+            이메일
+          </p>
           <input
             type="email"
             placeholder="이메일을 입력해 주세요."
@@ -115,7 +117,7 @@ const SignUpUser: React.FC<SignUpProps> = ({
           {errors.email && <p className="text-[14px] text-red-500">{errors.email}</p>}
 
           {/* 비밀번호 */}
-          <p className="mb-[12px] sm:mb-[16px] font-pretendard  mt-[20px] sm:mt-[24px] text-[16px] font-semibold leading-[135%]">
+          <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px] font-pretendard text-[16px] font-semibold leading-[135%]">
             비밀번호
           </p>
           <div className="relative">
@@ -140,7 +142,7 @@ const SignUpUser: React.FC<SignUpProps> = ({
           </div>
 
           {/* 비밀번호 확인 */}
-          <p className="mb-[12px] sm:mb-[16px] font-pretendard text-[16px] font-semibold leading-[135%]">
+          <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px] font-pretendard text-[16px] font-semibold leading-[135%]">
             비밀번호 확인
           </p>
           <div className="relative">
@@ -168,7 +170,9 @@ const SignUpUser: React.FC<SignUpProps> = ({
           {errors.confirmPassword && <p className="text-sm  text-red-500">{errors.confirmPassword}</p>}
 
           {/* 휴대폰 번호 */}
-          <p className="mb-[12px] sm:mb-[16px] font-pretendard text-[16px] font-semibold leading-[135%]">휴대폰 번호</p>
+          <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px] font-pretendard text-[16px] font-semibold leading-[135%]">
+            휴대폰 번호
+          </p>
           <input
             type="tel"
             placeholder="휴대폰 번호를 입력해 주세요."
@@ -183,7 +187,9 @@ const SignUpUser: React.FC<SignUpProps> = ({
           {errors.phone && <p className="text-[14px] mb-[12px] sm:mb-[16px] text-red-500">{errors.phone}</p>}
 
           {/* 이름 */}
-          <p className="mb-[12px] sm:mb-[16px] font-pretendard text-[16px] font-semibold leading-[135%]">이름</p>
+          <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px] font-pretendard text-[16px] font-semibold leading-[135%]">
+            이름
+          </p>
           <input
             type="text"
             placeholder="이름을 입력해 주세요."
@@ -198,7 +204,7 @@ const SignUpUser: React.FC<SignUpProps> = ({
           {errors.name && <p className="text-[14px] text-red-500">{errors.name}</p>}
 
           {/* 닉네임 */}
-          <p className="font-pretendard mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px] text-[16px] font-semibold leading-[135%]">
+          <p className="mt-[20px] sm:mt-[24px] font-pretendard mb-[4px] sm:mb-[8px] text-[16px] font-semibold leading-[135%]">
             닉네임
           </p>
           <input
