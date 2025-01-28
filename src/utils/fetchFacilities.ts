@@ -17,7 +17,7 @@ const fetchFacilities = async (): Promise<FacilitiesType[]> => {
       return [];
     }
 
-  return data
+    return data;
     
   } catch (error) {
     console.error('Unexpected error:', error);

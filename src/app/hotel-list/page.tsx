@@ -59,6 +59,7 @@ const HotelList = () => {
   });
 
   const observerRef = useRef<HTMLDivElement | null>(null);
+
   // 사용자 정보
   const user = useAuthStore((state) => state.user) as UserType | null;
 
@@ -73,13 +74,6 @@ const HotelList = () => {
     addHotel(hotel);
     router.push(`/hotel-list/${hotel.id}`);
   };
-
-  // 초기 즐겨찾기 상태 로드
-  // useEffect(() => {
-  //   if (user?.id) {
-  //     initializeFavorites(user.id);
-  //   }
-  // }, [user, initializeFavorites]);
 
   // 필터 데이터 호출
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useFetchHotelsFilter({
@@ -131,6 +125,7 @@ const HotelList = () => {
 
   return (
     <div className="w-full max-w-[1300px] mx-auto px-[50px] pt-[200px] pb-[50px] flex flex-row justify-between gap-[30px] ">
+      
       <ScrollSearchBox />
 
       <AsideFilter onFilterChange={(newFilters) => setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }))} />

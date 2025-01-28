@@ -7,13 +7,14 @@ import generateUrl from '@/utils/urlHelpers';
 import FacilityList from './FacilityList';
 import ServiceList from './ServiceList';
 import { FacilitiesType } from '@/types/supabase/facilities-type';
+import { ServicesType } from '@/types/supabase/services-type';
 
 interface FilterObject {
   grade: number[];
   minPrice: number;
   maxPrice: number;
-  services: string[];
   facilityIds: string[];
+  serviceIds: string[];
 }
 
 interface FilterProps {
@@ -40,7 +41,7 @@ const AsideFilter = ({ onFilterChange: onChangeFilter }: FilterProps) => {
   const [selectedGrade, setSelectedGrade] = useState<number[]>([]);
   const [filterMinPrice, setFilterMinPrice] = useState(0);
   const [filterMaxPrice, setFilterMaxPrice] = useState(5000000); // 초기값 500만원
-  const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [selectedServices, setSelectedServices] = useState<ServicesType[]>([]);
   const [selectedFacilities, setSelectedFacilities] = useState<FacilitiesType[]>([]);
   const [generatedUrl, setGeneratedUrl] = useState<string>(''); // URL 저장 상태
 
@@ -49,9 +50,9 @@ const AsideFilter = ({ onFilterChange: onChangeFilter }: FilterProps) => {
     onChangeFilter({
       grade: selectedGrade,
       minPrice: filterMinPrice,
-      maxPrice: filterMaxPrice,
-      services: selectedServices,
+      maxPrice: filterMaxPrice,      
       facilityIds: selectedFacilities.map((fac) => fac.id),
+      serviceIds: selectedServices.map((svc) => svc.id)
     });
   }, [selectedGrade, filterMinPrice, filterMaxPrice, selectedFacilities, selectedServices]);
 
@@ -79,12 +80,13 @@ const AsideFilter = ({ onFilterChange: onChangeFilter }: FilterProps) => {
   };
 
   // 서비스 필터
-  const handleServiceChange = (service: string) => {
+  const handleServiceChange = (service: ServicesType) => {
     setSelectedServices((prev) =>
       prev.includes(service) ? prev.filter((item) => item !== service) : [...prev, service]
     );
   };
-
+  
+  // 가격 저장
   const handlePriceChange = (min: number, max: number) => {
     setFilterMinPrice(min);
     setFilterMaxPrice(max);
@@ -139,7 +141,7 @@ const AsideFilter = ({ onFilterChange: onChangeFilter }: FilterProps) => {
       <FacilityList selectedFacilities={selectedFacilities} onFacilityChange={handleFacilityChange} />
 
       {/* 서비스 필터 */}
-      {/* <ServiceList selectedServices={selectedFacilities} onFacilityChange={handleFacilityChange} /> */}
+      <ServiceList selectedServices={selectedServices} onServiceChange={handleServiceChange} />
     </aside>
   );
 };
