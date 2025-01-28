@@ -23,12 +23,13 @@ const Header = async () => {
       {/* header 이너값 max-width-1200px */}
       <div className="w-full max-w-[1300px] px-[50px] h-[76px] mx-auto flex flex-row justify-between items-center">
         {/* Logo : DoGo */}
-        <h1 className="text-[40px]">
-          {/* 클릭 시 홈페이지로 이동 */}
-          <Link href="/" className="p-[15px]">
+        <Link href="/" className="flex items-center h-[36px] p-[15px]">
+          <h1>
+            {/* 클릭 시 홈페이지로 이동 */}
             <Logo />
-          </Link>
-        </h1>
+          </h1>
+        </Link>
+        {/* h1이 아니라 링크 영역에다 높이를 잡아줘야 된다 */}
 
         {/* icon 영역  */}
         <div className="flex flex-row">

@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import CloseEyesIcon from '@/components/ui/icon/CloseEyesIcon';
 import OpenEyesIcon from '@/components/ui/icon/OpenEyesIcon';
+import LogoAuth from '@/components/ui/icon/LogoAuth';
 
 const SignUpUser: React.FC<SignUpProps> = ({
   email,
@@ -92,55 +93,68 @@ const SignUpUser: React.FC<SignUpProps> = ({
       <div className="flex justify-center items-center px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-[400px] lg:h-auto">
           <div className="w-full mt-[156px] mb-[40px] flex flex-col justify-center items-center">
-            <Image src="/images/Dogo.png" alt="Dogo" priority width={140} height={37} />
+            <LogoAuth />
           </div>
-          <p className="text-[18px] font-bold mb-[24px]">일반 회원 회원가입</p>
+          <p className="text-neutral-800  text-[24px] sm:text-[28px] font-bold mb-[12px] sm:mb-[16px]">
+            일반 회원 회원가입
+          </p>
 
           {/* 이메일 */}
-          <p className="font-pretendard text-[16px] font-semibold leading-[135%]">이메일</p>
+          <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px] font-pretendard text-[16px] font-semibold leading-[135%]">
+            이메일
+          </p>
           <input
             type="email"
             placeholder="이메일을 입력해 주세요."
             value={email}
             onChange={(e) => handleInputChange('email', e.target.value)}
-            className={`w-full  h-12 px-3 border rounded-[8px] focus:outline-none ${
-              errors.email ? 'border-red-500 focus:ring-red-500' : 'border-[#BFBFBF] focus:ring-[#B3916A]'
+            className={`mb-[4px] sm:mb-[8px] w-[400px] h-[48px] sm:w-[450px] sm:h-[56px]  px-3 border rounded-[8px] focus:outline-none ${
+              errors.email
+                ? 'border-red-500 focus:ring-red-500'
+                : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
             }`}
           />
           {errors.email && <p className="text-[14px] text-red-500">{errors.email}</p>}
 
           {/* 비밀번호 */}
-          <p className="font-pretendard mt-[20px] text-[16px] font-semibold leading-[135%]">비밀번호</p>
+          <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px] font-pretendard text-[16px] font-semibold leading-[135%]">
+            비밀번호
+          </p>
           <div className="relative">
             <input
               type={form.updatePassword ? 'text' : 'password'}
               placeholder="비밀번호를 입력해 주세요."
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full h-12 px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none"
+              className="w-[400px] h-[48px] sm:w-[450px] sm:h-[56px] mb-[20px] sm:mb-[24px]  px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none"
             />
-            <p className="text-xs pb-[4px] px-1 text-gray-700 mb-[20px]">
+            {/* w-[400px] h-[48px] */}
+            <p className="text-xs pb-[4px] mb-[12px] sm:mb-[16px] px-1 text-gray-700">
               영문 대•소문자/숫자/특수문자 중 2가지 이상 조합, 8자~32자
             </p>
             <button
               type="button"
               onClick={() => setForm((prevForm) => ({ ...prevForm, updatePassword: !prevForm.updatePassword }))}
-              className="absolute right-[20px] top-6 transform -translate-y-1/2 text-gray-600 hover:text-black"
+              className="absolute right-[-25px] top-7 transform -translate-y-1/2 text-gray-600 hover:text-black"
             >
               {form.updatePassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
             </button>
           </div>
 
           {/* 비밀번호 확인 */}
-          <p className="font-pretendard text-[16px] font-semibold leading-[135%]">비밀번호 확인</p>
+          <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px] font-pretendard text-[16px] font-semibold leading-[135%]">
+            비밀번호 확인
+          </p>
           <div className="relative">
             <input
               type={form.checkUpdatePassword ? 'text' : 'password'}
               placeholder="비밀번호를 다시 입력해 주세요."
               value={form.confirmPassword}
               onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-              className={`w-full h-12 px-3 border rounded-[8px] focus:outline-none ${
-                errors.confirmPassword ? 'border-red-500 focus:ring-red-500' : 'border-[#BFBFBF] focus:ring-[#B3916A]'
+              className={`w-[400px] h-[48px] sm:w-[450px] sm:h-[56px] mb-[20px] sm:mb-[24px]  px-3 border rounded-[8px] focus:outline-none ${
+                errors.confirmPassword
+                  ? 'border-red-500 focus:ring-red-500'
+                  : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
               }`}
             />
             <button
@@ -148,48 +162,60 @@ const SignUpUser: React.FC<SignUpProps> = ({
               onClick={() =>
                 setForm((prevForm) => ({ ...prevForm, checkUpdatePassword: !prevForm.checkUpdatePassword }))
               }
-              className="absolute right-[20px] top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-black"
+              className="absolute right-[-25px] top-7 transform -translate-y-1/2 text-gray-600 hover:text-black"
             >
               {form.checkUpdatePassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
             </button>
           </div>
-          {errors.confirmPassword && <p className="text-sm text-red-500">{errors.confirmPassword}</p>}
+          {errors.confirmPassword && <p className="text-sm  text-red-500">{errors.confirmPassword}</p>}
 
           {/* 휴대폰 번호 */}
-          <p className="font-pretendard mt-[20px] text-[16px] font-semibold leading-[135%]">휴대폰 번호</p>
+          <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px] font-pretendard text-[16px] font-semibold leading-[135%]">
+            휴대폰 번호
+          </p>
           <input
             type="tel"
             placeholder="휴대폰 번호를 입력해 주세요."
             value={phone}
             onChange={(e) => handleInputChange('phone', e.target.value)}
-            className={`w-full  h-12 px-3 border rounded-[8px] focus:outline-none ${
-              errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-[#BFBFBF] focus:ring-[#B3916A]'
+            className={`w-[400px] h-[48px] mb-[4px] sm:mb-[8px] sm:w-[450px] sm:h-[56px] px-3 border rounded-[8px] focus:outline-none ${
+              errors.phone
+                ? 'border-red-500 focus:ring-red-500'
+                : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
             }`}
           />
-          {errors.phone && <p className="text-[14px] text-red-500">{errors.phone}</p>}
+          {errors.phone && <p className="text-[14px] mb-[12px] sm:mb-[16px] text-red-500">{errors.phone}</p>}
 
           {/* 이름 */}
-          <p className="font-pretendard text-[16px] font-semibold leading-[135%]">이름</p>
+          <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px] font-pretendard text-[16px] font-semibold leading-[135%]">
+            이름
+          </p>
           <input
             type="text"
             placeholder="이름을 입력해 주세요."
             value={name}
             onChange={(e) => handleInputChange('name', e.target.value)}
-            className={`w-full   h-12 px-3 border rounded-[8px] focus:outline-none ${
-              errors.name ? 'border-red-500 mb-[20px] focus:ring-red-500' : 'border-[#BFBFBF] focus:ring-[#B3916A]'
+            className={`w-[400px] mb-[4px] sm:mb-[8px] h-[48px] sm:w-[450px] sm:h-[56px]  px-3 border rounded-[8px] focus:outline-none ${
+              errors.name
+                ? 'border-red-500  focus:ring-red-500'
+                : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
             }`}
           />
           {errors.name && <p className="text-[14px] text-red-500">{errors.name}</p>}
 
           {/* 닉네임 */}
-          <p className="font-pretendard  mt-[20px] text-[16px] font-semibold leading-[135%]">닉네임</p>
+          <p className="mt-[20px] sm:mt-[24px] font-pretendard mb-[4px] sm:mb-[8px] text-[16px] font-semibold leading-[135%]">
+            닉네임
+          </p>
           <input
             type="text"
             placeholder="닉네임을 입력해 주세요."
             value={nickname}
             onChange={(e) => handleInputChange('nickname', e.target.value)}
-            className={`w-full  h-12 px-3 border rounded-[8px] focus:outline-none ${
-              errors.nickname ? 'border-red-500  focus:ring-red-500' : 'border-[#BFBFBF] focus:ring-[#B3916A]'
+            className={`w-[400px] mb-[4px] sm:mb-[8px] h-[48px] sm:w-[450px] sm:h-[56px] px-3 border rounded-[8px] focus:outline-none ${
+              errors.nickname
+                ? 'border-red-500  focus:ring-red-500'
+                : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
             }`}
           />
           {errors.nickname && <p className="text-[14px] text-red-500">{errors.nickname}</p>}
@@ -198,7 +224,7 @@ const SignUpUser: React.FC<SignUpProps> = ({
           <button
             type="button"
             onClick={handleSignUp}
-            className="w-full mt-[20px] bg-[#B3916A] text-white font-semibold py-3 px-4 rounded-md hover:bg-[#a37e5f] transition mb-4"
+            className="w-[400px] h-[48px] mt-[20px] sm:mt-[24px] sm:w-[450px] sm:h-[56px] text-white text-center font-pretendard text-[20px] font-semibold leading-[135%] mb-[40px] sm:mb-[48px] bg-[#B3916A]  py-3 px-4 rounded-md hover:bg-[#a37e5f] transition "
           >
             완료
           </button>

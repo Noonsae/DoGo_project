@@ -1,10 +1,8 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import handleSignupAction from '../actions/handleSignupAction';
 import SignUpBusiness from './_components/SignUpBusiness';
-import SignupModal from '@/components/ui/sign-up/SignUpUi';
 import Swal from 'sweetalert2';
 
 export default function SignUpBusinessPage() {
@@ -15,7 +13,6 @@ export default function SignUpBusinessPage() {
   const [error, setError] = useState('');
   const [nickname, setNickname] = useState('');
   const [businessNumber, setBusinessNumber] = useState('');
-  const [isModlaOpen, setIsModalOpen] = useState(false);
 
   const handleSignup = async () => {
     try {
@@ -45,10 +42,6 @@ export default function SignUpBusinessPage() {
     } catch (err: any) {
       setError('회원가입 중 오류가 발생했습니다.');
     }
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
   };
 
   return (
