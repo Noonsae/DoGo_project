@@ -10,7 +10,19 @@ import KakaoSignIn from './_components/KakaoSignIn';
 import Image from 'next/image';
 import { login } from './actions/login';
 import LogoAuth from '@/components/ui/icon/LogoAuth';
+import { browserSupabase } from '@/supabase/supabase-client';
+// const login = async ({ email, password, role }: { email: string; password: string; role: string }) => {
+//   const supabase = browserSupabase();
+//   const { data, error } = await supabase
+//     .from('users')
+//     .select('*')
+//     .eq('email', email)
+//     .eq('password', password) // 비밀번호가 해시된 경우 해시 비교 필요
+//     .eq('role', role)
+//     .single();
 
+//   return { data, error };
+// };
 const SignInPage = () => {
   const [form, setForm] = useState({
     activeTab: 'user',
@@ -38,22 +50,23 @@ const SignInPage = () => {
 
       const { data, error } = await login({
         email: form.email,
-        password: form.password
+        password: form.password,
+        role: form.activeTab // 역할 추가
       });
 
-      if (error || !data.user) {
+      if (error || !data) {
         await Swal.fire({
           icon: 'error',
           title: '로그인 실패',
-          text: '잘못된 이메일 또는 비밀번호입니다.'
+          text: '잘못된 이메일, 비밀번호 또는 역할입니다.'
         });
         return;
       }
-      // 커밋용 주석
+
       await Swal.fire({
         icon: 'success',
         title: '로그인 성공',
-        text: `${data.user.email}님 환영합니다!`
+        text: `${data.user?.email}님 환영합니다!`
       });
 
       window.location.href = '/';
