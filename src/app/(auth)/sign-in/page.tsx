@@ -49,6 +49,7 @@ const SignInPage = () => {
         });
         return;
       }
+
       // 커밋용 주석
       await Swal.fire({
         icon: 'success',
@@ -82,7 +83,7 @@ const SignInPage = () => {
             일반 회원
           </button>
           <button
-            className={`mb-[10px] sm:mb-[14px] pb-2 w-1/2 text-center ${
+            className={` pb-2 w-1/2 text-center ${
               form.activeTab === 'business' ? 'border-b-2 border-neutral-800' : 'text-neutral-400'
             }`}
             onClick={() => setForm({ ...form, activeTab: 'business', email: '', password: '' })}
