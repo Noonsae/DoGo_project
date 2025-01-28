@@ -2,27 +2,15 @@
 
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import { login } from './actions/login';
 import Swal from 'sweetalert2';
 import DividerIcon from '@/components/ui/icon/DividerIcon';
 import FindIdModal from './_components/FindIdModal';
 import FindPasswordModal from './_components/FindPasswordModal/FindPasswordModal';
 import KakaoSignIn from './_components/KakaoSignIn';
 import Image from 'next/image';
-import { login } from './actions/login';
 import LogoAuth from '@/components/ui/icon/LogoAuth';
-import { browserSupabase } from '@/supabase/supabase-client';
-// const login = async ({ email, password, role }: { email: string; password: string; role: string }) => {
-//   const supabase = browserSupabase();
-//   const { data, error } = await supabase
-//     .from('users')
-//     .select('*')
-//     .eq('email', email)
-//     .eq('password', password) // 비밀번호가 해시된 경우 해시 비교 필요
-//     .eq('role', role)
-//     .single();
 
-//   return { data, error };
-// };
 const SignInPage = () => {
   const [form, setForm] = useState({
     activeTab: 'user',
