@@ -13,13 +13,19 @@ export const logout = async () => {
   const supabase = await serverSupabase();
   const { error } = await supabase.auth.signOut();
   return { error };
+  // 그럼 소셜로그인은 실패해서 error를 반환한거네?
 };
 
 export const kakaoLogin = async () => {
   const supabase = await serverSupabase();
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'kakao',
-    options: { redirectTo: 'https://dsggwbvtcrwuopwelpxy.supabase.co/auth/v1/callback' }
+    options: {
+      redirectTo:
+        process.env.NODE_ENV === 'development'
+          ? 'http://localhost:3000/auth/callback' // 로컬 환경
+          : 'https://do-go-project.vercel.app/auth/callback' // 배포 환경
+    }
   });
 
   if (error) {
