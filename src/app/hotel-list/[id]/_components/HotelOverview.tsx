@@ -27,7 +27,7 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
       id="overview"
       className="scroll-mt-20 w-full mt-[60px] max-w-[1200px] mx-auto px-[50px] lg:px-[30px] xl:px-[20px] 2xl:px-0"
     >
-      <div className="flex flex-col lg:flex-row gap-4">
+      <div className="flex flex-col lg:flex-row gap-[12px]">
         {/* 메인 이미지 */}
         <div
           className="relative overflow-hidden"
@@ -48,7 +48,7 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
         </div>
 
         {/* 추가 이미지 */}
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-[12px]">
           {(Array.isArray(hotelData.hotel_img_urls) ? hotelData.hotel_img_urls : [])
             .slice(1, 5)
             .filter((image): image is string => typeof image === 'string')
@@ -99,9 +99,11 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
       </div>
       {/* 호텔 정보 */}
       <div className="mt-4 text-center lg:text-left">
-        <h2 className="text-neutral-900 text-[28px] font-semibold">{hotelData.name || 'Hotel Name'}</h2>
-        <div className="mt-2">
-          <RenderStars stars={hotelData.stars} />
+        <div className="flex mt-2">
+          <h2 className="text-neutral-900 text-[28px] font-semibold">{hotelData.name || 'Hotel Name'}</h2>
+          <span className="flex justify-center items-center ml-2">
+            <RenderStars stars={hotelData.stars} />
+          </span>
         </div>
         <p className="mt-2 text-gray-700">{hotelData.description || 'No description available.'}</p>
       </div>

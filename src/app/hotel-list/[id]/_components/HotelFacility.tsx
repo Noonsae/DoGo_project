@@ -3,7 +3,7 @@ import { HotelFacilityProps } from '@/types/hotel/hotel-facility-type';
 const HotelFacility = ({ facilityData, roomOption, hotelId, serviceData }: HotelFacilityProps) => {
   return (
     <div>
-      <section id="services" className="scroll-mt-20">
+      <section id="services" className="scroll-mt-20 mb-[120px]">
         <h2 className="text-neutral-900 text-[28px] font-semibold mb-4">시설/서비스</h2>
         <div>
           <h3 className="text-lg font-semibold mb-2">공용 시설</h3>
