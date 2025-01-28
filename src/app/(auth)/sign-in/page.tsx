@@ -2,13 +2,13 @@
 
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import { login } from './actions/login';
 import Swal from 'sweetalert2';
 import DividerIcon from '@/components/ui/icon/DividerIcon';
 import FindIdModal from './_components/FindIdModal';
 import FindPasswordModal from './_components/FindPasswordModal/FindPasswordModal';
 import KakaoSignIn from './_components/KakaoSignIn';
 import Image from 'next/image';
-import { login } from './actions/login';
 import LogoAuth from '@/components/ui/icon/LogoAuth';
 
 const SignInPage = () => {
@@ -38,22 +38,23 @@ const SignInPage = () => {
 
       const { data, error } = await login({
         email: form.email,
-        password: form.password
+        password: form.password,
+        role: form.activeTab // 역할 추가
       });
 
-      if (error || !data.user) {
+      if (error || !data) {
         await Swal.fire({
           icon: 'error',
           title: '로그인 실패',
-          text: '잘못된 이메일 또는 비밀번호입니다.'
+          text: '잘못된 이메일, 비밀번호 또는 역할입니다.'
         });
         return;
       }
-      // 커밋용 주석
+
       await Swal.fire({
         icon: 'success',
         title: '로그인 성공',
-        text: `${data.user.email}님 환영합니다!`
+        text: `${data.user?.email}님 환영합니다!`
       });
 
       window.location.href = '/';
