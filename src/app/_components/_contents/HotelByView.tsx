@@ -4,20 +4,13 @@ import { useState } from 'react';
 
 import useHotelsByView from '@/hooks/hotel/useHotelsByView';
 
-import HotelByViewSkeletonUI from '@/components/ui/skeleton/HotelByViewSkeletonUI';
-
 import HotelListSlider from '@/components/ui/slider/HotelListSlider';
 
 const HotelByView = () => {
   const [selectedViews, setSelectedViews] = useState<string>(`all`);
 
   // React Query 훅 사용
-  const { data: hotels, isLoading, isError, error } = useHotelsByView(selectedViews);
-
-  // 로딩 중 상태 처리
-  if (isLoading) {
-    return <HotelByViewSkeletonUI />;
-  }
+  const { data: hotels, isError, error } = useHotelsByView(selectedViews);
 
   // 에러 처리
   if (isError) {

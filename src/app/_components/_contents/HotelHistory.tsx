@@ -10,12 +10,12 @@ const HotelHistory = () => {
 
   // 히스토리가 없을 때 
   if (!history || history.length === 0) {
-    return;
+    return null;
   }
 
   return (
     <section className="w-full max-w-[1300px] h-[748px] px-[50px] py-[80px] mx-auto ">
-      <h3 className="text-[24px] font-semibold">최근 본 호텔 상품</h3>
+      <h3 className="text-[24px] font-semibold">최근 본 호텔 내역을 보여드릴게요.</h3>
 
       <HotelListSlider hotels={reversedHistory ?? []} />
     </section>

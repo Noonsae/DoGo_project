@@ -4,7 +4,6 @@ import { useState } from 'react';
 
 import useHotelsByLocation from '@/hooks/hotel/useHotelsByLocation';
 
-import HotelByLocationSkeletonUI from '@/components/ui/skeleton/HotelByLocationSkeletonUI';
 import HotelListSlider from '@/components/ui/slider/HotelListSlider';
 import { locations } from '@/constants/constant';
 
@@ -12,12 +11,7 @@ const HotelByLocation = () => {
   const [selectedLocations, setSelectedLocations] = useState<string>(`all`);
 
   // React Query 훅 사용
-  const { data: hotels, isLoading, isError, error } = useHotelsByLocation(selectedLocations);
-
-  // 로딩 중 상태 처리
-  if (isLoading) {
-    return <HotelByLocationSkeletonUI />;
-  }
+  const { data: hotels, isError, error } = useHotelsByLocation(selectedLocations);
 
   // 에러 처리
   if (isError) {

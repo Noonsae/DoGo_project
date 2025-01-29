@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import Slider from 'react-slick';
 
 import Image from 'next/image';
@@ -13,6 +13,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 import RiThumbUpFillIcon from '../icon/RiThumbUpFillIcon';
+import SliderSkeletonUI from '../skeleton/SliderSkeletonUI';
 
 const HotelListSlider = ({ hotels }: { hotels: HotelWithPriceOnly[] | undefined }) => {
   const router = useRouter();
@@ -23,10 +24,18 @@ const HotelListSlider = ({ hotels }: { hotels: HotelWithPriceOnly[] | undefined 
     router.push(`/hotel-list/${hotel.id}`);
   };
 
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (hotels) {
+      setTimeout(() => setIsLoading(false), 1500); // 로딩 상태 시뮬레이션
+    }
+  }, [hotels]);
+
+  
   if (!hotels || hotels.length === 0) {
     return <div className="mt-5 text-red-600">해당하는 조건에 맞는 호텔 데이터가 존재하지 않습니다.</div>; // 데이터가 없을 때 처리
   }
-
 
   const settings = {
     infinite: hotels.length > 3, // 슬라이드가 3개 이상일 때만 무한 반복
@@ -53,6 +62,10 @@ const HotelListSlider = ({ hotels }: { hotels: HotelWithPriceOnly[] | undefined 
       }
     ]
   };
+
+  if (isLoading) {
+    return <SliderSkeletonUI />;
+  }
 
   return (
     <div className="mt-8">
