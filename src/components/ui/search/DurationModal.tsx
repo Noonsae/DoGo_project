@@ -55,6 +55,13 @@ const DurationModal = ({ left = '36%', top, onClose }: { left?: string; top?: st
     onClose();
   };
 
+  // 초기화 버튼
+  const handleResetSchedule = () => {
+    // ToDo : checkIn, checkOut
+    setSelectedStayOption('');
+    setSelectedMonth('');    
+  }
+
   return (
     <div
       style={{ left, top }}
@@ -191,6 +198,12 @@ const DurationModal = ({ left = '36%', top, onClose }: { left?: string; top?: st
             </div>
           </div>
           <div className="w-full flex justify-end">
+            <button
+              onClick={handleResetSchedule}
+              className="w-[124px] mt-8 px-6 py-[10px] text-[18px] font-semibold text-[#B3916A] hover:text-[#8f7455]"
+            >
+              초기화
+            </button>
             <button
               onClick={handleSaveSchedule}
               className="w-[124px] mt-8 px-6 py-[10px] bg-[#B3916A] text-white text-[18px] font-semibold rounded-lg hover:bg-[#8F7455] active:bg-[#6B573F]"
