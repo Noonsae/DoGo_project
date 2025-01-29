@@ -42,18 +42,17 @@ const HotelList = () => {
       .filter((star) => !isNaN(star)) || []; // NaN 값 필터링
   const label = searchParams.get('label') || '';
   const minPrice = parseInt(searchParams.get('minPrice') || '0', 10);
-  const maxPrice = parseInt(searchParams.get('maxPrice') || '10000000', 10);
-  const facilities = searchParams.get('facilities')?.split(',') || [];
-  const services = searchParams.get('services')?.split(',') || [];
+  const maxPrice = parseInt(searchParams.get('maxPrice') || '5000000', 10);
+  const facilityIds = searchParams.get('facilities')?.split(',') || [];
+  const serviceIds = searchParams.get('services')?.split(',') || [];
   const sort = searchParams.get('sort') || '';
 
   const [filters, setFilters] = useState<FiltersType>({
     label: '',
     stars: [],
     minPrice: 0,
-    maxPrice: 10000000,
+    maxPrice: 5000000,
     location: '',
-    services: [],
     facilityIds: [],
     serviceIds: []
   });
@@ -83,10 +82,8 @@ const HotelList = () => {
       stars,
       minPrice,
       maxPrice,
-      facilities,
-      services,
-      facilityIds: filters.facilityIds,
-      serviceIds: filters.serviceIds
+      facilityIds: facilityIds,
+      serviceIds: serviceIds
     },
     sortOrder: sort as sortOrder
   });
@@ -96,7 +93,7 @@ const HotelList = () => {
   useEffect(() => {
     if (data || !isFetchingNextPage) {
       setTimeout(() => {
-        setIsLoading(false); // 최소 1초간 로딩 유지
+        setIsLoading(false);
       }, 1000);
     }
   }, [data, isFetchingNextPage]);
@@ -121,14 +118,16 @@ const HotelList = () => {
     };
   }, [hasNextPage, isFetchingNextPage]);
 
-  const isLoadingInitialData = !data && isFetchingNextPage;
+  // const isLoadingInitialData = !data && isFetchingNextPage;
 
   return (
     <div className="w-full max-w-[1300px] mx-auto px-[50px] pt-[200px] pb-[50px] flex flex-row justify-between gap-[30px] ">
-      
+
       <ScrollSearchBox />
 
-      <AsideFilter onFilterChange={(newFilters) => setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }))} />
+      <AsideFilter
+        // onFilterChange={(newFilters) => setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }))}
+      />
 
       <div className="">
         <div className="flex justify-between items-center mb-4">

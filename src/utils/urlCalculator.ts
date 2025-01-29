@@ -54,16 +54,16 @@ export const processInput = (text: string): { location: string; label: { label: 
 };
 
 // 3. 여행 기간 정보 칼큘레이터
-export const parseSchedule = (stayInput: string, monthInput: string): { stay: string; month: string } => {
+export const parseSchedule = (stayInput: string): { stay: string;} => {
   const removeKorean = (text: string): string => text.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, ''); // 한글 제거
 
   // 여행 기간 처리 (예: "3박4일" -> "34")
   const stay = stayInput ? removeKorean(sanitizeInput(stayInput)) : '';
 
-  // 월 정보 처리 (예: "june" -> 그대로 사용)
-  const month = monthInput ? monthInput.trim().toLowerCase() : '';
+  // // 월 정보 처리 (예: "june" -> 그대로 사용)
+  // const month = monthInput ? monthInput.trim().toLowerCase() : '';
 
-  return { stay: stay || '', month: month || '' };
+  return { stay: stay || ''};
 };
 
 // 4. 예약 정보 디테일 칼큘레이터
@@ -113,26 +113,17 @@ export const parseDetails = (details: string): { room: string; adult: string; ch
 };
 
 // 5. 호텔 성급 칼큘레이터
-export const parseStars = (details: string): number => {
-  const match = details.match(/성급:\s*(\d+)/);
+export const parseStars = (grade: string): number => {
+  const match = grade.match(/성급:\s*(\d+)/);
   if (match) {
     const starValue = parseInt(match[1], 10);
     if (starValue === 4 || starValue === 5) return starValue; // 4 또는 5만 유효
+    if (starValue === 45) return 0;
   }
   return 0; // 기본값
 };
 
-// 6. 호텔 객실 가격 칼큘레이터
-export const parsePrices = (price: string): { minPrice: number; maxPrice: number } => {
-  const minMatch = price.match(/최저가:\s*(\d+)/);
-  const maxMatch = price.match(/최고가:\s*(\d+)/);
-  return {
-    minPrice: minMatch ? parseInt(minMatch[1], 10) : 0,
-    maxPrice: maxMatch ? parseInt(maxMatch[1], 10) : 5000000
-  };
-};
-
-// 7. 편의시설(facilities) 칼큘레이터
+// 6. 편의시설(facilities) 칼큘레이터
 export const parseFacilities = (facilities: string): string[] => {
   // 쉼표로 구분된 문자열을 배열로 변환
   return facilities ? facilities.split(',').map((item) => item.trim()) : [];
