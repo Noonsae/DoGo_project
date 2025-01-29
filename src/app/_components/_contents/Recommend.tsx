@@ -8,7 +8,7 @@ import { HotelType } from '@/types/supabase/hotel-type';
 
 const Recommend = () => {
   const { history, setMostFrequentLocation, mostFrequentLocation } = useHistoryStore();
-  const { data: hotels, isLoading, isError, error } = useHotelsByLocation(mostFrequentLocation);
+  const { data: hotels, isError, error } = useHotelsByLocation(mostFrequentLocation);
 
   useEffect(() => {
     if (history.length > 0) {
@@ -25,24 +25,20 @@ const Recommend = () => {
     }
   }, [history, setMostFrequentLocation]);
 
-  if (isLoading) {
-    return;
-  }
-
   if (isError) {
     return <div>Error: {error?.message}</div>;
   }
 
   // 히스토리가 없을 때
   if (!history || history.length === 0) {
-    return;
+    return null;
   }
 
   return (
-    <section className="w-full max-w-[1300px] h-[778px] px-[50px] pt-[80px] pb-[120px] mx-auto ">
+    <section className="w-full max-w-[1300px] h-[778px] px-[50px] pt-[80px] pb-[120px] mx-auto">
       <h3 className="text-[24px] font-semibold">이런 호텔은 어떠신가요?</h3>
       <p className="text-[18px] text-[#636363] font-normal leading-[1.45] mb-[32px]">
-        회원님의 리스트를 바탕으로 비슷한 호텔을 추천해 드릴게요.
+        회원님이 관심있으셨던 호텔 목록을 참고해 비슷한 추천 목록을 준비했어요.
       </p>
 
       <HotelListSlider hotels={hotels ?? []} />
