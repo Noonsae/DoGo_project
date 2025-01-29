@@ -122,11 +122,10 @@ const HotelList = () => {
 
   return (
     <div className="w-full max-w-[1300px] mx-auto px-[50px] pt-[200px] pb-[50px] flex flex-row justify-between gap-[30px] ">
-
       <ScrollSearchBox />
 
       <AsideFilter
-        // onFilterChange={(newFilters) => setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }))}
+      // onFilterChange={(newFilters) => setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }))}
       />
 
       <div className="">

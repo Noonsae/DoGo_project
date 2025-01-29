@@ -11,7 +11,7 @@ const ServiceList: React.FC<ServicesFilterProps> = ({ selectedServices, onServic
 
   return (
     <div className="mt-6">
-      <h3 className="text-lg font-semibold mb-2">제공 서비스</h3>
+      <h3 className="text-lg font-semibold mb-2">편의 시설</h3>
       <ul className="flex flex-wrap gap-2">
         {services?.map((service) => (
           <li key={service.id}>
