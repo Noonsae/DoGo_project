@@ -93,6 +93,42 @@ export type Database = {
           },
         ]
       }
+      chat_rooms: {
+        Row: {
+          created_at: string
+          id: string
+          participant_1_id: string
+          participant_2_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          participant_1_id?: string
+          participant_2_id?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          participant_1_id?: string
+          participant_2_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_rooms_participant_1_id_fkey"
+            columns: ["participant_1_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "chat_rooms_participant_2_id_fkey"
+            columns: ["participant_2_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contacts: {
         Row: {
           booking_id: string | null
@@ -290,11 +326,13 @@ export type Database = {
           check_in: string
           check_out: string
           description: string
+          facility_ids: string[] | null
           hotel_img_urls: Json | null
           id: string
           location: string
           main_img_url: string
           name: string
+          service_ids: string[] | null
           stars: number
           user_id: string
         }
@@ -303,11 +341,13 @@ export type Database = {
           check_in: string
           check_out: string
           description: string
+          facility_ids?: string[] | null
           hotel_img_urls?: Json | null
           id?: string
           location: string
           main_img_url: string
           name: string
+          service_ids?: string[] | null
           stars: number
           user_id?: string
         }
@@ -316,11 +356,13 @@ export type Database = {
           check_in?: string
           check_out?: string
           description?: string
+          facility_ids?: string[] | null
           hotel_img_urls?: Json | null
           id?: string
           location?: string
           main_img_url?: string
           name?: string
+          service_ids?: string[] | null
           stars?: number
           user_id?: string
         }
@@ -328,6 +370,45 @@ export type Database = {
           {
             foreignKeyName: "hotels_user_id_fkey"
             columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      messages: {
+        Row: {
+          chat_room_id: string
+          created_at: string
+          id: number
+          read: boolean
+          sender_id: string
+        }
+        Insert: {
+          chat_room_id?: string
+          created_at?: string
+          id?: number
+          read: boolean
+          sender_id?: string
+        }
+        Update: {
+          chat_room_id?: string
+          created_at?: string
+          id?: number
+          read?: boolean
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_chat_room_id_fkey"
+            columns: ["chat_room_id"]
+            isOneToOne: false
+            referencedRelation: "chat_rooms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -518,38 +599,38 @@ export type Database = {
         Row: {
           business_number: string | null
           created_at: string
-          email: string
+          email: string | null
           id: string
           nickname: string | null
-          phone_number: string
+          phone_number: string | null
           profile_img: string | null
           role: string
           user_info: Json | null
-          user_name: string
+          user_name: string | null
         }
         Insert: {
           business_number?: string | null
           created_at?: string
-          email: string
+          email?: string | null
           id?: string
           nickname?: string | null
-          phone_number: string
+          phone_number?: string | null
           profile_img?: string | null
-          role: string
+          role?: string
           user_info?: Json | null
-          user_name: string
+          user_name?: string | null
         }
         Update: {
           business_number?: string | null
           created_at?: string
-          email?: string
+          email?: string | null
           id?: string
           nickname?: string | null
-          phone_number?: string
+          phone_number?: string | null
           profile_img?: string | null
           role?: string
           user_info?: Json | null
-          user_name?: string
+          user_name?: string | null
         }
         Relationships: []
       }
