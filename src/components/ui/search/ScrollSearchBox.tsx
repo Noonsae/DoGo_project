@@ -21,15 +21,7 @@ const ScrollSearchBox = () => {
 
   const searchBoxRef = useRef<HTMLDivElement>(null);
 
-  const {
-    location,
-    checkIn,
-    checkOut,
-    details,
-    stay,
-    month,
-    setLocation,
-  } = useSearchStore();
+  const { location, checkIn, checkOut, details, stay, month, setLocation } = useSearchStore();
 
   const router = useRouter(); // Next.js의 useRouter 훅
 
@@ -124,13 +116,13 @@ const ScrollSearchBox = () => {
           >
             <div className={`w-1/2 py-2 items-center`}>
               {/* check_in 상태를 text로 나타냄.*/}
-              <p className="text-[15px] text-[#777]">체크인</p>
-              {isSearchBoxClicked && <p className="text-base text-[#444]">{checkIn || '날짜 추가'}</p>}
+              <p className="text-[15px] text-[#777]">숙박 기간</p>
+              {isSearchBoxClicked && <p className="text-base text-[#444]">{checkIn || '기간 선택'}</p>}
             </div>
             <div className="w-1/2 py-2 items-center">
               {/* check_out 상태를 text로 나타냄.*/}
-              <p className="text-[15px] text-[#777]">체크아웃</p>
-              {isSearchBoxClicked && <p className="text-base text-[#444]">{checkOut || '날짜 추가'}</p>}
+              <p className="text-[15px] text-[#777]">여행 시기</p>
+              {isSearchBoxClicked && <p className="text-base text-[#444]">{checkOut || '기간 선택'}</p>}
             </div>
           </div>
 

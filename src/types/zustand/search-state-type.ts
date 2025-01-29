@@ -7,10 +7,10 @@ export interface SearchState {
   stay: string;
   month: string;
   stars?: number[];
-  minPrice?: number;
-  maxPrice?: number;
-  facilities?: string[];
-  services?: string[];
+  minPrice: number;
+  maxPrice: number;
+  facilities: string[];
+  services: string[];
   setLocation: (location: string) => void;
   setLabel: (label: string) => void;
   setCheckIn: (checkIn: string) => void;
@@ -19,8 +19,8 @@ export interface SearchState {
   setMonth: (month: string) => void;
   setDetails: (details: string) => void;
   setStars: (stars?: number[]) => void;
-  setMinPrice: (minPrice?: number) => void;
-  setMaxPrice: (maxPrice?: number) => void;  
-  setFacilities: (facilities?: string[]) => void;
-  setServices: (services?: string[]) => void;
+  setMinPrice: (minPrice: number) => void;
+  setMaxPrice: (maxPrice: number) => void;  
+  setFacilities: (facilities: string[]) => void;
+  setServices: (services: string[]) => void;
 }

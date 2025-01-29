@@ -37,10 +37,10 @@ const generateUrl = ({
     const parsedMaxPrice = maxPrice ? maxPrice : '';
 
     // 배치 시설 처리
-    const parsedFacilities = Array.isArray(facilities) ? facilities.join(',') : facilities;
+    const parsedFacilities = Array.isArray(facilities) ? facilities.join(',') : '';
 
     // 제공 서비스 처리
-    const parsedServices = Array.isArray(services) ? services.join(',') : services;
+    const parsedServices = Array.isArray(services) ? services.join(',') : '';
 
     // 쿼리 파라미터 생성
     const queryParams = [
