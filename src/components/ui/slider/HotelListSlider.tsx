@@ -32,16 +32,18 @@ const HotelListSlider = ({ hotels }: { hotels: HotelWithPriceOnly[] | undefined 
     }
   }, [hotels]);
 
-  
   if (!hotels || hotels.length === 0) {
-    return <div className="mt-5 text-red-600">해당하는 조건에 맞는 호텔 데이터가 존재하지 않습니다.</div>; // 데이터가 없을 때 처리
+    return <SliderSkeletonUI />;
   }
 
   const settings = {
-    infinite: hotels.length > 3, // 슬라이드가 3개 이상일 때만 무한 반복
+    infinite: hotels && hotels.length > 3, // 슬라이드가 3개 이상일 때만 무한 반복
     speed: 400, // 슬라이드 전환 속도
     slidesToShow: 3, // 한 번에 보여줄 슬라이드 수
     slidesToScroll: 3, // 한 번에 스크롤할 슬라이드 수
+    initialSlide: 0, // 첫 번째 슬라이드에서 시작
+    centerMode: false, // 중앙 정렬 비활성화
+    centerPadding: '0px', // 중앙 패딩 제거
 
     nextArrow: <CustomNextArrow />, // 커스텀 다음 버튼
     prevArrow: <CustomPrevArrow />, // 커스텀 이전 버튼
@@ -68,13 +70,13 @@ const HotelListSlider = ({ hotels }: { hotels: HotelWithPriceOnly[] | undefined 
   }
 
   return (
-    <div className="mt-8">
+    <div className="mt-8 w-[calc(3 * 380px)] mx-auto">
       <Slider {...settings}>
         {hotels.map((hotel) => (
           <div
             key={hotel.id}
             onClick={() => handleSaveHistoryAndMoveDetailsPage(hotel)}
-            className="w-[380px] h-[484px] flex-shrink-0 p-[16px] rounded-[12px] shadow-[0px_8px_12px_rgba(0,0,0,0.1)] mr-[32px] cursor-pointer"
+            className="w-[380px] h-[484px] flex-shrink-0 p-[16px] -ml-[10px] rounded-[12px] shadow-[0px_8px_12px_rgba(0,0,0,0.1)] cursor-pointer"
           >
             <Image
               src={hotel.main_img_url || ''}
