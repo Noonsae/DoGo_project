@@ -1,10 +1,12 @@
+import { useEffect, useState, useMemo } from 'react';
 import useHotelReviews from '@/hooks/review/useHotelReviews';
 import { HotelType } from '@/types/supabase/hotel-type';
 import Image from 'next/image';
 import useHotelRooms from '@/hooks/room/useHotelRooms';
-import useSerViceFacility from '@/hooks/serviceFacility/useServiceFacility';
 import RenderStars from './RenderStars';
 import RiThumbUpFillIcon from '@/components/ui/icon/RiThumbUpFillIcon';
+import useFacilities from '@/hooks/hotel/useFacilities';
+import useServices from '@/hooks/hotel/useServices';
 
 interface HotelListItemProps {
   hotel: HotelType & { min_price?: number | null };
@@ -13,9 +15,10 @@ interface HotelListItemProps {
 }
 
 const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
-  const { reviews, allReviews, loading } = useHotelReviews(hotelId);
+  const { reviews, allReviews, loading: reviewsLoading } = useHotelReviews(hotelId);
   const { roomsData } = useHotelRooms(hotelId);
-  const { facilityData, serviceData } = useSerViceFacility(hotelId, 1);
+  const { data: facilityData, isLoading: facilitiesLoading } = useFacilities();
+  const { data: serviceData, isLoading: servicesLoading } = useServices();
 
   const averageRating = reviews.length
     ? (reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length).toFixed(1)
@@ -34,29 +37,37 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
 
   const totalReviews = allReviews.length;
 
+  // ✅ 시설 이름을 미리 매핑하여 메모이제이션
+  const facilityNames = useMemo(() => {
+    if (!Array.isArray(hotel.facility_ids) || !facilityData) return [];
+    return hotel.facility_ids.map((facilityId) => {
+      const facility = facilityData.find((fac) => fac.id === facilityId);
+      return facility ? facility.name : '알 수 없는 시설';
+    });
+  }, [hotel.facility_ids, facilityData]);
+
+  // ✅ 서비스 이름을 미리 매핑하여 메모이제이션
+  const serviceNames = useMemo(() => {
+    if (!Array.isArray(hotel.service_ids) || !serviceData) return [];
+    return hotel.service_ids.map((serviceId) => {
+      const service = serviceData.find((srv) => srv.id === serviceId);
+      return service ? service.name : '알 수 없는 서비스';
+    });
+  }, [hotel.service_ids, serviceData]);
+
   return (
     <li
-      className="flex flex-row items-center rounded-[12px] shadow-[0px_4px_8px_rgba(0,0,0,0.1)] p-[16px] bg-white relative"
-      style={{
-        width: '100%', // 기본적으로 부모 요소에 맞춤
-        maxWidth: '872px', // 최대 너비 제한
-        minWidth: '300px' // 최소 너비 설정
-      }}
+      className="flex flex-row items-center rounded-[12px] shadow-md p-4 bg-white relative"
+      style={{ width: '100%', maxWidth: '872px', minWidth: '300px' }}
     >
       {/* 왼쪽 이미지 */}
-      <div
-        className="relative overflow-hidden rounded-md"
-        style={{
-          width: '324px', // 고정된 이미지 컨테이너 너비
-          height: '240px' // 고정된 이미지 컨테이너 높이
-        }}
-      >
+      <div className="relative overflow-hidden rounded-md" style={{ width: '324px', height: '240px' }}>
         <Image
           src={hotel.main_img_url || '/default-hotel.jpg'}
           alt={hotel.name || 'Default Image'}
-          width={324} // 이미지 고정 크기
-          height={240} // 이미지 고정 크기
-          className="object-cover w-full h-full" // 이미지가 컨테이너에 맞게 정렬
+          width={324}
+          height={240}
+          className="object-cover w-full h-full"
         />
       </div>
 
@@ -66,7 +77,7 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
           {/* 호텔 이름과 별점 */}
           <div className="flex items-start justify-between w-full">
             <div className="flex flex-row gap-2">
-              <h3 className="mb-1 text-[24px] font-bold text-[#232527]">{hotel.name}</h3>
+              <h3 className="mb-1 text-2xl font-bold text-gray-900">{hotel.name}</h3>
               <div className="flex items-center">
                 <RenderStars stars={hotel.stars} />
               </div>
@@ -74,17 +85,17 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
           </div>
 
           {/* 호텔 설명 */}
-          <p className="w-[65%] mb-1 text-[18px] text-[#444] leading-[1.45] text-left font-normal">
+          <p className="w-[65%] mb-1 text-lg text-gray-700 leading-[1.45] text-left font-normal">
             {hotel.description || '설명 없음'}
           </p>
-          <p className="text-base text-left text-[#777]">{hotel.address}</p>
+          <p className="text-base text-left text-gray-600">{hotel.address}</p>
 
           {/* 리뷰 */}
-          {!loading && (
+          {!reviewsLoading && (
             <div className="flex flex-row items-center">
               <RiThumbUpFillIcon className="w-6 h-6 text-[#EEC18D]" />
-              <p className="ml-1 text-[18px] font-semibold">{averageRating}</p>
-              <span className="ml-2 text-[#A0A0A0]">({totalReviews.toLocaleString()})</span>
+              <p className="ml-1 text-lg font-semibold">{averageRating}</p>
+              <span className="ml-2 text-gray-500">({totalReviews.toLocaleString()})</span>
             </div>
           )}
         </div>
@@ -100,24 +111,30 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
             )}
 
             {/* 퍼실리티 */}
-            {facilityData.length > 0 && (
-              <span className="inline-flex items-center justify-center h-[28px] px-3 bg-[#FCF6EE] text-[#5A3B1A] border border-[#ECDDC8] rounded-md text-[14px] leading-none whitespace-nowrap">
-                {facilityData[0]?.name || '알 수 없는 시설'}
+            {facilityNames.map((name, index) => (
+              <span
+                key={index}
+                className="inline-flex items-center justify-center h-[28px] px-3 bg-[#FCF6EE] text-[#5A3B1A] border border-[#ECDDC8] rounded-md text-[14px] leading-none whitespace-nowrap"
+              >
+                {name}
               </span>
-            )}
+            ))}
 
             {/* 서비스 */}
-            {serviceData.length > 0 && (
-              <span className="inline-flex items-center justify-center h-[28px] px-3 bg-[#FCF6EE] text-[#5A3B1A] border border-[#ECDDC8] rounded-md text-[14px] leading-none whitespace-nowrap">
-                {serviceData[0]?.name || '알 수 없는 서비스'}
+            {serviceNames.map((name, index) => (
+              <span
+                key={index}
+                className="inline-flex items-center justify-center h-[28px] px-3 bg-[#FCF6EE] text-[#5A3B1A] border border-[#ECDDC8] rounded-md text-[14px] leading-none whitespace-nowrap"
+              >
+                {name}
               </span>
-            )}
+            ))}
           </div>
 
           {/* 가격 */}
           <div>
-            <span className="text-6 font-semibold text-2xl">112,000원</span>
-            <span className="text-[#A0A0A0] text-base font-medium">/1박</span>
+            <span className="font-semibold text-2xl">{hotel.min_price}원</span>
+            <span className="text-gray-500 text-base font-medium">/1박</span>
           </div>
         </div>
       </div>
