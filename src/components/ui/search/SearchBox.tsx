@@ -18,7 +18,6 @@ import DetailsModal from './DetailsModal';
 import HiSearchIcon from '../icon/HiSearchIcon';
 
 const SearchBox = () => {
-  const [searchUrl, setSearchUrl] = useState<string>('');
   const { location, checkIn, checkOut, details, stay, month, setLocation } = useSearchStore();
 
   const [isSticky, setIsSticky] = useState(false); // 스크롤 상태 관리
@@ -80,10 +79,6 @@ const SearchBox = () => {
     }
   };
 
-  useEffect(() => {
-    setSearchUrl(url); // 의존성 배열에서 searchUrl 제거
-  }, [location, stay, month, details]); // 필요한 의존성만 포함
-
   return (
     <>
       {isSticky ? (
@@ -120,12 +115,12 @@ const SearchBox = () => {
                 }`}
               >
                 <div className="w-1/2 h-full">
-                  <p className="text-[15px] text-[#636363] font-medium">체크인</p>
-                  <span className="text-[16px] text-[#A0A0A0] font-medium">{checkIn || `날짜 추가`}</span>
+                  <p className="text-[15px] text-[#636363] font-medium">숙박 기간</p>
+                  <span className="text-[16px] text-[#A0A0A0] font-medium">{checkIn || `기간 선택`}</span>
                 </div>
                 <div className="w-1/2 h-full px-[16px]">
-                  <p className="text-[15px] text-[#636363] font-medium">체크아웃</p>
-                  <span className="text-[16px] text-[#A0A0A0] font-medium">{checkOut || `날짜 추가`}</span>
+                  <p className="text-[15px] text-[#636363] font-medium">여행 시기</p>
+                  <span className="text-[16px] text-[#A0A0A0] font-medium">{checkOut || `기간 선택`}</span>
                 </div>
               </div>
 

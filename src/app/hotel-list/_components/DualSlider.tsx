@@ -1,9 +1,19 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 
-const DualSlider = () => {
-  const [minValue, setMinValue] = useState(0); // 최소값
-  const [maxValue, setMaxValue] = useState(5000000); // 최대값
-  const sliderRef = useRef<HTMLDivElement>(null); // 슬라이더 참조
+interface DualSliderProps {
+  minPriceValue: number;
+  maxPriceValue: number;
+  onMinPriceChange: (value: number) => void;
+  onMaxPriceChange: (value: number) => void;
+}
+
+const DualSlider: React.FC<DualSliderProps> = ({
+  minPriceValue: minPriceValue,
+  maxPriceValue: maxPriceValue,
+  onMinPriceChange: onMinPriceChange,
+  onMaxPriceChange: onMaxPriceChange
+}) => {
+  const sliderRef = useRef<HTMLDivElement>(null);
 
   // 50만 원 단위로 반올림하는 함수
   const roundToStep = (value: number, step: number) => {
@@ -20,12 +30,12 @@ const DualSlider = () => {
     const rect = sliderRef.current.getBoundingClientRect();
     const relativeX = clientX - rect.left; // 슬라이더 시작점부터의 상대 위치
     const percentage = Math.max(0, Math.min(1, relativeX / rect.width)); // 0 ~ 1 사이로 제한
-    const newValue = roundToStep(percentage * 5000000, 100000); // 50만 원 단위로 반올림
+    const newValue = roundToStep(percentage * 5000000, 500000); // 50만 원 단위로 반올림
 
     if (type === 'min') {
-      setMinValue(Math.min(newValue, maxValue - 100000)); // 최소값이 최대값보다 크지 않도록 제한
+      onMinPriceChange(Math.min(newValue, maxPriceValue - 500000)); // 최소값이 최대값보다 크지 않도록 제한
     } else {
-      setMaxValue(Math.max(newValue, minValue + 100000)); // 최대값이 최소값보다 작지 않도록 제한
+      onMaxPriceChange(Math.max(newValue, minPriceValue + 500000)); // 최대값이 최소값보다 작지 않도록 제한
     }
   };
 
@@ -49,15 +59,15 @@ const DualSlider = () => {
       <div
         className="absolute h-[3px] bg-[#B3916A] rounded"
         style={{
-          left: `${(minValue / 5000000) * 100}%`,
-          right: `${100 - (maxValue / 5000000) * 100}%`
+          left: `${(minPriceValue / 5000000) * 100}%`,
+          right: `${100 - (maxPriceValue / 5000000) * 100}%`
         }}
       />
       {/* 최소값 핸들 */}
       <div
         className="absolute w-2 h-2 bg-[#B3916A] border-2 border-[#B3916A] outline-none outline-offset-4 outline-[#B3916A] rounded-full cursor-pointer"
         style={{
-          left: `${(minValue / 5000000) * 100}%`,
+          left: `${(minPriceValue / 5000000) * 100}%`,
           transform: 'translate(-50%, -50%)',
           top: '50%'
         }}
@@ -71,7 +81,7 @@ const DualSlider = () => {
       <div
         className="absolute w-2 h-2 bg-[#B3916A] border-2 border-[#B3916A] outline-none outline-offset-4 outline-[#B3916A] rounded-full cursor-pointer"
         style={{
-          left: `${(maxValue / 5000000) * 100}%`,
+          left: `${(maxPriceValue / 5000000) * 100}%`,
           transform: 'translate(-50%, -50%)',
           top: '50%'
         }}
@@ -83,8 +93,8 @@ const DualSlider = () => {
       />
       {/* 값 표시 */}
       <div className="flex justify-between text-sm mt-6">
-        <span>{minValue.toLocaleString()}원</span>
-        <span>{maxValue.toLocaleString()}원</span>
+        <span>{minPriceValue.toLocaleString()}원</span>
+        <span>{maxPriceValue.toLocaleString()}원</span>
       </div>
     </div>
   );

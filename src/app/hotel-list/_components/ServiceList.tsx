@@ -1,36 +1,31 @@
 import useServices from '@/hooks/hotel/useServices';
+import { ServicesType } from '@/types/supabase/services-type';
 
 interface ServicesFilterProps {
-  selectedServices: string[];
-  onServiceChange: (service: string) => void;
+  selectedServices: ServicesType[];
+  onServiceChange: (service: ServicesType) => void;
 }
 
 const ServiceList: React.FC<ServicesFilterProps> = ({ selectedServices, onServiceChange }) => {
-  const { data: services, isLoading, error } = useServices();
-
-  if (isLoading) {
-    return <p>Loading facilities...</p>; // 로딩 중 메시지
-  }
-
-  if (error) {
-    return <p>Error loading facilities: {error.message}</p>; // 오류 메시지
-  }
+  const { data: services } = useServices();
 
   return (
     <div className="mt-6">
-      <h3 className="text-lg font-semibold mb-2">편의 시설</h3>
+      <h3 className="text-lg font-semibold mb-2">제공 서비스</h3>
       <ul className="flex flex-wrap gap-2">
         {services?.map((service) => (
-          <li key={service}>
-            {/* <button
+          <li key={service.id}>
+            <button
               type="button"
-              onClick={() => onServiceChange(service.id)}
+              onClick={() => onServiceChange(service)}
               className={`px-3 py-1 rounded-full border ${
-                selectedServices.includes(service.id) ? 'bg-[#B3916A] text-white' : 'bg-white text-gray-700'
+                selectedServices.some((svc) => svc.id === service.id)
+                  ? 'bg-[#B3916A] text-white'
+                  : 'bg-white text-gray-700'
               }`}
-            > */}
-              {/* {service.name} */}
-            {/* </button> */}
+            >
+              {service.name}
+            </button>
           </li>
         ))}
       </ul>
