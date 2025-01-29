@@ -14,7 +14,7 @@ const useHistoryStore = create<HistoryStoreType>()(
           // 동일한 id의 호텔이 이미 있는지 확인
           const isAlreadyInHistory = state.history.some((item) => item.id === hotel.id);
 
-          const price = hotel.room?.[0]?.price || null;
+          const price = hotel.rooms?.[0]?.price || null;
           const updatedHotel = {
             ...hotel,
             price // 가격 정보가 있으면 추가, 없으면 null로 설정
