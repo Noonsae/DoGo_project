@@ -13,6 +13,7 @@ import LocationModal from './LocationModal';
 import DurationModal from './DurationModal';
 import DetailsModal from './DetailsModal';
 import HiSearchIcon from '../icon/HiSearchIcon';
+import useSearchHistoryStore from '@/store/useSearchHistoryStore';
 
 const ScrollSearchBox = () => {
   const [isSearchBoxClicked, setIsSearchBoxClicked] = useState(false);
@@ -35,11 +36,6 @@ const ScrollSearchBox = () => {
     setIsSearchBoxClicked(false); // SearchBox 상태 초기화
   };
 
-  // onSelectLocation 함수 정의
-  const handleSelectLocation = (label: string) => {
-    setLocation(label); // 선택된 location 업데이트
-  };
-
   // 외부 클릭 감지
   useClickAway(
     searchBoxRef,
@@ -56,10 +52,16 @@ const ScrollSearchBox = () => {
   const url = generateUrl({ location, checkIn, checkOut, stay, month, details }); // URL 생성
 
   const handleSearchClick = async () => {
+    const { location } = useSearchStore.getState();
+    if (location) {
+      useSearchHistoryStore.getState().addHistory(location);
+    }
+    setLocation('');
     const searchUrl = url;
     await router.push(searchUrl); // 페이지 이동
     inactiveSearchBox();
   };
+  
 
   const handleKeyDownEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -145,7 +147,7 @@ const ScrollSearchBox = () => {
           </button>
         </div>
         {activeModal === 'location' && (
-          <LocationModal onSelectLocation={handleSelectLocation} left="18.5%" top="180px" />
+          <LocationModal left="18.5%" top="180px" />
         )}
         {activeModal === 'duration' && <DurationModal left="36%" top="180px" onClose={() => setActiveModal(null)} />}
 

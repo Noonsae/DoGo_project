@@ -32,12 +32,7 @@ const useHistoryStore = create<HistoryStoreType>()(
 
           // 기존 값이 없으면 그냥 추가
           return { history: [...state.history, updatedHotel] };
-        }),
-
-      removeHotel: (locationId: string) =>
-        set((state) => ({
-          history: state.history.filter((item) => item.location !== locationId) // locationId가 일치하지 않는 항목만 유지
-        }))
+        })
     }),
     {
       name: 'history-storage', // 로컬 스토리지에 저장될 키

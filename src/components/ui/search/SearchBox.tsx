@@ -16,10 +16,10 @@ import DurationModal from './DurationModal';
 import DetailsModal from './DetailsModal';
 
 import HiSearchIcon from '../icon/HiSearchIcon';
+import useSearchHistoryStore from '@/store/useSearchHistoryStore';
 
 const SearchBox = () => {
   const { location, checkIn, checkOut, details, stay, month, setLocation } = useSearchStore();
-
   const [isSticky, setIsSticky] = useState(false); // 스크롤 상태 관리
   const [activeModal, setActiveModal] = useState<'location' | 'duration' | 'details' | null>(null); // 모달 상태
 
@@ -67,6 +67,11 @@ const SearchBox = () => {
   const url = generateUrl({ location, checkIn, checkOut, stay, month, details }); // URL 생성
   
   const handleSearchClick = async () => {
+    const { location } = useSearchStore.getState();
+    if (location) {
+      useSearchHistoryStore.getState().addHistory(location);
+    }
+    setLocation('');
     const searchUrl = url;
     await router.push(searchUrl); // 페이지 이동
     closeModal();
@@ -152,7 +157,7 @@ const SearchBox = () => {
             {/* 모달 */}
             {activeModal === 'location' && (
               <div ref={modalRef}>
-                <LocationModal onSelectLocation={setLocation} />
+                <LocationModal/>
               </div>
             )}
             {activeModal === 'duration' && (

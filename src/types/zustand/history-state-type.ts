@@ -5,7 +5,6 @@ export interface HistoryStoreType {
   addHotel: (hotel: HotelWithPriceOnly) => void;
   setMostFrequentLocation: (location: string) => void;
   mostFrequentLocation: string;
-  price?: number;
-  removeHotel: (locationId: string) => void; // 삭제 메서드 정의
+  price?: number;  
 }
 
