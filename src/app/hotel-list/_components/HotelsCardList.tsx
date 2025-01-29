@@ -18,7 +18,7 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
   const { reviews, allReviews, loading: reviewsLoading } = useHotelReviews(hotelId);
   const { roomsData } = useHotelRooms(hotelId);
   const { data: facilityData, isLoading: facilitiesLoading } = useFacilities();
-  const { data: serviceData, isLoading: servicesLoading } = useServices();
+  // const { data: serviceData, isLoading: servicesLoading } = useServices();
 
   const averageRating = reviews.length
     ? (reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length).toFixed(1)
@@ -37,23 +37,24 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
 
   const totalReviews = allReviews.length;
 
-  // ✅ 시설 이름을 미리 매핑하여 메모이제이션
-  const facilityNames = useMemo(() => {
-    if (!Array.isArray(hotel.facility_ids) || !facilityData) return [];
-    return hotel.facility_ids.map((facilityId) => {
-      const facility = facilityData.find((fac) => fac.id === facilityId);
-      return facility ? facility.name : '알 수 없는 시설';
-    });
-  }, [hotel.facility_ids, facilityData]);
+  const getFacilityNames = () => {
+    if (facilitiesLoading) return ['로딩 중...'];
+    if (!facilityData || facilityData.length === 0) return ['시설 데이터 없음'];
+    if (!hotel.facility_ids || hotel.facility_ids.length === 0) return []; // ✅ 추가
 
-  // ✅ 서비스 이름을 미리 매핑하여 메모이제이션
-  const serviceNames = useMemo(() => {
-    if (!Array.isArray(hotel.service_ids) || !serviceData) return [];
-    return hotel.service_ids.map((serviceId) => {
-      const service = serviceData.find((srv) => srv.id === serviceId);
-      return service ? service.name : '알 수 없는 서비스';
-    });
-  }, [hotel.service_ids, serviceData]);
+    return hotel.facility_ids
+      .map((facilityId) => {
+        const facility = facilityData.find((fac) => fac.id === facilityId);
+        return facility ? facility.name : '알 수 없는 시설';
+      })
+      .filter((name) => name !== '알 수 없는 시설'); // 없는 시설 제거
+  };
+
+  useEffect(() => {
+    console.log('🏨 호텔:', hotel.name);
+    console.log('🛠 시설 ID 목록:', hotel.facility_ids);
+    console.log('✅ 매칭된 시설 이름:', getFacilityNames());
+  }, [hotel, facilityData]);
 
   return (
     <li
@@ -111,24 +112,15 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
             )}
 
             {/* 퍼실리티 */}
-            {facilityNames.map((name, index) => (
+            {getFacilityNames().map((facilityName, index) => (
               <span
                 key={index}
                 className="inline-flex items-center justify-center h-[28px] px-3 bg-[#FCF6EE] text-[#5A3B1A] border border-[#ECDDC8] rounded-md text-[14px] leading-none whitespace-nowrap"
               >
-                {name}
+                {facilityName}
               </span>
             ))}
-
             {/* 서비스 */}
-            {serviceNames.map((name, index) => (
-              <span
-                key={index}
-                className="inline-flex items-center justify-center h-[28px] px-3 bg-[#FCF6EE] text-[#5A3B1A] border border-[#ECDDC8] rounded-md text-[14px] leading-none whitespace-nowrap"
-              >
-                {name}
-              </span>
-            ))}
           </div>
 
           {/* 가격 */}
