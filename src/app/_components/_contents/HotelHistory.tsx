@@ -1,8 +1,6 @@
 'use client';
 
 import useHistoryStore from '@/store/useHistoryStore';
-
-import RecommendSkeletonUI from '@/components/ui/skeleton/RecommendSkeletonUI';
 import HotelListSlider from '@/components/ui/slider/HotelListSlider';
 
 const HotelHistory = () => {
@@ -10,9 +8,9 @@ const HotelHistory = () => {
 
   const reversedHistory = [...history].reverse();
 
-  // 로딩 중 상태 처리
-  if (!history) {
-    return <RecommendSkeletonUI />;
+  // 히스토리가 없을 때 
+  if (!history || history.length === 0) {
+    return;
   }
 
   return (

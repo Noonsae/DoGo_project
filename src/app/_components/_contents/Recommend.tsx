@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect } from 'react';
-import RecommendSkeletonUI from '@/components/ui/skeleton/RecommendSkeletonUI';
 import useHotelsByLocation from '@/hooks/hotel/useHotelsByLocation';
 import HotelListSlider from '@/components/ui/slider/HotelListSlider';
 import useHistoryStore from '@/store/useHistoryStore';
@@ -27,11 +26,16 @@ const Recommend = () => {
   }, [history, setMostFrequentLocation]);
 
   if (isLoading) {
-    return <RecommendSkeletonUI />;
+    return;
   }
 
   if (isError) {
     return <div>Error: {error?.message}</div>;
+  }
+
+  // 히스토리가 없을 때
+  if (!history || history.length === 0) {
+    return;
   }
 
   return (
