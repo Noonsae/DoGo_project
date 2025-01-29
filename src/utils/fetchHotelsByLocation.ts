@@ -42,8 +42,8 @@ const fetchRawHotelsByLocation = async (location: string): Promise<HotelWithPric
  */
 const calculateMinPrice = (hotels: HotelWithPriceOnly[]): (HotelWithPriceOnly & { min_price: number })[] => {
   return hotels.map((hotel) => {
-    if (hotel.room) {
-      const min_price = Math.min(...hotel.room.map((room) => room.price));
+    if (hotel.rooms) {
+      const min_price = Math.min(...hotel.rooms.map((rooms) => rooms.price));
       return {
         ...hotel,
         min_price: min_price

@@ -9,7 +9,7 @@ type RoomWithPrice = {
 
 // 간소화된 호텔 타입 정의
 export interface HotelWithPriceOnly extends HotelType {
-  room?: RoomWithPrice[];
+  rooms?: RoomWithPrice[];
   min_price?: number;
   max_price?: number;
 }
