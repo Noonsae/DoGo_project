@@ -18,7 +18,6 @@ import DetailsModal from './DetailsModal';
 import HiSearchIcon from '../icon/HiSearchIcon';
 
 const SearchBox = () => {
-  const [searchUrl, setSearchUrl] = useState<string>('');
   const { location, checkIn, checkOut, details, stay, month, setLocation } = useSearchStore();
 
   const [isSticky, setIsSticky] = useState(false); // 스크롤 상태 관리
@@ -79,10 +78,6 @@ const SearchBox = () => {
       handleSearchClick(); // 검색 함수 실행
     }
   };
-
-  useEffect(() => {
-    setSearchUrl(url); // 의존성 배열에서 searchUrl 제거
-  }, [location, stay, month, details]); // 필요한 의존성만 포함
 
   return (
     <>
