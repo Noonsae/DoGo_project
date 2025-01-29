@@ -42,7 +42,7 @@ const SortBtn = ({ sortOrder }: SortBtnType) => {
 
       {/* 드롭다운 옵션 */}
       {isOpen && (
-        <ul className="absolute left-0 top-full mt-2 w-full border rounded shadow-[0px_4px_12px_rgba(0,0,0,0.1)] bg-white z-50">
+        <ul className="absolute left-0 top-full mt-2 w-full border rounded shadow-[0px_4px_12px_rgba(0,0,0,0.1)] bg-white z-20">
           {options.map((option) => (
             <li
               key={option.value}
