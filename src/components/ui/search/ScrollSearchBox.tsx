@@ -15,7 +15,6 @@ import DetailsModal from './DetailsModal';
 import HiSearchIcon from '../icon/HiSearchIcon';
 
 const ScrollSearchBox = () => {
-  const [searchUrl, setSearchUrl] = useState<string>('');
   const [isSearchBoxClicked, setIsSearchBoxClicked] = useState(false);
   const [activeModal, setActiveModal] = useState<'location' | 'duration' | 'details' | null>(null); // 모달 상태
 
@@ -68,10 +67,6 @@ const ScrollSearchBox = () => {
       handleSearchClick(); // 검색 함수 실행
     }
   };
-
-  useEffect(() => {
-    setSearchUrl(url);
-  }, [location, stay, month, details]); // 필요한 의존성만 포함
 
   return (
     <>
