@@ -30,6 +30,7 @@ const fetchHotelsFilter = async ({
   let query = supabase.from('hotels').select(
     `
       *,
+      
       rooms!inner(price, view),
       hotel_facility(
         facility_id,
@@ -107,8 +108,9 @@ const fetchHotelsFilter = async ({
       check_out: hotel.check_out,
       location: hotel.location,
       user_id: hotel.user_id,
-      facility_ids: hotel.facility_ids,
-      service_ids: hotel.service_ids,
+      facility_ids: hotel.facility_ids ?? null,
+      service_ids: hotel.service_ids ?? null,
+
       facilities: hotel.hotel_facility.filter((fac) => !!fac.facilities?.name),
       services: hotel.hotel_service,
       label: `${hotel.name} ${hotel.address}`,
