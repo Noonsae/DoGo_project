@@ -110,7 +110,11 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
       </div>
       {/* 나머지 콘텐츠 */}
       <div className="">
-        {loading ? <NavigationSkeleton /> : <Navigation activeTab={activeTab} scrollToSection={scrollToSection} />}
+        {loading ? (
+          <NavigationSkeleton />
+        ) : (
+          <Navigation activeTab={activeTab} scrollToSection={scrollToSection} setActiveTab={setActiveTab} />
+        )}
       </div>
 
       {/* 콘텐츠 영역 */}
