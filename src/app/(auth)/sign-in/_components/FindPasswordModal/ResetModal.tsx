@@ -11,12 +11,13 @@ interface ResetModalProps {
   handleResetPassword: () => void;
 }
 const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: ResetModalProps) => (
-  <div className="m-10 flex flex-col">
+  <div className="m-10 flex flex-col ">
     {form.modalType === 'reset' && (
       <div className="flex flex-col">
-        <h1 className="font-semibold text-[24px] mt-[30px] mb-[30px]">
-          가입정보가 <br /> 인증되었습니다.
-        </h1>
+        <p className="font-semibold text-[24px] mt-[30px] mb-[30px]">
+          비밀번호를 찾기 위해 <br />
+          가입 정보를 입력해 주세요.
+        </p>
         <form
           className="flex flex-col justify-between"
           onSubmit={(e) => {
@@ -51,7 +52,7 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
         >
           <div>
             {/* OTP 입력 */}
-            <label className="font-semibold text-gray-700 mb-4">OTP</label>
+            <label className="text-base font-semibold text-gray-700 mb-4">OTP</label>
             <input
               type="text"
               placeholder="OTP를 입력해 주세요."
@@ -71,8 +72,9 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
             {errors.otp && <p className="text-sm text-red-500">{errors.otp}</p>}
 
             {/* 새 비밀번호 입력 */}
-            <div className="mb-4">
+            <div className="mb-4 text-base">
               <label className="block font-semibold text-gray-700 mb-2">새 비밀번호</label>
+
               <div className="relative">
                 <input
                   type={form.showPassword ? 'text' : 'password'}
@@ -101,6 +103,9 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
                     errors.password ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-[#B3916A]'
                   }`}
                 />
+                <p className="text-sm text-neutral-600 mb-[20px]">
+                  영문 대•소문자/숫자/특수문자 중 2가지 이상 조합, 8자~32자
+                </p>
                 <button
                   type="button"
                   onClick={() =>
@@ -109,7 +114,7 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
                       showPassword: !prevForm.showPassword
                     }))
                   }
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-black"
+                  className="absolute right-3 top-7 text-neutral-500 transform -translate-y-1/2 hover:text-black"
                 >
                   {form.showPassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
                 </button>
@@ -118,8 +123,8 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
             </div>
 
             {/* 비밀번호 확인 입력 */}
-            <div className="mb-4">
-              <label className="block font-semibold text-gray-700 mb-2">비밀번호 확인</label>
+            <div className="mb-4 ">
+              <label className="text-base block font-semibold text-gray-700 mb-2">비밀번호 확인</label>
               <div className="relative">
                 <input
                   type={form.showConfirmPassword ? 'text' : 'password'}
@@ -169,10 +174,10 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
           <div className="flex flex-col mt-[77px]">
             <button
               type="submit"
-              className=" bg-[#B3916A] font-bold text-white py-[10px] rounded-xl hover:bg-[#a37e5f] transition"
-              disabled={form.isLoading}
+              className="w-[352px] h-[48px] text-xl bg-[#B3916A] font-bold text-white py-[10px] rounded-xl hover:bg-[#a37e5f] transition"
+              // disabled={form.isLoading}
             >
-              <div className=" text-[20px]">{form.isLoading ? '처리 중...' : '완료'}</div>
+              {form.isLoading ? '처리 중...' : '완료'}
             </button>
           </div>
         </form>

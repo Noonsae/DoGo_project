@@ -8,7 +8,6 @@ import DividerIcon from '@/components/ui/icon/DividerIcon';
 import FindIdModal from './_components/FindIdModal';
 import FindPasswordModal from './_components/FindPasswordModal/FindPasswordModal';
 import KakaoSignIn from './_components/KakaoSignIn';
-import Image from 'next/image';
 import LogoAuth from '@/components/ui/icon/LogoAuth';
 
 const SignInPage = () => {
@@ -141,16 +140,16 @@ const SignInPage = () => {
             회원가입
           </button>
         </p>
-        {/* <div className="w-full sm:w-[400px] flex items-center my-6">
+        <div className="w-full sm:w-[400px] flex items-center my-6">
           <hr className="flex-grow border-neutral-300" />
           <span className="px-4 text-sm text-neutral-400">간편 로그인</span>
           <hr className="flex-grow border-neutral-300" />
-        </div> */}
+        </div>
         {form.isFindIdModalOpen && <FindIdModal onClose={() => setForm({ ...form, isFindIdModalOpen: false })} />}
         {form.isFindPasswordOpen && (
           <FindPasswordModal onClose={() => setForm({ ...form, isFindPasswordOpen: false })} />
         )}
-        {/* <div className="text-center mt-8">
+        <div className="text-center mt-8">
           <KakaoSignIn />
         </div>
         <div className="flex w-full max-w-[400px] justify-center items-center text-sm text-gray-500 mt-4">
@@ -171,7 +170,7 @@ const SignInPage = () => {
           >
             이용약관
           </button>
-        </div> */}
+        </div>
       </div>
     </div>
   );

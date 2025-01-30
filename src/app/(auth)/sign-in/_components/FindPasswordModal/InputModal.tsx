@@ -9,7 +9,7 @@ interface InputModalProps {
   handleTabChange: (tab: 'user' | 'business') => void;
 }
 const InputModal = ({ form, setForm, errors, setErrors, handleFindPassword, handleTabChange }: InputModalProps) => (
-  <div className="m-4 md:m-10 flex flex-col h-full">
+  <div className="m-4 md:m-10 flex flex-col h-full ">
     <p className="text-xl md:text-2xl font-bold mt-[24px] md:mt-[36px] mb-[24px] md:mb-[40px]">
       비밀번호를 찾기 위해 <br /> 가입 정보를 입력해 주세요.
     </p>

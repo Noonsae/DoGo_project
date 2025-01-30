@@ -144,7 +144,7 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
     setErrors({});
   };
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center ">
       <div className="w-[424px] h-[635px] bg-white rounded-lg shadow-lg relative">
         <button
           onClick={onClose}
@@ -163,19 +163,20 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
             handleTabChange={handleTabChange}
           />
         )}
-
+        {/* 커밋용 주석 */}
         {/* 두 번째 모달: 비밀번호 재설정 */}
+        {form.modalType === 'reset' && (
+          <ResetModal
+            form={form}
+            errors={errors}
+            setForm={setForm}
+            setErrors={setErrors}
+            handleResetPassword={handleResetPassword}
+          />
+        )}
 
-        <ResetModal
-          form={form}
-          errors={errors}
-          setForm={setForm}
-          setErrors={setErrors}
-          handleResetPassword={handleResetPassword}
-        />
         {/* 세 번째 모달: 성공 메시지 */}
-
-        <SuccessModal form={form} onClose={onClose} />
+        {form.modalType === 'success' && <SuccessModal form={form} onClose={onClose} />}
       </div>
     </div>
   );

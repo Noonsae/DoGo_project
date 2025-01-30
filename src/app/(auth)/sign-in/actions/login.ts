@@ -25,3 +25,24 @@ export const login = async ({ email, password, role }: { email: string; password
 
   return { data, error: signInError };
 };
+
+export const updateUserProfile = async ({
+  userId,
+  role,
+  phoneNumber
+}: {
+  userId: string;
+  role: string;
+  phoneNumber: string;
+}) => {
+  const supabase = await serverSupabase();
+
+  const { error } = await supabase.from('users').update({ role, phone_number: phoneNumber }).eq('id', userId);
+
+  if (error) {
+    console.error('프로필 업데이트 실패:', error);
+    return false;
+  }
+
+  return true;
+};
