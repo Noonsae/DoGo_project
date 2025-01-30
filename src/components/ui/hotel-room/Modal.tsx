@@ -14,8 +14,7 @@ interface ModalProps {
   onClose: () => void;
   room: RoomType;
 }
-
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, room }) => {
+const Modal = ({ isOpen, onClose, room }: ModalProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeTab, setActiveTab] = useState('info');
 

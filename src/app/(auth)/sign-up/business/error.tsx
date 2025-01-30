@@ -4,7 +4,7 @@ import React from 'react';
 interface ErrorProps {
   message: string;
 }
-const Error: React.FC<ErrorProps> = ({ message }) => {
+const Error = ({ message }: ErrorProps) => {
   return <p style={{ color: 'red' }}>{message}</p>;
 };
 

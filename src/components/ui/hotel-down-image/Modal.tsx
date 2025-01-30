@@ -12,8 +12,7 @@ interface DownModalProps {
   images: string[];
   name: string;
 }
-
-const DownModal: React.FC<DownModalProps> = ({ isOpen, onClose, images, name }) => {
+const DownModal = ({ isOpen, onClose, images, name }: DownModalProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   if (!isOpen || images.length === 0) return null;
