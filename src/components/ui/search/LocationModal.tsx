@@ -2,44 +2,36 @@
 
 import { useState } from 'react';
 
-import useHistoryStore from '@/store/useHistoryStore';
+import useSearchHistoryStore from '@/store/useSearchHistoryStore';
 
 import { locations } from '@/constants/constant';
 import IoMdPinIcon from '../icon/IoMdPinIcon';
 import IoCloseIcon from '../icon/IoCloseIcon';
+import useSearchStore from '@/store/useSearchStore';
 
-const LocationModal = ({ onSelectLocation, top, left }: { onSelectLocation: (label: string) => void; top?: string; left?: string; }) => {
-  const history = useHistoryStore((state) => state.history);
-  const removeHotel = useHistoryStore((state) => state.removeHotel);
-  const [selectedLocal, setSelectedLocal] = useState<string>(''); // input으로 넘겨주는 상태값
+const LocationModal = ({ top, left }: { top?: string; left?: string }) => {
+  const history = useSearchHistoryStore((state) => state.history); // 히스토리 값 가져오기
+  const removeHistory = useSearchHistoryStore((state) => state.removeHistory);
+  const [selectLabel, setSelectLabel] = useState('');
+  const { location, setLocation } = useSearchStore();
 
   const getLocationLabel = (locationId: string) => {
     const location = locations.find((loc) => loc.id === locationId);
-    return location ? location.label : '알 수 없음';
+    return location ? location.label : '';
   };
-
-  // 1. 역순으로 정렬한 뒤,
-  const reversedHistory = [...history].reverse();
-
-  // 2. 중복 값을 제거하고 최대 3개의 리스트만 반환
-  const uniqueHistory = reversedHistory
-    .filter((item, index, self) => index === self.findIndex((h) => h.location === item.location))
-    .slice(0, 3); // 최대 3개만 유지
 
   // 전체를 제외한 location constant의 값을 필터링
   const filteredLocations = locations.filter((location) => location.id !== 'all');
 
-  // 선택한 지역값을 input의 value로 넘겨줌
-  const handleSelectHistory = (locationId: string) => {
-    const label = getLocationLabel(locationId); // locationId로 label 가져오기
-    setSelectedLocal(label); // 선택된 label 상태 업데이트
-    onSelectLocation(label); // 부모 컴포넌트에 전달
+  // 선택한 버튼의 지역값을 전역 상태로 저장
+  const handleLocationClick = (label: string) => {
+    setLocation(label);
   };
 
-  // 선택한 버튼의 지역값을 input의 value로 넘겨줌
-  const handleLocationClick = (label: string) => {
-    setSelectedLocal(label); // 선택된 버튼의 label을 저장
-    onSelectLocation(label); // 부모 컴포넌트로 선택된 label 전달
+  // 검색 기록을 지우면서 input 상태 초기화
+  const handleRemoveSearchHistory = (item: string) => {
+    setLocation('');
+    removeHistory(item);
   };
 
   return (
@@ -50,25 +42,35 @@ const LocationModal = ({ onSelectLocation, top, left }: { onSelectLocation: (lab
       <div>
         <p className="mb-3 text-[20px] text-[#232527] font-semibold">최근 검색지</p>
         <div className="h-[126px] overflow-hidden">
-          {uniqueHistory.map((history) => (
-            <div
-              className="h-[42px] px-1 py-2 flex flex-row items-center justify-between rounded-[8px] cursor-pointer hover:bg-[#f5f5f5]"
-              onClick={() => handleSelectHistory(history.location)}
-            >
-              <div className="flex flex-row items-center justify-start">
-                <IoMdPinIcon className="w-6 h-6 text-[#777] mr-2" />
-                <p className="p-2 text-[18px] text-[#636363] leading-[1.45] ">{getLocationLabel(history.location)}</p>
-              </div>
-              <button
-                type="button"
-                onClick={() => removeHotel(history.location)} // 삭제 버튼 동작
+          {history.length > 0 ? (
+            history.map((item, index) => (
+              <div
+                key={index}
+                className="h-[42px] px-1 py-2 flex flex-row items-center justify-between rounded-[8px] cursor-pointer hover:bg-[#f5f5f5]"
+                onClick={() => handleLocationClick(item)}
               >
-                <div>
-                  <IoCloseIcon className="w-6 h-6 text-[#777]" />
+                <div className="flex flex-row items-center justify-start">
+                  <IoMdPinIcon className="w-6 h-6 text-[#777] mr-2" />
+                  <p className="p-2 text-[18px] text-[#636363] leading-[1.45] ">{item}</p>
                 </div>
-              </button>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation(); // 이벤트 버블링 방지
+                    handleRemoveSearchHistory(item);
+                  }} // 삭제 버튼 동작
+                >
+                  <div>
+                    <IoCloseIcon className="w-6 h-6 text-[#777]" />
+                  </div>
+                </button>
+              </div>
+            ))
+          ) : (
+            <div className="w-full h-[126px] flex flex-row items-center justify-center">
+              <p className="text-[18px] text-[#636363] font-normal leading-[1.45]">이전 검색 기록을 찾을 수 없습니다.</p>
             </div>
-          ))}
+          )}
         </div>
       </div>
       <div className="mt-8">

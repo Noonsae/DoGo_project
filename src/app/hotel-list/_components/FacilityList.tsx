@@ -11,7 +11,7 @@ const FacilityList: React.FC<FacilitiesFilterProps> = ({ selectedFacilities, onF
 
   return (
     <div className="mt-6">
-      <h3 className="text-lg font-semibold mb-2">편의 시설</h3>
+      <h3 className="text-lg font-semibold mb-2">공용 시설</h3>
       <ul className="flex flex-wrap gap-2">
         {facilities?.map((facility) => (
           <li key={facility.id}>

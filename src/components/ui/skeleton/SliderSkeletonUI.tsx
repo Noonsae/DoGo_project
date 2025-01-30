@@ -1,7 +1,5 @@
-const RecommendSkeletonUI = () => {
+const SliderSkeletonUI = () => {
   return (
-    <section className="w-full max-w-[1300px] px-[50px] pt-[80px] pb-[120px] mx-auto h-[748px]">
-      <h3 className="text-[24px] font-semibold">최근 본 호텔 상품</h3>
       <div className="w-full max-w-[1200px] h-[548px] flex flex-row justify-between items-center gap-[30px] mt-8">
         {[...Array(3)].map((_, idx) => (
           <div
@@ -16,8 +14,7 @@ const RecommendSkeletonUI = () => {
           </div>
         ))}
       </div>
-    </section>
   );
 };
 
-export default RecommendSkeletonUI;
+export default SliderSkeletonUI;
