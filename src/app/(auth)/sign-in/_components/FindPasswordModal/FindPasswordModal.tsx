@@ -163,7 +163,7 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
             handleTabChange={handleTabChange}
           />
         )}
-
+        {/* 커밋용 주석 */}
         {/* 두 번째 모달: 비밀번호 재설정 */}
         {form.modalType === 'reset' && (
           <ResetModal
