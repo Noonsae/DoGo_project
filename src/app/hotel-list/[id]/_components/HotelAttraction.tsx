@@ -29,7 +29,7 @@ const HotelAttraction = () => {
                 </span>
                 <span className="text-neutral-500 font-normal text-base ml-1">(1,344)</span>
               </div>
-              <p className="flex justify-end items-end mt-2  font-semibold text-2xl">192,000원</p>
+              <p className="flex justify-end items-end mt-2  font-semibold text-2xl">292,000원</p>
             </div>
           </a>
 
@@ -54,7 +54,7 @@ const HotelAttraction = () => {
                 </span>
                 <span className="text-neutral-500 font-normal text-base ml-1">(3,222)</span>
               </div>
-              <p className="flex justify-end items-end mt-2  font-semibold text-2xl">192,000원</p>
+              <p className="flex justify-end items-end mt-2  font-semibold text-2xl">146,000원</p>
             </div>
           </a>
 
@@ -79,7 +79,7 @@ const HotelAttraction = () => {
                 </span>
                 <span className="text-neutral-500 font-normal text-base ml-1">(1,563)</span>
               </div>
-              <p className="flex justify-end items-end mt-2  font-semibold text-2xl">192,000원</p>
+              <p className="flex justify-end items-end mt-2  font-semibold text-2xl">115,000원</p>
             </div>
           </a>
         </div>
