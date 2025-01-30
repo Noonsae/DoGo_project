@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { sortOrder } from '@/types/hotel/hotel-filter-type';  
+import { sortOrder } from '@/types/hotel/hotel-filter-type';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 
 interface SortBtnType {
@@ -34,7 +34,7 @@ const SortBtn = ({ sortOrder }: SortBtnType) => {
   };
 
   return (
-    <div className="relative w-[160px] px-4 py-3 border text-center rounded-[8px] shadow-[0px_4px_12px_rgba(0,0,0,0.1)] bg-white">
+    <div className="relative w-[160px] px-4 py-3 border text-center rounded-[8px]  bg-white">
       {/* 선택된 값 표시 */}
       <div className="cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
         {options.find((option) => option.value === sortOrder)?.label || '추천순'}
@@ -42,12 +42,12 @@ const SortBtn = ({ sortOrder }: SortBtnType) => {
 
       {/* 드롭다운 옵션 */}
       {isOpen && (
-        <ul className="absolute left-0 top-full mt-2 w-full border rounded shadow-[0px_4px_12px_rgba(0,0,0,0.1)] bg-white z-50">
+        <ul className="absolute left-0 top-full mt-2 w-full border rounded shadow-[0px_4px_12px_rgba(0,0,0,0.1)] bg-white z-20">
           {options.map((option) => (
             <li
               key={option.value}
               onClick={() => handleSelect(option.value)}
-              className={`h-[48px] px-4 py-3 cursor-pointer hover:bg-[#f5f5f5] ${
+              className={`h-[48px] px-4 py-3 cursor-pointer  ${
                 option.value === sortOrder ? 'font-bold text-[#B3916A]' : ''
               }`}
             >

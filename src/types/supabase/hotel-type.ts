@@ -12,6 +12,8 @@ export interface HotelWithPriceOnly extends HotelType {
   rooms?: RoomWithPrice[];
   min_price?: number;
   max_price?: number;
+  facility_ids?: string[] | null; // ✅ undefined 허용 (선택적 속성으로 변경)
+  service_ids?: string[] | null; // ✅ undefined 허용
 }
 
 // 슬라이더에서 사용되는 타입 정의

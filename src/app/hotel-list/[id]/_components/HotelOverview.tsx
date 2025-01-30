@@ -1,8 +1,11 @@
-import UpModal from '@/components/ui/hotel-up-image/Modal';
-import Image from 'next/image';
 import React, { useState } from 'react';
-import RenderStars from '../../_components/RenderStars';
+
+import Image from 'next/image';
+
 import { HotelOverviewProps } from '@/types/hotel/hotel-overview-type';
+
+import UpModal from '@/components/ui/hotel-up-image/Modal';
+import RenderStars from '../../_components/RenderStars';
 
 const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: HotelOverviewProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -88,9 +91,9 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
                     {favoriteStatus[hotelId] ? '❤️' : '🤍'}
                   </button>
                 )}
-                {index === 3 && (
+                {index === 3 && Array.isArray(hotelData.hotel_img_urls) && (
                   <div className="absolute bottom-2 right-2 px-3 py-1 bg-[#777] text-white text-sm rounded-full">
-                    +26
+                    +{hotelData.hotel_img_urls.length}
                   </div>
                 )}
               </div>
