@@ -3,30 +3,31 @@
 import React, { useEffect, useState } from 'react';
 
 import useAuthStore from '@/store/useAuth';
-
 import useFavoriteStore from '@/hooks/favorite/useFavoriteStore';
+
 import useHotelReviews from '@/hooks/review/useHotelReviews';
 import useHotelRooms from '@/hooks/room/useHotelRooms';
+import useHotelDetail from '@/hooks/hotel/useHotelDetail';
+import useFacilities from '@/hooks/hotel/useFacilities';
+import useServices from '@/hooks/hotel/useServices';
 
 import { Json } from '@/types/supabase/supabase-type';
 import { UserType } from '@/types/supabase/user-type';
 
-import HotelAttraction from './_components/HotelAttraction';
-import HotelBox from './_components/HotelBox';
-import HotelFacility from './_components/HotelFacility';
-import HotelLocation from './_components/HotelLocation';
+import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
+import Navigation from './_components/Navigation';
 import HotelOverview from './_components/HotelOverview';
-import HotelPolicies from './_components/HotelPolicies';
+import HotelBox from './_components/HotelBox';
 import HotelRoom from './_components/HotelRoom';
 import HotelReviews from './_components/HotelReviews';
-import Navigation from './_components/Navigation';
+import HotelFacility from './_components/HotelFacility';
+import HotelPolicies from './_components/HotelPolicies';
+import HotelLocation from './_components/HotelLocation';
+import HotelAttraction from './_components/HotelAttraction';
+
 import NavigationSkeleton from '../../../components/ui/skeleton/HotelNavigationSkeleton';
 import HotelOverviewSkeleton from '@/components/ui/skeleton/HotelOverviewSkeleton';
 import HotelBoxSkeleton from '@/components/ui/skeleton/HotelBoxSkeleton';
-import useHotelDetail from '@/hooks/hotel/useHotelDetail';
-import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
-import useFacilities from '@/hooks/hotel/useFacilities';
-import useServices from '@/hooks/hotel/useServices';
 
 const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const hotelId = params?.id; // URL 파라미터에서 호텔 ID 추출
