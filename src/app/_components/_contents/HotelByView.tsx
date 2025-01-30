@@ -4,20 +4,13 @@ import { useState } from 'react';
 
 import useHotelsByView from '@/hooks/hotel/useHotelsByView';
 
-import HotelByViewSkeletonUI from '@/components/ui/skeleton/HotelByViewSkeletonUI';
-
 import HotelListSlider from '@/components/ui/slider/HotelListSlider';
 
 const HotelByView = () => {
   const [selectedViews, setSelectedViews] = useState<string>(`all`);
 
   // React Query 훅 사용
-  const { data: hotels, isLoading, isError, error } = useHotelsByView(selectedViews);
-
-  // 로딩 중 상태 처리
-  if (isLoading) {
-    return <HotelByViewSkeletonUI />;
-  }
+  const { data: hotels, isError, error } = useHotelsByView(selectedViews);
 
   // 에러 처리
   if (isError) {
@@ -38,9 +31,9 @@ const HotelByView = () => {
 
   return (
     <section className="box-border w-full max-w-[1300px] h-[850px] px-[50px] mx-auto py-[80px] pb-[120px]">
-      <h3 className="text-[24px] font-semibold">객실 뷰가 아름다운 호텔</h3>
+      <h3 className="text-[24px] font-semibold">다양한 전망의 호텔들을 소개합니다.</h3>
       <p className="text-[18px] text-[#636363] font-normal leading-[1.45]">
-        휴식을 취하면서 바라보는 아름다운 뷰는 힐링하는데 큰 도움을 줄 수 있어요.
+        탁 트인 전망과 감성을 더하는 객실 뷰를 통해 힐링과 여유를 만끽하세요.
       </p>
 
       <div className="flex flex-row gap-2">

@@ -1,70 +1,28 @@
 'use client';
-import { useSearchParams, useRouter, usePathname } from 'next/navigation';
-import { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import HiOutlineRefreshIcon from '@/components/ui/icon/HiOutlineRefreshIcon';
 import DualSlider from './DualSlider';
 import generateUrl from '@/utils/urlHelpers';
 import FacilityList from './FacilityList';
 import ServiceList from './ServiceList';
 import { FacilitiesType } from '@/types/supabase/facilities-type';
+import { ServicesType } from '@/types/supabase/services-type';
+import useSearchStore from '@/store/useSearchStore';
 
-interface FilterObject {
-  grade: number[];
-  minPrice: number;
-  maxPrice: number;
-  services: string[];
-  facilityIds: string[];
-}
-
-interface FilterProps {
-  onFilterChange: (filters: FilterObject) => void;
-}
-
-const AsideFilter = ({ onFilterChange: onChangeFilter }: FilterProps) => {
+const AsideFilter = () => {
   const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   // Get a new searchParams string by merging the current
   // searchParams with a provided key/value pair
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set(name, value);
-
-      return params.toString();
-    },
-    [searchParams]
-  );
 
   const [selectedGrade, setSelectedGrade] = useState<number[]>([]);
-  const [filterMinPrice, setFilterMinPrice] = useState(0);
-  const [filterMaxPrice, setFilterMaxPrice] = useState(5000000); // 초기값 500만원
-  const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [minPriceValue, setMinPriceValue] = useState<number>(0);
+  const [maxPriceValue, setMaxPriceValue] = useState<number>(5000000);
+  const [selectedServices, setSelectedServices] = useState<ServicesType[]>([]);
   const [selectedFacilities, setSelectedFacilities] = useState<FacilitiesType[]>([]);
-  const [generatedUrl, setGeneratedUrl] = useState<string>(''); // URL 저장 상태
 
-  useEffect(() => {
-    // 변경 사항이 있을 때만 onFilterChange 호출
-    onChangeFilter({
-      grade: selectedGrade,
-      minPrice: filterMinPrice,
-      maxPrice: filterMaxPrice,
-      services: selectedServices,
-      facilityIds: selectedFacilities.map((fac) => fac.id),
-    });
-  }, [selectedGrade, filterMinPrice, filterMaxPrice, selectedFacilities, selectedServices]);
-
-  // 필터 상태가 변경될 때 URL 생성
-  const updateUrl = useCallback(() => {
-    const newUrl = generateUrl({
-      stars: selectedGrade.join(','),
-      prices: `${filterMinPrice}-${filterMaxPrice}`,
-      facilities: selectedFacilities.join(','),
-      services: selectedServices.join(',')
-    });
-    setGeneratedUrl(newUrl); // 상태에 URL 저장
-  }, [selectedGrade, filterMinPrice, filterMaxPrice, selectedFacilities, selectedServices]);
+  const { location, checkIn, checkOut, stay, details } = useSearchStore();
 
   // 성급 필터
   const handleHotelGradeChange = (grade: number) => {
@@ -79,28 +37,79 @@ const AsideFilter = ({ onFilterChange: onChangeFilter }: FilterProps) => {
   };
 
   // 서비스 필터
-  const handleServiceChange = (service: string) => {
+  const handleServiceChange = (service: ServicesType) => {
     setSelectedServices((prev) =>
       prev.includes(service) ? prev.filter((item) => item !== service) : [...prev, service]
     );
   };
 
-  const handlePriceChange = (min: number, max: number) => {
-    setFilterMinPrice(min);
-    setFilterMaxPrice(max);
+  useEffect(() => {
+    setMinPriceValue(Number(minPriceValue));
+    setMaxPriceValue(Number(maxPriceValue));
+  }, [minPriceValue, maxPriceValue]);
+
+  // 필터 조건 적용
+  const handleApplyBtnClick = async () => {
+    const updatedStars =
+      selectedGrade.includes(4) && selectedGrade.includes(5)
+        ? undefined // 4, 5 모두 선택된 경우 stars를 제외
+        : selectedGrade;
+    const updatedMinPrice = minPriceValue || undefined;
+    const updatedMaxPrice = maxPriceValue || undefined;
+    const updatedFacilities = selectedFacilities.map((facility) => facility.id);
+    const updatedServices = selectedServices.map((service) => service.id);
+    console.log(selectedFacilities, selectedServices);
+
+    const url = generateUrl({
+      location,
+      checkIn,
+      checkOut,
+      stay,
+      details,
+      stars: updatedStars,
+      minPrice: updatedMinPrice,
+      maxPrice: updatedMaxPrice,
+      facilities: updatedFacilities,
+      services: updatedServices
+    }); // URL 생성
+
+    router.push(url); // 페이지 이동
   };
 
-  useEffect(() => {
-    setFilterMinPrice(Number(filterMinPrice));
-    setFilterMaxPrice(Number(filterMaxPrice));
-  }, [filterMinPrice, filterMaxPrice]);
+  // 필터 조건 초기화
+  const handleResetFilters = async () => {
+    setSelectedGrade([]);
+    setMaxPriceValue(5000000);
+    setMinPriceValue(0);
+    setSelectedFacilities([]);
+    setSelectedServices([]);
+
+    const resetUrl = generateUrl({
+      location,
+      checkIn,
+      checkOut,
+      stay,
+      details,
+      stars: [],
+      minPrice: 0,
+      maxPrice: 5000000,
+      facilities: [],
+      services: []
+    });
+    await router.push(resetUrl); // 페이지 이동
+  };
 
   return (
     <aside className="w-[298px] h-[1350px] px-4 py-3">
-      {/* 필터 - ㅇ필터 초기화 */}
+      {/* 필터 - 적용 및 필터 초기화 */}
       <div className="flex flex-row items-center justify-between mb-[70px]">
-        <p className="text-[20px] font-bold">필터</p>
-        <button className="flex flex-row items-center justify-between gap-[1.5px]">
+        <div className="flex flex-row gap-4">
+          <p className="text-[20px] font-bold">필터</p>
+          <button className="text-base text-[#777] font-normal leading-[1.45]" onClick={handleApplyBtnClick}>
+            <span className="text-base text-[#777] font-normal leading-[1.45]">적용하기</span>{' '}
+          </button>
+        </div>
+        <button className="flex flex-row items-center justify-between gap-[1.5px]" onClick={handleResetFilters}>
           <HiOutlineRefreshIcon className="w-[20px] h-[20px] text-[#A0A0A0]" />
           <span className="text-base text-[#777] font-normal leading-[1.45]">필터 초기화</span>
         </button>
@@ -112,7 +121,12 @@ const AsideFilter = ({ onFilterChange: onChangeFilter }: FilterProps) => {
           가격 <span className="text-sm text-gray-500">1박 기준</span>
         </p>
 
-        <DualSlider />
+        <DualSlider
+          minPriceValue={minPriceValue}
+          maxPriceValue={maxPriceValue}
+          onMinPriceChange={(value) => setMinPriceValue(value)}
+          onMaxPriceChange={(value) => setMaxPriceValue(value)}
+        />
       </div>
 
       {/* 성급 필터 */}
@@ -139,7 +153,7 @@ const AsideFilter = ({ onFilterChange: onChangeFilter }: FilterProps) => {
       <FacilityList selectedFacilities={selectedFacilities} onFacilityChange={handleFacilityChange} />
 
       {/* 서비스 필터 */}
-      {/* <ServiceList selectedServices={selectedFacilities} onFacilityChange={handleFacilityChange} /> */}
+      <ServiceList selectedServices={selectedServices} onServiceChange={handleServiceChange} />
     </aside>
   );
 };

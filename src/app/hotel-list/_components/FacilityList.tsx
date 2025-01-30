@@ -1,24 +1,17 @@
 import useFacilities from '@/hooks/hotel/useFacilities';
 import { FacilitiesType } from '@/types/supabase/facilities-type';
+
 interface FacilitiesFilterProps {
   selectedFacilities: FacilitiesType[];
   onFacilityChange: (facility: FacilitiesType) => void;
 }
 
 const FacilityList: React.FC<FacilitiesFilterProps> = ({ selectedFacilities, onFacilityChange }) => {
-  const { data: facilities, isLoading, error } = useFacilities();
-
-  if (isLoading) {
-    return <p>Loading facilities...</p>; // 로딩 중 메시지
-  }
-
-  if (error) {
-    return <p>Error loading facilities: {error.message}</p>; // 오류 메시지
-  }
+  const { data: facilities } = useFacilities();
 
   return (
     <div className="mt-6">
-      <h3 className="text-lg font-semibold mb-2">편의 시설</h3>
+      <h3 className="text-lg font-semibold mb-2">공용 시설</h3>
       <ul className="flex flex-wrap gap-2">
         {facilities?.map((facility) => (
           <li key={facility.id}>

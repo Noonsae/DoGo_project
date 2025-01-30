@@ -16,11 +16,10 @@ import DurationModal from './DurationModal';
 import DetailsModal from './DetailsModal';
 
 import HiSearchIcon from '../icon/HiSearchIcon';
+import useSearchHistoryStore from '@/store/useSearchHistoryStore';
 
 const SearchBox = () => {
-  const [searchUrl, setSearchUrl] = useState<string>('');
   const { location, checkIn, checkOut, details, stay, month, setLocation } = useSearchStore();
-
   const [isSticky, setIsSticky] = useState(false); // 스크롤 상태 관리
   const [activeModal, setActiveModal] = useState<'location' | 'duration' | 'details' | null>(null); // 모달 상태
 
@@ -68,6 +67,11 @@ const SearchBox = () => {
   const url = generateUrl({ location, checkIn, checkOut, stay, month, details }); // URL 생성
   
   const handleSearchClick = async () => {
+    const { location } = useSearchStore.getState();
+    if (location) {
+      useSearchHistoryStore.getState().addHistory(location);
+    }
+    setLocation('');
     const searchUrl = url;
     await router.push(searchUrl); // 페이지 이동
     closeModal();
@@ -80,9 +84,7 @@ const SearchBox = () => {
     }
   };
 
-  useEffect(() => {
-    setSearchUrl(url); // 의존성 배열에서 searchUrl 제거
-  }, [location, stay, month, details]); // 필요한 의존성만 포함
+  const [stayDuration, travelMonth] = stay.split('|').map((s) => s.trim());
 
   return (
     <>
@@ -120,12 +122,12 @@ const SearchBox = () => {
                 }`}
               >
                 <div className="w-1/2 h-full">
-                  <p className="text-[15px] text-[#636363] font-medium">체크인</p>
-                  <span className="text-[16px] text-[#A0A0A0] font-medium">{checkIn || `날짜 추가`}</span>
+                  <p className="text-[15px] text-[#636363] font-medium">숙박 기간</p>
+                  <span className="text-[16px] text-[#A0A0A0] font-medium">{stayDuration || `기간 선택`}</span>
                 </div>
                 <div className="w-1/2 h-full px-[16px]">
-                  <p className="text-[15px] text-[#636363] font-medium">체크아웃</p>
-                  <span className="text-[16px] text-[#A0A0A0] font-medium">{checkOut || `날짜 추가`}</span>
+                  <p className="text-[15px] text-[#636363] font-medium">여행 시기</p>
+                  <span className="text-[16px] text-[#A0A0A0] font-medium">{travelMonth || `기간 선택`}</span>
                 </div>
               </div>
 
@@ -157,7 +159,7 @@ const SearchBox = () => {
             {/* 모달 */}
             {activeModal === 'location' && (
               <div ref={modalRef}>
-                <LocationModal onSelectLocation={setLocation} />
+                <LocationModal />
               </div>
             )}
             {activeModal === 'duration' && (

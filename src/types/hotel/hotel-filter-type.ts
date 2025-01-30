@@ -45,7 +45,7 @@ export interface FiltersType {
   minPrice: number;
   maxPrice: number;
   facilities?: string[]; // 중첩 구조에 맞게 수정
-  services: string[]; // 중첩 구조에 맞게 수정
+  services?: string[]; // 중첩 구조에 맞게 수정
   facilityIds: string[];
   serviceIds: string[];
 }

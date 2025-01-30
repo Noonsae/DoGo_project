@@ -4,8 +4,6 @@ import { useEffect, useState } from 'react';
 import { Database } from '@/types/supabase/supabase-type';
 import IoCloseIcon from '../icon/IoCloseIcon';
 import IoCheckmarkCircle from '../icon/IoCheckmarkCircle';
-import FiChevronLeft from '../icon/FiChevronLeft';
-import FiChevronRight from '../icon/FiChevronRight';
 import FiChevronLeftIcon from '../icon/FiChevronLeftIcon';
 import FiChevronRightIcon from '../icon/FiChevronRightIcon';
 type RoomType = Database['public']['Tables']['rooms']['Row'];
@@ -97,7 +95,7 @@ const Modal = ({ isOpen, onClose, room }: ModalProps) => {
                     onClick={showPreviousImage}
                     className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
                   >
-                    <FiChevronLeftIcon />
+                    <FiChevronLeftIcon/>
                   </button>
                   <button
                     onClick={showNextImage}

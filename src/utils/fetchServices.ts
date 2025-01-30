@@ -1,7 +1,7 @@
 import { browserSupabase } from "@/supabase/supabase-client";
+import { ServicesType } from "@/types/supabase/services-type";
 
-const fetchServices = async (): Promise<string[]> => {
-
+const fetchServices = async (): Promise<ServicesType[]> => {
   const supabase = browserSupabase();
 
   try {
@@ -17,9 +17,8 @@ const fetchServices = async (): Promise<string[]> => {
       return [];
     }
 
-    return data.map((service) => service.name.trim());
-    
-    
+    return data;
+
   } catch (error) {
     console.error('Unexpected error:', error);
 

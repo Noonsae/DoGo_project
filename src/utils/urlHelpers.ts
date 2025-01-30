@@ -1,12 +1,8 @@
 import { SearchState } from '@/types/zustand/search-state-type';
 import {
   processInput,
-  parseDetails,
-  parseFacilities,
-  parsePrices,
+  parseDetails,  
   parseSchedule,
-  parseServices,
-  parseStars,
   sanitizeInput
 } from './urlCalculator';
 
@@ -15,28 +11,36 @@ const generateUrl = ({
   checkIn = '',
   checkOut = '',
   stay: stayInput = '',
-  month: monthInput = '',
+  // month: monthInput = '',
   details = '',
-  stars: starsInput = '', // 입력값과 결과값 변수 이름 구분
-  prices: pricesInput = '',
-  facilities: facilitiesInput = '',
-  services: servicesInput = ''
+  stars = [],
+  minPrice = 0,
+  maxPrice = 5000000,
+  facilities= [],
+  services= []
 }: Partial<SearchState>): string => {
   try {
     // location과 label 처리
     const { location: processedLocation, label } = processInput(location);
+
     // 예약 일정 처리
-    const { stay, month } = parseSchedule(stayInput, monthInput);
+    const { stay } = parseSchedule(stayInput);
+
     // 예약 정보 디테일 처리
     const { room, adult, child, pet } = parseDetails(details);
+
     // 성급 처리
-    const parsedStars = parseStars(starsInput);
+    const parsedStars = stars && stars.length > 0 ? stars.join('') : '';
+
     // 가격 처리
-    const { minPrice, maxPrice } = parsePrices(pricesInput);
+    const parsedMinPrice = minPrice ? minPrice : '';
+    const parsedMaxPrice = maxPrice ? maxPrice : '';
+
     // 배치 시설 처리
-    const parsedFacilities = parseFacilities(facilitiesInput).join(',');
+    const parsedFacilities = Array.isArray(facilities) ? facilities.join(',') : '';
+
     // 제공 서비스 처리
-    const parsedServices = parseServices(servicesInput).join(',');
+    const parsedServices = Array.isArray(services) ? services.join(',') : '';
 
     // 쿼리 파라미터 생성
     const queryParams = [
@@ -45,14 +49,15 @@ const generateUrl = ({
       checkIn && `checkIn=${encodeURIComponent(sanitizeInput(checkIn))}`,
       checkOut && `checkOut=${encodeURIComponent(sanitizeInput(checkOut))}`,
       stay && `stay=${encodeURIComponent(stay)}`,
-      month && `month=${encodeURIComponent(month)}`,
+      // ToDo stay, month 각각 처리하기
+      // month && `month=${encodeURIComponent(month)}`,
       room && `room=${encodeURIComponent(room)}`,
       adult && `adult=${encodeURIComponent(adult)}`,
       pet && `pet=${encodeURIComponent(pet)}`,
       child && `child=${encodeURIComponent(child)}`,
-      parsedStars && `stars=${encodeURIComponent(parsedStars.toString())}`, // 숫자를 문자열로 변환
-      minPrice !== undefined && `minPrice=${encodeURIComponent(minPrice.toString())}`, // 0도 포함
-      maxPrice !== undefined && `maxPrice=${encodeURIComponent(maxPrice.toString())}`,
+      parsedStars && `stars=${encodeURIComponent(parsedStars)}`, // 숫자를 문자열로 변환
+      parsedMinPrice && `minPrice=${encodeURIComponent(parsedMinPrice)}`,
+      parsedMaxPrice && `maxPrice=${encodeURIComponent(parsedMaxPrice)}`,
       parsedFacilities && `facilities=${encodeURIComponent(parsedFacilities)}`,
       parsedServices && `services=${encodeURIComponent(parsedServices)}`
     ]

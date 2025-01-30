@@ -10,9 +10,9 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 
 import FiCalendarIcon from '../icon/FiCalendarIcon';
 
-const DurationModal = ({ left = '36%', top, onClose }: { left?: string; top?: string; onClose: () => void }) => {
+const DurationModal = ({ left = '30%', top, onClose }: { left?: string; top?: string; onClose: () => void }) => {
   const { setCheckIn, setCheckOut, setMonth, setStay } = useSearchStore();
-  const [tab, setTab] = useState<'date' | 'flexible'>('date'); // 탭 상태
+  const [tab, setTab] = useState<'date' | 'flexible'>('flexible'); // 탭 상태
   const [selectedDateRange, setSelectedDateRange] = useState({ start: '', end: '' }); // 날짜 지정 값
   const [selectedStayOption, setSelectedStayOption] = useState(''); // 단일 선택된 숙박 옵션
   const [selectedMonth, setSelectedMonth] = useState<string>(''); // 다중 선택된 달
@@ -26,8 +26,8 @@ const DurationModal = ({ left = '36%', top, onClose }: { left?: string; top?: st
     const applyChanges = () => {
       if (selectedDateRange.start && selectedDateRange.end) {
         const formattedSchedule = `체크인: ${selectedDateRange.start}, 체크아웃: ${selectedDateRange.end}`;
-        setCheckIn(selectedDateRange.start);
-        setCheckOut(selectedDateRange.end);
+        // setCheckIn(selectedDateRange.start);
+        // setCheckOut(selectedDateRange.end);
         setMonth(formattedSchedule);
         setStay(formattedSchedule);
       }
@@ -38,8 +38,8 @@ const DurationModal = ({ left = '36%', top, onClose }: { left?: string; top?: st
     if (tab === 'date') {
       const formattedSchedule = `체크인: ${selectedDateRange.start}, 체크아웃: ${selectedDateRange.end}`;
       // 날짜 지정 옵션 저장
-      setCheckIn(selectedDateRange.start);
-      setCheckOut(selectedDateRange.end);
+      // setCheckIn(selectedDateRange.start);
+      // setCheckOut(selectedDateRange.end);
       setMonth(formattedSchedule);
       setStay(formattedSchedule);
     } else if (tab === 'flexible') {
@@ -55,6 +55,13 @@ const DurationModal = ({ left = '36%', top, onClose }: { left?: string; top?: st
     onClose();
   };
 
+  // 초기화 버튼
+  const handleResetSchedule = () => {
+    // ToDo : checkIn, checkOut
+    setSelectedStayOption('');
+    setSelectedMonth('');    
+  }
+
   return (
     <div
       style={{ left, top }}
@@ -62,11 +69,12 @@ const DurationModal = ({ left = '36%', top, onClose }: { left?: string; top?: st
     >
       {/* 탭 */}
       <div className="w-[270px] h-[43px] mx-auto flex justify-center mb-3 p-1 bg-[#EFEFEF] rounded-full">
+        {/* 캘린더폼 활용해서 만든 이후 onClick={() => setTab('data')}  */}
         <button
           className={`w-[130px] h-[34px] py-[6px] rounded-full text-base text-center font-semibold ${
             tab === 'date' ? 'bg-[#fff] text-[#B3916A]' : 'bg-[#EFEFEF] text-[#777]'
           }`}
-          onClick={() => setTab('date')}
+          onClick={() => setTab('flexible')}
         >
           날짜 지정
         </button>
@@ -190,6 +198,12 @@ const DurationModal = ({ left = '36%', top, onClose }: { left?: string; top?: st
             </div>
           </div>
           <div className="w-full flex justify-end">
+            <button
+              onClick={handleResetSchedule}
+              className="w-[124px] mt-8 px-6 py-[10px] text-[18px] font-semibold text-[#B3916A] hover:text-[#8f7455]"
+            >
+              초기화
+            </button>
             <button
               onClick={handleSaveSchedule}
               className="w-[124px] mt-8 px-6 py-[10px] bg-[#B3916A] text-white text-[18px] font-semibold rounded-lg hover:bg-[#8F7455] active:bg-[#6B573F]"

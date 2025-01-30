@@ -14,7 +14,7 @@ const useHistoryStore = create<HistoryStoreType>()(
           // 동일한 id의 호텔이 이미 있는지 확인
           const isAlreadyInHistory = state.history.some((item) => item.id === hotel.id);
 
-          const price = hotel.room?.[0]?.price || null;
+          const price = hotel.rooms?.[0]?.price || null;
           const updatedHotel = {
             ...hotel,
             price // 가격 정보가 있으면 추가, 없으면 null로 설정
@@ -32,12 +32,7 @@ const useHistoryStore = create<HistoryStoreType>()(
 
           // 기존 값이 없으면 그냥 추가
           return { history: [...state.history, updatedHotel] };
-        }),
-
-      removeHotel: (locationId: string) =>
-        set((state) => ({
-          history: state.history.filter((item) => item.location !== locationId) // locationId가 일치하지 않는 항목만 유지
-        }))
+        })
     }),
     {
       name: 'history-storage', // 로컬 스토리지에 저장될 키
