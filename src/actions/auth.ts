@@ -85,6 +85,21 @@ export const updatePhoneNumber = async (userId: string, phoneNumber: string) => 
   return { success: true };
 };
 
+export async function updateKaKao(userId: string, phoneNumber: string): Promise<{ success: boolean }> {
+  if (!userId || !phoneNumber) {
+    throw new Error('잘못된 요청입니다.');
+  }
+
+  const supabase = await serverSupabase();
+  const { error } = await supabase.from('users').update({ phone_number: phoneNumber }).eq('id', userId);
+
+  if (error) {
+    throw new Error(`전화번호 업데이트 실패: ${error.message}`);
+  }
+
+  return { success: true };
+}
+
 export const getUserRole = async (userId: string | undefined) => {
   if (!userId) {
     return { data: null };
