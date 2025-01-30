@@ -5,6 +5,7 @@ import useHotelRooms from '@/hooks/room/useHotelRooms';
 import RenderStars from './RenderStars';
 import RiThumbUpFillIcon from '@/components/ui/icon/RiThumbUpFillIcon';
 import useFacilities from '@/hooks/hotel/useFacilities';
+import useFormatCurrency from '@/hooks/formatCurrency/useFormatCurrency';
 
 interface HotelListItemProps {
   hotel: HotelWithPriceOnly;
@@ -16,7 +17,7 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
   const { reviews, allReviews, loading: reviewsLoading } = useHotelReviews(hotelId);
   const { roomsData } = useHotelRooms(hotelId);
   const { data: facilityData, isLoading: facilitiesLoading } = useFacilities();
-  // const { data: serviceData, isLoading: servicesLoading } = useServices();
+  const formatKoreanCurrency = useFormatCurrency();
 
   const averageRating = reviews.length
     ? (reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length).toFixed(1)
@@ -118,7 +119,7 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
 
           {/* 가격 */}
           <div>
-            <span className="font-semibold text-2xl">{hotel.min_price}원</span>
+            <span className="font-semibold text-2xl">{formatKoreanCurrency(hotel.min_price as number)}원</span>
             <span className="text-gray-500 text-base font-medium">/1박</span>
           </div>
         </div>
