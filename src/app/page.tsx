@@ -7,7 +7,6 @@ import ContentsList from './_components/ContentsList';
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL; // 로컬 개발 환경 대비
 
 export const metadata: Metadata = {
-  
   title: 'DoGo : 홈페이지',
   description: '국내 4성~5성 호텔 예약 애플리케이션 DoGo의 홈페이지입니다.',
   openGraph: {
@@ -25,6 +24,12 @@ export const metadata: Metadata = {
     ],
     type: 'website' // 사이트 타입 명시
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'DoGo Application',
+    description: '국내 4성~5성 호텔 예약 애플리케이션',
+    images: [`${siteUrl}/images/DoGo_site_preview.webp`]
+  }
 };
 
 const HomePage = () => {
