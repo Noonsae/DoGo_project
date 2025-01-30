@@ -4,7 +4,7 @@ interface KakaoMapProps {
   address: string; // 검색할 주소
 }
 
-const KakaoMap: React.FC<KakaoMapProps> = ({ address }) => {
+const KakaoMap = ({ address }: KakaoMapProps) => {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
