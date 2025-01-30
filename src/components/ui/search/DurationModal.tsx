@@ -10,7 +10,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 
 import FiCalendarIcon from '../icon/FiCalendarIcon';
 
-const DurationModal = ({ left = '36%', top, onClose }: { left?: string; top?: string; onClose: () => void }) => {
+const DurationModal = ({ left = '30%', top, onClose }: { left?: string; top?: string; onClose: () => void }) => {
   const { setCheckIn, setCheckOut, setMonth, setStay } = useSearchStore();
   const [tab, setTab] = useState<'date' | 'flexible'>('flexible'); // 탭 상태
   const [selectedDateRange, setSelectedDateRange] = useState({ start: '', end: '' }); // 날짜 지정 값

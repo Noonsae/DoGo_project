@@ -6,6 +6,13 @@
 @import '@fullcalendar/timegrid/main.css'; */
 @import 'sweetalert2/dist/sweetalert2.min.css';
 
+.slick-track {
+  display: flex !important;
+  justify-content: flex-start !important;
+  height: 500px;
+  gap: 30px !important;
+}
+
 input[type='range'] {
   -webkit-appearance: none; /* 브라우저 기본 스타일 제거 */
   appearance: none;
