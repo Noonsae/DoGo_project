@@ -7,6 +7,7 @@ import RiThumbUpFillIcon from '@/components/ui/icon/RiThumbUpFillIcon';
 import useFacilities from '@/hooks/hotel/useFacilities';
 import useFormatCurrency from '@/hooks/formatCurrency/useFormatCurrency';
 import useFavoriteStore from '@/hooks/favorite/useFavoriteStore';
+import ParentIcon from '@/components/ui/icon/ParentIcon';
 
 interface HotelListItemProps {
   hotel: HotelWithPriceOnly;
@@ -135,11 +136,9 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
             e.stopPropagation();
             toggleFavorite(hotelId);
           }}
-          className={`absolute top-2 right-2 p-2 rounded-full shadow-md bg-white text-gray-600 ${
-            favoriteStatus[hotelId] ? 'active' : ''
-          }`}
+          className="p-2 rounded-full bg-white transition-all duration-200  "
         >
-          {favoriteStatus[hotelId] ? '❤️' : '🤍'}
+          <ParentIcon isActive={favoriteStatus[hotelId]} />
         </button>
       </div>
     </li>
