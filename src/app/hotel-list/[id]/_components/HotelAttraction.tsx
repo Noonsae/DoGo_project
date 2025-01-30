@@ -1,4 +1,3 @@
-import RatingIcon from '@/components/ui/icon/RatingIcon';
 import RiThumbUpFillIcon from '@/components/ui/icon/RiThumbUpFillIcon';
 import React from 'react';
 
