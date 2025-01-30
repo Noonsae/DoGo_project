@@ -84,6 +84,8 @@ const SearchBox = () => {
     }
   };
 
+  const [stayDuration, travelMonth] = stay.split('|').map((s) => s.trim());
+
   return (
     <>
       {isSticky ? (
@@ -121,11 +123,11 @@ const SearchBox = () => {
               >
                 <div className="w-1/2 h-full">
                   <p className="text-[15px] text-[#636363] font-medium">숙박 기간</p>
-                  <span className="text-[16px] text-[#A0A0A0] font-medium">{checkIn || `기간 선택`}</span>
+                  <span className="text-[16px] text-[#A0A0A0] font-medium">{stayDuration || `기간 선택`}</span>
                 </div>
                 <div className="w-1/2 h-full px-[16px]">
                   <p className="text-[15px] text-[#636363] font-medium">여행 시기</p>
-                  <span className="text-[16px] text-[#A0A0A0] font-medium">{checkOut || `기간 선택`}</span>
+                  <span className="text-[16px] text-[#A0A0A0] font-medium">{travelMonth || `기간 선택`}</span>
                 </div>
               </div>
 
@@ -157,7 +159,7 @@ const SearchBox = () => {
             {/* 모달 */}
             {activeModal === 'location' && (
               <div ref={modalRef}>
-                <LocationModal/>
+                <LocationModal />
               </div>
             )}
             {activeModal === 'duration' && (
