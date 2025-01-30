@@ -1,15 +1,13 @@
-import { useEffect, useState, useMemo } from 'react';
 import useHotelReviews from '@/hooks/review/useHotelReviews';
-import { HotelType } from '@/types/supabase/hotel-type';
+import { HotelWithPriceOnly } from '@/types/supabase/hotel-type';
 import Image from 'next/image';
 import useHotelRooms from '@/hooks/room/useHotelRooms';
 import RenderStars from './RenderStars';
 import RiThumbUpFillIcon from '@/components/ui/icon/RiThumbUpFillIcon';
 import useFacilities from '@/hooks/hotel/useFacilities';
-import useServices from '@/hooks/hotel/useServices';
 
 interface HotelListItemProps {
-  hotel: HotelType & { min_price?: number | null };
+  hotel: HotelWithPriceOnly;
   isFavorite: boolean;
   hotelId: string;
 }
@@ -49,12 +47,6 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
       })
       .filter((name) => name !== '알 수 없는 시설'); // 없는 시설 제거
   };
-
-  useEffect(() => {
-    console.log('🏨 호텔:', hotel.name);
-    console.log('🛠 시설 ID 목록:', hotel.facility_ids);
-    console.log('✅ 매칭된 시설 이름:', getFacilityNames());
-  }, [hotel, facilityData]);
 
   return (
     <li
@@ -112,15 +104,16 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
             )}
 
             {/* 퍼실리티 */}
-            {getFacilityNames().map((facilityName, index) => (
-              <span
-                key={index}
-                className="inline-flex items-center justify-center h-[28px] px-3 bg-[#FCF6EE] text-[#5A3B1A] border border-[#ECDDC8] rounded-md text-[14px] leading-none whitespace-nowrap"
-              >
-                {facilityName}
-              </span>
-            ))}
-            {/* 서비스 */}
+            {getFacilityNames()
+              .slice(0, 2)
+              .map((facilityName, index) => (
+                <span
+                  key={index}
+                  className="inline-flex items-center justify-center h-[28px] px-3 bg-[#FCF6EE] text-[#5A3B1A] border border-[#ECDDC8] rounded-md text-[14px] leading-none whitespace-nowrap"
+                >
+                  {facilityName}
+                </span>
+              ))}
           </div>
 
           {/* 가격 */}
