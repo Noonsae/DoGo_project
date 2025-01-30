@@ -18,7 +18,7 @@ interface HotelListItemProps {
 const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
   const { reviews, allReviews, loading: reviewsLoading } = useHotelReviews(hotelId);
   const { roomsData } = useHotelRooms(hotelId);
-  const { data: facilityData, isLoading: facilitiesLoading } = useFacilities();
+  const { data: facilityData } = useFacilities();
   const formatKoreanCurrency = useFormatCurrency();
 
   const averageRating = reviews.length
@@ -41,8 +41,7 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
   const { favoriteStatus, toggleFavorite } = useFavoriteStore(); // 즐겨찾기 관련 상태와 함수 가져오기
 
   const getFacilityNames = () => {
-    if (facilitiesLoading) return ['로딩 중...'];
-    if (!facilityData || facilityData.length === 0) return ['시설 데이터 없음'];
+    if (!facilityData || facilityData.length === 0) return [''];
     if (!hotel.facility_ids || hotel.facility_ids.length === 0) return []; // ✅ 추가
 
     return hotel.facility_ids

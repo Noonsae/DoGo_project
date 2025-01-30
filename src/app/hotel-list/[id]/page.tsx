@@ -23,9 +23,10 @@ import Navigation from './_components/Navigation';
 import NavigationSkeleton from '../../../components/ui/skeleton/HotelNavigationSkeleton';
 import HotelOverviewSkeleton from '@/components/ui/skeleton/HotelOverviewSkeleton';
 import HotelBoxSkeleton from '@/components/ui/skeleton/HotelBoxSkeleton';
-import useServiceFacility from '@/hooks/serviceFacility/useServiceFacility';
 import useHotelDetail from '@/hooks/hotel/useHotelDetail';
 import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
+import useFacilities from '@/hooks/hotel/useFacilities';
+import useServices from '@/hooks/hotel/useServices';
 
 const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const hotelId = params?.id; // URL 파라미터에서 호텔 ID 추출
@@ -44,8 +45,8 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   }, [user, hotelId, initializeFavorites]);
 
   const { hotelData, loading } = useHotelDetail(hotelId); // 호텔 상세 데이터 가져오기
-
-  const { facilityData, serviceData } = useServiceFacility(hotelId); // 시설 및 서비스 데이터 가져오기
+  const { data: facilityData } = useFacilities();
+  const { data: serviceData } = useServices();
 
   const selectedRoomId = roomsData.length > 0 ? roomsData[0]?.id : null; // 첫 번째 객실 ID 가져오기
 
@@ -129,7 +130,7 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
           <HotelBoxSkeleton />
         ) : (
           <HotelBox
-            facilityData={facilityData}
+            facilityData={facilityData ?? []}
             roomOption={roomOption}
             hotelData={hotelData}
             reviews={reviews}
@@ -149,10 +150,10 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
 
         {/* 시설/서비스 섹션 */}
         <HotelFacility
-          facilityData={facilityData}
+          facilityData={facilityData ?? []}
           roomOption={roomOption}
           hotelId={hotelId}
-          serviceData={serviceData}
+          serviceData={serviceData ?? []}
         />
 
         {/* 숙소 정책 섹션 */}
