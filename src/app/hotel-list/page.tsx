@@ -12,6 +12,7 @@ import useFetchHotelsFilter from '@/hooks/hotel/useFetchHotelsFilter';
 
 import { HotelWithPriceOnly } from '@/types/supabase/hotel-type';
 import { FiltersType, sortOrder } from '@/types/hotel/hotel-filter-type';
+import { UserType } from '@/types/supabase/user-type';
 
 import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
 
@@ -19,7 +20,6 @@ import HotelCardList from './_components/HotelsCardList';
 import AsideFilter from './_components/AsideFilter';
 import SortBtn from './_components/SortBtn';
 import HotelListSkeleton from '../../components/ui/skeleton/HotelListSkeleton';
-import { UserType } from '@/types/supabase/user-type';
 
 /**
  * 1. url에서 필터 조건을 가져온다. useSearchParams 활용
@@ -70,6 +70,10 @@ const HotelList = () => {
   const addHotel = useHistoryStore((state) => state.addHotel);
 
   const handleSaveHistoryAndMoveDetailsPage = (hotel: HotelWithPriceOnly) => {
+    // ✅ undefined 대신 null을 명시적으로 할당
+    hotel.facility_ids = hotel.facility_ids ?? null;
+    hotel.service_ids = hotel.service_ids ?? null;
+
     addHotel(hotel);
     router.push(`/hotel-list/${hotel.id}`);
   };
@@ -122,11 +126,10 @@ const HotelList = () => {
 
   return (
     <div className="w-full max-w-[1300px] mx-auto px-[50px] pt-[200px] pb-[50px] flex flex-row justify-between gap-[30px] ">
-
       <ScrollSearchBox />
 
       <AsideFilter
-        // onFilterChange={(newFilters) => setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }))}
+      // onFilterChange={(newFilters) => setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }))}
       />
 
       <div className="">
