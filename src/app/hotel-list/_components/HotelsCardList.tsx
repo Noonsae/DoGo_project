@@ -6,6 +6,7 @@ import RenderStars from './RenderStars';
 import RiThumbUpFillIcon from '@/components/ui/icon/RiThumbUpFillIcon';
 import useFacilities from '@/hooks/hotel/useFacilities';
 import useFormatCurrency from '@/hooks/formatCurrency/useFormatCurrency';
+import useFavoriteStore from '@/hooks/favorite/useFavoriteStore';
 
 interface HotelListItemProps {
   hotel: HotelWithPriceOnly;
@@ -35,6 +36,8 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
   };
 
   const totalReviews = allReviews.length;
+
+  const { favoriteStatus, toggleFavorite } = useFavoriteStore(); // 즐겨찾기 관련 상태와 함수 가져오기
 
   const getFacilityNames = () => {
     if (facilitiesLoading) return ['로딩 중...'];
@@ -127,7 +130,17 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
 
       {/* 하트 아이콘 */}
       <div className="absolute top-[25px] right-[16px] text-2xl" style={{ transform: 'translate(0, -50%)' }}>
-        <p className={`text-2xl ${isFavorite ? 'text-red-500' : 'text-gray-300'}`}>{isFavorite ? '❤️' : '🤍'}</p>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleFavorite(hotelId);
+          }}
+          className={`absolute top-2 right-2 p-2 rounded-full shadow-md bg-white text-gray-600 ${
+            favoriteStatus[hotelId] ? 'active' : ''
+          }`}
+        >
+          {favoriteStatus[hotelId] ? '❤️' : '🤍'}
+        </button>
       </div>
     </li>
   );
