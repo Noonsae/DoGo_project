@@ -593,14 +593,14 @@ export type Database = {
         Row: {
           business_number: string | null;
           created_at: string;
-          email: string | null;
+          email: string;
           id: string;
           nickname: string | null;
-          phone_number: string | null;
+          phone_number: string;
           profile_img: string | null;
           role: string;
           user_info: Json | null;
-          user_name: string | null;
+          user_name: string;
         };
         Insert: {
           business_number?: string | null;
