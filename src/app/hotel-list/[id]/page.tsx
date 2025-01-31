@@ -49,12 +49,6 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const { data: facilityData } = useFacilities();
   const { data: serviceData } = useServices();
 
-  const selectedRoomId = roomsData.length > 0 ? roomsData[0]?.id : null; // 첫 번째 객실 ID 가져오기
-
-  if (!selectedRoomId) {
-    return <p>No rooms found for this hotel.</p>; // 객실 정보가 없을 때 처리
-  }
-
   // 이미지 URL 검증 함수
   const getValidImageUrl = (imageData: Json): string => {
     if (Array.isArray(imageData) && imageData.length > 0) {
