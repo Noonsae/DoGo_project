@@ -8,6 +8,7 @@ import { RoomType } from '@/types/supabase/room-type';
 import { HotelRoomProps } from '@/types/hotel/hotel-room-type';
 
 import Modal from '@/components/ui/hotel-room/Modal';
+import { useRouter } from 'next/navigation';
 
 const HotelRoom = ({ roomsData, getValidImageUrl, roomOption, hotelData }: HotelRoomProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,7 +24,11 @@ const HotelRoom = ({ roomsData, getValidImageUrl, roomOption, hotelData }: Hotel
     setSelectedRoom(null);
     setIsModalOpen(false);
   };
-
+  // 한솔🔥
+  const router = useRouter();
+  const handleBooking = (room: RoomType) => {
+    router.push(`/booking?hotel_id=${hotelData.id}&room_id=${room.id}&price=${room.price}`);
+  };
   return (
     <div>
       <section id="rooms" className="scroll-mt-20 mb-[120px]">
@@ -90,7 +95,10 @@ const HotelRoom = ({ roomsData, getValidImageUrl, roomOption, hotelData }: Hotel
                           {formatKoreanCurrency(room.price)}{' '}
                           <span className="text-neutral-500 text-base font-medium">/1박</span>
                         </p>
-                        <button className="w-full md:w-[124px] h-[44px] text-lg bg-[#B3916A] text-white rounded-lg hover:bg-[#8B5E3C]">
+                        <button
+                          onClick={() => handleBooking(room)} //🔥
+                          className="w-full md:w-[124px] h-[44px] text-lg bg-[#B3916A] text-white rounded-lg hover:bg-[#8B5E3C]"
+                        >
                           예약하기
                         </button>
                       </div>
@@ -103,7 +111,9 @@ const HotelRoom = ({ roomsData, getValidImageUrl, roomOption, hotelData }: Hotel
         </div>
       </section>
 
-      {isModalOpen && selectedRoom && <Modal isOpen={isModalOpen} onClose={closeModal} room={selectedRoom} />}
+      {isModalOpen && selectedRoom && (
+        <Modal isOpen={isModalOpen} onClose={closeModal} room={selectedRoom} hotelData={hotelData} />
+      )}
     </div>
   );
 };
