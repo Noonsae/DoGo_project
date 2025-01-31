@@ -16,7 +16,7 @@ import RiThumbUpFillIcon from '../icon/RiThumbUpFillIcon';
 import SliderSkeletonUI from '../skeleton/SliderSkeletonUI';
 import useHotelReviews from '@/hooks/review/useHotelReviews';
 
-const HotelListSlider = ({ hotels, hotelId }: { hotels: HotelWithPriceOnly[] | undefined, hotelId: string }) => {
+const HotelListSlider = ({ hotels }: { hotels: HotelWithPriceOnly[] | undefined }) => {
   const router = useRouter();
   const addHotel = useHistoryStore((state) => state.addHotel);
 
@@ -25,12 +25,14 @@ const HotelListSlider = ({ hotels, hotelId }: { hotels: HotelWithPriceOnly[] | u
     router.push(`/hotel-list/${hotel.id}`);
   };
 
+  const hotelId = hotels?.[0]?.id || ''; // 배열의 첫 번째 요소에서 id를 가져옴
+
   const { reviews, allReviews, loading: reviewsLoading } = useHotelReviews(hotelId);
 
   const averageRating = reviews.length
     ? (reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length).toFixed(1)
     : '0.0';
-  
+
   const totalReviews = allReviews.length;
 
   const [isLoading, setIsLoading] = useState(true);
