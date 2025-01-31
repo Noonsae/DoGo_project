@@ -29,9 +29,8 @@ const fetchHotelsFilter = async ({
   // Supabase 기본 쿼리
   let query = supabase.from('hotels').select(
     `
-      *,
-      
-      rooms!inner(price, view),
+      *,      
+      rooms!inner(price),
       hotel_facility(
         facility_id,
         facilities(name)
