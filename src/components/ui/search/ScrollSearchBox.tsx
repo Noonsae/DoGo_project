@@ -147,11 +147,11 @@ const ScrollSearchBox = () => {
           </button>
         </div>
         {activeModal === 'location' && (
-          <LocationModal left="18.5%" top="180px" />
+          <LocationModal/>
         )}
-        {activeModal === 'duration' && <DurationModal left="36%" top="180px" onClose={() => setActiveModal(null)} />}
+        {activeModal === 'duration' && <DurationModal onClose={() => setActiveModal(null)} />}
 
-        {activeModal === 'details' && <DetailsModal right="20%" top="180px" onClose={() => setActiveModal(null)} />}
+        {activeModal === 'details' && <DetailsModal onClose={() => setActiveModal(null)} />}
       </div>
 
       {/* Dimmed */}

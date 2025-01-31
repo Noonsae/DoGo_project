@@ -10,7 +10,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 
 import FiCalendarIcon from '../icon/FiCalendarIcon';
 
-const DurationModal = ({ left = '30%', top, onClose }: { left?: string; top?: string; onClose: () => void }) => {
+const DurationModal = ({ onClose }: { onClose: () => void }) => {
   const { setCheckIn, setCheckOut, setMonth, setStay } = useSearchStore();
   const [tab, setTab] = useState<'date' | 'flexible'>('flexible'); // 탭 상태
   const [selectedDateRange, setSelectedDateRange] = useState({ start: '', end: '' }); // 날짜 지정 값
@@ -63,9 +63,8 @@ const DurationModal = ({ left = '30%', top, onClose }: { left?: string; top?: st
   }
 
   return (
-    <div
-      style={{ left, top }}
-      className="fixed bg-white w-[592px] px-9 p-8 rounded-[12px] shadow-[0px_4px_12px_rgba(0,0,0,0.1)] z-50"
+    <div      
+      className="fixed left-1/2 top-1/2 bg-white w-[592px] px-9 p-8 rounded-[12px] shadow-[0px_4px_12px_rgba(0,0,0,0.1)] z-50 transform -translate-x-1/2 -translate-y-1/2"
     >
       {/* 탭 */}
       <div className="w-[270px] h-[43px] mx-auto flex justify-center mb-3 p-1 bg-[#EFEFEF] rounded-full">

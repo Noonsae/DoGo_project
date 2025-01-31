@@ -9,7 +9,7 @@ import IoMdPinIcon from '../icon/IoMdPinIcon';
 import IoCloseIcon from '../icon/IoCloseIcon';
 import useSearchStore from '@/store/useSearchStore';
 
-const LocationModal = ({ top, left }: { top?: string; left?: string }) => {
+const LocationModal = () => {
   const history = useSearchHistoryStore((state) => state.history); // 히스토리 값 가져오기
   const removeHistory = useSearchHistoryStore((state) => state.removeHistory);
   const [selectLabel, setSelectLabel] = useState('');
@@ -35,9 +35,8 @@ const LocationModal = ({ top, left }: { top?: string; left?: string }) => {
   };
 
   return (
-    <div
-      style={{ left, top }}
-      className="modal-content modal-location fixed w-[404px] px-9 py-8 bg-white shadow-[0px_4px_12px_rgba(0,0,0,0.1)] rounded-[12px] z-50"
+    <div      
+      className="modal-content modal-location fixed left-1/2 top-1/2 w-[404px] px-9 py-8 bg-white shadow-[0px_4px_12px_rgba(0,0,0,0.1)] rounded-[12px] z-50 transform -translate-x-1/2 -translate-y-1/2"
     >
       <div>
         <p className="mb-3 text-[20px] text-[#232527] font-semibold">최근 검색지</p>
@@ -68,7 +67,9 @@ const LocationModal = ({ top, left }: { top?: string; left?: string }) => {
             ))
           ) : (
             <div className="w-full h-[126px] flex flex-row items-center justify-center">
-              <p className="text-[18px] text-[#636363] font-normal leading-[1.45]">이전 검색 기록을 찾을 수 없습니다.</p>
+              <p className="text-[18px] text-[#636363] font-normal leading-[1.45]">
+                이전 검색 기록을 찾을 수 없습니다.
+              </p>
             </div>
           )}
         </div>
