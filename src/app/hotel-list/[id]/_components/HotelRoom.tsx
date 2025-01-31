@@ -1,10 +1,13 @@
 import { useState } from 'react';
+
 import Image from 'next/image';
-import Modal from '@/components/ui/hotel-room/Modal';
+
 import useFormatCurrency from '@/hooks/formatCurrency/useFormatCurrency';
 
 import { RoomType } from '@/types/supabase/room-type';
 import { HotelRoomProps } from '@/types/hotel/hotel-room-type';
+
+import Modal from '@/components/ui/hotel-room/Modal';
 
 const HotelRoom = ({ roomsData, getValidImageUrl, roomOption, hotelData }: HotelRoomProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);

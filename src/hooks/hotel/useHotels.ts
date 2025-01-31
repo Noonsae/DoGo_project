@@ -29,6 +29,6 @@ export const useHotels = () => {
     queryKey: ['hotels'],
     queryFn: () => fetchHotels(),
     staleTime: Infinity, // 데이터가 신선한 상태로 간주되는 시간
-    refetchOnWindowFocus: false, // 창 포커스 시 리패치 방지
+    refetchOnWindowFocus: false // 창 포커스 시 리패치 방지
   });
 };

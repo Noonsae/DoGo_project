@@ -5,8 +5,7 @@ import Image from 'next/image';
 import CloseEyesIcon from '@/components/ui/icon/CloseEyesIcon';
 import OpenEyesIcon from '@/components/ui/icon/OpenEyesIcon';
 import LogoAuth from '@/components/ui/icon/LogoAuth';
-
-const SignUpUser: React.FC<SignUpProps> = ({
+const SignUpUser = ({
   email,
   setEmail,
   password,
@@ -21,7 +20,7 @@ const SignUpUser: React.FC<SignUpProps> = ({
   error,
   setError,
   handleSignup
-}) => {
+}: SignUpProps) => {
   const [form, setForm] = useState({
     confirmPassword: '', // 비밀번호 확인
     updatePassword: false, // 비밀번호 보기 toggle

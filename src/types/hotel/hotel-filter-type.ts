@@ -29,6 +29,8 @@ type HotelFilterResponseType = {
   user_id: string; // 사용자 아이디
   facilities: HotelFacility[]; // 호텔 구비 시설
   services: HotelService[]; // 호텔 제공 서비스
+  facility_ids?: string[] | null;
+  service_ids?: string[] | null;
 };
 
 export interface FetchHotelsFilterResponse {

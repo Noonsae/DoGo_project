@@ -6,8 +6,7 @@ import { useRouter } from 'next/navigation';
 import CloseEyesIcon from '@/components/ui/icon/CloseEyesIcon';
 import OpenEyesIcon from '@/components/ui/icon/OpenEyesIcon';
 import LogoAuth from '@/components/ui/icon/LogoAuth';
-
-const SignUpBusiness: React.FC<SignUpProps> = ({
+const SignUpBusiness = ({
   email,
   setEmail,
   password,
@@ -19,7 +18,7 @@ const SignUpBusiness: React.FC<SignUpProps> = ({
   businessNumber,
   setBusinessNumber,
   handleSignup
-}) => {
+}: SignUpProps) => {
   const [form, setForm] = useState({
     confirmPassword: '',
     showPassword: false,

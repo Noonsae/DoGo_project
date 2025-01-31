@@ -3,29 +3,31 @@
 import React, { useEffect, useState } from 'react';
 
 import useAuthStore from '@/store/useAuth';
-
 import useFavoriteStore from '@/hooks/favorite/useFavoriteStore';
+
 import useHotelReviews from '@/hooks/review/useHotelReviews';
 import useHotelRooms from '@/hooks/room/useHotelRooms';
+import useHotelDetail from '@/hooks/hotel/useHotelDetail';
+import useFacilities from '@/hooks/hotel/useFacilities';
+import useServices from '@/hooks/hotel/useServices';
 
 import { Json } from '@/types/supabase/supabase-type';
 import { UserType } from '@/types/supabase/user-type';
 
-import HotelAttraction from './_components/HotelAttraction';
-import HotelBox from './_components/HotelBox';
-import HotelFacility from './_components/HotelFacility';
-import HotelLocation from './_components/HotelLocation';
+import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
+import Navigation from './_components/Navigation';
 import HotelOverview from './_components/HotelOverview';
-import HotelPolicies from './_components/HotelPolicies';
+import HotelBox from './_components/HotelBox';
 import HotelRoom from './_components/HotelRoom';
 import HotelReviews from './_components/HotelReviews';
-import Navigation from './_components/Navigation';
+import HotelFacility from './_components/HotelFacility';
+import HotelPolicies from './_components/HotelPolicies';
+import HotelLocation from './_components/HotelLocation';
+import HotelAttraction from './_components/HotelAttraction';
+
 import NavigationSkeleton from '../../../components/ui/skeleton/HotelNavigationSkeleton';
 import HotelOverviewSkeleton from '@/components/ui/skeleton/HotelOverviewSkeleton';
 import HotelBoxSkeleton from '@/components/ui/skeleton/HotelBoxSkeleton';
-import useServiceFacility from '@/hooks/serviceFacility/useServiceFacility';
-import useHotelDetail from '@/hooks/hotel/useHotelDetail';
-import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
 
 const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const hotelId = params?.id; // URL 파라미터에서 호텔 ID 추출
@@ -44,8 +46,8 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   }, [user, hotelId, initializeFavorites]);
 
   const { hotelData, loading } = useHotelDetail(hotelId); // 호텔 상세 데이터 가져오기
-
-  const { facilityData, serviceData } = useServiceFacility(hotelId); // 시설 및 서비스 데이터 가져오기
+  const { data: facilityData } = useFacilities();
+  const { data: serviceData } = useServices();
 
   const selectedRoomId = roomsData.length > 0 ? roomsData[0]?.id : null; // 첫 번째 객실 ID 가져오기
 
@@ -108,7 +110,11 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
       </div>
       {/* 나머지 콘텐츠 */}
       <div className="">
-        {loading ? <NavigationSkeleton /> : <Navigation activeTab={activeTab} scrollToSection={scrollToSection} />}
+        {loading ? (
+          <NavigationSkeleton />
+        ) : (
+          <Navigation activeTab={activeTab} scrollToSection={scrollToSection} setActiveTab={setActiveTab} />
+        )}
       </div>
 
       {/* 콘텐츠 영역 */}
@@ -129,7 +135,7 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
           <HotelBoxSkeleton />
         ) : (
           <HotelBox
-            facilityData={facilityData}
+            facilityData={facilityData ?? []}
             roomOption={roomOption}
             hotelData={hotelData}
             reviews={reviews}
@@ -149,10 +155,10 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
 
         {/* 시설/서비스 섹션 */}
         <HotelFacility
-          facilityData={facilityData}
+          facilityData={facilityData ?? []}
           roomOption={roomOption}
           hotelId={hotelId}
-          serviceData={serviceData}
+          serviceData={serviceData ?? []}
         />
 
         {/* 숙소 정책 섹션 */}

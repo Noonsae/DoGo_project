@@ -30,6 +30,7 @@ const fetchHotelsFilter = async ({
   let query = supabase.from('hotels').select(
     `
       *,
+      
       rooms!inner(price, view),
       hotel_facility(
         facility_id,
@@ -54,6 +55,11 @@ const fetchHotelsFilter = async ({
   }
   if (filters.maxPrice != null && filters.maxPrice > 0) {
     query = query.lte('rooms.price', filters.maxPrice);
+  }
+
+  // 2.5 필터가 없을 경우 조건 처리
+  if (!filters.minPrice && !filters.maxPrice) {
+    query = query.order('rooms.price', { ascending: true }); // 가장 저렴한 가격 먼저 정렬
   }
 
   // 3. 지역 필터 처리
@@ -107,9 +113,12 @@ const fetchHotelsFilter = async ({
       check_out: hotel.check_out,
       location: hotel.location,
       user_id: hotel.user_id,
+      facility_ids: hotel.facility_ids ?? null,
+      service_ids: hotel.service_ids ?? null,
       facilities: hotel.hotel_facility.filter((fac) => !!fac.facilities?.name),
       services: hotel.hotel_service,
       label: `${hotel.name} ${hotel.address}`,
+      min_price: hotel.rooms.length > 0 ? Math.min(...hotel.rooms.map((room) => room.price)) : 0,
       rooms: hotel.rooms
     })),
     totalCount: count || 0

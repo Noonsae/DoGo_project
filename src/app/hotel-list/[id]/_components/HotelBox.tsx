@@ -1,8 +1,10 @@
+import React, { useEffect, useState } from 'react';
+
+import { HotelBoxProps } from '@/types/hotel/hotel-box-type';
+
 import NearMeIcon from '@/components/ui/icon/NearMeIcon';
 import PinIcon from '@/components/ui/icon/PinIcon';
 import RatingIcon from '@/components/ui/icon/RatingIcon';
-import { HotelBoxProps } from '@/types/hotel/hotel-box-type';
-import React, { useEffect, useState } from 'react';
 
 const HotelBox = ({ facilityData, roomOption, hotelData, reviews, allReviews }: HotelBoxProps) => {
   const [averageRating, setAverageRating] = useState<number>(0);
