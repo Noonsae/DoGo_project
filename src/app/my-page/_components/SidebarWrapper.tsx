@@ -1,20 +1,18 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { browserSupabase } from '@/supabase/supabase-client'; // Supabase 클라이언트
-import BusinessSidebar from '@/app/my-page/_components/BusinessSidebar'; // 사업자용 사이드바
-import UserSidebar from './UserSidebar';
-
+import { browserSupabase } from '@/supabase/supabase-client'; // Supabase 클라이언트 가져오기
+import BusinessSidebar from '@/app/my-page/_components/BusinessSidebar'; // 사업자 사이드바
+import UserSidebar from '@/app/my-page/_components/UserSidebar'; // 사용자 사이드바
 
 // Props 타입 정의
 interface SidebarWrapperProps {
   userId: string; // 현재 사용자 ID
   currentTab: string; // 현재 활성화된 탭
-  setCurrentTab: (tab: string) => void; // 탭을 변경하는 함수
 }
 
 // SidebarWrapper 컴포넌트
-const SidebarWrapper: React.FC<SidebarWrapperProps> = ({ userId, currentTab, setCurrentTab }) => {
+const SidebarWrapper: React.FC<SidebarWrapperProps> = ({ userId, currentTab }) => {
   const [role, setRole] = useState<string | null>(null); // 사용자 역할
   const [loading, setLoading] = useState(true); // 로딩 상태
   const [error, setError] = useState<string | null>(null); // 에러 메시지
@@ -23,7 +21,11 @@ const SidebarWrapper: React.FC<SidebarWrapperProps> = ({ userId, currentTab, set
   useEffect(() => {
     const fetchUserRole = async () => {
       try {
-        const { data, error } = await browserSupabase().from('users').select('role').eq('id', userId).single();
+        const { data, error } = await browserSupabase()
+          .from('users')
+          .select('role')
+          .eq('id', userId)
+          .single();
 
         if (error) throw error;
 
@@ -47,11 +49,11 @@ const SidebarWrapper: React.FC<SidebarWrapperProps> = ({ userId, currentTab, set
 
   // 역할에 따른 Sidebar 렌더링
   return (
-    <aside className="w-64 bg-gray-100 h-screen fixed top-0 left-0">
+    <aside className="w-64 bg-gray-100 h-screen fixed top-0 left-0 shadow-md">
       {role === 'customer' ? (
-        <UserSidebar userId={userId} currentTab={currentTab} setCurrentTab={setCurrentTab} />
+        <UserSidebar />
       ) : role === 'business' ? (
-        <BusinessSidebar userId={userId} currentTab={currentTab} setCurrentTab={setCurrentTab} />
+        <BusinessSidebar userId={userId} currentTab={currentTab} />
       ) : (
         <p className="text-center text-gray-600">유효하지 않은 사용자 역할입니다.</p>
       )}

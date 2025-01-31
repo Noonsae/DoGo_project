@@ -5,6 +5,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { browserSupabase } from '@/supabase/supabase-client';
 import useAuthStore from '@/store/useAuth';
 
+// 탭 목록 정의
 const TABS = [
   { id: 'profile', label: '프로필 관리' },
   { id: 'booking', label: '예약 목록' },
@@ -13,38 +14,37 @@ const TABS = [
   { id: 'inquiry', label: '1:1 문의' }
 ];
 
-const UserSidebar = () => {
+const UserSidebar: React.FC = () => {
   const user = useAuthStore((state) => state.user);
   const pathname = usePathname();
   const [currentTab, setCurrentTab] = useState('');
   const [userName, setUserName] = useState<string | null>(null);
   const [createdAt, setCreatedAt] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const userId = user?.id;
 
-  // url 경로와 일치하는 TABS의 id로 변경
+  // 현재 경로에 맞게 현재 탭을 설정
   useEffect(() => {
     const pathnames = pathname.split('/');
     const currentPath = pathnames[pathnames.length - 1];
     setCurrentTab(currentPath);
   }, [pathname]);
 
-  const router = useRouter();
-  const userId = user?.id;
   useEffect(() => {
     const fetchUserData = async () => {
+      if (!userId) return;
       try {
-        if (userId) {
-          const { data, error } = await browserSupabase()
-            .from('users')
-            .select('user_name, created_at')
-            .eq('id', userId)
-            .single();
+        const { data, error } = await browserSupabase()
+          .from('users')
+          .select('user_name, created_at')
+          .eq('id', userId)
+          .single();
 
-          if (error) throw error;
+        if (error) throw error;
 
-          setUserName(data?.user_name || 'Unknown');
-          setCreatedAt(data?.created_at || null);
-        }
+        setUserName(data?.user_name || 'Unknown');
+        setCreatedAt(data?.created_at || null);
       } catch (err) {
         console.error('Error fetching user data:', err);
       } finally {
@@ -80,10 +80,7 @@ const UserSidebar = () => {
             className={`p-2 cursor-pointer rounded ${
               currentTab === tab.id ? 'bg-gray-300 font-semibold text-brown-600' : 'hover:bg-gray-200'
             }`}
-            onClick={() => {
-              setCurrentTab(tab.id); // 탭 변경
-              router.push(`/my-page/user/${tab.id}`); // 라우팅 처리
-            }}
+            onClick={() => router.push(`/my-page/user/${tab.id}`)}
           >
             {tab.label}
           </li>
