@@ -143,8 +143,14 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
     }));
     setErrors({});
   };
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'; // 스크롤 방지
+    return () => {
+      document.body.style.overflow = 'auto'; // 원래대로 복구
+    };
+  }, []);
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center ">
+    <div className="z-50 fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center ">
       <div className="w-[424px] h-[635px] bg-white rounded-lg shadow-lg relative">
         <button
           onClick={onClose}

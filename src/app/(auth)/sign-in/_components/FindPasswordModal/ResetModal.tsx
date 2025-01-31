@@ -11,7 +11,7 @@ interface ResetModalProps {
   handleResetPassword: () => void;
 }
 const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: ResetModalProps) => (
-  <div className="m-10 flex flex-col ">
+  <div className="m-10 flex flex-col z-50">
     {form.modalType === 'reset' && (
       <div className="flex flex-col">
         <p className="font-semibold text-[24px] mt-[30px] mb-[30px]">

@@ -5,7 +5,7 @@ import React from 'react';
 
 const SuccessModal = ({ form, onClose }: { form: any; onClose: () => void }) => (
   <div>
-    <div className="flex flex-col justify-center items-center ">
+    <div className="flex flex-col justify-center items-center z-50">
       <div className="flex flex-col justify-center items-center text-center w-[352px] h-[411px] mt-[40px]">
         <CheckIcon />
         <span className="text-xl leading-[135%] font-pretendard font-semibold ">{form.name}님의</span>
