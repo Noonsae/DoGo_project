@@ -113,7 +113,7 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
     setForm((prevForm) => {
       return { ...prevForm, setIsLoading: true };
     });
-
+    //커밋용주석
     try {
       const response = await fetch('/api/auth/reset-password', {
         method: 'POST',
