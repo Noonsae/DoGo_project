@@ -111,7 +111,9 @@ const HotelRoom = ({ roomsData, getValidImageUrl, roomOption, hotelData }: Hotel
         </div>
       </section>
 
-      {isModalOpen && selectedRoom && <Modal isOpen={isModalOpen} onClose={closeModal} room={selectedRoom} />}
+      {isModalOpen && selectedRoom && (
+        <Modal isOpen={isModalOpen} onClose={closeModal} room={selectedRoom} hotelData={hotelData} />
+      )}
     </div>
   );
 };
