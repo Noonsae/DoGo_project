@@ -6,7 +6,7 @@ import useSearchStore from '@/store/useSearchStore'; // zustand store import
 import IoIosRemoveCircleOutlineIcon from '../icon/IoIosRemoveCircleOutlineIcon';
 import IoIosAddCircleOutlineIcon from '../icon/IoIosAddCircleOutlineIcon';
 
-const DetailsModal = ({ right = '360px', top, onClose }: { right?: string; top?: string; onClose: () => void }) => {
+const DetailsModal = ({ onClose }: { onClose: () => void }) => {
   const { setDetails } = useSearchStore(); // zustand의 setDetails 사용
 
   const initialFilters = {
@@ -55,10 +55,11 @@ const DetailsModal = ({ right = '360px', top, onClose }: { right?: string; top?:
 
   return (
     <div
-      style={{ right, top }}
-      className="fixed w-[432px] h-[374px] p-8 bg-white rounded-[12px] shadow-lg z-50"
+      className="fixed left-1/2 top-1/2 w-[432px] p-8 bg-white rounded-[12px] shadow-lg z-50 transform -translate-x-1/2 -translate-y-1/2"
       onClick={(e) => e.stopPropagation()} // 내부 클릭 방지
     >
+      <p className="mb-6 text-[18px] text-[#636363] font-normal leading-[1.45]">추가 정보를 입력해주세요</p>
+
       {Object.keys(filters).map((key) => (
         <div key={key} className="mb-[12px]">
           {/* 필터 옵션 */}

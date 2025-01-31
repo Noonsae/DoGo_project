@@ -4,6 +4,7 @@ import React, { ReactNode, useState } from 'react';
 
 interface ModalProps {
   onClose: () => void;
+  children: ReactNode; // ✅ children을 props에 추가하여 타입 에러 해결
 }
 
 const facilitiesList = [
@@ -11,16 +12,14 @@ const facilitiesList = [
   { category: '기타 시설', options: ['룸서비스', '무료주차', '유아차', '편의점'] },
 ];
 
-const BusinessHotelModal: React.FC<ModalProps> = ({ onClose }) => {
+const BusinessHotelModal: React.FC<ModalProps> = ({ onClose, children }) => {
   const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
 
   // 체크박스 상태 변경 핸들러
   const handleCheckboxChange = (option: string) => {
-    if (selectedFacilities.includes(option)) {
-      setSelectedFacilities((prev) => prev.filter((item) => item !== option));
-    } else {
-      setSelectedFacilities((prev) => [...prev, option]);
-    }
+    setSelectedFacilities((prev) =>
+      prev.includes(option) ? prev.filter((item) => item !== option) : [...prev, option]
+    );
   };
 
   const handleSave = () => {
@@ -58,6 +57,7 @@ const BusinessHotelModal: React.FC<ModalProps> = ({ onClose }) => {
             </div>
           ))}
         </div>
+        {children}
         <button
           onClick={handleSave}
           className="mt-6 w-full bg-[#B3916A] text-white py-2 rounded-lg hover:bg-[#8F7455] active:bg-[#6B573F]"

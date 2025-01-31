@@ -30,7 +30,7 @@ const Page = () => {
   };
   return (
     <div className="flex flex-col justify-center items-center min-h-screen px-4 sm:px-6 lg:px-8">
-      <div className="mt-[156px]">
+      <div className="mt-[50px]">
         <LogoAuth />
       </div>
       <div>
@@ -95,37 +95,41 @@ const Page = () => {
             로그인
           </button>
         </p>
+        {/* 커밋용주석 */}
+        {userType === 'user' && (
+          <>
+            {/* 간편 회원가입 구분선 */}
+            <div className="w-full max-w-[400px] flex items-center my-6">
+              <hr className="flex-grow border-gray-300" />
+              <span className="px-4 text-sm text-neutral-400">간편 회원가입</span>
+              <hr className="flex-grow border-gray-300" />
+            </div>
 
-        {/* 간편 회원가입 구분선 */}
-        {/* <div className="w-full max-w-[400px] flex items-center my-6">
-          <hr className="flex-grow border-gray-300" />
-          <span className="px-4 text-sm text-neutral-400">간편 회원가입</span>
-          <hr className="flex-grow border-gray-300" />
-        </div> */}
+            {/* 카카오 로그인 */}
+            <KakaoSignIn />
 
-        {/* 카카오 로그인 */}
-        {/* <KakaoSignIn /> */}
+            {/* 하단 링크 */}
+            <div className="flex w-full max-w-[400px] justify-center items-center text-sm text-gray-500 mt-4">
+              <button
+                type="button"
+                className="flex-1 text-right m-[2px] hover:underline"
+                onClick={() => window.open('https://www.kakao.com/policy/privacy', '_blank')}
+              >
+                개인정보처리방침
+              </button>
 
-        {/* 하단 링크 */}
-        {/* <div className="flex w-full max-w-[400px] justify-center items-center text-sm text-gray-500 mt-4">
-          <button
-            type="button"
-            className="flex-1 text-right m-[2px] hover:underline"
-            onClick={() => window.open('https://www.kakao.com/policy/privacy', '_blank')}
-          >
-            개인정보처리방침
-          </button>
+              <DividerIcon />
 
-          <DividerIcon />
-
-          <button
-            type="button"
-            className="flex-1 text-left hover:underline"
-            onClick={() => window.open('https://www.kakao.com/policy/terms?type=a&lang=ko', '_blank')}
-          >
-            이용약관
-          </button>
-        </div> */}
+              <button
+                type="button"
+                className="flex-1 text-left hover:underline"
+                onClick={() => window.open('https://www.kakao.com/policy/terms?type=a&lang=ko', '_blank')}
+              >
+                이용약관
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

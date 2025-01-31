@@ -30,12 +30,12 @@ const DualSlider: React.FC<DualSliderProps> = ({
     const rect = sliderRef.current.getBoundingClientRect();
     const relativeX = clientX - rect.left; // 슬라이더 시작점부터의 상대 위치
     const percentage = Math.max(0, Math.min(1, relativeX / rect.width)); // 0 ~ 1 사이로 제한
-    const newValue = roundToStep(percentage * 5000000, 500000); // 50만 원 단위로 반올림
+    const newValue = roundToStep(percentage * 5000000, 100000); // 10만 원 단위로 반올림
 
     if (type === 'min') {
-      onMinPriceChange(Math.min(newValue, maxPriceValue - 500000)); // 최소값이 최대값보다 크지 않도록 제한
+      onMinPriceChange(Math.min(newValue, maxPriceValue - 100000)); // 최소값이 최대값보다 크지 않도록 제한
     } else {
-      onMaxPriceChange(Math.max(newValue, minPriceValue + 500000)); // 최대값이 최소값보다 작지 않도록 제한
+      onMaxPriceChange(Math.max(newValue, minPriceValue + 100000)); // 최대값이 최소값보다 작지 않도록 제한
     }
   };
 
