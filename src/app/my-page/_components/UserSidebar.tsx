@@ -5,12 +5,6 @@ import { useRouter, usePathname } from 'next/navigation';
 import { browserSupabase } from '@/supabase/supabase-client';
 import useAuthStore from '@/store/useAuth';
 
-interface UserSidebarProps {
-  userId: string; // 사용자 ID
-  currentTab: string; // 현재 활성화된 탭 이름
-  setCurrentTab: (tab: string) => void; // 탭 변경 함수
-}
-
 const TABS = [
   { id: 'profile', label: '프로필 관리' },
   { id: 'booking', label: '예약 목록' },
@@ -19,7 +13,7 @@ const TABS = [
   { id: 'inquiry', label: '1:1 문의' }
 ];
 
-const UserSidebar: React.FC<UserSidebarProps> = () => {
+const UserSidebar = () => {
   const user = useAuthStore((state) => state.user);
   const pathname = usePathname();
   const [currentTab, setCurrentTab] = useState('');
