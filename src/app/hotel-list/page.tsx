@@ -42,7 +42,7 @@ const HotelList = () => {
       .filter((star) => !isNaN(star)) || []; // NaN 값 필터링
   const label = searchParams.get('label') || '';
   const minPrice = parseInt(searchParams.get('minPrice') || '0', 10);
-  const maxPrice = parseInt(searchParams.get('maxPrice') || '5000000', 10);
+  const maxPrice = parseInt(searchParams.get('maxPrice') || '2000000', 10);
   const facilityIds = searchParams.get('facilities')?.split(',') || [];
   const serviceIds = searchParams.get('services')?.split(',') || [];
   const sort = searchParams.get('sort') || '';
@@ -51,7 +51,7 @@ const HotelList = () => {
     label: '',
     stars: [],
     minPrice: 0,
-    maxPrice: 5000000,
+    maxPrice: 2000000,
     location: '',
     facilityIds: [],
     serviceIds: []

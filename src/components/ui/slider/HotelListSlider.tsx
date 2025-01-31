@@ -14,6 +14,7 @@ import 'slick-carousel/slick/slick-theme.css';
 
 import RiThumbUpFillIcon from '../icon/RiThumbUpFillIcon';
 import SliderSkeletonUI from '../skeleton/SliderSkeletonUI';
+import useHotelReviews from '@/hooks/review/useHotelReviews';
 
 const HotelListSlider = ({ hotels }: { hotels: HotelWithPriceOnly[] | undefined }) => {
   const router = useRouter();
@@ -23,6 +24,16 @@ const HotelListSlider = ({ hotels }: { hotels: HotelWithPriceOnly[] | undefined 
     addHotel(hotel);
     router.push(`/hotel-list/${hotel.id}`);
   };
+
+  const hotelId = hotels?.[0]?.id || ''; // 배열의 첫 번째 요소에서 id를 가져옴
+
+  const { reviews, allReviews, loading: reviewsLoading } = useHotelReviews(hotelId);
+
+  const averageRating = reviews.length
+    ? (reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length).toFixed(1)
+    : '0.0';
+
+  const totalReviews = allReviews.length;
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -88,13 +99,18 @@ const HotelListSlider = ({ hotels }: { hotels: HotelWithPriceOnly[] | undefined 
             <h3 className="mt-4 text-[24px] font-semibold">{hotel.name}</h3>
             <p className="mt-2 text-[18px] text-gray-600 font-medium">{hotel.address}</p>
 
-            <div className="flex flex-row items-center gap-2  mt-2 text-[#D9D9D9]">
-              <div>
-                <RiThumbUpFillIcon className="w-[20px] h-[20px] text-[#EEC18D]" />
+            {reviewsLoading ? (
+              <div className="mt-2 text-gray-400">리뷰를 불러오는 중입니다...</div>
+            ) : (
+              <div className="flex flex-row items-center gap-2 mt-2 text-[#D9D9D9]">
+                <div>
+                  <RiThumbUpFillIcon className="w-[20px] h-[20px] text-[#EEC18D]" />
+                </div>
+                <span className="text-[18px] text-[#444] font-semibold">{averageRating}</span>
+                <span className="text-[#9E9E9E]">({totalReviews.toLocaleString()})</span>
               </div>
-              <span className="text-[18px] text-[#444] font-semibold">4.8</span>
-              <span className="text-[#9E9E9E]"> (3,222) </span>
-            </div>
+            )}
+
             <p className="w-full mt-[24px] text-right">
               {/* 가격이 없는 객실 데이터가 존재해서 현재는 ∞ 도 출력되고 있음.. */}
               {/* <span>{hotel.min_price.toLocaleString('en-US')}원</span> */}
