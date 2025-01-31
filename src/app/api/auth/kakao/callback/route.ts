@@ -1,29 +1,3 @@
-// import { serverSupabase } from '@/supabase/supabase-server';
-// import { NextResponse } from 'next/server';
-
-// export async function GET(request: Request) {
-//   const { searchParams, origin } = new URL(request.url);
-//   const code = searchParams.get('code');
-//   const next = searchParams.get('next') ?? '/';
-//   if (code) {
-//     const supabase = await serverSupabase();
-//     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-//     console.error('❌ Supabase에서 인증 코드를 받지 못함! Redirect URLs 설정 확인 필요');
-//     if (!error) {
-//       const forwardedHost = request.headers.get('x-forwarded-host');
-//       const isLocalEnv = process.env.NODE_ENV === 'development';
-//       if (isLocalEnv) {
-//         return NextResponse.redirect(`${origin}${next}`);
-//       } else if (forwardedHost) {
-//         return NextResponse.redirect(`https://${forwardedHost}${next}`);
-//       } else {
-//         return NextResponse.redirect(`${origin}${next}`);
-//       }
-//     }
-//     console.log('🔹 OAuth 콜백 실행됨, 받은 코드:', code);
-//   }
-
-//   return NextResponse.redirect(`${origin}/auth/auth-code-error`);
 // }
 import { serverSupabase } from '@/supabase/supabase-server';
 import { NextResponse } from 'next/server';
