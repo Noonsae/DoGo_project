@@ -55,6 +55,7 @@ const Sidebar = () => {
     fetchData();
   }, [hotelId, roomId]);
   return (
+    //   커밋용 주석
     <aside className="ml-auto w-[278px] h-[682px] bg-white p-10 shadow-md rounded-lg mt-[50px] border border-gray-300 ">
       <p className="text-lg font-bold mb-4 border-b">호텔 이름: {hotel ? hotel.name : 'Loading...'}</p>
       <p>체크인 : {hotel?.check_in || '정보 없음'} </p>
