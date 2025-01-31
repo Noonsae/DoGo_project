@@ -99,13 +99,15 @@ const HotelListSlider = ({ hotels }: { hotels: HotelWithPriceOnly[] | undefined 
             <h3 className="mt-4 text-[24px] font-semibold">{hotel.name}</h3>
             <p className="mt-2 text-[18px] text-gray-600 font-medium">{hotel.address}</p>
 
-            {!reviewsLoading && (
-              <div className="flex flex-row items-center gap-2  mt-2 text-[#D9D9D9]">
+            {reviewsLoading ? (
+              <div className="mt-2 text-gray-400">리뷰를 불러오는 중입니다...</div>
+            ) : (
+              <div className="flex flex-row items-center gap-2 mt-2 text-[#D9D9D9]">
                 <div>
                   <RiThumbUpFillIcon className="w-[20px] h-[20px] text-[#EEC18D]" />
                 </div>
                 <span className="text-[18px] text-[#444] font-semibold">{averageRating}</span>
-                <span className="text-[#9E9E9E]"> ({totalReviews.toLocaleString()}) </span>
+                <span className="text-[#9E9E9E]">({totalReviews.toLocaleString()})</span>
               </div>
             )}
 
