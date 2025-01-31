@@ -30,7 +30,7 @@ const DualSlider: React.FC<DualSliderProps> = ({
     const rect = sliderRef.current.getBoundingClientRect();
     const relativeX = clientX - rect.left; // 슬라이더 시작점부터의 상대 위치
     const percentage = Math.max(0, Math.min(1, relativeX / rect.width)); // 0 ~ 1 사이로 제한
-    const newValue = roundToStep(percentage * 5000000, 100000); // 10만 원 단위로 반올림
+    const newValue = roundToStep(percentage * 2000000, 100000); // 10만 원 단위로 반올림
 
     if (type === 'min') {
       onMinPriceChange(Math.min(newValue, maxPriceValue - 100000)); // 최소값이 최대값보다 크지 않도록 제한
@@ -59,15 +59,15 @@ const DualSlider: React.FC<DualSliderProps> = ({
       <div
         className="absolute h-[3px] bg-[#B3916A] rounded"
         style={{
-          left: `${(minPriceValue / 5000000) * 100}%`,
-          right: `${100 - (maxPriceValue / 5000000) * 100}%`
+          left: `${(minPriceValue / 2000000) * 100}%`,
+          right: `${100 - (maxPriceValue / 2000000) * 100}%`
         }}
       />
       {/* 최소값 핸들 */}
       <div
         className="absolute w-2 h-2 bg-[#B3916A] border-2 border-[#B3916A] outline-none outline-offset-4 outline-[#B3916A] rounded-full cursor-pointer"
         style={{
-          left: `${(minPriceValue / 5000000) * 100}%`,
+          left: `${(minPriceValue / 2000000) * 100}%`,
           transform: 'translate(-50%, -50%)',
           top: '50%'
         }}
@@ -81,7 +81,7 @@ const DualSlider: React.FC<DualSliderProps> = ({
       <div
         className="absolute w-2 h-2 bg-[#B3916A] border-2 border-[#B3916A] outline-none outline-offset-4 outline-[#B3916A] rounded-full cursor-pointer"
         style={{
-          left: `${(maxPriceValue / 5000000) * 100}%`,
+          left: `${(maxPriceValue / 2000000) * 100}%`,
           transform: 'translate(-50%, -50%)',
           top: '50%'
         }}

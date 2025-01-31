@@ -22,7 +22,7 @@ const AsideFilter = () => {
 
   const [selectedGrade, setSelectedGrade] = useState<number[]>([]);
   const [minPriceValue, setMinPriceValue] = useState<number>(0);
-  const [maxPriceValue, setMaxPriceValue] = useState<number>(5000000);
+  const [maxPriceValue, setMaxPriceValue] = useState<number>(2000000);
   const [selectedServices, setSelectedServices] = useState<ServicesType[]>([]);
   const [selectedFacilities, setSelectedFacilities] = useState<FacilitiesType[]>([]);
 
@@ -83,7 +83,7 @@ const AsideFilter = () => {
   // 필터 조건 초기화
   const handleResetFilters = async () => {
     setSelectedGrade([]);
-    setMaxPriceValue(5000000);
+    setMaxPriceValue(2000000);
     setMinPriceValue(0);
     setSelectedFacilities([]);
     setSelectedServices([]);
@@ -96,7 +96,7 @@ const AsideFilter = () => {
       details,
       stars: [],
       minPrice: 0,
-      maxPrice: 5000000,
+      maxPrice: 2000000,
       facilities: [],
       services: []
     });
