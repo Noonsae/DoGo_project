@@ -3,7 +3,7 @@ import { FetchHotelsFilterResponse, UseFetchHotelsFilterParamsType } from '@/typ
 
 // 계획
 // 1,2 가 포함되느냐?
-// hotels.facility_ids.contains -> 
+// hotels.facility_ids.contains ->
 // hotels: { id: ~, name: ~, facility_ids: [1, 2, 3] -> text -> defined as array , service_ids: []  }
 // rooms: { id: ~~~, hotel_id: ~~, price: ~~~ }
 // facilities: { id: uuid~~,  name: ~~~ }
@@ -84,7 +84,7 @@ const fetchHotelsFilter = async ({
   // 8. 페이지네이션 처리
   const { count } = await query;
 
-  query = query.range(pageParam ? 4 * (pageParam - 1) : 0 , 4 * pageParam  - 1); // 한 번에 4개씩 가져오기
+  query = query.range(pageParam ? 4 * (pageParam - 1) : 0, 4 * pageParam - 1); // 한 번에 4개씩 가져오기
 
   // 9. 쿼리 실행
   const { data, error } = await query;

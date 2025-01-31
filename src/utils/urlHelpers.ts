@@ -1,10 +1,5 @@
 import { SearchState } from '@/types/zustand/search-state-type';
-import {
-  processInput,
-  parseDetails,  
-  parseSchedule,
-  sanitizeInput
-} from './urlCalculator';
+import { processInput, parseDetails, parseSchedule, sanitizeInput } from './urlCalculator';
 
 const generateUrl = ({
   location = '',
@@ -16,8 +11,8 @@ const generateUrl = ({
   stars = [],
   minPrice = 0,
   maxPrice = 5000000,
-  facilities= [],
-  services= []
+  facilities = [],
+  services = []
 }: Partial<SearchState>): string => {
   try {
     // location과 label 처리
