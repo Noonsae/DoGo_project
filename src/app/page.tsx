@@ -36,7 +36,7 @@ const HomePage = () => {
   return (
     <div>
       <HeroSection />
-      <EventSection />
+      {/* <EventSection /> */}
       <ContentsList />
     </div>
   );
