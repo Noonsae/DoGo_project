@@ -11,7 +11,7 @@ interface HotelType {
 interface RoomType {
   room_name: string;
   price: number;
-  room_img_url: string | null;
+  room_img_url: string | string[] | null;
 }
 const Sidebar = () => {
   const searchParams = useSearchParams();
@@ -22,8 +22,7 @@ const Sidebar = () => {
   useEffect(() => {
     const fetchData = async () => {
       const supabase = browserSupabase();
-      console.log('🔍 hotel_id:', hotelId);
-      console.log('🔍 room_id:', roomId);
+
       if (!hotelId || !roomId) return;
 
       const { data: hotelData, error: hotelError } = await supabase
@@ -32,7 +31,6 @@ const Sidebar = () => {
         .eq('id', hotelId)
         .single();
       if (hotelError) {
-        console.log('hotelData', hotelData); //null
         console.error('호텔정보를 불러오는 중 오류 발생!', hotelError.message);
       } else {
         setHotel(hotelData);
@@ -46,10 +44,8 @@ const Sidebar = () => {
 
       if (roomError) {
         console.error('객실정보를 불러오는 중 오류 발생', roomError.message);
-      } else {
-        console.log('✅ 불러온 객실 정보:', roomData);
-        console.log('📷 이미지 URL:', roomData.room_img_url);
-        setRoom(roomData);
+      } else if (roomData) {
+        setHotel(hotelData as HotelType);
       }
     };
     fetchData();
