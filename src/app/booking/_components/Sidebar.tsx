@@ -11,6 +11,7 @@ interface HotelType {
 interface RoomType {
   room_name: string;
   price: number;
+  room_img_url: string | null;
 }
 const Sidebar = () => {
   const searchParams = useSearchParams();
@@ -39,15 +40,15 @@ const Sidebar = () => {
 
       const { data: roomData, error: roomError } = await supabase
         .from('rooms')
-        .select('room_name, price')
+        .select('room_name, price, room_img_url')
         .eq('id', roomId)
         .single();
 
       if (roomError) {
         console.error('객실정보를 불러오는 중 오류 발생', roomError.message);
       } else {
-        // console.log('✅ 불러온 호텔 정보:', hotelData);
         console.log('✅ 불러온 객실 정보:', roomData);
+        console.log('📷 이미지 URL:', roomData.room_img_url);
         setRoom(roomData);
       }
     };
@@ -60,9 +61,19 @@ const Sidebar = () => {
       <p>체크아웃 : {hotel?.check_out || '정보없음'}</p>
       <div className="flex flex-row items-center ">
         <div className="w-[100px] h-[70px] bg-gray-300 mt-[20px] rounded-md mb-4"></div>
-
-        <p className="text-sm font-semibold p-5">{room ? room.room_name : 'Loading...'}</p>
+        {room?.room_img_url ? (
+          <img
+            src={room.room_img_url[0]}
+            width={100}
+            height={70}
+            alt="Room Image"
+            className="object-cover w-full h-full rounded-md"
+          />
+        ) : (
+          <span className="text-gray-500 text-sm">사진 없음</span>
+        )}
       </div>
+      <p className="text-sm font-semibold p-5">{room ? room.room_name : 'Loading...'}</p>
 
       <div className="mt-6 p-4 border-t">
         <p className="text-gray-700">가격 상세정보</p>
