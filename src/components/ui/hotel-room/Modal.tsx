@@ -6,13 +6,15 @@ import IoCloseIcon from '../icon/IoCloseIcon';
 import IoCheckmarkCircle from '../icon/IoCheckmarkCircle';
 import FiChevronLeftIcon from '../icon/FiChevronLeftIcon';
 import FiChevronRightIcon from '../icon/FiChevronRightIcon';
+import { useRouter } from 'next/navigation';
 type RoomType = Database['public']['Tables']['rooms']['Row'];
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   room: RoomType;
+  hotelData: { id: string };
 }
-const Modal = ({ isOpen, onClose, room }: ModalProps) => {
+const Modal = ({ isOpen, onClose, room, hotelData }: ModalProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeTab, setActiveTab] = useState('info');
 
@@ -47,7 +49,10 @@ const Modal = ({ isOpen, onClose, room }: ModalProps) => {
   const showPreviousImage = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex === 0 ? (room.room_img_url as string[]).length - 1 : prevIndex - 1));
   };
-
+  const router = useRouter();
+  const handleBooking = (room: RoomType) => {
+    router.push(`/booking?hotel_id=${hotelData.id}&room_id=${room.id}&price=${room.price}`);
+  };
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
       <div className="bg-white rounded shadow-lg w-[600px] max-w-4xl relative h-[700px] overflow-y-auto scrollbar-hide">
@@ -147,7 +152,12 @@ const Modal = ({ isOpen, onClose, room }: ModalProps) => {
         {/* 하단 고정 버튼과 가격 */}
         <div className="sticky bottom-0 left-0 w-full bg-white border-t p-4 flex justify-between items-center">
           <p>{room.price.toLocaleString()}원</p>
-          <button className="bg-[#B3916A] text-white py-2 px-6 rounded-md hover:bg-[#8B5E3C]">예약하기</button>
+          <button
+            onClick={() => handleBooking(room)}
+            className="bg-[#B3916A] text-white py-2 px-6 rounded-md hover:bg-[#8B5E3C]"
+          >
+            예약하기
+          </button>
         </div>
       </div>
     </div>
