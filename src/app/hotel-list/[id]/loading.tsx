@@ -1,7 +1,13 @@
+import HotelBoxSkeleton from '@/components/ui/skeleton/HotelBoxSkeleton';
+import NavigationSkeleton from '@/components/ui/skeleton/HotelNavigationSkeleton';
+import HotelOverviewSkeleton from '@/components/ui/skeleton/HotelOverviewSkeleton';
+
 const page = () => {
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-center">
-      <p className="text-[32px] font-medium">페이지가 준비중입니다. 잠시만 기다려주세요.</p>
+    <div>
+      <NavigationSkeleton />
+      <HotelOverviewSkeleton />
+      <HotelBoxSkeleton />
     </div>
   );
 };
