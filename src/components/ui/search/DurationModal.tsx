@@ -63,9 +63,10 @@ const DurationModal = ({ onClose }: { onClose: () => void }) => {
   }
 
   return (
-    <div      
-      className="fixed left-1/2 top-1/2 bg-white w-[592px] px-9 p-8 rounded-[12px] shadow-[0px_4px_12px_rgba(0,0,0,0.1)] z-50 transform -translate-x-1/2 -translate-y-1/2"
-    >
+    <div className="fixed left-1/2 top-1/2 bg-white w-[592px] px-9 p-8 rounded-[12px] shadow-[0px_4px_12px_rgba(0,0,0,0.1)] z-50 transform -translate-x-1/2 -translate-y-1/2">
+      <p className="mb-6 text-[18px] text-[#636363] font-normal leading-[1.45]">
+        원하는 일정을 선택해주세요.
+      </p>
       {/* 탭 */}
       <div className="w-[270px] h-[43px] mx-auto flex justify-center mb-3 p-1 bg-[#EFEFEF] rounded-full">
         {/* 캘린더폼 활용해서 만든 이후 onClick={() => setTab('data')}  */}
