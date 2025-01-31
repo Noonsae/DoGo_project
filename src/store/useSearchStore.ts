@@ -25,8 +25,8 @@ const useSearchStore = create<SearchState>((set) => ({
   setStars: (stars) => set({ stars }),
   setMinPrice: (minPrice: number) => set({ minPrice }),
   setMaxPrice: (maxPrice: number) => set({ maxPrice }),
-  setFacilities: (facilities: string[] ) => set({ facilities }),
-  setServices: (services: string[] ) => set({ services })
+  setFacilities: (facilities: string[]) => set({ facilities }),
+  setServices: (services: string[]) => set({ services })
 }));
 
 export default useSearchStore;
