@@ -12,7 +12,7 @@ const useSearchStore = create<SearchState>((set) => ({
   details: '',
   stars: [],
   minPrice: 0,
-  maxPrice: 5000000,
+  maxPrice: 2000000,
   facilities: [],
   services: [],
   setLocation: (location) => set({ location }),
