@@ -16,55 +16,27 @@ export default function SignUpUserPage() {
   const [isModlaOpen, setIsModalOpen] = useState(false);
   const [businessNumber, setBusinessNumber] = useState<string>('');
   const handleSignup = async () => {
-    startTransition(async () => {
-      // ✅ 서버 액션 실행
-      try {
-        const result = await handleSignupAction({
-          email,
-          password,
-          name,
-          nickname,
-          phone,
-          role: 'user'
-        });
-
-        if (!result.success) {
-          setError(result.message);
-          return;
-        }
-
-        await Swal.fire({
-          icon: 'success',
-          title: '회원가입 성공',
-          text: `${name}님, 회원가입이 완료되었습니다!`
-        });
-
-        window.location.href = '/';
-      } catch (err: any) {
-        setError('회원가입 중 오류가 발생했습니다.');
+    try {
+      const result = await handleSignupAction({
+        email,
+        password,
+        name,
+        nickname,
+        phone,
+        role: 'user'
+      });
+      if (!result.success) {
+        return;
       }
-    });
-    // try {
-    //   const result = await handleSignupAction({
-    //     email,
-    //     password,
-    //     name,
-    //     nickname,
-    //     phone,
-    //     role: 'user'
-    //   });
-    //   if (!result.success) {
-    //     return;
-    //   }
-    //   await Swal.fire({
-    //     icon: 'success',
-    //     title: '회원가입 성공',
-    //     text: `${name}님, 회원가입이 완료되었습니다!`
-    //   });
-    //   window.location.href = '/';
-    // } catch (err: any) {
-    //   setError('회원가입 중 오류가 발생했습니다.');
-    // }
+      await Swal.fire({
+        icon: 'success',
+        title: '회원가입 성공',
+        text: `${name}님, 회원가입이 완료되었습니다!`
+      });
+      window.location.href = '/';
+    } catch (err: any) {
+      setError('회원가입 중 오류가 발생했습니다.');
+    }
   };
   const closeModal = async () => {
     setIsModalOpen(false);
