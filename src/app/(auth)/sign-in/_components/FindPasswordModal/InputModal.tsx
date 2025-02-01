@@ -59,13 +59,13 @@ const InputModal = ({ form, setForm, errors, setErrors, handleFindPassword, hand
           {form.activeTab === 'user' ? '휴대폰 번호' : '담당자 번호'}
         </label>
         <input
-          type="number"
+          type="text"
           placeholder={`${form.activeTab === 'user' ? '휴대폰 번호를' : '담당자 휴대폰 번호를'} 입력해주세요`}
           value={form.phone}
           onChange={(e) => {
             setForm((prevForm) => ({
               ...prevForm,
-              phone: e.target.value
+              phone: e.target.value.replace(/[^0-9-]/g, '')
             }));
             setErrors((prev) => ({ ...prev, phone: undefined }));
           }}

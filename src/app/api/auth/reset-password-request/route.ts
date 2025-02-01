@@ -12,15 +12,18 @@ export async function POST(request: Request) {
     }
 
     const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+    const sanitizedPhone = phone.replace(/-/g, '');
 
-    // 사용자 조회
     const { data: user, error } = await supabase
       .from('users')
-      .select('id, user_name')
+      .select('id, user_name, phone_number')
       .eq('email', email)
-      .eq('phone_number', phone)
       .eq('role', role)
+      .or(`phone_number.eq.${sanitizedPhone}, phone_number.ilike.%${phone}%`)
       .single();
+
+    console.log('🔍 DB에 저장된 데이터:', user, error);
+    console.log('🔍 입력된 값:', { email, sanitizedPhone, role });
 
     if (error || !user) {
       return NextResponse.json({ error: '사용자를 찾을 수 없습니다.' }, { status: 404 });

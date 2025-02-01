@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { startTransition, useState } from 'react';
 import SignUpUser from './_components/SignUpUser';
 import handleSignupAction from '../actions/handleSignupAction';
 import SignupUserModal from '@/components/ui/sign-up/SignUpUi';
