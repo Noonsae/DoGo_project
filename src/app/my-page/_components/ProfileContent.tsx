@@ -35,7 +35,7 @@ const ProfileContent: React.FC<ProfileContentProps> = ({ userId }) => {
 
         if (error) throw error;
 
-        setUser(data);
+        setUser((data as User) ?? null);
       } catch (err) {
         console.error('Error fetching user:', err);
         setError('사용자 정보를 불러오는 중 오류가 발생했습니다.');
@@ -55,7 +55,7 @@ const ProfileContent: React.FC<ProfileContentProps> = ({ userId }) => {
         .from('users')
         .update({
           user_name: user.user_name,
-          phone_number: user.phone_number,
+          phone_number: user.phone_number
         })
         .eq('id', userId);
 
@@ -143,10 +143,7 @@ const ProfileContent: React.FC<ProfileContentProps> = ({ userId }) => {
             className="mt-1 block w-full border-gray-300 rounded-md bg-gray-100"
           />
         </div>
-        <button
-          type="submit"
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
+        <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
           저장하기
         </button>
       </form>

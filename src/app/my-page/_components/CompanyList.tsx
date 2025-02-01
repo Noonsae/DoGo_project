@@ -45,21 +45,23 @@ const CompanyList: React.FC = () => {
 
         const { data, error } = await browserSupabase()
           .from('users')
-          .select(`
+          .select(
+            `
             id,
             user_name,
             email,
             phone_number,
             business_number,
             created_at
-          `)
+          `
+          )
           .eq('role', 'business')
           .order('created_at', { ascending: false }) // 최신순 정렬
           .range(from, to); // 페이지네이션 적용
 
         if (error) throw error;
 
-        setCompanies(data || []);
+        setCompanies((data as BusinessUser[]) ?? []);
       } catch (err) {
         console.error('Error fetching companies:', err);
         setError('업체 데이터를 불러오는 중 오류가 발생했습니다.');
@@ -139,7 +141,9 @@ const CompanyList: React.FC = () => {
             >
               이전
             </button>
-            <span className="px-4 py-2 bg-gray-100 rounded-md">{page} / {totalPages} 페이지</span>
+            <span className="px-4 py-2 bg-gray-100 rounded-md">
+              {page} / {totalPages} 페이지
+            </span>
             <button
               onClick={() => setPage((prev) => (prev < totalPages ? prev + 1 : prev))}
               className="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400"

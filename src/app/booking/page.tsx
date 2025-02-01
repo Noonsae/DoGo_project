@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Sidebar from './_components/Sidebar';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { browserSupabase } from '@/supabase/supabase-client';
+import { BookingType } from '@/types/supabase/booking-type';
 
 const countryCodes = [
   { code: '+82', name: '대한민국 (South Korea)' },
@@ -25,10 +26,18 @@ interface UserType {
 const booking = () => {
   const [selectedCode, setSelectedCode] = useState(countryCodes[0].code);
   const [paymentMethod, setPaymentMethod] = useState('credit');
-  const searchParams = useSearchParams();
   const [room, setRoom] = useState<RoomType | null>(null);
   const [user, setUser] = useState<UserType | null>(null);
-
+  // 예약확정페이지는 결제된 데이터를 기반으로 렌더링되어야 함.
+  // 따라서 신용카드 결제 로직을 먼저 구현함
+  // 이때, 신용카드는 가상으로 이루어집니다.
+  // 수퍼베이스에 신용카드가 반영됩니다
+  const [cardNumber, setCardNumber] = useState('');
+  const [expiry, setExpiry] = useState('');
+  const [cvv, setCvv] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const roomId = searchParams.get('room_id');
   useEffect(() => {
     const fetchData = async () => {
@@ -41,10 +50,9 @@ const booking = () => {
         return;
       }
 
-      const userId = authData?.user?.id; // 로그인된 사용자 ID 가져오기
+      const userId = authData?.user?.id;
       if (!roomId || !userId) return;
 
-      // 객실 정보 가져오기
       const { data: roomData, error: roomError } = await supabase
         .from('rooms')
         .select('id, room_name, price')
@@ -56,7 +64,7 @@ const booking = () => {
         setRoom(roomData);
       }
 
-      // ✅ 유저 정보 가져오기 (이메일 & 전화번호)
+      //input에 자동으로 들어갈 데이터
       const { data: userData, error: userError } = await supabase
         .from('users')
         .select('email, phone_number')
@@ -65,16 +73,73 @@ const booking = () => {
       if (userError) {
         console.error('유저 정보를 불러오는 중 오류 발생:', userError.message);
       } else {
-        setUser(userData);
+        setUser(userData as UserType);
       }
     };
 
     fetchData();
   }, [roomId]);
+  //신용카드 결제 시
+  const handlePayment = async () => {
+    const supabase = browserSupabase();
+    if (!cardNumber || !expiry || !cvv) {
+      alert('카드 정보를 입력해주세요.');
+      return;
+    }
 
-  const router = useRouter();
-  const handlePayment = () => {
-    router.push('/booking/[id]');
+    setIsProcessing(true);
+
+    const { data: authData, error: authError } = await supabase.auth.getUser();
+    if (authError || !authData?.user?.id) {
+      alert('로그인 정보가 없습니다.');
+      setIsProcessing(false);
+      return;
+    }
+
+    const userId = authData.user.id;
+
+    // 카드 저장
+    const { error: cardError } = await supabase.from('credit_cards').insert([
+      {
+        user_id: userId,
+        card_number: cardNumber,
+        expiry_date: expiry,
+        cvv: cvv
+      }
+    ]);
+
+    if (cardError) {
+      alert('카드 정보 저장 실패: ' + cardError.message);
+      setIsProcessing(false);
+      return;
+    }
+
+    // 예약 정보 저장
+    // 체크인 체크아웃 임시데이터🔥 나중에 지워야 함
+    const checkInDate = searchParams.get('checkIn') ?? '2025-02-19';
+    const checkOutDate = searchParams.get('checkOut') ?? '2025-08-20';
+
+    const { data: bookingData, error: bookingError } = await supabase
+      .from('bookings')
+      .insert([
+        {
+          user_id: userId,
+          room_id: roomId ?? '',
+          check_in_date: checkInDate,
+          check_out_date: checkOutDate ?? '2000-01-02',
+          status: 'confirmed'
+        }
+      ] as BookingType[])
+      .select('id')
+      .single();
+
+    if (bookingError) {
+      alert('예약 저장 실패: ' + bookingError.message);
+      setIsProcessing(false);
+      return;
+    }
+
+    router.push(`/booking/${encodeURIComponent(bookingData.id)}`);
   };
   return (
     // 디자인은 나중에
@@ -197,7 +262,9 @@ const booking = () => {
                   </label>
                   <input
                     type="text"
-                    placeholder="카드번호를 입력해 주세요."
+                    value={cardNumber}
+                    onChange={(e) => setCardNumber(e.target.value)}
+                    placeholder="0000 0000 0000 0000"
                     className="w-full p-3 border border-gray-300 rounded-md mt-1"
                   />
                 </div>
@@ -209,6 +276,8 @@ const booking = () => {
                     </label>
                     <input
                       type="text"
+                      value={expiry}
+                      onChange={(e) => setExpiry(e.target.value)}
                       placeholder="MM / YYYY"
                       className="w-full p-3 border border-gray-300 rounded-md mt-1"
                     />
@@ -220,6 +289,8 @@ const booking = () => {
                     </label>
                     <input
                       type="text"
+                      value={cvv}
+                      onChange={(e) => setCvv(e.target.value)}
                       placeholder="입력해 주세요."
                       className="w-full p-3 border border-gray-300 rounded-md mt-1"
                     />
@@ -269,8 +340,12 @@ const booking = () => {
               <span className="text-2xl  mr-[20px] font-semibold text-[#B3916A]">
                 {room ? `${room.price.toLocaleString()}원` : 'Loading...'}
               </span>
-              <button onClick={handlePayment} className="bg-[#B3916A] text-white px-6 py-3 rounded-md">
-                결제하기
+              <button
+                onClick={handlePayment}
+                disabled={isProcessing}
+                className="bg-[#B3916A] text-white px-6 py-3 rounded-md"
+              >
+                {isProcessing ? '결제 처리 중...' : '결제하기'}
               </button>
             </div>
           </div>

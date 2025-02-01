@@ -8,7 +8,7 @@ type RoomWithPrice = {
 };
 
 // 간소화된 호텔 타입 정의
-export interface HotelWithPriceOnly extends HotelType {
+export interface HotelWithPriceOnly extends Partial<HotelType> {
   rooms?: RoomWithPrice[];
   min_price?: number;
   max_price?: number;
