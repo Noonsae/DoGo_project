@@ -12,8 +12,11 @@ const Recommend = () => {
 
   useEffect(() => {
     if (history.length > 0) {
-      const locationCount = history.reduce((acc: Record<string, number>, hotel: HotelType) => {
-        acc[hotel.location] = (acc[hotel.location] || 0) + 1;
+      const locationCount = history.reduce<Record<string, number>>((acc, hotel) => {
+        const location = hotel.location; // hotel의 location 속성을 가져옴
+        if (location) {
+          acc[location] = (acc[location] || 0) + 1; // 해당 location의 카운트를 증가
+        }
         return acc;
       }, {});
 
