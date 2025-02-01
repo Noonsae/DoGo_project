@@ -51,11 +51,11 @@ export default async function handleSignupAction({
       const insertData = {
         id: userId,
         email,
-        phone_number: phone,
+        phone_number: phone || '',
         role,
-        user_name: name,
-        business_number: role === 'business' ? businessNumber : null,
-        nickname: role === 'user' ? name : null
+        user_name: name || '',
+        business_number: role === 'business' ? businessNumber || null : null,
+        nickname: role === 'user' ? name || '' : null
       };
 
       const { error: insertError } = await supabaseAdmin.from('users').insert([insertData]);
@@ -64,9 +64,25 @@ export default async function handleSignupAction({
         throw new Error(insertError.message);
       }
     }
+    const { error: updateError } = await supabaseAdmin
+      .from('users')
+      .update({
+        phone_number: phone || '',
+        user_name: name || ''
+      })
+      .eq('id', userId);
+
+    if (updateError) {
+      throw new Error(updateError.message);
+    }
 
     return { success: true, message: `${name} 회원가입 성공` };
   } catch (error: any) {
     return { success: false, message: error.message };
   }
 }
+//     return { success: true, message: `${name} 회원가입 성공` };
+//   } catch (error: any) {
+//     return { success: false, message: error.message };
+//   }
+// }
