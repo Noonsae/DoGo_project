@@ -23,7 +23,7 @@ export default async function handleSignupAction({
   console.log('✅ Supabase 인스턴스 생성됨:', supabaseAdmin);
 
   try {
-    // 🔹 Supabase 인증 회원가입 실행
+    //커밋을 위한 주석
     const { data: authData, error: authError } = await supabaseAdmin.auth.signUp({
       email,
       password,
