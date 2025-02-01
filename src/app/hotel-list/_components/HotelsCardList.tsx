@@ -81,7 +81,7 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
             <div className="flex flex-row gap-2">
               <h3 className="mb-1 text-2xl font-bold text-gray-900">{hotel.name}</h3>
               <div className="flex items-center">
-                <RenderStars stars={hotel.stars} />
+                <RenderStars stars={hotel.stars ?? 0} />
               </div>
             </div>
           </div>

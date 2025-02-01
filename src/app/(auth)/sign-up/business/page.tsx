@@ -25,6 +25,7 @@ export default function SignUpBusinessPage() {
         nickname,
         role: 'business'
       });
+      console.log(result); // 응답 확인
       if (!result.success) {
         await Swal.fire({
           icon: 'error',
