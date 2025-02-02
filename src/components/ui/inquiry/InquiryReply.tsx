@@ -9,7 +9,7 @@ const InquiryReply = ({ inquiryId, onReplySubmit }) => {
     onReplySubmit(inquiryId, reply);
     setReply('');
   };
-
+  //커밋용
   return (
     <div className="mt-4">
       <textarea
@@ -18,6 +18,7 @@ const InquiryReply = ({ inquiryId, onReplySubmit }) => {
         onChange={(e) => setReply(e.target.value)}
         className="border p-2 rounded w-full"
       />
+
       <button onClick={handleSubmit} className="bg-blue-500 text-white p-2 rounded mt-2">
         답변 등록
       </button>
