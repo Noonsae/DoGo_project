@@ -34,11 +34,14 @@ const SignInPage = () => {
         });
         return;
       }
-
+      let role = form.activeTab;
+      if (form.email === 'admin01@qwe.com') {
+        role = 'admin';
+      }
       const { data, error } = await login({
         email: form.email,
         password: form.password,
-        role: form.activeTab // 역할 추가
+        role: role // 역할 추가
       });
 
       if (error || !data) {
@@ -72,6 +75,7 @@ const SignInPage = () => {
         <div className="mt-[94px] mb-[40px] flex flex-col justify-center items-center">
           <LogoAuth />
         </div>
+
         <div className="flex justify-between mb-[40px] border-b-2 ">
           <button
             className={`pb-2 w-1/2 text-center ${

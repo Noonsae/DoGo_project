@@ -34,7 +34,7 @@ const ProfileContent: React.FC<ProfileContentProps> = ({ user: initialUser }) =>
         .from('users')
         .update({
           user_name: user.user_name,
-          phone_number: user.phone_number,
+          phone_number: user.phone_number
         })
         .eq('id', user.id);
 
@@ -119,10 +119,7 @@ const ProfileContent: React.FC<ProfileContentProps> = ({ user: initialUser }) =>
             className="mt-1 block w-full border-gray-300 rounded-md bg-gray-100"
           />
         </div>
-        <button
-          type="submit"
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
+        <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
           저장하기
         </button>
       </form>
@@ -136,7 +133,7 @@ const ProfilePage = async () => {
 
   try {
     const {
-      data: { session },
+      data: { session }
     } = await supabase.auth.getSession();
 
     if (!session?.user) {
@@ -153,7 +150,7 @@ const ProfilePage = async () => {
       throw new Error('사용자 정보를 가져오는 중 오류가 발생했습니다.');
     }
 
-    return <ProfileContent user={user} />;
+    return <ProfileContent user={user as User} />;
   } catch (error: any) {
     console.error(error.message);
     return <p className="text-red-500 text-center">{error.message}</p>;

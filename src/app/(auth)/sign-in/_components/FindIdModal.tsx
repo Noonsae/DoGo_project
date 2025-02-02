@@ -147,7 +147,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
 
                       setErrors((prev) => ({ ...prev, name: undefined }));
                     }}
-                    className={`w-full max-w-[352px] h-[48px] pl-4 pt-2 pb-2 border rounded-[8px] focus:outline-none focus:ring-2 ${
+                    className={`text-[15px] w-full max-w-[352px] h-[48px] pl-4 pt-2 pb-2 border rounded-[8px] focus:outline-none focus:ring-2 ${
                       errors.name ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-black'
                     }`}
                   />
@@ -155,18 +155,16 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
                 {errors.name && <p className="text-sm text-red-500 mt-1">{errors.name}</p>}
                 <label className="block mt-4 sm:mt-[20px] text-gray-700">휴대폰 번호</label>
                 <input
-                  type="number"
+                  type="text"
                   placeholder="휴대폰 번호를 입력해 주세요."
                   value={form.phone}
                   onChange={(e) => {
-                    setForm((prevForm) => ({
-                      ...prevForm,
-                      phone: e.target.value
-                    }));
+                    const formattedPhone = e.target.value.replace(/[^0-9-]/g, ''); // 숫자, - 만 허용
+                    setForm((prevForm) => ({ ...prevForm, phone: formattedPhone }));
 
                     setErrors((prev) => ({ ...prev, phone: undefined }));
                   }}
-                  className={`appearance-none w-full max-w-[352px] h-[48px] pl-4 pt-2 pb-2 border rounded-[8px] mb-1 focus:outline-none focus:ring-2 ${
+                  className={`text-[15px] appearance-none w-full max-w-[352px] h-[48px] pl-4 pt-2 pb-2 border rounded-[8px] mb-1 focus:outline-none focus:ring-2 ${
                     errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-black'
                   }`}
                 />

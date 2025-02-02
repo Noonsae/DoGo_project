@@ -39,7 +39,7 @@ const ProfileManagement: React.FC<ProfileManagementProps> = ({ userId }) => {
 
         if (error) throw error;
 
-        setUser(data); // 사용자 정보를 상태에 저장
+        setUser((data as UserProfile) ?? null); // 사용자 정보를 상태에 저장
       } catch (err) {
         console.error('Error fetching user profile:', err);
         setError('프로필 데이터를 불러오는 중 오류가 발생했습니다.');
@@ -60,7 +60,7 @@ const ProfileManagement: React.FC<ProfileManagementProps> = ({ userId }) => {
         .from('users')
         .update({
           user_name: user.user_name, // 업데이트된 이름
-          phone_number: user.phone_number, // 업데이트된 전화번호
+          phone_number: user.phone_number // 업데이트된 전화번호
         })
         .eq('id', userId); // userId와 일치하는 사용자 업데이트
 
@@ -89,9 +89,7 @@ const ProfileManagement: React.FC<ProfileManagementProps> = ({ userId }) => {
           <input
             type="text"
             value={user?.user_name || ''}
-            onChange={(e) =>
-              setUser({ ...user, user_name: e.target.value } as UserProfile)
-            }
+            onChange={(e) => setUser({ ...user, user_name: e.target.value } as UserProfile)}
             className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
           />
         </div>
@@ -109,9 +107,7 @@ const ProfileManagement: React.FC<ProfileManagementProps> = ({ userId }) => {
           <input
             type="text"
             value={user?.phone_number || ''}
-            onChange={(e) =>
-              setUser({ ...user, phone_number: e.target.value } as UserProfile)
-            }
+            onChange={(e) => setUser({ ...user, phone_number: e.target.value } as UserProfile)}
             className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
           />
         </div>

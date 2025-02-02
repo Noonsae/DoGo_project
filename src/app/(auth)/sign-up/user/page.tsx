@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { startTransition, useState } from 'react';
 import SignUpUser from './_components/SignUpUser';
 import handleSignupAction from '../actions/handleSignupAction';
 import SignupUserModal from '@/components/ui/sign-up/SignUpUi';
@@ -33,7 +33,6 @@ export default function SignUpUserPage() {
         title: '회원가입 성공',
         text: `${name}님, 회원가입이 완료되었습니다!`
       });
-
       window.location.href = '/';
     } catch (err: any) {
       setError('회원가입 중 오류가 발생했습니다.');
