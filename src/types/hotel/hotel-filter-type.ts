@@ -31,6 +31,7 @@ type HotelFilterResponseType = {
   services: HotelService[]; // 호텔 제공 서비스
   facility_ids?: string[] | null;
   service_ids?: string[] | null;
+  min_price: number;
 };
 
 export interface FetchHotelsFilterResponse {
