@@ -8,7 +8,13 @@ const InquiryFloatingButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
-  if (pathname === '/sign-in' || pathname === '/sign-up') return null;
+  if (
+    pathname === '/sign-in' ||
+    pathname === '/sign-up' ||
+    pathname === '/sign-up/user' ||
+    pathname === '/sign-up/business'
+  )
+    return null;
 
   return (
     <>
