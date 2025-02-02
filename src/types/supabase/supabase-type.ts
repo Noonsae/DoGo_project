@@ -93,42 +93,6 @@ export type Database = {
           },
         ]
       }
-      chat_rooms: {
-        Row: {
-          created_at: string
-          id: string
-          participant_1_id: string
-          participant_2_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          participant_1_id?: string
-          participant_2_id?: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          participant_1_id?: string
-          participant_2_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "chat_rooms_participant_1_id_fkey"
-            columns: ["participant_1_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "chat_rooms_participant_2_id_fkey"
-            columns: ["participant_2_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       contacts: {
         Row: {
           booking_id: string | null
@@ -411,6 +375,53 @@ export type Database = {
           },
         ]
       }
+      inquiries: {
+        Row: {
+          assigned_to: string
+          business_reply: string | null
+          category: string
+          content: string
+          created_at: string
+          id: string
+          reply_created_at: string | null
+          status: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          assigned_to: string
+          business_reply?: string | null
+          category: string
+          content: string
+          created_at?: string
+          id?: string
+          reply_created_at?: string | null
+          status?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          assigned_to?: string
+          business_reply?: string | null
+          category?: string
+          content?: string
+          created_at?: string
+          id?: string
+          reply_created_at?: string | null
+          status?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_rooms_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       messages: {
         Row: {
           chat_room_id: string
@@ -438,7 +449,7 @@ export type Database = {
             foreignKeyName: "messages_chat_room_id_fkey"
             columns: ["chat_room_id"]
             isOneToOne: false
-            referencedRelation: "chat_rooms"
+            referencedRelation: "inquiries"
             referencedColumns: ["id"]
           },
           {
