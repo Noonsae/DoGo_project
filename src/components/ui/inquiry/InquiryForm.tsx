@@ -1,8 +1,11 @@
 //문의 입력 폼
 'use client';
-import { getUser } from '@/actions/auth';
-import useAuthStore from '@/store/useAuth';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import { getUser } from '@/actions/auth';
+import { useRouter } from 'next/navigation';
+
+import useAuthStore from '@/store/useAuth';
+import Swal from 'sweetalert2';
 interface InquiryFormProps {
   category: string;
 }
@@ -12,7 +15,7 @@ const InquiryForm = forwardRef(({ category }: InquiryFormProps, ref) => {
   const [loading, setLoading] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const user = useAuthStore((state) => state.user);
-
+  const router = useRouter();
   useEffect(() => {
     if (user?.id) {
       setUserId(user.id);
@@ -26,11 +29,27 @@ const InquiryForm = forwardRef(({ category }: InquiryFormProps, ref) => {
 
   const handleSubmit = async () => {
     if (!title || !content) {
-      alert('제목과 내용을 입력해주세요.');
+      Swal.fire({
+        title: '입력 오류',
+        text: '제목과 내용을 입력해주세요.',
+        icon: 'error',
+        confirmButtonText: '확인'
+      });
       return;
     }
     if (!userId) {
-      alert('로그인이 필요합니다.');
+      Swal.fire({
+        title: '로그인이 필요합니다.',
+        text: '로그인 페이지로 이동할까요?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '이동',
+        cancelButtonText: '취소'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push('/sign-in');
+        }
+      });
       return;
     }
 
