@@ -62,20 +62,26 @@ const InquiryForm = forwardRef(({ category }: InquiryFormProps, ref) => {
   }));
   return (
     <form className="flex flex-col gap-4 mt-4">
-      <p>제목</p>
+      <div className="flex flex-row">
+        <p className="text-[#444] font-pretendard text-[16px] font-semibold leading-[135%]">제목</p>
+        <span className="ml-[4px] text-red-500">*</span>
+      </div>
       <input
         type="text"
-        placeholder="문의 제목"
+        placeholder="문의하실 글의 제목을 작성해 주세요."
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         className="border p-2 rounded"
       />
-      <p>문의사항</p>
+      <div className="flex flex-row">
+        <p className="text-[#444] font-pretendard text-[16px] font-semibold leading-[135%]">문의사항</p>
+        <span className="ml-[4px] text-red-500">*</span>
+      </div>
       <textarea
-        placeholder="문의 내용을 입력하세요"
+        placeholder="문의하실 글의 내용을 작성해 주세요."
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        className="border p-2 rounded h-[176px]"
+        className="border p-2 rounded h-[176px] text-left flex items-center placeholder:text-left placeholder:flex placeholder:items-center"
       />
     </form>
   );
