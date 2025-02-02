@@ -72,6 +72,7 @@ const SignInPage = () => {
         <div className="mt-[94px] mb-[40px] flex flex-col justify-center items-center">
           <LogoAuth />
         </div>
+
         <div className="flex justify-between mb-[40px] border-b-2 ">
           <button
             className={`pb-2 w-1/2 text-center ${
