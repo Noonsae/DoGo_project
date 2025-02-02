@@ -16,7 +16,7 @@ const fetchHotelsFilter = async ({
     stars: [],
     location: '',
     minPrice: 0,
-    maxPrice: 5000000,
+    maxPrice: 2000000,
     facilities: [], // 중첩 구조에 맞게 수정
     services: [],
     facilityIds: [],

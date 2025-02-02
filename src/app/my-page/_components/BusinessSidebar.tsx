@@ -52,7 +52,7 @@ const BusinessSidebar: React.FC = () => {
 
           if (error) throw error;
 
-          setBusinessInfo(data);
+          setBusinessInfo((data as BusinessUser) ?? null);
         }
       } catch (err) {
         console.error('Error fetching business info:', err);
