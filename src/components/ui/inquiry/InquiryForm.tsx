@@ -1,7 +1,7 @@
 //문의 입력 폼
 'use client';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
-import { getUser } from '@/actions/auth';
+import { getUser, getUserRole } from '@/actions/auth';
 import { useRouter } from 'next/navigation';
 
 import useAuthStore from '@/store/useAuth';
@@ -54,6 +54,16 @@ const InquiryForm = forwardRef(({ category, hotel_id }: InquiryFormProps, ref) =
       });
       return;
     }
+    const { data: userRoleData } = await getUserRole(userId);
+    if (userRoleData?.role === 'business' || userRoleData?.role === 'admin') {
+      Swal.fire({
+        title: '문의 불가',
+        text: '사업자 및 관리자 계정은 문의를 등록할 수 없습니다.',
+        icon: 'warning',
+        confirmButtonText: '확인'
+      });
+      return;
+    }
 
     try {
       setLoading(true);
@@ -87,7 +97,7 @@ const InquiryForm = forwardRef(({ category, hotel_id }: InquiryFormProps, ref) =
       setLoading(false);
     }
   };
-
+  //커밋용
   useImperativeHandle(ref, () => ({
     submit: handleSubmit
   }));
