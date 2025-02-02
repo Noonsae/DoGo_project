@@ -7,8 +7,6 @@ import IoCheckmarkCircle from '../icon/IoCheckmarkCircle';
 import FiChevronLeftIcon from '../icon/FiChevronLeftIcon';
 import FiChevronRightIcon from '../icon/FiChevronRightIcon';
 import { useRouter } from 'next/navigation';
-import InquiryButton from '../inquiry/InquiryButton';
-import InquiryModal from '../inquiry/InquiryModal';
 type RoomType = Database['public']['Tables']['rooms']['Row'];
 interface ModalProps {
   isOpen: boolean;
