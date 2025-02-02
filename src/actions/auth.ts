@@ -88,3 +88,22 @@ export const getUserRole = async (userId: string | undefined) => {
   }
   return { data };
 };
+
+//어드민 만들기
+export const createAdminUser = async () => {
+  const supabase = await serverSupabase();
+
+  const { data, error } = await supabase.auth.admin.createUser({
+    email: 'admin@qwe.com',
+    password: 'admin1234', // ✅ 비밀번호 설정
+    email_confirm: true
+  });
+
+  if (error) {
+    console.error('Admin 계정 생성 실패:', error);
+    return { success: false, error };
+  }
+
+  console.log('✅ Admin 계정 생성 완료:', data.user?.id);
+  return { success: true, userId: data.user?.id };
+};

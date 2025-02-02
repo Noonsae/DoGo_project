@@ -34,11 +34,14 @@ const SignInPage = () => {
         });
         return;
       }
-
+      let role = form.activeTab;
+      if (form.email === 'admin01@qwe.com') {
+        role = 'admin';
+      }
       const { data, error } = await login({
         email: form.email,
         password: form.password,
-        role: form.activeTab // 역할 추가
+        role: role // 역할 추가
       });
 
       if (error || !data) {
