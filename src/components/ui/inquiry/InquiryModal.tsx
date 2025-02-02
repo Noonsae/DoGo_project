@@ -7,8 +7,9 @@ import InquiryForm from './InquiryForm';
 interface InquiryModalProps {
   isOpen: boolean;
   onClose: () => void;
+  hotel_id?: string;
 }
-const InquiryModal = ({ isOpen, onClose }: InquiryModalProps) => {
+const InquiryModal = ({ isOpen, onClose, hotel_id }: InquiryModalProps) => {
   if (!isOpen) return null;
   const [category, setCategory] = useState<string>('');
   const formRef = useRef<{ submit: () => void } | null>(null);
@@ -35,7 +36,7 @@ const InquiryModal = ({ isOpen, onClose }: InquiryModalProps) => {
           </div>
 
           {/* 문의 입력 폼 */}
-          <InquiryForm ref={formRef} category={category} />
+          <InquiryForm ref={formRef} category={category} hotel_id={hotel_id || ''} />
         </div>
         {/* 등록하기 버튼 */}
         <div className="p-4 mt-[24px] flex justify-end">

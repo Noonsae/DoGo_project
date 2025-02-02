@@ -377,6 +377,7 @@ export type Database = {
       }
       inquiries: {
         Row: {
+          assigned_to: string
           business_reply: string | null
           category: string
           content: string
@@ -388,17 +389,19 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          assigned_to: string
           business_reply?: string | null
-          category?: string
+          category: string
           content: string
           created_at?: string
           id?: string
           reply_created_at?: string | null
           status?: string
-          title?: string
+          title: string
           user_id: string
         }
         Update: {
+          assigned_to?: string
           business_reply?: string | null
           category?: string
           content?: string

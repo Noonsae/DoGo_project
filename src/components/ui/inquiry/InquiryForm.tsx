@@ -8,13 +8,15 @@ import useAuthStore from '@/store/useAuth';
 import Swal from 'sweetalert2';
 interface InquiryFormProps {
   category: string;
+  hotel_id: string;
 }
-const InquiryForm = forwardRef(({ category }: InquiryFormProps, ref) => {
+const InquiryForm = forwardRef(({ category, hotel_id }: InquiryFormProps, ref) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const user = useAuthStore((state) => state.user);
+
   const router = useRouter();
   useEffect(() => {
     if (user?.id) {
@@ -58,19 +60,29 @@ const InquiryForm = forwardRef(({ category }: InquiryFormProps, ref) => {
       const response = await fetch('/api/inquiries', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ category, title, content, user_id: userId })
+        body: JSON.stringify({ category, title, content, user_id: userId, hotel_id })
       });
 
       if (!response.ok) {
         throw new Error('문의 등록에 실패했습니다.');
       }
 
-      alert('문의가 성공적으로 등록되었습니다.');
+      Swal.fire({
+        title: '문의 등록 완료',
+        text: '문의가 성공적으로 등록되었습니다.',
+        icon: 'success',
+        confirmButtonText: '확인'
+      });
       setTitle('');
       setContent('');
     } catch (error) {
       console.error(error);
-      alert('오류가 발생했습니다.');
+      Swal.fire({
+        title: '등록 실패',
+        text: '카테고리를 선택해주세요.',
+        icon: 'error',
+        confirmButtonText: '확인'
+      });
     } finally {
       setLoading(false);
     }

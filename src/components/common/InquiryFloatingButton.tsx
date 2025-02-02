@@ -16,6 +16,9 @@ const InquiryFloatingButton = () => {
   )
     return null;
 
+  const hotelIdMatch = pathname.match(/\/hotel-list\/([^/]+)/);
+  const hotel_id = hotelIdMatch ? hotelIdMatch[1] : undefined;
+
   return (
     <>
       <button
@@ -28,7 +31,7 @@ const InquiryFloatingButton = () => {
         문의하기
       </button>
 
-      {isOpen && <InquiryModal isOpen={isOpen} onClose={() => setIsOpen(false)} />}
+      {isOpen && <InquiryModal isOpen={isOpen} onClose={() => setIsOpen(false)} hotel_id={hotel_id} />}
     </>
   );
 };
