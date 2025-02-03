@@ -13,6 +13,7 @@ import HiOutlineRefreshIcon from '@/components/ui/icon/HiOutlineRefreshIcon';
 import DualSlider from './DualSlider';
 import FacilityList from './FacilityList';
 import ServiceList from './ServiceList';
+import BedTypeList from './BedTypeList';
 
 const AsideFilter = () => {
   const router = useRouter();
@@ -25,6 +26,7 @@ const AsideFilter = () => {
   const [maxPriceValue, setMaxPriceValue] = useState<number>(2000000);
   const [selectedServices, setSelectedServices] = useState<ServicesType[]>([]);
   const [selectedFacilities, setSelectedFacilities] = useState<FacilitiesType[]>([]);
+  const [selectedBedTypes, setSelectedBedTypes] = useState<string[]>([]);
 
   const { location, checkIn, checkOut, stay, details } = useSearchStore();
 
@@ -47,22 +49,23 @@ const AsideFilter = () => {
     );
   };
 
+  const handleBedTypeChange = (bedType: string) => {
+    setSelectedBedTypes((prev) => (prev.includes(bedType) ? prev.filter((b) => b !== bedType) : [...prev, bedType]));
+  };
+
   useEffect(() => {
     setMinPriceValue(Number(minPriceValue));
     setMaxPriceValue(Number(maxPriceValue));
   }, [minPriceValue, maxPriceValue]);
 
   // 필터 조건 적용
-  const handleApplyBtnClick = async () => {
-    const updatedStars =
-      selectedGrade.includes(4) && selectedGrade.includes(5)
-        ? undefined // 4, 5 모두 선택된 경우 stars를 제외
-        : selectedGrade;
+  useEffect(() => {
+    const updatedStars = selectedGrade.includes(4) && selectedGrade.includes(5) ? undefined : selectedGrade;
     const updatedMinPrice = minPriceValue || undefined;
     const updatedMaxPrice = maxPriceValue || undefined;
     const updatedFacilities = selectedFacilities.map((facility) => facility.id);
     const updatedServices = selectedServices.map((service) => service.id);
-    console.log(selectedFacilities, selectedServices);
+    const updatedBedTypes = selectedBedTypes;
 
     const url = generateUrl({
       location,
@@ -74,11 +77,12 @@ const AsideFilter = () => {
       minPrice: updatedMinPrice,
       maxPrice: updatedMaxPrice,
       facilities: updatedFacilities,
-      services: updatedServices
-    }); // URL 생성
+      services: updatedServices,
+      beds: updatedBedTypes
+    });
 
-    router.push(url); // 페이지 이동
-  };
+    router.push(url); // 필터가 바뀔 때마다 자동으로 URL을 변경하여 필터 적용
+  }, [selectedGrade, minPriceValue, maxPriceValue, selectedFacilities, selectedServices, selectedBedTypes]);
 
   // 필터 조건 초기화
   const handleResetFilters = async () => {
@@ -87,6 +91,7 @@ const AsideFilter = () => {
     setMinPriceValue(0);
     setSelectedFacilities([]);
     setSelectedServices([]);
+    setSelectedBedTypes([]);
 
     const resetUrl = generateUrl({
       location,
@@ -98,7 +103,8 @@ const AsideFilter = () => {
       minPrice: 0,
       maxPrice: 2000000,
       facilities: [],
-      services: []
+      services: [],
+      beds: []
     });
     await router.push(resetUrl); // 페이지 이동
   };
@@ -109,9 +115,6 @@ const AsideFilter = () => {
       <div className="flex flex-row items-center justify-between mb-[70px]">
         <div className="flex flex-row gap-4">
           <p className="text-[20px] font-bold">필터</p>
-          <button className="text-base text-[#777] font-normal leading-[1.45]" onClick={handleApplyBtnClick}>
-            <span className="text-base text-[#777] font-normal leading-[1.45]">적용하기</span>{' '}
-          </button>
         </div>
         <button className="flex flex-row items-center justify-between gap-[1.5px]" onClick={handleResetFilters}>
           <HiOutlineRefreshIcon className="w-[20px] h-[20px] text-[#A0A0A0]" />
@@ -153,6 +156,7 @@ const AsideFilter = () => {
         </ul>
       </div>
 
+      <BedTypeList selectedBeds={selectedBedTypes} onBedChange={handleBedTypeChange} />
       {/* 시설 필터 */}
       <FacilityList selectedFacilities={selectedFacilities} onFacilityChange={handleFacilityChange} />
 
