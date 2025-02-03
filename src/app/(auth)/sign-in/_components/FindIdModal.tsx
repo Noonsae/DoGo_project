@@ -180,7 +180,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
         )}
 
         {form.modalType === 'success' && (
-          <div className="w-full max-w-[424px] p-6 sm:p-[30px] flex flex-col items-center">
+          <div className="w-full max-w-[424px]  flex flex-col items-center ">
             <div className="mt-[142px] ">
               <CheckIcon />
             </div>
@@ -196,7 +196,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
             </div>
             <button
               onClick={onClose}
-              className="w-full max-w-[352px] sm:mt-[120px] bg-[#B3916A] font-bold text-white py-4 rounded-xl hover:bg-[#a37e5f] transition"
+              className="w-full max-w-[352px] sm:mt-[180px] bg-[#B3916A] font-bold text-white py-4 rounded-xl hover:bg-[#a37e5f] transition"
             >
               확인
             </button>
@@ -204,20 +204,24 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
         )}
 
         {form.modalType === 'failure' && (
-          <div className="w-full max-w-[424px] mt-8 sm:mt-[50px] h-full max-h-[635px] flex flex-col items-center justify-center p-6 sm:p-[30px]">
-            <WarningIcon />
+          <div className="w-full max-w-[424px] flex flex-col items-center justify-center">
+            <div className="flex flex-col items-center justify-center">
+              <div className="flex flex-col justify-center items-center text-center w-[352px] h-[411px] mt-[40px]">
+                <div className="mb-[13px]">
+                  <WarningIcon />
+                </div>
 
-            <div className="text-center p-[30px]">
-              <p className="text-lg sm:text-xl font-semibold">
-                입력하신 정보와 일치하는 <br /> 아이디가 존재하지 않습니다.
-              </p>
-              <p className="text-sm sm:text-[15px] text-gray-500 mt-3">
-                입력하신 가입 정보를 다시 한 번 확인해 주세요.
-              </p>
+                <p className="text-lg sm:text-xl font-semibold text-neutral-700 text-center font-pretendard leading-[135%] text-[16px] sm:text-[18px] md:text-[20px]">
+                  입력하신 정보와 일치하는 <br /> 아이디가 존재하지 않습니다.
+                </p>
+                <p className="text-sm  mt-3 text-neutral-500 text-center font-pretendard font-normal leading-[145%] text-[14px] sm:text-[15px] md:text-[16px]">
+                  입력하신 가입 정보를 다시 한 번 확인해 주세요.
+                </p>
+              </div>
             </div>
             <button
               onClick={onClose}
-              className="w-full max-w-[352px] mt-[120px] sm:mt-[180px] bg-[#B3916A] font-bold text-white py-4 rounded-xl hover:bg-[#a37e5f] transition"
+              className="text-white text-center font-pretendard items-center justify-center leading-[135%] h-[48px] text-[16px] sm:text-[18px] md:text-[20px] w-full max-w-[352px] mt-[40px]  bg-[#B3916A] font-bold py-4 rounded-xl hover:bg-[#a37e5f] transition"
             >
               확인
             </button>
