@@ -200,7 +200,7 @@ const SignUpBusiness = ({
           {errors.name && <p className="text-sm text-red-500 mb-[4px] sm:mb-[8px]">{errors.name}</p>}
 
           <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px]  text-neutral-800 font-semibold text-[16px] leading-[135%] font-pretendard">
-            담당자 번호
+            휴대폰 번호
           </p>
           <input
             type="tel"
