@@ -77,9 +77,9 @@ const ReviewsModal = ({
       <div className="bg-white shadow-lg p-6 rounded-lg overflow-y-auto scrollbar-hide w-[600px] h-[740px]">
         {/* 상단 헤더 */}
         <div className="flex justify-between items-center h-[67px] mb-4 bg-[#221A1A] -mx-6 -mt-6 px-6 py-2 rounded-t-lg">
-          <h1 className="text-white font-semibold">이용후기</h1>
+          <h1 className="text-white font-semibold ml-[240px]">이용후기</h1>
           <button onClick={onClose} className="text-gray-300 hover:text-white px-2 py-1 rounded-md">
-            닫기
+            X
           </button>
         </div>
 
@@ -87,13 +87,13 @@ const ReviewsModal = ({
           {/* 버튼 그룹 */}
           <div className="flex">
             <button
-              className={`px-4 py-2 text-sm font-bold ${activeTab === 'all' ? 'text-[#B3916A]' : 'text-gray-500'}`}
+              className={`px-4 py-2 text-sm font-normal ${activeTab === 'all' ? 'text-[#534431]' : 'text-gray-500'}`}
               onClick={() => setActiveTab('all')}
             >
               전체 리뷰
             </button>
             <button
-              className={`px-4 py-2 text-sm font-bold ${activeTab === 'photo' ? 'text-[#B3916A]' : 'text-gray-500'}`}
+              className={`px-4 py-2 text-sm font-normal ${activeTab === 'photo' ? 'text-[#534431]' : 'text-gray-500'}`}
               onClick={() => setActiveTab('photo')}
             >
               사진 리뷰
@@ -102,7 +102,7 @@ const ReviewsModal = ({
 
           {/* Indicator */}
           <div
-            className={`absolute bottom-0 h-1 bg-[#B3916A] transition-transform duration-300`}
+            className={`absolute bottom-0 h-[2px] bg-[#B3916A] transition-transform duration-300`}
             style={{
               width: '10%',
               transform: `translateX(${activeTab === 'all' ? '28%' : '177%'})`
