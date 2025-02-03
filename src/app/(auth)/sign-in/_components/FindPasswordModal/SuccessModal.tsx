@@ -16,7 +16,7 @@ const SuccessModal = ({ form, onClose }: { form: any; onClose: () => void }) => 
       </div>
       <button
         onClick={onClose}
-        className="w-full max-w-[352px] mb-[36px] mt-[40px] md:mt-[120px] bg-[#B3916A] font-bold text-white h-[48px] rounded-xl hover:bg-[#a37e5f] transition text-base md:text-lg flex items-center justify-center"
+        className="w-full max-w-[352px] mb-[36px] mt-[40px] md:mt-[90px] bg-[#B3916A] font-bold text-white h-[48px] rounded-xl hover:bg-[#a37e5f] transition text-base md:text-lg flex items-center justify-center"
       >
         확인
       </button>

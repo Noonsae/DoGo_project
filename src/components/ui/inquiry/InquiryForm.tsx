@@ -129,7 +129,7 @@ const InquiryForm = forwardRef(({ category, hotel_id }: InquiryFormProps, ref) =
         placeholder="문의하실 글의 내용을 작성해 주세요."
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        className={`flex items-center gap-1 sm:gap-2 md:gap-4 w-full border rounded h-[176px] resize-none text-[16px] sm:text-[14px] md:text-[16px] lg:text-[18px] font-medium leading-[135%]${
+        className={`justify-items-start p-[10px] flex items-center gap-1 sm:gap-2 md:gap-4 w-full border rounded h-[176px] resize-none text-[16px] sm:text-[14px] md:text-[16px] lg:text-[18px] font-medium leading-[135%]${
           content ? 'text-black' : 'text-[#A0A0A0]'
         }`}
       />

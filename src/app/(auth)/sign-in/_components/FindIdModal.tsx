@@ -143,7 +143,9 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
                     }`}
                   />
                 </div>
-                {errors.name && <p className="text-sm text-red-500 mt-1">{errors.name}</p>}
+                <p className={`text-sm text-red-500 mt-1 min-h-[10px] ${errors.name ? 'visible' : 'invisible'}`}>
+                  {errors.name || 'placeholder'}
+                </p>
                 <label className="block mt-4 sm:mt-[20px] text-gray-700">휴대폰 번호</label>
                 <input
                   type="text"
@@ -155,17 +157,19 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
 
                     setErrors((prev) => ({ ...prev, phone: undefined }));
                   }}
-                  className={`text-[15px] appearance-none w-full max-w-[352px] h-[48px] pl-4 pt-2 pb-2 border rounded-[8px] mb-1 focus:outline-none focus:ring-2 ${
+                  className={` text-[15px] appearance-none w-full max-w-[352px] h-[48px] pl-4 pt-2 pb-2 border rounded-[8px] mb-1 focus:outline-none focus:ring-2 ${
                     errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-black'
                   }`}
                 />
-                {errors.phone && <p className="text-sm text-red-500 mt-1">{errors.phone}</p>}
+                <p className={`text-sm text-red-500 mt-1 min-h-[10px] ${errors.phone ? 'visible' : 'invisible'}`}>
+                  {errors.phone || 'placeholder'}
+                </p>
               </div>
 
               <div className="flex flex-col rounded">
                 <button
                   type="submit"
-                  className="w-full bg-[#B3916A] mt-8 sm:mt-[120px] font-bold text-white py-4 rounded-xl hover:bg-[#a37e5f] transition"
+                  className="w-full bg-[#B3916A] mt-8 sm:mt-[80px] font-bold text-white py-4 rounded-xl hover:bg-[#a37e5f] transition"
                   disabled={form.isLoading}
                 >
                   {form.isLoading ? '조회 중...' : '아이디 찾기'}

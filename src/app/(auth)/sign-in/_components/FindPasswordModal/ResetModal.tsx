@@ -69,10 +69,12 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
                 errors.otp ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-[#B3916A]'
               }`}
             />
-            {errors.otp && <p className="text-sm text-red-500">{errors.otp}</p>}
-
+            {/* {errors.otp && <p className="text-sm text-red-500">{errors.otp}</p>} */}
+            <p className={`text-sm text-red-500 mt-1 min-h-[10px] ${errors.otp ? 'visible' : 'invisible'}`}>
+              {errors.otp || 'placeholder'}
+            </p>
             {/* 새 비밀번호 입력 */}
-            <div className="mb-4 text-base">
+            <div className="text-base">
               <label className="block font-semibold text-gray-700 mb-2">새 비밀번호</label>
 
               <div className="relative">
@@ -120,7 +122,10 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
                   {form.showPassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
                 </button>
               </div>
-              {errors.password && <p className="text-sm text-red-500 mt-2">{errors.password}</p>}
+              <p className={`text-sm text-red-500 mt-1 min-h-[10px] ${errors.password ? 'visible' : 'invisible'}`}>
+                {errors.password || 'placeholder'}
+              </p>
+              {/* {errors.password && <p className="text-sm text-red-500 mt-2">{errors.password}</p>} */}
             </div>
 
             {/* 비밀번호 확인 입력 */}
@@ -170,10 +175,14 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
                   {form.showConfirmPassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
                 </button>
               </div>
-              {errors.confirmPassword && <p className="text-sm text-red-500 mt-2">{errors.confirmPassword}</p>}
+              <p
+                className={`text-sm text-red-500 mt-1 min-h-[10px] ${errors.confirmPassword ? 'visible' : 'invisible'}`}
+              >
+                {errors.confirmPassword || 'placeholder'}
+              </p>
             </div>
           </div>
-          <div className="flex flex-col mt-[77px]">
+          <div className="flex flex-col ">
             <button
               type="submit"
               className="w-[352px] h-[48px] text-xl bg-[#B3916A] font-bold text-white py-[10px] rounded-xl hover:bg-[#a37e5f] transition"

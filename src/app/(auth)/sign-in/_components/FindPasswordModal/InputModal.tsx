@@ -54,7 +54,10 @@ const InputModal = ({ form, setForm, errors, setErrors, handleFindPassword, hand
             }`}
           />
         </div>
-        {errors.email && <p className="text-xs md:text-sm text-red-500">{errors.email}</p>}
+        <p className={`text-sm text-red-500 mt-1 min-h-[10px] ${errors.email ? 'visible' : 'invisible'}`}>
+          {errors.email || 'placeholder'}
+        </p>
+        {/* {errors.email && <p className="text-xs md:text-sm text-red-500">{errors.email}</p>} */}
         <label className="block mt-[16px] md:mt-[20px] text-sm md:text-base text-gray-700">
           {form.activeTab === 'user' ? '휴대폰 번호' : '담당자 번호'}
         </label>
@@ -73,12 +76,15 @@ const InputModal = ({ form, setForm, errors, setErrors, handleFindPassword, hand
             errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-black'
           }`}
         />
-        {errors.phone && <p className="text-xs md:text-sm text-red-500">{errors.phone}</p>}
+        <p className={`text-sm text-red-500 mt-1 min-h-[10px] ${errors.phone ? 'visible' : 'invisible'}`}>
+          {errors.phone || 'placeholder'}
+        </p>
+        {/* {errors.phone && <p className="text-xs md:text-sm text-red-500">{errors.phone}</p>} */}
       </div>
       <div className="flex flex-col rounded">
         <button
           type="submit"
-          className="w-full max-w-[352px] bg-[#B3916A] mt-[80px] md:mt-[120px] font-bold text-white py-[12px] md:py-[15px] rounded-xl hover:bg-[#a37e5f] transition"
+          className="w-full max-w-[352px] bg-[#B3916A] mt-[80px] md:mt-[90px] font-bold text-white py-[12px] md:py-[15px] rounded-xl hover:bg-[#a37e5f] transition"
         >
           {form.isLoading ? '조회중' : '비밀번호찾기'}
         </button>
