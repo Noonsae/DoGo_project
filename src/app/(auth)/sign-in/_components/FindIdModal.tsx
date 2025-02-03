@@ -80,7 +80,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
     setErrors({});
   };
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4 sm:px-0">
       <div className="w-full max-w-[424px] h-full max-h-[635px] bg-white rounded-lg shadow-lg relative px-4 sm:px-10 sm:py-8">
         <button
           onClick={onClose}
@@ -88,15 +88,16 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
         >
           <CloseButtonIcon />
         </button>
+
         {form.modalType === 'input' && (
-          <div className="flex flex-col h-full ">
+          <div className="flex flex-col h-full">
             <p className="text-xl sm:text-2xl font-bold mt-20 sm:mt-[36px] mb-10 sm:mb-[40px]">
               DoGo 가입 정보로 <br /> 아이디를 확인하세요.
             </p>
 
-            <div className="flex border-b-2 w-full max-w-[352px] ">
+            <div className="flex border-b-2 w-full max-w-[352px]">
               <button
-                className={`flex-1 pb-2 sm:pb-[10px] text-center  ${
+                className={`flex-1 pb-2 sm:pb-[10px] text-center ${
                   form.activeTab === 'user'
                     ? 'border-b-2 border-gray-500 font-bold text-neutral-800'
                     : 'text-neutral-400'
@@ -127,14 +128,12 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
               <div>
                 <div className="mt-8 sm:mt-[30px]">
                   <label className="block text-gray-700 mb-1">이름</label>
-
                   <input
                     type="text"
                     placeholder="이름을 입력해 주세요."
                     value={form.name}
                     onChange={(e) => {
                       setForm((prevForm) => ({ ...prevForm, name: e.target.value }));
-
                       setErrors((prev) => ({ ...prev, name: undefined }));
                     }}
                     className={`text-[15px] w-full max-w-[352px] h-[48px] pl-4 pt-2 pb-2 border rounded-[8px] focus:outline-none focus:ring-2 ${
@@ -145,6 +144,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
                 <p className={`text-sm text-red-500 mt-1 min-h-[10px] ${errors.name ? 'visible' : 'invisible'}`}>
                   {errors.name || 'placeholder'}
                 </p>
+
                 <label className="block mt-4 sm:mt-[20px] text-gray-700">휴대폰 번호</label>
                 <input
                   type="text"
@@ -153,10 +153,9 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
                   onChange={(e) => {
                     const formattedPhone = e.target.value.replace(/[^0-9-]/g, ''); // 숫자, - 만 허용
                     setForm((prevForm) => ({ ...prevForm, phone: formattedPhone }));
-
                     setErrors((prev) => ({ ...prev, phone: undefined }));
                   }}
-                  className={` text-[15px] appearance-none w-full max-w-[352px] h-[48px] pl-4 pt-2 pb-2 border rounded-[8px] mb-1 focus:outline-none focus:ring-2 ${
+                  className={`text-[15px] w-full max-w-[352px] h-[48px] pl-4 pt-2 pb-2 border rounded-[8px] mb-1 focus:outline-none focus:ring-2 ${
                     errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-black'
                   }`}
                 />
@@ -179,17 +178,17 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
         )}
 
         {form.modalType === 'success' && (
-          <div className="w-full max-w-[424px]  flex flex-col items-center ">
-            <div className="mt-[142px] ">
+          <div className="w-full max-w-[424px] flex flex-col items-center">
+            <div className="mt-[142px]">
               <CheckIcon />
             </div>
 
             <div className="text-center">
               <p className="text-lg sm:text-xl font-semibold">
-                <span style={{ color: '#B3916A' }}>{form.name}</span>님의 아이디는
+                <span className="text-[#B3916A]">{form.name}</span>님의 아이디는
               </p>
               <p className="text-lg sm:text-xl font-semibold">
-                <span style={{ color: '#B3916A' }}>{form.resultEmail}</span>입니다.
+                <span className="text-[#B3916A]">{form.resultEmail}</span>입니다.
               </p>
               <p className="text-sm sm:text-[15px] text-gray-500 mt-2">정보 보호를 위해 아이디의 일부만 보여집니다.</p>
             </div>
@@ -205,22 +204,21 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
         {form.modalType === 'failure' && (
           <div className="w-full max-w-[424px] flex flex-col items-center justify-center">
             <div className="flex flex-col items-center justify-center">
-              <div className="flex flex-col justify-center items-center text-center w-[352px] h-[411px] mt-[40px]">
+              <div className="flex flex-col justify-center items-center text-center w-full max-w-[352px] h-[411px] mt-[40px]">
                 <div className="mb-[13px]">
                   <WarningIcon />
                 </div>
-
-                <p className="text-lg sm:text-xl font-semibold text-neutral-700 text-center font-pretendard leading-[135%] text-[16px] sm:text-[18px] md:text-[20px]">
+                <p className="text-lg sm:text-xl font-semibold text-neutral-700 text-center leading-[135%]">
                   입력하신 정보와 일치하는 <br /> 아이디가 존재하지 않습니다.
                 </p>
-                <p className="text-sm  mt-3 text-neutral-500 text-center font-pretendard font-normal leading-[145%] text-[14px] sm:text-[15px] md:text-[16px]">
+                <p className="text-sm mt-3 text-neutral-500 text-center leading-[145%]">
                   입력하신 가입 정보를 다시 한 번 확인해 주세요.
                 </p>
               </div>
             </div>
             <button
               onClick={onClose}
-              className="text-white text-center font-pretendard items-center justify-center leading-[135%] h-[48px] text-[16px] sm:text-[18px] md:text-[20px] w-full max-w-[352px] mt-[40px]  bg-[#B3916A] font-bold py-4 rounded-xl hover:bg-[#a37e5f] transition"
+              className="text-white text-center leading-[135%] h-[48px] text-[16px] sm:text-[18px] md:text-[20px] w-full max-w-[352px] mt-[40px] bg-[#B3916A] font-bold py-4 rounded-xl hover:bg-[#a37e5f] transition"
             >
               확인
             </button>
