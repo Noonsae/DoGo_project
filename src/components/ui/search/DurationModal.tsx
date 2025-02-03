@@ -145,7 +145,7 @@ const DurationModal = ({ onClose }: { onClose: () => void }) => {
       {tab === 'flexible' && (
         <div className="mt-10 text-center">
           <p className="mb-3 text-base font-semibold">얼마나 머무를 예정인가요?</p>
-          <div className="w-[308px] mx-auto grid grid-cols-4 gap-3 mb-4">
+          <div className="w-[396px] mx-auto grid grid-cols-5 gap-3 mb-4">
             {['1박', '2박', '3박', '4박', '5박'].map((option) => (
               <button
                 key={option}
