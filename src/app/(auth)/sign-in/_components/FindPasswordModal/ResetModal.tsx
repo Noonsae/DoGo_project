@@ -108,6 +108,7 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
                 </p>
                 <button
                   type="button"
+                  tabIndex={-1}
                   onClick={() =>
                     setForm((prevForm) => ({
                       ...prevForm,
@@ -157,6 +158,7 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
                 />
                 <button
                   type="button"
+                  tabIndex={-1}
                   onClick={() =>
                     setForm((prevForm) => ({
                       ...prevForm,
