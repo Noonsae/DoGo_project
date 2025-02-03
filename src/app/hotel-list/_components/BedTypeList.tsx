@@ -7,7 +7,7 @@ interface BedTypeListProps {
 
 const bedTypes = ['싱글', '더블', '트윈']; // 침대 타입 배열
 
-const BedTypeList: React.FC<BedTypeListProps> = ({ selectedBeds, onBedChange }) => {
+const BedTypeList = ({ selectedBeds, onBedChange }: BedTypeListProps) => {
   return (
     <div>
       <h3 className="text-lg font-semibold mb-2">침대 종류</h3>
