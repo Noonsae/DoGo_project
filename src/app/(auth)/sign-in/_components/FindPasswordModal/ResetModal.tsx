@@ -101,7 +101,7 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
                     errors.password ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-[#B3916A]'
                   }`}
                 />
-                <p className="text-sm text-neutral-600 mb-[20px]">
+                <p className="text-sm text-neutral-600 mt-[4px]">
                   영문 대•소문자/숫자/특수문자 중 2가지 이상 조합, 8자~32자
                 </p>
                 <button
@@ -118,10 +118,9 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
                   {form.showPassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
                 </button>
               </div>
-              <p className={`text-sm text-red-500 mt-1 min-h-[10px] ${errors.password ? 'visible' : 'invisible'}`}>
+              <p className={`text-sm text-red-500 mt-1 min-h-[5px] ${errors.password ? 'visible' : 'invisible'}`}>
                 {errors.password || 'placeholder'}
               </p>
-              {/* {errors.password && <p className="text-sm text-red-500 mt-2">{errors.password}</p>} */}
             </div>
 
             {/* 비밀번호 확인 입력 */}
@@ -181,7 +180,7 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
           <div className="flex flex-col ">
             <button
               type="submit"
-              className="w-[352px] h-[48px] text-xl bg-[#B3916A] font-bold text-white py-[10px] rounded-xl hover:bg-[#a37e5f] transition"
+              className="w-[352px] h-[48px] mt-[20px] text-xl bg-[#B3916A] font-bold text-white py-[10px] rounded-xl hover:bg-[#a37e5f] transition"
               // disabled={form.isLoading}
             >
               {form.isLoading ? '처리 중...' : '완료'}
