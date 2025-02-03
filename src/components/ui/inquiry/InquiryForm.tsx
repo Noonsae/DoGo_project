@@ -102,27 +102,36 @@ const InquiryForm = forwardRef(({ category, hotel_id }: InquiryFormProps, ref) =
     submit: handleSubmit
   }));
   return (
-    <form className="flex flex-col gap-4 mt-4">
-      <div className="flex flex-row">
-        <p className="text-[#444] font-pretendard text-[16px] font-semibold leading-[135%]">제목</p>
-        <span className="ml-[4px] text-red-500">*</span>
+    <form className="flex flex-col gap-4 mt-4 w-full max-w-[90%] sm:max-w-[500px] md:max-w-[600px] mx-auto">
+      <div className="flex items-center">
+        <p className="text-[16px] sm:text-[14px] md:text-[16px] lg:text-[18px] font-semibold leading-[135%] text-[#444]">
+          제목
+        </p>
+        <span className="ml-1 text-red-500">*</span>
       </div>
       <input
         type="text"
         placeholder="문의하실 글의 제목을 작성해 주세요."
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        className="border p-2 rounded"
+        className={`flex h-[48px] px-4 py-2 items-center gap-1 sm:gap-2 md:gap-4 border rounded mt-2 w-full text-[16px] sm:text-[14px] md:text-[16px] lg:text-[18px] font-medium leading-[135%] ${
+          title ? 'text-black' : 'text-[#A0A0A0]'
+        }`}
       />
-      <div className="flex flex-row">
-        <p className="text-[#444] font-pretendard text-[16px] font-semibold leading-[135%]">문의사항</p>
-        <span className="ml-[4px] text-red-500">*</span>
+
+      <div className="flex items-center">
+        <p className="text-[16px] sm:text-[14px] md:text-[16px] lg:text-[18px] font-semibold leading-[135%] text-[#444]">
+          문의사항
+        </p>
+        <span className="ml-1 text-red-500">*</span>
       </div>
       <textarea
         placeholder="문의하실 글의 내용을 작성해 주세요."
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        className="border p-2 rounded h-[176px] text-left flex items-center placeholder:text-left placeholder:flex placeholder:items-center"
+        className={`border rounded w-full h-[176px] resize-none mt-2 text-[16px] sm:text-[14px] md:text-[16px] lg:text-[18px] font-medium leading-[135%] ${
+          content ? 'text-black' : 'text-[#A0A0A0]'
+        }`}
       />
     </form>
   );
