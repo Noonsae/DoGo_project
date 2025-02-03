@@ -9,11 +9,11 @@ interface InputModalProps {
   handleTabChange: (tab: 'user' | 'business') => void;
 }
 const InputModal = ({ form, setForm, errors, setErrors, handleFindPassword, handleTabChange }: InputModalProps) => (
-  <div className="m-4 md:m-10 flex flex-col h-full z-50">
+  <div className="m-4 md:m-10 flex flex-col h-full z-50 w-full max-w-[352px]">
     <p className="text-xl md:text-2xl font-bold mt-[24px] md:mt-[36px] mb-[24px] md:mb-[40px]">
       비밀번호를 재설정하기 위해 <br /> 가입 정보를 입력해 주세요.
     </p>
-    <div className="flex border-b-2 w-full max-w-[352px]">
+    <div className="flex border-b-2 w-full">
       <button
         className={`flex-1 pb-2 text-center ${
           form.activeTab === 'user' ? 'border-b-2 border-gray-500 font-bold' : 'text-gray-400'
@@ -32,7 +32,7 @@ const InputModal = ({ form, setForm, errors, setErrors, handleFindPassword, hand
       </button>
     </div>
     <form
-      className="flex flex-col justify-between"
+      className="flex flex-col justify-between w-full"
       onSubmit={(e) => {
         e.preventDefault();
         handleFindPassword();
@@ -49,7 +49,7 @@ const InputModal = ({ form, setForm, errors, setErrors, handleFindPassword, hand
               setForm((prevForm) => ({ ...prevForm, email: e.target.value }));
               setErrors((prev) => ({ ...prev, email: undefined }));
             }}
-            className={`w-full max-w-[352px] h-[40px] md:h-[48px] pl-[12px] md:pl-[16px] border rounded-[8px] focus:outline-none focus:ring-2 ${
+            className={`w-full h-[40px] md:h-[48px] pl-[12px] md:pl-[16px] border rounded-[8px] focus:outline-none focus:ring-2 ${
               errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-black'
             }`}
           />
@@ -57,7 +57,7 @@ const InputModal = ({ form, setForm, errors, setErrors, handleFindPassword, hand
         <p className={`text-sm text-red-500 mt-1 min-h-[10px] ${errors.email ? 'visible' : 'invisible'}`}>
           {errors.email || 'placeholder'}
         </p>
-        {/* {errors.email && <p className="text-xs md:text-sm text-red-500">{errors.email}</p>} */}
+
         <label className="block mt-[16px] md:mt-[20px] text-sm md:text-base text-gray-700">
           {form.activeTab === 'user' ? '휴대폰 번호' : '담당자 번호'}
         </label>
@@ -72,7 +72,7 @@ const InputModal = ({ form, setForm, errors, setErrors, handleFindPassword, hand
             }));
             setErrors((prev) => ({ ...prev, phone: undefined }));
           }}
-          className={`appearance-none w-full max-w-[352px] h-[40px] md:h-[48px] pl-[12px] md:pl-[16px] border rounded-[8px] focus:outline-none focus:ring-2 ${
+          className={`appearance-none w-full h-[40px] md:h-[48px] pl-[12px] md:pl-[16px] border rounded-[8px] focus:outline-none focus:ring-2 ${
             errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-black'
           }`}
         />
@@ -80,6 +80,7 @@ const InputModal = ({ form, setForm, errors, setErrors, handleFindPassword, hand
           {errors.phone || 'placeholder'}
         </p>
       </div>
+
       <div className="flex flex-col rounded">
         <button
           type="submit"
