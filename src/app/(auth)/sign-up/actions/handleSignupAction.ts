@@ -22,6 +22,13 @@ export default async function handleSignupAction({
   const supabaseAdmin = await serverSupabase();
 
   try {
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d|.*[^A-Za-z0-9]).{8,32}$/;
+    if (!passwordRegex.test(password)) {
+      return {
+        success: false,
+        message: '비밀번호는 영문 대•소문자/숫자/특수문자 중 2가지 이상 조합, 8자~32자여야 합니다.'
+      };
+    }
     const { data: existingEmail } = await supabaseAdmin.from('users').select('id').eq('email', email).single();
 
     if (existingEmail) {
