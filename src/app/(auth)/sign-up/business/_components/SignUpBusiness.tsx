@@ -220,9 +220,14 @@ const SignUpBusiness = ({
           </p>
           <input
             type="text"
-            placeholder="사업자 번호를 입력해주세요"
+            placeholder="사업자 번호를 입력해주세요 (13자리)"
             value={businessNumber}
-            onChange={(e) => handleInputChange('businessNumber', e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value.replace(/\D/g, '');
+              if (value.length <= 13) {
+                setBusinessNumber(value);
+              }
+            }}
             className={`w-[400px] h-[48px] sm:w-[450px] sm:h-[56px]   px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none${
               errors.businessNumber
                 ? 'border-red-500 focus:ring-red-500 mb-[4px] sm:mb-[8px]'
