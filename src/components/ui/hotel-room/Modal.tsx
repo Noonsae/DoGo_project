@@ -58,12 +58,14 @@ const Modal = ({ isOpen, onClose, room, hotelData }: ModalProps) => {
       <div className="bg-white rounded shadow-lg w-[600px] max-w-4xl relative h-[700px] overflow-y-auto scrollbar-hide">
         {/* 닫기 버튼 */}
         <div className="sticky top-0 z-10 bg-[#221A1A] text-white">
-          <h2 className="text-xl font-bold p-4 text-center">{room.room_name}</h2>
+          <h2 className="text-[#FDF9F4] text-[16px] sm:text-[18px] md:text-[20px] lg:text-[22px] text-xl font-bold p-4 text-center">
+            {room.room_name}
+          </h2>
           <IoCloseIcon onClick={onClose} className="absolute top-4 right-4 text-2xl cursor-pointer" />
         </div>
 
         {/* 네비게이션 탭 */}
-        <nav className="bg-white flex justify-center border-b sticky top-0 z-10">
+        <nav className="bg-white flex  border-b sticky top-0 z-10">
           {[
             { id: 'info', label: '객실 정보' },
             { id: 'amenities', label: '객실 편의 시설' },
@@ -72,8 +74,8 @@ const Modal = ({ isOpen, onClose, room, hotelData }: ModalProps) => {
             <button
               key={tab.id}
               onClick={() => scrollToSection(tab.id)}
-              className={`px-6 py-4 text-sm font-medium ${
-                activeTab === tab.id ? 'text-black border-b-2 border-black' : 'text-gray-500 hover:text-black'
+              className={`px-4 py-3 text-sm text-[16px] font-medium focus:font-semibold${
+                activeTab === tab.id ? 'border-b-2 border-[#B3916A]' : 'text-neutral-600 hover:text-[#000000] '
               }`}
             >
               {tab.label}
@@ -150,11 +152,17 @@ const Modal = ({ isOpen, onClose, room, hotelData }: ModalProps) => {
         </div>
 
         {/* 하단 고정 버튼과 가격 */}
-        <div className="sticky bottom-0 left-0 w-full bg-white border-t p-4 flex justify-between items-center">
-          <p>{room.price.toLocaleString()}원</p>
+        <div className=" sticky bottom-0 left-0 w-full bg-white border-t p-4 flex justify-between items-center">
+          <p className="flex flex-row justify-center items-center text-neutral-900 text-[20px] sm:text-[22px] md:text-[24px] lg:text-[26px] font-semibold">
+            {room.price.toLocaleString()}원{' '}
+            <p className="ml-1 sm:ml-2 md:ml-4 text-[14px] sm:text-[15px] md:text-[16px] lg:text-[18px] font-medium text-neutral-500">
+              /1박
+            </p>
+          </p>
+
           <button
             onClick={() => handleBooking(room)}
-            className="bg-[#B3916A] text-white py-2 px-6 rounded-md hover:bg-[#8B5E3C]"
+            className="text-[16px] sm:text-[17px] md:text-[18px] lg:text-[20px] bg-[#B3916A] text-white py-2 px-6 rounded-md hover:bg-[#8B5E3C]"
           >
             예약하기
           </button>
