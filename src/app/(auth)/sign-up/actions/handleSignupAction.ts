@@ -22,6 +22,18 @@ export default async function handleSignupAction({
   const supabaseAdmin = await serverSupabase();
 
   try {
+    const { data: existingEmail } = await supabaseAdmin.from('users').select('id').eq('email', email).single();
+
+    if (existingEmail) {
+      return { success: false, message: '이미 사용 중인 이메일입니다.' };
+    }
+
+    const { data: existingPhone } = await supabaseAdmin.from('users').select('id').eq('phone_number', phone).single();
+
+    if (existingPhone) {
+      return { success: false, message: '이미 등록된 휴대폰 번호입니다.' };
+    }
+
     const { data: authData, error: authError } = await supabaseAdmin.auth.signUp({
       email,
       password,
@@ -64,6 +76,7 @@ export default async function handleSignupAction({
         throw new Error(insertError.message);
       }
     }
+
     const { error: updateError } = await supabaseAdmin
       .from('users')
       .update({
@@ -81,8 +94,3 @@ export default async function handleSignupAction({
     return { success: false, message: error.message };
   }
 }
-//     return { success: true, message: `${name} 회원가입 성공` };
-//   } catch (error: any) {
-//     return { success: false, message: error.message };
-//   }
-// }
