@@ -1,7 +1,8 @@
 'use client';
+
 import FileIcon from '@/components/ui/icon/FileIcon';
 import { browserSupabase } from '@/supabase/supabase-client';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 interface BookingType {
   id: string;
@@ -37,11 +38,27 @@ const BookingConfirmPage = () => {
   const [user, setUser] = useState<UserType | null>(null);
   const { id } = useParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  
   // 호텔객실상세 페이지에서 예약하기 버튼 클릭-> 결제페이지 이동
   // 결제페이지에서 선택된 객실정보+가격 -> 결제진행
   // 결제 성공 시 bookings테이블에 예약정보를 저장
   // 예액확정 페이지는 결제 페이지에서 받은 데이터를 기반으로 예약정보를 표시
   // 따라서 supabase에서 불러오는 게 아님
+  
+  useEffect(() => {
+    const paymentKey = searchParams.get('paymentKey');
+    const orderId = searchParams.get('orderId');
+    const amount = searchParams.get('amount');
+
+    if (paymentKey && orderId && amount) {
+      console.log('결제 성공 정보:', { paymentKey, orderId, amount });
+
+      // (선택) 백엔드 검증 요청 로직 추가
+      // 예: fetch('/api/verify-payment', { method: 'POST', body: JSON.stringify({ paymentKey, orderId, amount }) });
+    }
+  }, [searchParams]);
+  
   useEffect(() => {
     if (!id) {
       console.error('예약 ID가 없습니다.');
