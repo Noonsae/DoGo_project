@@ -46,6 +46,7 @@ const HotelList = () => {
   const facilityIds = searchParams.get('facilities')?.split(',') || [];
   const serviceIds = searchParams.get('services')?.split(',') || [];
   const sort = searchParams.get('sort') || '';
+  const beds = searchParams.get('beds')?.split(',') || []; // beds 파라미터를 URL에서 가져옴
 
   const [filters, setFilters] = useState<FiltersType>({
     label: '',
@@ -54,7 +55,8 @@ const HotelList = () => {
     maxPrice: 2000000,
     location: '',
     facilityIds: [],
-    serviceIds: []
+    serviceIds: [],
+    beds
   });
 
   const observerRef = useRef<HTMLDivElement | null>(null);
@@ -86,8 +88,9 @@ const HotelList = () => {
       stars,
       minPrice,
       maxPrice,
-      facilityIds: facilityIds,
-      serviceIds: serviceIds
+      facilityIds,
+      serviceIds,
+      beds
     },
     sortOrder: sort as sortOrder
   });
@@ -96,9 +99,9 @@ const HotelList = () => {
 
   useEffect(() => {
     if (data || !isFetchingNextPage) {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1000);
+      // setTimeout(() => {
+      setIsLoading(false);
+      // }, 1000);
     }
   }, [data, isFetchingNextPage]);
 
@@ -128,9 +131,7 @@ const HotelList = () => {
     <div className="w-full max-w-[1300px] mx-auto px-[50px] pt-[200px] pb-[50px] flex flex-row justify-between gap-[30px] ">
       <ScrollSearchBox />
 
-      <AsideFilter
-      // onFilterChange={(newFilters) => setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }))}
-      />
+      <AsideFilter onFilterChange={(newFilters) => setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }))} />
 
       <div className="">
         <div className="flex justify-between items-center mb-4">
@@ -139,10 +140,14 @@ const HotelList = () => {
               {/* 결과의 대한 갯수 가져오기 */}총 {data?.pages[0].totalCount}개의 결과를 불러왔습니다.
             </p>
             <p className="mt-2 text-base text-[#777] font-medium">
-              적용된 필터: {filters.stars.length > 0 ? `${filters.stars.join(', ')}성` : '전체'}
+              적용된 필터: {/* 성급 필터 */}
+              {filters.stars.length > 0 && `${filters.stars.join(', ')}성`}
+              {filters.facilityIds.length > 0 && <span>,{filters.facilityIds.join(', ')}</span>}
+              {filters.serviceIds.length > 0 && <span>, {filters.serviceIds.join(', ')}</span>}
             </p>
           </div>
-          <SortBtn sortOrder={sort as sortOrder} />
+          {/* 일단 주석
+          <SortBtn sortOrder={sort as sortOrder} /> */}
         </div>
 
         {/* hotel list card */}

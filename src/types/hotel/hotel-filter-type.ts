@@ -51,6 +51,7 @@ export interface FiltersType {
   services?: string[]; // 중첩 구조에 맞게 수정
   facilityIds: string[];
   serviceIds: string[];
+  beds: string[];
 }
 
 export type sortOrder = 'asc' | 'desc' | '';
