@@ -79,10 +79,30 @@ export const getUserRole = async (userId: string | undefined) => {
     return { data: null };
   }
   const supabase = await serverSupabase();
-  const { data, error } = await supabase.from('users').select('role').eq('id', userId).single();
+  const { data, error } = await supabase.from('users').select('role, email').eq('id', userId).single();
   if (error) {
     throw new Error(`유저 역할 가져오기 실패: ${error?.message}`);
   }
-
+  if (data.email === 'admin@example.com') {
+    return { data: { role: 'admin' } };
+  }
   return { data };
+};
+
+export const createAdminUser = async () => {
+  const supabase = await serverSupabase();
+
+  const { data, error } = await supabase.auth.admin.createUser({
+    // ⭐admin계정임다
+    email: 'admin@qwe.com',
+    password: 'admin1234',
+    email_confirm: true
+  });
+
+  if (error) {
+    console.error('Admin 계정 생성 실패:', error);
+    return { success: false, error };
+  }
+
+  return { success: true, userId: data.user?.id };
 };

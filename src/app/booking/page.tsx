@@ -4,6 +4,7 @@ import Sidebar from './_components/Sidebar';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { browserSupabase } from '@/supabase/supabase-client';
 import { BookingType } from '@/types/supabase/booking-type';
+import TossPaymentsButton from './_components/TossPaymentsButton';
 
 const countryCodes = [
   { code: '+82', name: '대한민국 (South Korea)' },
@@ -222,12 +223,12 @@ const booking = () => {
           </div>
 
           {/* 결제 수단 */}
-          <div className="bg-white shadow-lg rounded-lg p-6 w-[892px]">
+          {/* <div className="bg-white shadow-lg rounded-lg p-6 w-[892px]">
             <p className="text-lg font-semibold">결제 수단</p>
-            <p className="text-gray-600 text-sm">숙박하실 호텔을 결제하기 위한 방법을 선택해 주세요.</p>
+            <p className="text-gray-600 text-sm">숙박하실 호텔을 결제하기 위한 방법을 선택해 주세요.</p> */}
 
-            {/* 결제 수단 선택 (라디오 버튼) */}
-            <div className="mt-4 flex space-x-8">
+          {/* 결제 수단 선택 (라디오 버튼) */}
+          {/* <div className="mt-4 flex space-x-8">
               <label className="flex items-center space-x-2 cursor-pointer">
                 <input
                   type="radio"
@@ -249,10 +250,10 @@ const booking = () => {
                 />
                 <span className="font-semibold text-gray-700">토스페이먼트</span>
               </label>
-            </div>
+            </div> */}
 
-            {/* 신용/체크카드 결제 폼 */}
-            {paymentMethod === 'credit' && (
+          {/* 신용/체크카드 결제 폼 */}
+          {/* {paymentMethod === 'credit' && (
               <div className="mt-4 p-6 border border-gray-200 rounded-lg bg-gray-50">
                 <p className="font-semibold text-gray-700">신용/체크카드</p>
 
@@ -297,22 +298,19 @@ const booking = () => {
                   </div>
                 </div>
               </div>
-            )}
+            )} */}
 
-            {/* 토스페이먼트 결제 안내 */}
-            {paymentMethod === 'toss' && (
+          {/* 토스페이먼트 결제 안내 */}
+          {/* {paymentMethod === 'toss' && (
               <div className="mt-4 p-6 border border-gray-200 rounded-lg bg-gray-50">
                 <p className="font-semibold text-gray-700">토스페이먼트</p>
                 <p className="text-gray-600 text-sm mt-2">
                   토스페이먼트를 사용하여 간편하게 결제하세요. 결제 진행 시 토스 앱으로 연결됩니다.
                 </p>
-
-                <button className="mt-4 bg-blue-500 text-white w-full py-3 rounded-md font-semibold">
-                  토스페이로 결제하기
-                </button>
+                <TossPaymentsButton />
               </div>
-            )}
-          </div>
+            )} */}
+          {/* </div> */}
 
           {/* 동의 및 결제 버튼 */}
           <div className="bg-white shadow-lg rounded-lg p-6 w-[892px]">
@@ -340,13 +338,14 @@ const booking = () => {
               <span className="text-2xl  mr-[20px] font-semibold text-[#B3916A]">
                 {room ? `${room.price.toLocaleString()}원` : 'Loading...'}
               </span>
-              <button
+              <TossPaymentsButton />
+              {/* <button
                 onClick={handlePayment}
                 disabled={isProcessing}
                 className="bg-[#B3916A] text-white px-6 py-3 rounded-md"
               >
                 {isProcessing ? '결제 처리 중...' : '결제하기'}
-              </button>
+              </button> */}
             </div>
           </div>
         </div>

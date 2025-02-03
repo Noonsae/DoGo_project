@@ -7,6 +7,7 @@ import localFont from 'next/font/local';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import AuthProvider from './_provider/AuthProvider';
+import InquiryFloatingButton from '@/components/common/InquiryFloatingButton';
 
 import '../styles/globals.css';
 
@@ -50,6 +51,7 @@ const RootLayout = ({
             <Header />
             {children}
             <Footer />
+            <InquiryFloatingButton />
           </body>
         </MyProvider>
       </AuthProvider>

@@ -81,6 +81,9 @@ const fetchHotelsFilter = async ({
     query = query.order('rooms.price', { ascending: sortOrder === 'asc' });
   }
 
+  // ⭐ 추가: stars 순으로 정렬
+  query = query.order('stars', { ascending: false }); // 높은 등급(stars) 먼저 가져오기
+
   // 9. 페이지네이션 처리
   const { count } = await query;
 

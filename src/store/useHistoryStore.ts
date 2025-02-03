@@ -9,7 +9,7 @@ const useHistoryStore = create<HistoryStoreType>()(
       mostFrequentLocation: '', // 초기값은 빈 문자열
       setMostFrequentLocation: (location: string) => set(() => ({ mostFrequentLocation: location })),
 
-      addHotel: (hotel) =>
+      addHotel: (hotel, reviews = []) =>
         set((state) => {
           // 동일한 id의 호텔이 이미 있는지 확인
           const isAlreadyInHistory = state.history.some((item) => item.id === hotel.id);
@@ -17,7 +17,8 @@ const useHistoryStore = create<HistoryStoreType>()(
           const price = hotel.min_price || null;
           const updatedHotel = {
             ...hotel,
-            price // 가격 정보가 있으면 추가, 없으면 null로 설정
+            price, // 가격 정보가 있으면 추가, 없으면 null로 설정
+            reviews: reviews || []
           };
 
           // 기존 값이 있다면 해당 값을 지우고 새 값을 추가
