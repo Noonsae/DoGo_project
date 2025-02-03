@@ -20,7 +20,7 @@ const TossPaymentsButton = () => {
         orderName: '테스트 결제', // 주문명 예시
         customerName: '홍길동', // 고객명 예시
         successUrl: `${window.location.origin}/booking/${id}`, // 결제 성공 시 이동할 URL
-        failUrl: `${window.location.origin}/fail` // 결제 실패 시 이동할 URL
+        failUrl: `${window.location.origin}/booking/fail` // 결제 실패 시 이동할 URL        
       });
     } catch (error) {
       console.error('결제 요청 중 오류:', error);
