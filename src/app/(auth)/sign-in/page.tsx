@@ -41,7 +41,7 @@ const SignInPage = () => {
       const { data, error } = await login({
         email: form.email,
         password: form.password,
-        role: role // 역할 추가
+        role: role
       });
 
       if (error || !data) {
@@ -52,7 +52,6 @@ const SignInPage = () => {
         });
         return;
       }
-      //커밋용 주석
       await Swal.fire({
         icon: 'success',
         title: '로그인 성공',

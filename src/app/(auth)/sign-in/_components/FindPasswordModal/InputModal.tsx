@@ -79,7 +79,6 @@ const InputModal = ({ form, setForm, errors, setErrors, handleFindPassword, hand
         <p className={`text-sm text-red-500 mt-1 min-h-[10px] ${errors.phone ? 'visible' : 'invisible'}`}>
           {errors.phone || 'placeholder'}
         </p>
-        {/* {errors.phone && <p className="text-xs md:text-sm text-red-500">{errors.phone}</p>} */}
       </div>
       <div className="flex flex-col rounded">
         <button
