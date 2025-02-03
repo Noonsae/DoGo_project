@@ -120,8 +120,8 @@ const InquiryForm = forwardRef(({ category, hotel_id }: InquiryFormProps, ref) =
       />
 
       <div className="flex items-center">
-        <p className="text-[16px] sm:text-[14px] md:text-[16px] lg:text-[18px] font-semibold leading-[135%] text-[#444]">
-          문의사항
+        <p className="text-[16px] mb-[8px] sm:text-[14px] md:text-[16px] lg:text-[18px] font-semibold leading-[135%] text-[#444]">
+          문의 사항
         </p>
         <span className="ml-1 text-red-500">*</span>
       </div>
@@ -129,7 +129,7 @@ const InquiryForm = forwardRef(({ category, hotel_id }: InquiryFormProps, ref) =
         placeholder="문의하실 글의 내용을 작성해 주세요."
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        className={`border rounded w-full h-[176px] resize-none mt-2 text-[16px] sm:text-[14px] md:text-[16px] lg:text-[18px] font-medium leading-[135%] ${
+        className={`flex items-center gap-1 sm:gap-2 md:gap-4 w-full border rounded h-[176px] resize-none mt-2 text-[16px] sm:text-[14px] md:text-[16px] lg:text-[18px] font-medium leading-[135%] ${
           content ? 'text-black' : 'text-[#A0A0A0]'
         }`}
       />

@@ -17,11 +17,13 @@ const InquiryModal = ({ isOpen, onClose, hotel_id }: InquiryModalProps) => {
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white rounded-lg shadow-lg w-full max-w-[90%] sm:max-w-[500px] md:max-w-[600px] h-auto">
         <div className="flex items-center justify-between bg-[#221A1A] text-white px-5 py-4 rounded-t-lg">
-          <p className="text-[20px] sm:text-[18px] md:text-[20px] lg:text-[22px] font-semibold text-center leading-[135%] text-[#FDF9F4] ml-6">
-            문의하기
-          </p>
+          <div className="flex flex-col justify-center items-center w-full">
+            <p className="text-[20px] sm:text-[18px] md:text-[20px] lg:text-[22px] font-semibold text-center leading-[135%] text-[#FDF9F4] ml-6">
+              문의하기
+            </p>
+          </div>
           <button onClick={onClose}>
-            <CloseButtonIcon />
+            <CloseButtonIcon className="text-white" />
           </button>
         </div>
         <div className="mt-4 w-full max-w-[536px] mx-auto px-4 sm:px-6">
