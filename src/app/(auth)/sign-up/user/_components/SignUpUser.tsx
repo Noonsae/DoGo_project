@@ -5,6 +5,8 @@ import Image from 'next/image';
 import CloseEyesIcon from '@/components/ui/icon/CloseEyesIcon';
 import OpenEyesIcon from '@/components/ui/icon/OpenEyesIcon';
 import LogoAuth from '@/components/ui/icon/LogoAuth';
+import handleSignupAction from '../../actions/handleSignupAction';
+import Swal from 'sweetalert2';
 const SignUpUser = ({
   email,
   setEmail,
@@ -22,9 +24,9 @@ const SignUpUser = ({
   handleSignup
 }: SignUpProps) => {
   const [form, setForm] = useState({
-    confirmPassword: '', // 비밀번호 확인
-    updatePassword: false, // 비밀번호 보기 toggle
-    checkUpdatePassword: false // 비밀번호 확인 보기 toggle
+    confirmPassword: '',
+    updatePassword: false,
+    checkUpdatePassword: false
   });
 
   const [errors, setErrors] = useState<{
@@ -33,10 +35,10 @@ const SignUpUser = ({
     name?: string;
     nickname?: string;
     confirmPassword?: string;
-  }>({}); // 에러 메시지 상태
+  }>({});
   const router = useRouter();
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     const newErrors: { email?: string; phone?: string; name?: string; nickname?: string; confirmPassword?: string } =
       {};
 
@@ -49,14 +51,36 @@ const SignUpUser = ({
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length > 0) return;
+    const response = await handleSignupAction({
+      email: email ?? '',
+      password: password ?? '',
+      name: name ?? '',
+      phone: phone ?? '',
+      nickname,
+      role: 'user'
+    });
+    if (!response.success) {
+      await Swal.fire({
+        icon: 'error',
+        title: '회원가입 실패',
+        text: response.message
+      });
+      return;
+    }
 
+    await Swal.fire({
+      icon: 'success',
+      title: '회원가입 성공',
+      text: `${name}님, 회원가입이 완료되었습니다!`
+    });
     handleSignup();
+    router.push('/');
   };
 
   const handleInputChange = (field: 'email' | 'phone' | 'name' | 'nickname' | 'confirmPassword', value: string) => {
     setErrors((prevErrors) => ({
       ...prevErrors,
-      [field]: undefined // 입력 시 해당 에러 제거
+      [field]: undefined
     }));
 
     switch (field) {
@@ -98,7 +122,6 @@ const SignUpUser = ({
             일반 회원 회원가입
           </p>
 
-          {/* 이메일 */}
           <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px] font-pretendard text-[16px] font-semibold leading-[135%]">
             이메일
           </p>
@@ -115,7 +138,6 @@ const SignUpUser = ({
           />
           {errors.email && <p className="text-[14px] text-red-500">{errors.email}</p>}
 
-          {/* 비밀번호 */}
           <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px] font-pretendard text-[16px] font-semibold leading-[135%]">
             비밀번호
           </p>
@@ -127,12 +149,12 @@ const SignUpUser = ({
               onChange={(e) => setPassword(e.target.value)}
               className="w-[400px] h-[48px] sm:w-[450px] sm:h-[56px] mb-[20px] sm:mb-[24px]  px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none"
             />
-            {/* w-[400px] h-[48px] */}
             <p className="text-xs pb-[4px] mb-[12px] sm:mb-[16px] px-1 text-gray-700">
               영문 대•소문자/숫자/특수문자 중 2가지 이상 조합, 8자~32자
             </p>
             <button
               type="button"
+              tabIndex={-1}
               onClick={() => setForm((prevForm) => ({ ...prevForm, updatePassword: !prevForm.updatePassword }))}
               className="absolute right-[-25px] top-7 transform -translate-y-1/2 text-gray-600 hover:text-black"
             >
@@ -140,7 +162,6 @@ const SignUpUser = ({
             </button>
           </div>
 
-          {/* 비밀번호 확인 */}
           <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px] font-pretendard text-[16px] font-semibold leading-[135%]">
             비밀번호 확인
           </p>
@@ -158,6 +179,7 @@ const SignUpUser = ({
             />
             <button
               type="button"
+              tabIndex={-1}
               onClick={() =>
                 setForm((prevForm) => ({ ...prevForm, checkUpdatePassword: !prevForm.checkUpdatePassword }))
               }
@@ -168,7 +190,6 @@ const SignUpUser = ({
           </div>
           {errors.confirmPassword && <p className="text-sm  text-red-500">{errors.confirmPassword}</p>}
 
-          {/* 휴대폰 번호 */}
           <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px] font-pretendard text-[16px] font-semibold leading-[135%]">
             휴대폰 번호
           </p>
@@ -185,7 +206,6 @@ const SignUpUser = ({
           />
           {errors.phone && <p className="text-[14px] mb-[12px] sm:mb-[16px] text-red-500">{errors.phone}</p>}
 
-          {/* 이름 */}
           <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px] font-pretendard text-[16px] font-semibold leading-[135%]">
             이름
           </p>
@@ -202,7 +222,6 @@ const SignUpUser = ({
           />
           {errors.name && <p className="text-[14px] text-red-500">{errors.name}</p>}
 
-          {/* 닉네임 */}
           <p className="mt-[20px] sm:mt-[24px] font-pretendard mb-[4px] sm:mb-[8px] text-[16px] font-semibold leading-[135%]">
             닉네임
           </p>
@@ -219,7 +238,6 @@ const SignUpUser = ({
           />
           {errors.nickname && <p className="text-[14px] text-red-500">{errors.nickname}</p>}
 
-          {/* 완료 버튼 */}
           <button
             type="button"
             onClick={handleSignUp}

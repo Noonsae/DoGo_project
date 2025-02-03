@@ -41,7 +41,7 @@ const SignInPage = () => {
       const { data, error } = await login({
         email: form.email,
         password: form.password,
-        role: role // 역할 추가
+        role: role
       });
 
       if (error || !data) {
@@ -52,7 +52,6 @@ const SignInPage = () => {
         });
         return;
       }
-      //커밋용 주석
       await Swal.fire({
         icon: 'success',
         title: '로그인 성공',
@@ -70,119 +69,118 @@ const SignInPage = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-[400px] lg:h-auto">
-        <div className="mt-[94px] mb-[40px] flex flex-col justify-center items-center">
-          <LogoAuth />
-        </div>
+    <>
+      {form.isFindIdModalOpen && <FindIdModal onClose={() => setForm({ ...form, isFindIdModalOpen: false })} />}
+      {form.isFindPasswordOpen && <FindPasswordModal onClose={() => setForm({ ...form, isFindPasswordOpen: false })} />}
+      <div className="flex justify-center items-center min-h-screen px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-[400px] lg:h-auto">
+          <div className="mt-[94px] mb-[40px] flex flex-col justify-center items-center">
+            <LogoAuth />
+          </div>
 
-        <div className="flex justify-between mb-[40px] border-b-2 ">
-          <button
-            className={`pb-2 w-1/2 text-center ${
-              form.activeTab === 'user' ? ' border-b-2 border-neutral-800  ' : 'text-neutral-400'
-            }`}
-            onClick={() => setForm({ ...form, activeTab: 'user', email: '', password: '' })}
-          >
-            일반 회원
-          </button>
-          <button
-            className={`pb-2 w-1/2 text-center ${
-              form.activeTab === 'business' ? 'border-b-2 border-neutral-800' : 'text-neutral-400'
-            }`}
-            onClick={() => setForm({ ...form, activeTab: 'business', email: '', password: '' })}
-          >
-            사업자 회원
-          </button>
-        </div>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleLogin();
-          }}
-        >
-          <input
-            type="email"
-            placeholder={form.activeTab === 'user' ? '일반 회원 이메일' : '사업자 이메일'}
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-            className="w-full sm:w-[400px] h-[48px] pt-[8px] pb-[8px] px-[16px] border border-neutral-300 rounded-[8px] mb-[12px] focus:outline-none focus:ring-2 focus:ring-black"
-          />
-          <input
-            type="password"
-            placeholder="비밀번호"
-            value={form.password}
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
-            className="w-full sm:w-[400px] h-[48px] pt-[8px] pb-[8px] px-[16px] border border-neutral-300 rounded-[8px] mb-[12px] focus:outline-none focus:ring-2 focus:ring-black"
-          />
-          <div className="flex items-center justify-end text-sm text-gray-500 mb-4">
+          <div className="flex justify-between mb-[40px] border-b-2 ">
             <button
-              type="button"
-              onClick={() => setForm({ ...form, isFindIdModalOpen: true })}
-              className="m-[2px] hover:underline"
+              className={`pb-2 w-1/2 text-center ${
+                form.activeTab === 'user' ? ' border-b-2 border-neutral-800  ' : 'text-neutral-400'
+              }`}
+              onClick={() => setForm({ ...form, activeTab: 'user', email: '', password: '' })}
             >
-              아이디 찾기
+              일반 회원
             </button>
-            <DividerIcon />
             <button
-              type="button"
-              onClick={() => setForm({ ...form, isFindPasswordOpen: true })}
-              className="hover:underline"
+              className={`pb-2 w-1/2 text-center ${
+                form.activeTab === 'business' ? 'border-b-2 border-neutral-800' : 'text-neutral-400'
+              }`}
+              onClick={() => setForm({ ...form, activeTab: 'business', email: '', password: '' })}
             >
-              비밀번호 찾기
+              사업자 회원
             </button>
           </div>
-          <button
-            type="submit"
-            className="w-full max-w-[400px] text-[20px] bg-[#B3916A] font-pretendard font-semibold leading-[135%] not-italic text-white py-3 rounded-lg hover:bg-[#a37e5f] transition mb-[12px] sm:mb-[16px]"
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleLogin();
+            }}
           >
-            로그인
-          </button>
-        </form>
-        <p className=" w-full sm:w-[400px] p-[12px] flex justify-center text-neutral-600">
-          계정이 없으신가요?
-          <button onClick={handleSignUp} className="text-[#534431] ml-3 font-semibold">
-            회원가입
-          </button>
-        </p>
-        {form.activeTab === 'user' && (
-          <>
-            <div className="w-full sm:w-[400px] flex items-center my-6">
-              <hr className="flex-grow border-neutral-300" />
-              <span className="px-4 text-sm text-neutral-400">간편 로그인</span>
-              <hr className="flex-grow border-neutral-300" />
+            <input
+              type="email"
+              placeholder={form.activeTab === 'user' ? '일반 회원 이메일' : '사업자 이메일'}
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              className="w-full sm:w-[400px] h-[48px] pt-[8px] pb-[8px] px-[16px] border border-neutral-300 rounded-[8px] mb-[12px] focus:outline-none focus:ring-2 focus:ring-black"
+            />
+            <input
+              type="password"
+              placeholder="비밀번호"
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              className="w-full sm:w-[400px] h-[48px] pt-[8px] pb-[8px] px-[16px] border border-neutral-300 rounded-[8px] mb-[12px] focus:outline-none focus:ring-2 focus:ring-black"
+            />
+            <div className="flex items-center justify-end text-sm text-gray-500 mb-4">
+              <button
+                type="button"
+                onClick={() => setForm({ ...form, isFindIdModalOpen: true })}
+                className="m-[2px] hover:underline"
+              >
+                아이디 찾기
+              </button>
+              <DividerIcon />
+              <button
+                type="button"
+                onClick={() => setForm({ ...form, isFindPasswordOpen: true })}
+                className="hover:underline"
+              >
+                비밀번호 재설정
+              </button>
             </div>
-            {form.isFindIdModalOpen && <FindIdModal onClose={() => setForm({ ...form, isFindIdModalOpen: false })} />}
-            {form.isFindPasswordOpen && (
-              <FindPasswordModal onClose={() => setForm({ ...form, isFindPasswordOpen: false })} />
-            )}
-
-            <div className="text-center mt-8">
-              <KakaoSignIn />
-
-              <div className="flex w-full max-w-[400px] justify-center items-center text-sm text-gray-500 mt-4">
-                <button
-                  type="button"
-                  className="flex-1 text-right m-[2px] hover:underline"
-                  onClick={() => window.open('https://www.kakao.com/policy/privacy', '_blank')}
-                >
-                  개인정보처리방침
-                </button>
-
-                <DividerIcon />
-
-                <button
-                  type="button"
-                  className="flex-1 text-left hover:underline"
-                  onClick={() => window.open('https://www.kakao.com/policy/terms?type=a&lang=ko', '_blank')}
-                >
-                  이용약관
-                </button>
+            <button
+              type="submit"
+              className="w-full max-w-[400px] text-[20px] bg-[#B3916A] font-pretendard font-semibold leading-[135%] not-italic text-white py-3 rounded-lg hover:bg-[#a37e5f] transition mb-[12px] sm:mb-[16px]"
+            >
+              로그인
+            </button>
+          </form>
+          <p className=" w-full sm:w-[400px] p-[12px] flex justify-center text-neutral-600">
+            계정이 없으신가요?
+            <button onClick={handleSignUp} className="text-[#534431] ml-3 font-semibold">
+              회원가입
+            </button>
+          </p>
+          {form.activeTab === 'user' && (
+            <>
+              <div className="w-full sm:w-[400px] flex items-center my-6">
+                <hr className="flex-grow border-neutral-300" />
+                <span className="px-4 text-sm text-neutral-400">간편 로그인</span>
+                <hr className="flex-grow border-neutral-300" />
               </div>
-            </div>
-          </>
-        )}
+
+              <div className="text-center mt-8">
+                {form.activeTab === 'user' ? <KakaoSignIn /> : <div className="min-h-[50px] invisible"></div>}
+                <div className="flex w-full max-w-[400px] justify-center items-center text-sm text-gray-500 mt-4">
+                  <button
+                    type="button"
+                    className="flex-1 text-right m-[2px] hover:underline"
+                    onClick={() => window.open('https://www.kakao.com/policy/privacy', '_blank')}
+                  >
+                    개인정보처리방침
+                  </button>
+
+                  <DividerIcon />
+
+                  <button
+                    type="button"
+                    className="flex-1 text-left hover:underline"
+                    onClick={() => window.open('https://www.kakao.com/policy/terms?type=a&lang=ko', '_blank')}
+                  >
+                    이용약관
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

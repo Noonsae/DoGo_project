@@ -22,9 +22,6 @@ export async function POST(request: Request) {
       .or(`phone_number.eq.${sanitizedPhone}, phone_number.ilike.%${phone}%`)
       .single();
 
-    console.log('🔍 DB에 저장된 데이터:', user, error);
-    console.log('🔍 입력된 값:', { email, sanitizedPhone, role });
-
     if (error || !user) {
       return NextResponse.json({ error: '사용자를 찾을 수 없습니다.' }, { status: 404 });
     }

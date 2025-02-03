@@ -3,10 +3,11 @@
 import React, { useEffect, useState } from 'react';
 import { FormState } from '@/types/auth/FindPasswordModalTypes';
 import CloseButtonIcon from '@/components/ui/icon/CloseButtonIcon';
-import Swal from 'sweetalert2';
 import InputModal from './InputModal';
 import ResetModal from './ResetModal';
 import SuccessModal from './SuccessModal';
+import { isValidPassword } from '@/utils/validation';
+import Swal from 'sweetalert2';
 
 const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
   const [form, setForm] = useState<FormState>({
@@ -31,13 +32,6 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
     password?: string;
     confirmPassword?: string;
   }>({});
-
-  useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, []);
 
   const handleFindPassword = async () => {
     const newErrors: { email?: string; phone?: string } = {};
@@ -71,18 +65,13 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
       }
 
       const result = await response.json();
-      await Swal.fire({
-        icon: 'success',
-        title: '인증코드',
-        text: `비밀번호 재설정을 위한 인증코드는: ${result.otp}`
-      });
 
-      // `form.name` 업데이트
       setForm((prevForm) => ({
         ...prevForm,
         modalType: 'reset',
         isLoading: false,
-        name: result.user_name || '' // userName이 없으면 빈 문자열
+        name: result.user_name || '',
+        otp: result.otp
       }));
     } catch (error) {
       setErrors({ email: '서버 오류가 발생했습니다.' });
@@ -98,6 +87,8 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
     }
     if (!form.password) {
       newErrors.password = '비밀번호를 입력해 주세요.';
+    } else if (!isValidPassword(form.password)) {
+      newErrors.password = '영문 + 숫자 또는 특수문자 조합, 8자~32자 입력하세요.';
     }
     if (!form.confirmPassword) {
       newErrors.confirmPassword = '비밀번호 확인을 입력해 주세요.';
@@ -106,14 +97,28 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
     }
 
     setErrors(newErrors);
-
     if (Object.keys(newErrors).length > 0) {
+      Swal.fire({
+        icon: 'error',
+        title: '비밀번호 설정 실패',
+        text: '비밀번호 형식을 다시 확인해주세요.',
+        showCancelButton: true,
+        confirmButtonText: '확인',
+        cancelButtonText: '취소'
+      }).then((result) => {
+        if (result.isDismissed) {
+          onClose();
+        }
+      });
+
       return;
     }
-    setForm((prevForm) => {
-      return { ...prevForm, setIsLoading: true };
-    });
-    //커밋용주석
+
+    setForm((prevForm) => ({
+      ...prevForm,
+      isLoading: true
+    }));
+
     try {
       const response = await fetch('/api/auth/reset-password', {
         method: 'POST',
@@ -122,7 +127,7 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
       });
 
       if (response.ok) {
-        setForm((prevForm) => ({ ...prevForm, setModalType: 'success' }));
+        setForm((prevForm) => ({ ...prevForm, modalType: 'success' }));
       } else {
         const result = await response.json();
         setErrors({ otp: result.error || '비밀번호 재설정에 실패했습니다.' });
@@ -144,9 +149,9 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
     setErrors({});
   };
   useEffect(() => {
-    document.body.style.overflow = 'hidden'; // 스크롤 방지
+    document.body.style.overflow = 'hidden';
     return () => {
-      document.body.style.overflow = 'auto'; // 원래대로 복구
+      document.body.style.overflow = 'auto';
     };
   }, []);
   return (
@@ -158,7 +163,6 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
         >
           <CloseButtonIcon />
         </button>
-        {/* tab구분점 */}
         {form.modalType === 'input' && (
           <InputModal
             form={form}
@@ -169,8 +173,6 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
             handleTabChange={handleTabChange}
           />
         )}
-        {/* 커밋용 주석 */}
-        {/* 두 번째 모달: 비밀번호 재설정 */}
         {form.modalType === 'reset' && (
           <ResetModal
             form={form}
@@ -181,7 +183,6 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
           />
         )}
 
-        {/* 세 번째 모달: 성공 메시지 */}
         {form.modalType === 'success' && <SuccessModal form={form} onClose={onClose} />}
       </div>
     </div>
