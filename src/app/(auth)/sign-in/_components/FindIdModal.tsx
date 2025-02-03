@@ -24,15 +24,6 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
     };
   }, []);
 
-  const maskEmail = (email: string): string => {
-    if (!email.includes('@')) {
-      return email;
-    }
-    const [localPart, domain] = email.split('@');
-    const maskedLocal = localPart.slice(0, 3) + '***';
-    return `${maskedLocal}@${domain}`;
-  };
-
   const handleFindId = async () => {
     const newErrors: { name?: string; phone?: string } = {};
 
@@ -64,7 +55,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
       if (response.ok && result.email) {
         setForm((prevForm) => ({
           ...prevForm,
-          resultEmail: maskEmail(result.email),
+          resultEmail: result.email,
           modalType: 'success'
         }));
       } else {

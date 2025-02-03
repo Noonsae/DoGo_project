@@ -23,6 +23,7 @@ export default async function handleSignupAction({
 
   try {
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d|.*[^A-Za-z0-9]).{8,32}$/;
+
     if (!passwordRegex.test(password)) {
       return {
         success: false,
