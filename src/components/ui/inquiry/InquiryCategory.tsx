@@ -14,12 +14,18 @@ const InquiryCategory = ({ onCategoryChange }: InquiryCategoryProps) => {
     onCategoryChange(newCategory);
   };
   return (
-    <select value={selectedCategory} onChange={handleChange} className="border p-2 rounded mt-2 w-full ">
+    <select
+      value={selectedCategory}
+      onChange={handleChange}
+      className={`flex h-[48px] px-4 py-2 items-center gap-1 sm:gap-2 md:gap-4 border rounded mt-2 w-full text-[16px] sm:text-[14px] md:text-[16px] lg:text-[18px] font-medium leading-[135%] ${
+        selectedCategory ? 'text-black' : 'text-[#A0A0A0]'
+      }`}
+    >
       <option value="" disabled>
         문의 사항의 카테고리를 선택해 주세요.
       </option>
       {categories.map((category) => (
-        <option key={category} value={category}>
+        <option key={category} value={category} className="text-black">
           {category}
         </option>
       ))}
