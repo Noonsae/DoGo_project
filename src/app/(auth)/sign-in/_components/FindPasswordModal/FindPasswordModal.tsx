@@ -76,6 +76,7 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
         ...prevForm,
         modalType: 'reset',
         isLoading: false,
+        name: result.user_name || '',
         otp: result.otp
       }));
     } catch (error) {

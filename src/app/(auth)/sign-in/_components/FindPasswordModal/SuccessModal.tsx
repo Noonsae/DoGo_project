@@ -8,7 +8,10 @@ const SuccessModal = ({ form, onClose }: { form: any; onClose: () => void }) => 
     <div className="flex flex-col justify-center items-center z-50">
       <div className="flex flex-col justify-center items-center text-center w-[352px] h-[411px] mt-[40px]">
         <CheckIcon />
-        <span className="text-xl leading-[135%] font-pretendard font-semibold ">{form.name}님의</span>
+        <span className="text-xl leading-[135%] font-pretendard font-semibold ">
+          {' '}
+          {(form.name && `${form.name}님의`) || '회원님의'}
+        </span>
         <div className="flex">
           <p className="text-xl leading-[135%] font-pretendard font-semibold text-[#B3916A]">비밀번호가 재설정</p>
           <p className="text-xl leading-[135%] font-pretendard font-semibold">되었습니다.</p>
