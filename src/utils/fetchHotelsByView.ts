@@ -8,8 +8,13 @@ type RoomWithView = Pick<RoomType, 'price' | 'view'>;
 
 // TODO: 추후 supabase 기본 타입이 있으면 변경하기
 type RoomHotelsWithView = RoomWithView & {
-  hotels: Pick<HotelType, 'id' | 'name' | 'address' | 'stars' | 'location' | 'main_img_url'>
-}
+  hotels: Pick<HotelType, 'id' | 'name' | 'address' | 'stars' | 'location' | 'main_img_url'>;
+  reviews?: Array<{
+    id: string;
+    rating: number;
+    comment: string;
+  }>;
+};
 
 /**
  * Supabase에서 데이터 조회
@@ -20,7 +25,7 @@ const fetchRoomDataByView = async (view: string): Promise<RoomHotelsWithView[]> 
   const supabase = browserSupabase();
 
   const { data, error } = await supabase
-    .from('rooms') // `rooms` 테이블을 기준으로 조회
+    .from('rooms')
     .select(
       `
       hotel_id,
@@ -33,8 +38,13 @@ const fetchRoomDataByView = async (view: string): Promise<RoomHotelsWithView[]> 
         stars,
         location,
         main_img_url
+      ),
+      reviews(
+        id,
+        rating,
+        comment
       )
-    `
+      `
     )
     .eq('view', view) // 특정 view 필터
     .limit(10); // 결과를 10개로 제한
@@ -43,8 +53,12 @@ const fetchRoomDataByView = async (view: string): Promise<RoomHotelsWithView[]> 
     throw new Error(`호텔 데이터를 가져오는 중 오류 발생: ${error.message}`);
   }
 
+  if (!data || data.length === 0) {
+    console.warn('조건에 맞는 데이터가 없습니다.');
+    return [];
+  }
 
-  return data;
+  return data as RoomHotelsWithView[];
 };
 
 /**
@@ -67,7 +81,7 @@ const calculateMinPrice = (data: RoomHotelsWithView[]): HotelWithMinPrice[] => {
       });
     }
     return acc;
-  }, [])
+  }, []);
 };
 
 /**

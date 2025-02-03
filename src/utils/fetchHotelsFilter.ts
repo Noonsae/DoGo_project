@@ -1,13 +1,6 @@
 import { browserSupabase } from '@/supabase/supabase-client';
 import { FetchHotelsFilterResponse, UseFetchHotelsFilterParamsType } from '@/types/hotel/hotel-filter-type';
 
-// 계획
-// 1,2 가 포함되느냐?
-// hotels.facility_ids.contains ->
-// hotels: { id: ~, name: ~, facility_ids: [1, 2, 3] -> text -> defined as array , service_ids: []  }
-// rooms: { id: ~~~, hotel_id: ~~, price: ~~~ }
-// facilities: { id: uuid~~,  name: ~~~ }
-
 // fetchHotelsFilter 함수
 const fetchHotelsFilter = async ({
   pageParam = 0,
@@ -85,6 +78,9 @@ const fetchHotelsFilter = async ({
   if (sortOrder) {
     query = query.order('rooms.price', { ascending: sortOrder === 'asc' }); // 정렬 기준: 가격
   }
+
+  // ⭐ 추가: stars 순으로 정렬
+  query = query.order('stars', { ascending: false }); // 높은 등급(stars) 먼저 가져오기
 
   // 8. 페이지네이션 처리
   const { count } = await query;

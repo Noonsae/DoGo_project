@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 import useHotelsByLocation from '@/hooks/hotel/useHotelsByLocation';
 import HotelListSlider from '@/components/ui/slider/HotelListSlider';
 import useHistoryStore from '@/store/useHistoryStore';
-import { HotelType } from '@/types/supabase/hotel-type';
 
 const Recommend = () => {
   const { history, setMostFrequentLocation, mostFrequentLocation } = useHistoryStore();
