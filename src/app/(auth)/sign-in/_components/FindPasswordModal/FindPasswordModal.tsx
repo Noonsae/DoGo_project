@@ -71,18 +71,12 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
       }
 
       const result = await response.json();
-      await Swal.fire({
-        icon: 'success',
-        title: '인증코드',
-        text: `비밀번호 재설정을 위한 인증코드는: ${result.otp}`
-      });
 
-      // `form.name` 업데이트
       setForm((prevForm) => ({
         ...prevForm,
         modalType: 'reset',
         isLoading: false,
-        name: result.user_name || '' // userName이 없으면 빈 문자열
+        otp: result.otp
       }));
     } catch (error) {
       setErrors({ email: '서버 오류가 발생했습니다.' });

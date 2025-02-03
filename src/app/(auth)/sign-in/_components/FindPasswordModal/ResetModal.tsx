@@ -58,11 +58,7 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
               placeholder="OTP를 입력해 주세요."
               value={form.otp}
               onChange={(e) => {
-                setForm({
-                  ...form,
-                  otp: e.target.value
-                });
-
+                setForm({ ...form, otp: e.target.value });
                 setErrors((prev) => ({ ...prev, otp: undefined }));
               }}
               className={`w-full p-[13px] border rounded-xl mb-2 focus:outline-none focus:ring-2 ${
