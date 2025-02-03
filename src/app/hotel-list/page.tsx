@@ -18,7 +18,7 @@ import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
 
 import HotelCardList from './_components/HotelsCardList';
 import AsideFilter from './_components/AsideFilter';
-import SortBtn from './_components/SortBtn';
+// import SortBtn from './_components/SortBtn';
 import HotelListSkeleton from '../../components/ui/skeleton/HotelListSkeleton';
 
 /**
@@ -125,6 +125,34 @@ const HotelList = () => {
     };
   }, [hasNextPage, isFetchingNextPage]);
 
+  const getFilteredNames = (
+    ids: string[],
+    items: { facility_id: string; facilities: { name: string } }[] // facility_id를 string으로 유지
+  ) => {
+    // 중복되는 값을 제거한 후, 필터링된 시설 이름을 반환
+    const uniqueIds = Array.from(new Set(ids)); // Set을 사용하여 중복 제거
+    const filteredNames = items
+      .filter((item) => uniqueIds.includes(item.facility_id)) // 중복 제거된 ids를 사용하여 필터링
+      .map((item) => item.facilities.name);
+
+    // 중복된 이름을 제거
+    const uniqueFilteredNames = Array.from(new Set(filteredNames));
+
+    return uniqueFilteredNames.length > 0 ? uniqueFilteredNames.join(', ') : ''; // 값이 있으면 쉼표로 연결
+  };
+
+  const getServiceNames = (serviceIds: string[], services: { service_id: string; services: { name: string } }[]) => {
+    // 중복되는 값을 제거한 후, 필터링된 서비스 이름을 반환
+    const uniqueServiceIds = Array.from(new Set(serviceIds)); // Set을 사용하여 중복 제거
+    const filteredServices = services.filter((service) => uniqueServiceIds.includes(service.service_id));
+    const filteredServiceNames = filteredServices.map((service) => service.services.name);
+
+    // 중복된 서비스 이름 제거
+    const uniqueFilteredServiceNames = Array.from(new Set(filteredServiceNames));
+
+    return uniqueFilteredServiceNames.length > 0 ? uniqueFilteredServiceNames.join(', ') : '';
+  };
+
   // const isLoadingInitialData = !data && isFetchingNextPage;
 
   return (
@@ -142,8 +170,24 @@ const HotelList = () => {
             <p className="mt-2 text-base text-[#777] font-medium">
               적용된 필터: {/* 성급 필터 */}
               {filters.stars.length > 0 && `${filters.stars.join(', ')}성`}
-              {filters.facilityIds.length > 0 && <span>,{filters.facilityIds.join(', ')}</span>}
-              {filters.serviceIds.length > 0 && <span>, {filters.serviceIds.join(', ')}</span>}
+              {filters.facilityIds.length > 0 && (
+                <span>
+                  {getFilteredNames(
+                    filters.facilityIds,
+                    uniqueHotels.flatMap((hotel) => hotel.facilities)
+                  )}
+                  ,
+                </span>
+              )}
+              {filters.serviceIds.length > 0 && (
+                <span>
+                  ,{' '}
+                  {getServiceNames(
+                    filters.serviceIds,
+                    uniqueHotels.flatMap((hotel) => hotel.services)
+                  )}
+                </span>
+              )}
             </p>
           </div>
           {/* 일단 주석
