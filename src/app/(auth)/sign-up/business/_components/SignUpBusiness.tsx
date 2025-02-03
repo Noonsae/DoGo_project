@@ -137,6 +137,7 @@ const SignUpBusiness = ({
             </p>
             <button
               type="button"
+              tabIndex={-1}
               onClick={() =>
                 setForm((prevForm) => ({
                   ...prevForm,
@@ -166,6 +167,7 @@ const SignUpBusiness = ({
             />
             <button
               type="button"
+              tabIndex={-1}
               onClick={() =>
                 setForm((prevForm) => ({
                   ...prevForm,

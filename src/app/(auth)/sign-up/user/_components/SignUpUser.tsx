@@ -133,6 +133,7 @@ const SignUpUser = ({
             </p>
             <button
               type="button"
+              tabIndex={-1}
               onClick={() => setForm((prevForm) => ({ ...prevForm, updatePassword: !prevForm.updatePassword }))}
               className="absolute right-[-25px] top-7 transform -translate-y-1/2 text-gray-600 hover:text-black"
             >
@@ -158,6 +159,7 @@ const SignUpUser = ({
             />
             <button
               type="button"
+              tabIndex={-1}
               onClick={() =>
                 setForm((prevForm) => ({ ...prevForm, checkUpdatePassword: !prevForm.checkUpdatePassword }))
               }
