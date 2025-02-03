@@ -156,8 +156,7 @@ const SignInPage = () => {
               </div>
 
               <div className="text-center mt-8">
-                <KakaoSignIn />
-
+                {form.activeTab === 'user' ? <KakaoSignIn /> : <div className="min-h-[50px] invisible"></div>}
                 <div className="flex w-full max-w-[400px] justify-center items-center text-sm text-gray-500 mt-4">
                   <button
                     type="button"
