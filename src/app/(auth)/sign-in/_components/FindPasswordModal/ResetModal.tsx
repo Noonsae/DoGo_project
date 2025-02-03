@@ -14,15 +14,15 @@ interface ResetModalProps {
 }
 
 const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: ResetModalProps) => (
-  <div className="m-10 flex flex-col z-50">
+  <div className="m-4 md:m-10 flex flex-col z-50">
     {form.modalType === 'reset' && (
-      <div className="flex flex-col">
-        <p className="font-semibold text-[24px] mt-[30px] mb-[30px]">
-          비밀번호를 찾기 위해 <br />
-          가입 정보를 입력해 주세요.
+      <div className="flex flex-col ">
+        <p className="font-semibold text-lg md:text-[24px] mt-[20px] md:mt-[30px] mb-[20px] md:mb-[30px]">
+          가입정보가 <br />
+          인증 되었습니다.
         </p>
         <form
-          className="flex flex-col justify-between"
+          className="flex flex-col justify-between w-full max-w-md"
           onSubmit={(e) => {
             e.preventDefault();
             const newErrors: { otp?: string; password?: string; confirmPassword?: string } = {};
@@ -46,10 +46,6 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
             }
 
             handleResetPassword();
-            // setForm((prevForm) => ({ => 이거 때문에 성공모달창으로 이동되는 거였음
-            //   ...prevForm,
-            //   modalType: 'success'
-            // }));
           }}
         >
           <div>
@@ -66,12 +62,14 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
                 errors.otp ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-[#B3916A]'
               }`}
             />
+            <p className="text-sm mt-1 min-h-[5px] text-neutral-500 ml-[1px]">OTP는 자동으로 입력됩니다.</p>
             <p className={`text-sm text-red-500 mt-1 min-h-[10px] ${errors.otp ? 'visible' : 'invisible'}`}>
               {errors.otp || 'placeholder'}
             </p>
+
+            {/* 새 비밀번호 입력 */}
             <div className="text-base">
               <label className="block font-semibold text-gray-700 mb-2">새 비밀번호</label>
-
               <div className="relative">
                 <input
                   type={form.showPassword ? 'text' : 'password'}
@@ -79,7 +77,6 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
                   value={form.password}
                   onChange={(e) => {
                     const newPassword = e.target.value;
-
                     setForm((prevForm) => ({
                       ...prevForm,
                       password: newPassword
@@ -92,11 +89,10 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
                         : '영문 + 숫자 또는 특수문자 조합, 8자~32자 입력하세요.'
                     }));
                   }}
-                  className={`w-full p-[13px] border rounded-xl mb-2 focus:outline-none focus:ring-2 text-sm text-neutral-600 mt-[4px]  pr-10  ${
+                  className={`w-full p-[13px] border rounded-xl mb-2 focus:outline-none focus:ring-2 text-sm text-neutral-600 mt-[4px] pr-10 ${
                     errors.password ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-[#B3916A]'
                   }`}
                 />
-
                 <button
                   type="button"
                   tabIndex={-1}
@@ -115,7 +111,9 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
                 {errors.password || 'placeholder'}
               </p>
             </div>
-            <div className="mb-4 ">
+
+            {/* 비밀번호 확인 입력 */}
+            <div className="mb-4">
               <label className="text-base block font-semibold text-gray-700 mb-2">비밀번호 확인</label>
               <div className="relative">
                 <input
@@ -167,10 +165,12 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
               </p>
             </div>
           </div>
-          <div className="flex flex-col ">
+
+          {/* 완료 버튼 */}
+          <div className="flex flex-col">
             <button
               type="submit"
-              className="w-[352px] h-[48px] mt-[20px] text-xl bg-[#B3916A] font-bold text-white py-[10px] rounded-xl hover:bg-[#a37e5f] transition"
+              className="w-full max-w-md md:w-[352px] h-[48px] mt-[20px] text-xl bg-[#B3916A] font-bold text-white py-[10px] rounded-xl hover:bg-[#a37e5f] transition"
             >
               {form.isLoading ? '처리 중...' : '완료'}
             </button>

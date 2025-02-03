@@ -130,7 +130,7 @@ const SignInPage = () => {
                 onClick={() => setForm({ ...form, isFindPasswordOpen: true })}
                 className="hover:underline"
               >
-                비밀번호 찾기
+                비밀번호 재설정
               </button>
             </div>
             <button
