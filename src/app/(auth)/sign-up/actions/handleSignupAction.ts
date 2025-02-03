@@ -40,6 +40,13 @@ export default async function handleSignupAction({
     if (existingPhone) {
       return { success: false, message: '이미 등록된 휴대폰 번호입니다.' };
     }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return {
+        success: false,
+        message: '이메일 형식이 올바르지 않습니다. (예: example@email.com)'
+      };
+    }
 
     const { data: authData, error: authError } = await supabaseAdmin.auth.signUp({
       email,

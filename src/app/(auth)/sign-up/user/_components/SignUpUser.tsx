@@ -67,6 +67,14 @@ const SignUpUser = ({
       });
       return;
     }
+    if (!response.success) {
+      await Swal.fire({
+        icon: 'error',
+        title: '회원가입 실패',
+        text: response.message // 변경된 메시지 적용됨
+      });
+      return;
+    }
     await Swal.fire({
       icon: 'success',
       title: '회원가입 성공',
