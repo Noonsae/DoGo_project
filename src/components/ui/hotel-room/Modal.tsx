@@ -55,7 +55,7 @@ const Modal = ({ isOpen, onClose, room, hotelData }: ModalProps) => {
   };
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
-      <div className="bg-white rounded shadow-lg w-full h-full md:w-[600px] md:h-[700px] max-w-4xl overflow-y-auto scrollbar-hide">
+      <div className=" bg-white rounded shadow-lg w-full h-full md:w-[600px] md:h-[700px] max-w-4xl overflow-y-auto scrollbar-hide">
         {/* 닫기 버튼 */}
         <div className="sticky top-0 z-10 bg-[#221A1A] text-white">
           <h2 className="text-[#FDF9F4] text-[18px] sm:text-[20px] md:text-[22px] lg:text-[24px] font-bold p-4 text-center">
@@ -107,10 +107,7 @@ const Modal = ({ isOpen, onClose, room, hotelData }: ModalProps) => {
                   >
                     <FiChevronRightIcon />
                   </button>
-                  <div
-                    className="absolute right-10 w-[65px] h-[27px] text-white bg-neutral-600 rounded-full text-sm flex justify-center items-center 
-  top-[202px] md:top-[215px] mb-[10px] md:mb-0"
-                  >
+                  <div className="absolute right-10 w-[65px] h-[27px] text-white bg-neutral-600 rounded-full text-sm flex justify-center items-center top-[202px] md:top-[215px] mb-[10px] md:mb-0">
                     {currentImageIndex + 1} / {room.room_img_url.length}
                   </div>
                 </>
@@ -120,23 +117,23 @@ const Modal = ({ isOpen, onClose, room, hotelData }: ModalProps) => {
                 </p>
               )}
             </div>
-            <div className="p-6">
-              <p className="text-lg font-semibold">객실 정보</p>
-              <ul className="list-disc pl-6 text-gray-700">
-                <li>{room.bed_type}</li>
-                <li>{room.view}</li>
-                <li>{room.is_breakfast_included === '포함' ? '조식 포함' : '조식 불포함'}</li>
+            <div className="p-6 m-0">
+              <p className="text-lg font-semibold text-[20px] sm:text-[22px]">객실 정보</p>
+              <ul className="list-disc pl-6 text-gray-700 mt-[20px]">
+                <li className="mb-[8px]">{room.bed_type}</li>
+                <li className="mb-[8px]">{room.view}</li>
+                <li className="mb-[16px]">{room.is_breakfast_included === '포함' ? '조식 포함' : '조식 불포함'}</li>
               </ul>
             </div>
           </section>
 
           {/* 객실 편의 시설 */}
-          <section id="amenities" className="space-y-4 p-6">
-            <h3 className="text-lg font-semibold">객실 편의 시설</h3>
-            <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 text-gray-700">
+          <section id="amenities" className="space-y-4 p-6 mt-0">
+            <h3 className="font-semibold text-[20px] sm:text-[22px]">객실 편의 시설</h3>
+            <ul className="grid grid-cols-3 md:grid-cols-4 text-gray-700">
               {Array.isArray(room.option) && room.option.length > 0 ? (
                 room.option.map((item, index) => (
-                  <li key={index} className="flex items-center space-x-2 p-2">
+                  <li key={index} className="text-[15px] flex items-center space-x-2 p-2">
                     <IoCheckmarkCircle />
                     <span>{item as string}</span>
                   </li>
@@ -149,11 +146,11 @@ const Modal = ({ isOpen, onClose, room, hotelData }: ModalProps) => {
 
           {/* 가격 상세 정보 */}
           <section id="price" className="space-y-4 p-6">
-            <h3 className="text-lg font-semibold">가격 상세 정보</h3>
+            <h3 className="text-lg font-semibold text-[20px] sm:text-[22px]">가격 상세 정보</h3>
             <ul className="space-y-2 text-gray-700">
               <li className="flex justify-between">
-                <span>객실 1개 x 1박</span>
-                <span>{room.price.toLocaleString()}원</span>
+                <span className="text-[16px] sm:text-[18px]">객실 1개 x 1박</span>
+                <span className="text-[16px] sm:text-[16px]">{room.price.toLocaleString()}원</span>
               </li>
             </ul>
           </section>
