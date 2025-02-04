@@ -10,7 +10,7 @@ const bedTypes = ['싱글', '더블', '트윈']; // 침대 타입 배열
 const BedTypeList = ({ selectedBeds, onBedChange }: BedTypeListProps) => {
   return (
     <div>
-      <h3 className="text-lg font-semibold mb-2">침대 종류</h3>
+      <h3 className="text-lg font-semibold mb-2 mt-10">침대 종류</h3>
       <ul className="flex flex-col gap-2">
         {bedTypes.map((bed) => (
           <li key={bed} className="flex items-center gap-2">
