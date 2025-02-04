@@ -176,7 +176,6 @@ const SignUpBusiness = ({
           error={errors.businessNumber}
           className="mt-[4px] sm:mt-[8px]"
         />
-
         <button
           type="button"
           onClick={handleSignUp}
