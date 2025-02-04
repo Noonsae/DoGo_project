@@ -100,13 +100,15 @@ const fetchHotelsFilter = async ({
   return {
     items: (data || []).map((hotel) => {
       // 호텔의 객실을 필터링한 후 가격 계산
-      const filteredRooms = hotel.rooms.filter(
-        (room) => filters.beds.length === 0 || filters.beds.includes(room.bed_type)
-      );
+      const filteredRooms = decodedBeds.length
+        ? hotel.rooms.filter((room) => decodedBeds.some((bed) => bed === room.bed_type.trim().toLowerCase()))
+        : hotel.rooms;
 
-      // 해당 호텔에서 최소 가격 계산
-      const min_price = filteredRooms.length > 0 ? Math.min(...filteredRooms.map((room) => room.price)) : 0;
+      const validPrices = filteredRooms.map((room) => room.price).filter((price) => price !== undefined && price > 0);
+      const min_price = validPrices.length > 0 ? Math.min(...validPrices) : 0;
 
+      console.log('💰 유효한 가격 리스트:', validPrices);
+      console.log('📉 최종 min_price:', min_price);
       // 방법2) 가져온 후 정렬
       return {
         id: hotel.id,
