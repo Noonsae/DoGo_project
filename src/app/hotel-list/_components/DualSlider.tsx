@@ -92,7 +92,7 @@ const DualSlider: React.FC<DualSliderProps> = ({
         onDragStart={handleDragStart}
       />
       {/* 값 표시 */}
-      <div className="flex justify-between text-sm mt-6">
+      <div className="flex justify-between text-[15px] mt-6 text-[#B3916A]">
         <span>{minPriceValue.toLocaleString()}원</span>
         <span>{maxPriceValue.toLocaleString()}원</span>
       </div>

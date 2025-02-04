@@ -15,6 +15,7 @@ const useSearchStore = create<SearchState>((set) => ({
   maxPrice: 2000000,
   facilities: [],
   services: [],
+  beds: [],
   setLocation: (location) => set({ location }),
   setLabel: (label) => set({ label }),
   setCheckIn: (checkIn) => set({ checkIn }),
@@ -26,7 +27,8 @@ const useSearchStore = create<SearchState>((set) => ({
   setMinPrice: (minPrice: number) => set({ minPrice }),
   setMaxPrice: (maxPrice: number) => set({ maxPrice }),
   setFacilities: (facilities: string[]) => set({ facilities }),
-  setServices: (services: string[]) => set({ services })
+  setServices: (services: string[]) => set({ services }),
+  setBeds: (beds: string[]) => set({beds})
 }));
 
 export default useSearchStore;
