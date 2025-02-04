@@ -7,6 +7,7 @@ import IoCheckmarkCircle from '../icon/IoCheckmarkCircle';
 import FiChevronLeftIcon from '../icon/FiChevronLeftIcon';
 import FiChevronRightIcon from '../icon/FiChevronRightIcon';
 import { useRouter } from 'next/navigation';
+import CloseButtonIcon from '../icon/CloseButtonIcon';
 type RoomType = Database['public']['Tables']['rooms']['Row'];
 interface ModalProps {
   isOpen: boolean;
@@ -54,35 +55,42 @@ const Modal = ({ isOpen, onClose, room, hotelData }: ModalProps) => {
     router.push(`/booking?hotel_id=${hotelData.id}&room_id=${room.id}&price=${room.price}`);
   };
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30 ">
       <div className=" bg-white rounded shadow-lg w-full h-full md:w-[600px] md:h-[700px] max-w-4xl overflow-y-auto scrollbar-hide">
-        {/* 닫기 버튼 */}
-        <div className="sticky top-0 z-10 bg-[#221A1A] text-white">
-          <h2 className="text-[#FDF9F4] text-[18px] sm:text-[20px] md:text-[22px] lg:text-[24px] font-bold p-4 text-center">
-            {room.room_name}
-          </h2>
-          <IoCloseIcon onClick={onClose} className="absolute top-4 right-4 text-2xl cursor-pointer" />
-        </div>
-
-        {/* 네비게이션 탭 */}
-        <nav className="bg-white flex border-b sticky top-0 z-10">
-          {[
-            { id: 'info', label: '객실 정보' },
-            { id: 'amenities', label: '객실 편의 시설' },
-            { id: 'price', label: '가격 상세 정보' }
-          ].map((tab) => (
+        <div className="w-full sticky top-0 z-10 bg-[#221A1A] text-[#FDF9F4] text-[18px] sm:text-[20px] md:text-[22px] lg:text-[24px] font-bold text-center">
+          <div className="flex items-center justify-between px-4 py-2 w-full bg-[#221A1A] text-[#FDF9F4] text-[18px] sm:text-[20px] md:text-[22px] lg:text-[24px] font-bold">
+            {/* 객실 이름 - 가운데 정렬 */}
+            <div className="flex-1 flex justify-center items-center">{room.room_name}</div>
             <button
-              key={tab.id}
-              onClick={() => scrollToSection(tab.id)}
-              className={`px-4 py-3 text-sm text-[16px] font-medium focus:font-semibold ${
-                activeTab === tab.id ? 'border-b-2 border-[#B3916A]' : 'text-neutral-600 hover:text-[#000000]'
-              }`}
+              onClick={onClose}
+              className="mb-[10px] pt-[22px] pr-[22px] flex flex-row justify-end text-[#FDF9F4] hover: font-bold cursor-pointer"
             >
-              {tab.label}
+              <CloseButtonIcon />
             </button>
-          ))}
-        </nav>
-
+          </div>
+          {/* </div> */}
+          {/* <IoCloseIcon onClick={onClose} className="absolute top-4 right-4 text-2xl cursor-pointer" /> */}
+          {/* 네비게이션 탭 */}
+          <nav className="bg-white flex border-b sticky top-0 z-10">
+            {[
+              { id: 'info', label: '객실 정보' },
+              { id: 'amenities', label: '객실 편의 시설' },
+              { id: 'price', label: '가격 상세 정보' }
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => scrollToSection(tab.id)}
+                className={`px-4 py-3 text-sm text-[16px] font-medium focus:font-semibold ${
+                  activeTab === tab.id
+                    ? 'border-b-2 border-[#B3916A] text-[#B3916A]'
+                    : 'text-neutral-900 hover:text-[#000000]'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </nav>
+        </div>
         {/* 콘텐츠 */}
         <div className="space-y-6">
           {/* 객실 정보 */}
