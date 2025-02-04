@@ -6,7 +6,7 @@ import { browserSupabase } from '@/supabase/supabase-client';
 // BusinessUser 데이터 타입 정의
 interface BusinessUser {
   id: string;
-  user_name: string;
+  user_name: string | null; // null 허용
   email: string;
   phone_number: string;
   business_number: string | null;
@@ -14,14 +14,13 @@ interface BusinessUser {
 }
 
 const CompanyList: React.FC = () => {
-  // 상태 정의
   const [companies, setCompanies] = useState<BusinessUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [page, setPage] = useState(1); // 현재 페이지 상태
-  const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수
-  const pageSize = 10; // 한 페이지에 10개씩 표시
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const pageSize = 10;
 
   // 데이터 가져오기
   useEffect(() => {
@@ -29,35 +28,24 @@ const CompanyList: React.FC = () => {
       try {
         setLoading(true);
 
-        // 전체 데이터 개수 가져오기 (페이지네이션을 위해 필요)
         const { count } = await browserSupabase()
           .from('users')
           .select('*', { count: 'exact', head: true })
           .eq('role', 'business');
 
         if (count !== null) {
-          setTotalPages(Math.ceil(count / pageSize)); // 전체 페이지 계산
+          setTotalPages(Math.ceil(count / pageSize));
         }
 
-        // Supabase에서 페이지네이션을 적용하여 데이터 가져오기
         const from = (page - 1) * pageSize;
         const to = from + pageSize - 1;
 
         const { data, error } = await browserSupabase()
           .from('users')
-          .select(
-            `
-            id,
-            user_name,
-            email,
-            phone_number,
-            business_number,
-            created_at
-          `
-          )
+          .select('id, user_name, email, phone_number, business_number, created_at')
           .eq('role', 'business')
-          .order('created_at', { ascending: false }) // 최신순 정렬
-          .range(from, to); // 페이지네이션 적용
+          .order('created_at', { ascending: false })
+          .range(from, to);
 
         if (error) throw error;
 
@@ -73,9 +61,9 @@ const CompanyList: React.FC = () => {
     fetchCompanies();
   }, [page]);
 
-  // 검색 결과 필터링
+  // 검색 필터링 (user_name이 null일 경우 대비)
   const filteredCompanies = companies.filter((company) =>
-    company.user_name.toLowerCase().includes(searchQuery.toLowerCase())
+    (company.user_name ?? '').toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -93,14 +81,13 @@ const CompanyList: React.FC = () => {
         />
       </div>
 
-      {/* 로딩 중 메시지 */}
+      {/* 로딩 및 에러 처리 */}
       {loading ? (
         <p className="text-center text-gray-600">로딩 중...</p>
       ) : error ? (
         <p className="text-center text-red-500">{error}</p>
       ) : (
         <>
-          {/* 업체 테이블 */}
           <table className="w-full border-collapse border border-gray-300">
             <thead className="bg-gray-200">
               <tr>
@@ -121,11 +108,13 @@ const CompanyList: React.FC = () => {
               ) : (
                 filteredCompanies.map((company) => (
                   <tr key={company.id} className="text-center">
-                    <td className="border p-2">{company.user_name}</td>
+                    <td className="border p-2">{company.user_name ?? 'N/A'}</td>
                     <td className="border p-2">{company.email}</td>
                     <td className="border p-2">{company.phone_number}</td>
                     <td className="border p-2">{company.business_number || 'N/A'}</td>
-                    <td className="border p-2">{new Date(company.created_at).toLocaleDateString('ko-KR')}</td>
+                    <td className="border p-2">
+                      {new Date(company.created_at).toLocaleDateString('ko-KR')}
+                    </td>
                   </tr>
                 ))
               )}
