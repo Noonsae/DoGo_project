@@ -5,6 +5,8 @@ import { BookingRoomData } from '@/types/hotel/hotel-room-type';
 const Sidebar = () => {
   const searchParams = useSearchParams();
   const roomId = searchParams.get('room_id');
+  const stay = searchParams.get('stay');
+  const room_count = searchParams.get('room')
 
   const { data: roomData } = useRoomQuery(roomId) as { data: BookingRoomData | undefined };
 
@@ -31,7 +33,7 @@ const Sidebar = () => {
 
       <div className="mt-6 p-4 border-t">
         <p className="text-gray-700">가격 상세정보</p>
-        <p className="font-semibold text-lg">객실 1개 x 1박</p>
+        <p className="font-semibold text-lg">객실 {room_count}개 x {stay}박</p>
         <p className="text-gray-700 mt-2"> 총 결제 금액</p>
         <p className="font-semibold text-lg">{roomData ? `${roomData.price.toLocaleString()}원` : 'Loading...'}</p>
       </div>
