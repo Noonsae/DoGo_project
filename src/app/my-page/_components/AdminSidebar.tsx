@@ -4,7 +4,7 @@ import React from 'react';
 
 interface AdminSidebarProps {
   currentTab: string; // 현재 선택된 탭의 ID
-  setCurrentTab: (tab: 'company' | 'requests' | 'bookings') => void; // 탭 변경 함수
+  setCurrentTab: (tab: 'company' | 'requests' | 'bookings'|'inquiry') => void; // 탭 변경 함수
 }
 
 const AdminSidebar: React.FC<AdminSidebarProps> = ({ currentTab, setCurrentTab }) => {
@@ -13,6 +13,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ currentTab, setCurrentTab }
     { id: 'company', label: '업체 리스트' },
     { id: 'requests', label: '협력 요청' },
     { id: 'bookings', label: '예약 리스트' },
+    { id: 'inquiry', label: '문의 리스트'},
   ];
 
   return (
@@ -35,7 +36,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ currentTab, setCurrentTab }
                 ? 'bg-brown-500 text-gray font-semibold'
                 : 'hover:bg-gray-200 text-gray-600'
             }`}
-            onClick={() => setCurrentTab(menu.id as 'company' | 'requests' | 'bookings')} // 클릭 시 탭 변경
+            onClick={() => setCurrentTab(menu.id as 'company' | 'requests' | 'bookings'|'inquiry')} // 클릭 시 탭 변경
             aria-current={currentTab === menu.id ? 'page' : undefined} // 접근성 설정
           >
             {menu.label}
