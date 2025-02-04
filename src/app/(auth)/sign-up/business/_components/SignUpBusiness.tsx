@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import CloseEyesIcon from '@/components/ui/icon/CloseEyesIcon';
 import OpenEyesIcon from '@/components/ui/icon/OpenEyesIcon';
 import LogoAuth from '@/components/ui/icon/LogoAuth';
+import BusinessInputField from './BusinessInputField';
 const SignUpBusiness = ({
   email,
   setEmail,
@@ -31,6 +32,7 @@ const SignUpBusiness = ({
     name?: string;
     businessNumber?: string;
     confirmPassword?: string;
+    password?: string;
   }>({});
 
   const router = useRouter();
@@ -101,140 +103,78 @@ const SignUpBusiness = ({
           <div className="w-full mt-[156px] mb-[40px] flex flex-col justify-center items-center">
             <LogoAuth />
           </div>
-          <h6 className="text-neutral-800  text-[24px] sm:text-[28px] font-bold mb-[12px] sm:mb-[16px] ">
+          <p className="text-neutral-800  text-[24px] sm:text-[28px] font-bold mb-[12px] sm:mb-[16px] ">
             사업자 회원 회원가입
-          </h6>
-
-          <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px] font-pretendard text-[16px] font-semibold leading-[135%] ">
-            사업자 이메일
           </p>
-          <input
+
+          <BusinessInputField
+            label="사업자이메일"
             type="email"
-            placeholder="이메일을 입력해주세요"
-            value={email}
+            placeholder="이메일을 입력해주세요."
+            value={email ?? ''}
             onChange={(e) => handleInputChange('email', e.target.value)}
-            className={`w-[400px] h-[48px] sm:w-[450px] sm:h-[56px]  px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none ${
-              errors.email
-                ? 'border-red-500 focus:ring-red-500 mb-[4px] sm:mb-[8px]'
-                : 'border-[#BFBFBF]  focus:border-[#B3916A] focus:outline-none'
-            }`}
+            className="mb-[4px] sm:mb-[8px]"
+            error={errors.email}
           />
-          {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
 
-          <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px] font-pretendard text-[16px] font-semibold leading-[135%]">
-            비밀번호
-          </p>
-          <div className="relative w-full">
-            <input
-              type={form.showPassword ? 'text' : 'password'}
-              placeholder="비밀번호를 입력해주세요"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-[400px] h-[48px] sm:w-[450px] sm:h-[56px] mb-[20px] sm:mb-[24px]  px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none"
-            />
-            <p className="text-xs pb-[4px] px-1 text-gray-700 mb-[20px]">
-              영문 대•소문자/숫자/특수문자 중 2가지 이상 조합, 8자~32자
-            </p>
-            <button
-              type="button"
-              tabIndex={-1}
-              onClick={() =>
-                setForm((prevForm) => ({
-                  ...prevForm,
-                  showPassword: !prevForm.showPassword
-                }))
-              }
-              className="mb-[20px] sm:mb-[24px]  absolute right-[-25px] top-7 transform -translate-y-1/2 "
-            >
-              {form.showPassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
-            </button>
-          </div>
+          <BusinessInputField
+            label="비밀번호"
+            type="password"
+            placeholder="비밀번호를 입력해주세요"
+            value={password ?? ''}
+            onChange={(e) => setPassword(e.target.value)}
+            error={errors.password || ''}
+            isPassword
+            isPasswordVisible={form.showPassword}
+            togglePasswordVisibility={() =>
+              setForm((prevForm) => ({ ...prevForm, showPassword: !prevForm.showPassword }))
+            }
+            helperText="영문 대•소문자/숫자/특수문자 중 2가지 이상 조합, 8자~32자"
+          />
 
-          <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px] font-pretendard text-[16px] font-semibold leading-[135%]">
-            비밀번호 확인
-          </p>
-          <div className="relative w-full">
-            <input
-              type={form.showConfirmPassword ? 'text' : 'password'}
-              placeholder="비밀번호를 다시 입력해주세요"
-              value={form.confirmPassword}
-              onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-              className={`w-[400px] h-[48px] sm:w-[450px] sm:h-[56px] px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none ${
-                errors.confirmPassword
-                  ? 'border-red-500 focus:ring-red-500 mb-[4px] sm:mb-[8px]'
-                  : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
-              }`}
-            />
-            <button
-              type="button"
-              tabIndex={-1}
-              onClick={() =>
-                setForm((prevForm) => ({
-                  ...prevForm,
-                  showConfirmPassword: !prevForm.showConfirmPassword
-                }))
-              }
-              className="absolute right-[-25px] top-7 transform -translate-y-1/2"
-            >
-              {form.showConfirmPassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
-            </button>
-          </div>
-          {errors.confirmPassword && (
-            <p className="text-sm text-red-500 mb-[4px] sm:mb-[8px]">{errors.confirmPassword}</p>
-          )}
+          <BusinessInputField
+            label="비밀번호 확인"
+            type="password"
+            placeholder="비밀번호를 다시 입력해주세요"
+            value={form.confirmPassword}
+            onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+            error={errors.confirmPassword || ''}
+            isPassword
+            isPasswordVisible={form.showConfirmPassword}
+            togglePasswordVisibility={() =>
+              setForm((prevForm) => ({ ...prevForm, showConfirmPassword: !prevForm.showConfirmPassword }))
+            }
+          />
 
-          <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px] font-pretendard text-[16px] font-semibold leading-[135%]">
-            담당자 이름
-          </p>
-          <input
+          <BusinessInputField
+            label="담당자 이름"
             type="text"
             placeholder="이름을 입력해주세요"
-            value={name}
+            value={name ?? ''}
             onChange={(e) => handleInputChange('name', e.target.value)}
-            className={`w-[400px] h-[48px] sm:w-[450px] sm:h-[56px] px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none${
-              errors.name
-                ? 'border-red-500 focus:ring-red-500 mb-[4px] sm:mb-[8px]'
-                : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
-            }`}
+            className="mb-[4px] sm:mb-[8px]"
+            error={errors.name}
           />
-          {errors.name && <p className="text-sm text-red-500 mb-[4px] sm:mb-[8px]">{errors.name}</p>}
 
-          <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px]  text-neutral-800 font-semibold text-[16px] leading-[135%] font-pretendard">
-            휴대폰 번호
-          </p>
-          <input
+          <BusinessInputField
+            label="휴대폰 번호"
             type="tel"
-            placeholder="휴대폰 번호를 입력해주세요"
-            value={phone}
+            placeholder="휴대폰 번호를 입력해 주세요."
+            value={phone ?? ''}
             onChange={(e) => handleInputChange('phone', e.target.value)}
-            className={` w-[400px] h-[48px] sm:w-[450px] sm:h-[56px]  px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none ${
-              errors.phone
-                ? 'border-red-500 focus:ring-red-500 mb-[4px] sm:mb-[8px]'
-                : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
-            }`}
+            error={errors.phone}
+            className="mb-[4px] sm:mb-[8px]"
           />
-          {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}
 
-          <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px]  text-neutral-800 font-semibold text-[16px] leading-[135%] font-pretendard">
-            사업자 번호
-          </p>
-          <input
+          <BusinessInputField
+            label="사업자 번호"
             type="text"
-            placeholder="사업자 번호를 입력해주세요 (13자리)"
-            value={businessNumber}
-            onChange={(e) => {
-              const value = e.target.value.replace(/\D/g, '');
-              if (value.length <= 13) {
-                setBusinessNumber(value);
-              }
-            }}
-            className={`w-[400px] h-[48px] sm:w-[450px] sm:h-[56px]   px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none${
-              errors.businessNumber
-                ? 'border-red-500 focus:ring-red-500 mb-[4px] sm:mb-[8px]'
-                : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
-            }`}
+            placeholder="사업자 번호를 입력해 주세요."
+            value={businessNumber ?? ''}
+            onChange={(e) => handleInputChange('businessNumber', e.target.value)}
+            error={errors.businessNumber}
+            className="mb-[4px] sm:mb-[8px]"
           />
-          {errors.businessNumber && <p className="text-sm text-red-500">{errors.businessNumber}</p>}
 
           <button
             onClick={handleSignUp}
@@ -242,7 +182,6 @@ const SignUpBusiness = ({
           >
             완료
           </button>
-
           <div className="w-full flex flex-row justify-center mb-[80px]">
             <span className="text-center text-gray-500">이미 계정이 있으신가요?</span>
             <button onClick={handelSignIn} className=" text-[#B3916A] font-semibold underline">
