@@ -33,9 +33,7 @@ const InputField = ({
 }: InputFieldProps) => {
   return (
     <div className="w-full">
-      {/* 라벨 */}
       <p className="mt-[20px] sm:mt-[24px] font-pretendard text-[16px] font-semibold leading-[135%]">{label}</p>
-      {/* 입력 필드 */}
       <div className="relative mt-[4px]">
         <input
           type={isPassword ? (isPasswordVisible ? 'text' : 'password') : type}
@@ -47,7 +45,6 @@ const InputField = ({
           } ${className}`}
         />
 
-        {/* 비밀번호 보기/숨기기 버튼 */}
         {isPassword && togglePasswordVisibility && (
           <button
             type="button"
@@ -64,10 +61,8 @@ const InputField = ({
         )}
       </div>
 
-      {/* 헬퍼 텍스트 (옵션) */}
       {helperText && <p className="text-xs text-neutral-600 mt-1">{helperText}</p>}
 
-      {/* 오류 메시지 */}
       {error && <p className="text-[14px] text-red-500">{error}</p>}
     </div>
   );
