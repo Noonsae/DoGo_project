@@ -85,7 +85,7 @@ const InputModal = ({ form, setForm, errors, setErrors, handleFindPassword, hand
       <div className="flex flex-col rounded mt-[90px]">
         <button
           type="submit"
-          className="w-full mb-[14px] sm:mb-[12px] max-w-[360px] sm:max-w-[375px] md:max-w-[352px] bg-[#B3916A] font-bold text-white py-[12px] md:py-[15px] rounded-xl hover:bg-[#a37e5f] transition"
+          className=" text-[18px] sm:text-[20px] text-white text-center font-semibold leading-[135%] w-full mb-[14px] sm:mb-[12px] max-w-[360px] sm:max-w-[375px] md:max-w-[352px] bg-[#B3916A] py-[12px] md:py-[15px] rounded-xl hover:bg-[#a37e5f] transition"
         >
           {form.isLoading ? '조회중' : '비밀번호찾기'}
         </button>

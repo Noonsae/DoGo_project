@@ -171,7 +171,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
               <div className="flex flex-col rounded">
                 <button
                   type="submit"
-                  className="w-full bg-[#B3916A] mt-[100px] sm:mt-[80px]  font-bold text-white py-4 rounded-xl hover:bg-[#a37e5f] transition"
+                  className="text-white text-center  text-[18px] sm:text-[20px] font-semibold leading-[135%] w-full bg-[#B3916A] mt-[100px] sm:mt-[80px]  py-4 rounded-xl hover:bg-[#a37e5f] transition"
                   disabled={form.isLoading}
                 >
                   {form.isLoading ? '조회 중...' : '아이디 찾기'}
@@ -222,7 +222,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
             </div>
             <button
               onClick={onClose}
-              className="text-white text-center leading-[135%] h-[48px] text-[16px] sm:text-[18px] md:text-[20px] w-full max-w-[352px] mt-[40px] bg-[#B3916A] font-bold py-4 rounded-xl hover:bg-[#a37e5f] transition"
+              className=" text-[18px] sm:text-[20px] text-white text-center leading-[135%] h-[48px] md:text-[20px] w-full max-w-[352px] mt-[40px] bg-[#B3916A] font-bold py-4 rounded-xl hover:bg-[#a37e5f] transition"
             >
               확인
             </button>

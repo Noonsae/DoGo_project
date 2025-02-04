@@ -169,7 +169,7 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
           <div className="flex flex-col">
             <button
               type="submit"
-              className="mb-[14px] sm:mb-[12px] w-full max-w-md md:w-[352px] h-[48px] mt-[20px] text-xl bg-[#B3916A] font-bold text-white py-[10px] rounded-xl hover:bg-[#a37e5f] transition"
+              className="text-[18px] sm:text-[20px] text-white text-center font-semibold leading-[135%] mb-[14px] sm:mb-[12px] w-full max-w-md md:w-[352px] h-[48px] mt-[20px] text-xl bg-[#B3916A] py-[10px] rounded-xl hover:bg-[#a37e5f] transition"
             >
               {form.isLoading ? '처리 중...' : '완료'}
             </button>
