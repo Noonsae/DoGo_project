@@ -45,10 +45,10 @@ const InquiryCategory = ({ onCategoryChange }: InquiryCategoryProps) => {
             max-width: 90%;
           }
         }
-        /* ✅ iOS 사파리 & 안드로이드 크롬에서 드롭다운 크기 강제 확장 */
+
         @supports (-webkit-touch-callout: none) {
           select {
-            font-size: 16px; /* iOS에서 확대 방지 */
+            font-size: 16px;
           }
         }
       `}</style>
