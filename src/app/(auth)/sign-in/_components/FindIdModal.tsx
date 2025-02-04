@@ -85,7 +85,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
         <p className=" sm:hidden flex flex-col justify-center items-center text-neutral-800 mt-[30px]">아이디 찾기</p>
         <button
           onClick={onClose}
-          className="absolute mt-[20px] sm:mt-[41px] mr-[20px] sm:mr-[41px] top-3 right-3 text-gray-500 hover:text-black font-bold cursor-pointer"
+          className="absolute mt-[20px] sm:mt-[41px] mr-[20px] sm:mr-[41px] top-3 right-3 text-neutral-800 hover:text-black font-bold cursor-pointer"
         >
           <CloseButtonIcon />
         </button>
@@ -128,7 +128,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
             >
               <div>
                 <div className="mt-8 sm:mt-[30px]">
-                  <label className="block text-gray-700 mb-1">이름</label>
+                  <label className="block text-neutral-800  mb-[4px] sm:mb-[8px]">이름</label>
                   <input
                     type="text"
                     placeholder="이름을 입력해 주세요."
@@ -137,7 +137,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
                       setForm((prevForm) => ({ ...prevForm, name: e.target.value }));
                       setErrors((prev) => ({ ...prev, name: undefined }));
                     }}
-                    className={`text-[15px] w-full max-w-[352px] h-[48px] pl-4 pt-2 pb-2 border rounded-[8px] focus:outline-none focus:ring-2 ${
+                    className={`gap-[4px] text-[15px] text-neutral-500 w-full max-w-[352px] h-[48px] pl-4 pt-2 pb-2 border rounded-[8px] focus:outline-none focus:ring-2 ${
                       errors.name ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-black'
                     }`}
                   />
@@ -146,7 +146,10 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
                   {errors.name || 'placeholder'}
                 </p>
 
-                <label className="block mt-4 sm:mt-[20px] text-gray-700">휴대폰 번호</label>
+                <label className="block mt-4 sm:mt-[20px] text-neutral-800 mb-[4px] sm:mb-[8px]">
+                  {' '}
+                  {form.activeTab === 'user' ? '휴대폰 번호' : '담당자 번호'}
+                </label>
                 <input
                   type="text"
                   placeholder="휴대폰 번호를 입력해 주세요."
@@ -156,7 +159,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
                     setForm((prevForm) => ({ ...prevForm, phone: formattedPhone }));
                     setErrors((prev) => ({ ...prev, phone: undefined }));
                   }}
-                  className={`text-[15px] w-full max-w-[352px] h-[48px] pl-4 pt-2 pb-2 border rounded-[8px] mb-1 focus:outline-none focus:ring-2 ${
+                  className={`gap-[4px] text-neutral-500 text-[15px] w-full max-w-[352px] h-[48px] pl-4 pt-2 pb-2 border rounded-[8px] mb-1 focus:outline-none focus:ring-2 ${
                     errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-black'
                   }`}
                 />
