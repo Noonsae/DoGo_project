@@ -1,21 +1,3 @@
-// import Link from 'next/link';
-
-// const page = () => {
-//   return (
-//     <div className="w-full h-screen flex flex-col items-center justify-center">
-//       <span className="text-[28px] font-normal mb-4">Booking Page</span>
-//       <p className="text-[32px] font-medium">죄송합니다. 아직 준비 중인 페이지입니다.</p>
-//       <Link
-//         href="/"
-//         className="mt-8 p-4 bg-[#B3916A] rounded-[12px] text-white text-[20px] font-medium hover:bg-[#8F7455] active:bg-[#6B573F]"
-//       >
-//         홈페이지로 돌아가기
-//       </Link>
-//     </div>
-//   );
-// };
-
-// export default page;
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -105,21 +87,6 @@ const UserBookingPage: React.FC = () => {
 
   if (loading) return <p className="text-center text-gray-500">로딩 중...</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>;
-  // if (bookings.length === 0)
-  //   return (
-  //     <div className="flex items-center justify-center h-screen bg-gray-100">
-  //       <div className="p-6 bg-white rounded-lg shadow text-center flex flex-col items-center">
-  //         <h1 className="text-2xl font-bold mb-4">내 예약</h1>
-  //         <p className="text-[50px] font-medium text-gray-500">예약이 되어 있지 않습니다.</p>
-  //         <Link
-  //           href="/"
-  //           className="mt-8 inline-block p-4 bg-[#B3916A] rounded-[12px] text-white text-[20px] font-medium hover:bg-[#8F7455] active:bg-[#6B573F]"
-  //         >
-  //           홈페이지로 돌아가기
-  //         </Link>
-  //       </div>
-  //     </div>
-  //   );
 
   return (
     <div className="p-6 bg-white rounded-lg shadow">
@@ -128,7 +95,7 @@ const UserBookingPage: React.FC = () => {
         {bookings.length === 0 && (
           <>
             <h1 className="text-2xl font-bold mb-4">내 예약</h1>
-            <p className="text-[50px] font-medium text-gray-500">예약이 되어 있지 않습니다.</p>
+            <p className="text-[14px] font-medium text-gray-500">예약이 되어 있지 않습니다.</p>
           </>
         )}
         {bookings.map((booking) => (
