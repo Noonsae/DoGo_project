@@ -55,7 +55,7 @@ const Modal = ({ isOpen, onClose, room, hotelData }: ModalProps) => {
     router.push(`/booking?hotel_id=${hotelData.id}&room_id=${room.id}&price=${room.price}`);
   };
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30 ">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#221A1A] bg-opacity-30 ">
       <div className=" bg-white rounded shadow-lg w-full h-full md:w-[600px] md:h-[700px] max-w-4xl overflow-y-auto scrollbar-hide">
         <div className="w-full sticky top-0 z-10 bg-[#221A1A] text-[#FDF9F4] text-[18px] sm:text-[20px] md:text-[22px] lg:text-[24px] font-bold text-center">
           <div className="flex items-center justify-between px-4 py-2 w-full bg-[#221A1A] text-[#FDF9F4] text-[18px] sm:text-[20px] md:text-[22px] lg:text-[24px] font-bold">
