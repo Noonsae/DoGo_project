@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import TossPaymentsButton from './TossPaymentsButton';
 
-const AgreementAndPayment = ({ roomPrice }: { roomPrice: number }) => {
+const AgreementAndPayment = ({ roomPrice, isFormValid }: { roomPrice: number; isFormValid : boolean}) => {
   // 체크박스 상태 관리
   const [agreements, setAgreements] = useState({
     ageConfirmation: false,
@@ -9,7 +9,7 @@ const AgreementAndPayment = ({ roomPrice }: { roomPrice: number }) => {
   });
 
   // 모든 체크박스가 체크되었는지 확인
-  const allChecked = Object.values(agreements).every((checked) => checked);
+  const allAgree = Object.values(agreements).every((checked) => checked);
 
   // 체크박스 상태 업데이트
   const handleCheckboxChange = (name: keyof typeof agreements) => {
@@ -47,7 +47,7 @@ const AgreementAndPayment = ({ roomPrice }: { roomPrice: number }) => {
           {roomPrice ? roomPrice.toLocaleString() + '원' : '가격 없음'}
         </span>
         {/* 결제 버튼을 활성화 또는 비활성화 */}
-        <TossPaymentsButton disabled={!allChecked} roomPrice={roomPrice} />
+        <TossPaymentsButton disabled={!allAgree || !isFormValid} roomPrice={roomPrice} />
       </div>
     </div>
   );
