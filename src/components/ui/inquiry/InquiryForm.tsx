@@ -70,7 +70,7 @@ const InquiryForm = forwardRef(({ category, hotel_id }: InquiryFormProps, ref) =
       const response = await fetch('/api/inquiries', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ category, title, content, user_id: userId, hotel_id })
+        body: JSON.stringify({ category, title, content, user_id: userId, hotel_id: hotel_id || null })
       });
 
       if (!response.ok) {
