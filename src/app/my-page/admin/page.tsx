@@ -5,9 +5,10 @@ import AdminSidebar from '@/app/my-page/_components/AdminSidebar';
 import CompanyList from '@/app/my-page/_components/CompanyList';
 import CooperationRequests from '@/app/my-page/_components/CooperationRequests';
 import BookingList from '@/app/my-page/_components/BookingList';
+import InquiryList from '@/app/my-page/_components/InquiryList'; // 문의 리스트 컴포넌트 추가
 
-// AdminTabType 정의
-type AdminTabType = 'company' | 'requests' | 'bookings';
+// 🔹 AdminTabType 정의 ('inquiry' 추가)
+type AdminTabType = 'company' | 'requests' | 'bookings' | 'inquiry';
 
 const AdminPage: React.FC = () => {
   // 현재 선택된 탭 상태 관리
@@ -22,6 +23,8 @@ const AdminPage: React.FC = () => {
         return <CooperationRequests />;
       case 'bookings':
         return <BookingList />;
+      case 'inquiry': // 🔹 'inquiry' 추가
+        return <InquiryList />;
       default:
         return (
           <p className="text-center text-gray-600">
