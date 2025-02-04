@@ -9,12 +9,12 @@ import IoCloseIcon from '../icon/IoCloseIcon';
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  images: string[]; // hotel_img_url 배열
-  name: string; // 호텔 이름
+  images: string[];
+  name: string;
 }
 
 const UpModal = ({ isOpen, onClose, images = [], name }: ModalProps) => {
-  const [currentIndex, setCurrentIndex] = useState(0); // 현재 이미지 인덱스
+  const [currentIndex, setCurrentIndex] = useState(0);
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -45,15 +45,12 @@ const UpModal = ({ isOpen, onClose, images = [], name }: ModalProps) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#221A1A] bg-opacity-40">
-      {/* 스크롤 방지 */}
       <style jsx global>{`
         body {
           overflow: hidden;
         }
       `}</style>
-      {/* 모달 콘텐츠 */}
       <div className="relative bg-white rounded-lg shadow-lg w-full max-w-[1124px] h-full overflow-hidden md:w-[1124px] md:h-[767px] md:max-h-[767px]">
-        {/* 헤더 */}
         <div className="flex justify-center items-center px-6 bg-[#231815] text-white rounded-t-lg h-[56px] md:h-[67px]">
           <h2 className="text-lg font-semibold">{name}</h2>
           <IoCloseIcon
@@ -79,7 +76,6 @@ const UpModal = ({ isOpen, onClose, images = [], name }: ModalProps) => {
           </div>
         </div>
         <div className="hidden md:flex flex-col items-center">
-          {/* 메인 이미지 */}
           <div className="bg-[#FAFAFA] w-full relative flex justify-center items-center h-[540px]">
             <button
               onClick={handlePrev}
@@ -104,12 +100,10 @@ const UpModal = ({ isOpen, onClose, images = [], name }: ModalProps) => {
               <FiChevronRightIcon />
             </button>
 
-            {/* 하단 인덱스 */}
             <div className="absolute bottom-4 right-[24px] w-[65px] h-[27px] text-white bg-gray-500 bg-opacity-60 rounded-full text-sm flex justify-center items-center">
               {currentIndex + 1} / {images.length}
             </div>
           </div>
-          {/* 🌟 데스크탑 썸네일 (모바일에서는 숨김) */}
           <div className="flex justify-center items-center space-x-2 mt-[20px]">
             {images.map((image, index) => (
               <div
