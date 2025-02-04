@@ -97,12 +97,12 @@ const SignUpBusiness = ({
   };
 
   return (
-    <div className="flex flex-col min-h-screen items-center px-4 sm:px-6 lg:px-8">
+    <div className=" flex flex-col min-h-screen items-center px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-[320px] sm:max-w-[400px]">
         <div className="flex justify-center mt-[140px]">
           <LogoAuth />
         </div>
-        <p className="text-neutral-800  text-[24px] sm:text-[28px] font-bold mb-[12px] sm:mb-[16px] ">
+        <p className="text-[24px] sm:text-[28px] md:text-[20px] mt-[40px] font-semibold leading-[135%] text-center text-[#444] mb-[12px] sm:mb-[16px]">
           사업자 회원 회원가입
         </p>
 
