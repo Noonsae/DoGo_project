@@ -4,8 +4,9 @@ import CheckIcon from '@/components/ui/icon/CheckIcon';
 import React from 'react';
 
 const SuccessModal = ({ form, onClose }: { form: any; onClose: () => void }) => (
-  <div className="flex flex-col justify-center items-center z-50 w-full max-w-[352px] mx-auto">
-    <div className="flex flex-col justify-center items-center text-center w-full max-w-[352px] h-[411px] mt-[40px]">
+  <div className=" w-full max-w-[352px] mx-auto">
+    <p className=" sm:hidden flex flex-col justify-center items-center text-neutral-800 mt-[45px]">비밀번호 재설정 </p>
+    <div className="flex flex-col justify-center items-center text-center w-full max-w-[352px] h-[411px] ">
       <CheckIcon />
       <span className="text-lg md:text-xl leading-[135%] font-pretendard font-semibold">
         {(form.name && `${form.name}님의`) || '회원님의'}
