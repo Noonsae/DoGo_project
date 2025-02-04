@@ -15,7 +15,7 @@ export const fetchRoomQuery = async (roomId: string) => {
       hotel_id,
       hotels (id, name, check_in, check_out)
     `
-    ) // 'hotels' 테이블 조인 (hotel_id 기준)
+    )
     .eq('id', roomId)
     .single();
 
