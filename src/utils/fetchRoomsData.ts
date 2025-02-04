@@ -10,9 +10,10 @@ export const fetchRoomQuery = async (roomId: string) => {
       `
       id,
       room_name,
+      room_img_url,
       price,
       hotel_id,
-      hotels (id, name)
+      hotels (id, name, check_in, check_out)
     `
     ) // 'hotels' 테이블 조인 (hotel_id 기준)
     .eq('id', roomId)
