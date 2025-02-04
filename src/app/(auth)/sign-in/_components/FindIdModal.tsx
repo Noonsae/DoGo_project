@@ -80,8 +80,9 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
     setErrors({});
   };
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4 sm:px-0">
-      <div className="w-full max-w-[424px] h-full max-h-[635px] bg-white rounded-lg shadow-lg relative px-4 sm:px-10 sm:py-8">
+    <div className=" fixed inset-0 bg-black bg-opacity-50 flex sm:items-center items-start justify-center z-50 px-0 sm:px-4">
+      <div className=" w-full sm:max-w-[424px] min-h-screen sm:min-h-0 sm:h-auto bg-white sm:rounded-lg shadow-lg relative px-4 sm:px-10 sm:py-8 overflow-y-auto">
+        <p className=" sm:hidden flex flex-col justify-center items-center text-neutral-800 mt-[30px]">아이디 찾기</p>
         <button
           onClick={onClose}
           className="absolute mt-[20px] sm:mt-[41px] mr-[20px] sm:mr-[41px] top-3 right-3 text-gray-500 hover:text-black font-bold cursor-pointer"
@@ -90,12 +91,12 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
         </button>
 
         {form.modalType === 'input' && (
-          <div className="flex flex-col h-full">
-            <p className="text-xl sm:text-2xl font-bold mt-20 sm:mt-[36px] mb-10 sm:mb-[40px]">
+          <div className="flex flex-col h-full justify-center">
+            <p className="text-xl sm:text-2xl font-bold mt-[36px] mb-10 sm:mb-[40px]">
               DoGo 가입 정보로 <br /> 아이디를 확인하세요.
             </p>
 
-            <div className="flex border-b-2 w-full max-w-[352px]">
+            <div className="flex border-b-2 w-full max-w-[352px] ">
               <button
                 className={`flex-1 pb-2 sm:pb-[10px] text-center ${
                   form.activeTab === 'user'
@@ -151,7 +152,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
                   placeholder="휴대폰 번호를 입력해 주세요."
                   value={form.phone}
                   onChange={(e) => {
-                    const formattedPhone = e.target.value.replace(/[^0-9-]/g, ''); // 숫자, - 만 허용
+                    const formattedPhone = e.target.value.replace(/[^0-9-]/g, '');
                     setForm((prevForm) => ({ ...prevForm, phone: formattedPhone }));
                     setErrors((prev) => ({ ...prev, phone: undefined }));
                   }}
@@ -167,7 +168,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
               <div className="flex flex-col rounded">
                 <button
                   type="submit"
-                  className="w-full bg-[#B3916A] mt-8 sm:mt-[80px] font-bold text-white py-4 rounded-xl hover:bg-[#a37e5f] transition"
+                  className="w-full bg-[#B3916A] mt-[100px] sm:mt-[80px]  font-bold text-white py-4 rounded-xl hover:bg-[#a37e5f] transition"
                   disabled={form.isLoading}
                 >
                   {form.isLoading ? '조회 중...' : '아이디 찾기'}
@@ -194,7 +195,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
             </div>
             <button
               onClick={onClose}
-              className="w-full max-w-[352px] sm:mt-[180px] bg-[#B3916A] font-bold text-white py-4 rounded-xl hover:bg-[#a37e5f] transition"
+              className="w-full max-w-[352px] mt-[180px] sm:mt-[180px] bg-[#B3916A] font-bold text-white py-4 rounded-xl hover:bg-[#a37e5f] transition"
             >
               확인
             </button>
