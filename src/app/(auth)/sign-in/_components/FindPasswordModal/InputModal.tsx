@@ -41,7 +41,9 @@ const InputModal = ({ form, setForm, errors, setErrors, handleFindPassword, hand
     >
       <div>
         <div className="mt-[20px] md:mt-[30px]">
-          <label className="block text-sm md:text-base text-gray-700 mb-[4px] sm:mb-[8px]">이메일</label>
+          <label className="block text-sm md:text-base mb-[4px] sm:mb-[8px] text-neutral-800 font-semibold">
+            이메일
+          </label>
           <input
             type="email"
             placeholder="이메일을 입력해주세요"
@@ -59,7 +61,7 @@ const InputModal = ({ form, setForm, errors, setErrors, handleFindPassword, hand
           {errors.email || 'placeholder'}
         </p>
 
-        <label className="block mb-[4px] sm:mb-[8px] text-sm md:text-base text-gray-700 ">
+        <label className="block mb-[4px] sm:mb-[8px] text-sm md:text-base text-neutral-800 font-semibold">
           {form.activeTab === 'user' ? '휴대폰 번호' : '담당자 번호'}
         </label>
         <input

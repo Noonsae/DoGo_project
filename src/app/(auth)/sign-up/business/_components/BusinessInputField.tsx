@@ -37,7 +37,7 @@ const BusinessInputField = ({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          className={`w-full max-w-[340px] sm:max-w-[400px] h-[44px] sm:h-[48px] px-3 border rounded-[8px] focus:outline-none ${
+          className={`text-neutral-800 w-full max-w-[340px] sm:max-w-[400px] h-[44px] sm:h-[48px] px-3 border rounded-[8px] focus:outline-none ${
             error ? 'border-red-500 focus:ring-red-500' : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
           } ${className}`}
         />

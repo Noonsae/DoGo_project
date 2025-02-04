@@ -51,7 +51,7 @@ const UpModal = ({ isOpen, onClose, images = [], name }: ModalProps) => {
         }
       `}</style>
       <div className="relative bg-white rounded-lg shadow-lg w-full max-w-[1124px] h-full overflow-hidden md:w-[1124px] md:h-[767px] md:max-h-[767px]">
-        <div className="flex justify-center items-center px-6 bg-[#231815] text-white rounded-t-lg h-[56px] md:h-[67px]">
+        <div className="flex justify-center items-center px-6 bg-[#221A1A] text-white rounded-t-lg h-[56px] md:h-[67px]">
           <h2 className="text-lg font-semibold">{name}</h2>
           <IoCloseIcon
             onClick={onClose}
