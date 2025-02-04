@@ -2,7 +2,9 @@
 import { FormState, ErrorState } from '@/types/auth/FindPasswordModalTypes';
 import CloseEyesIcon from '@/components/ui/icon/CloseEyesIcon';
 import OpenEyesIcon from '@/components/ui/icon/OpenEyesIcon';
+import { isValidPassword } from '@/utils/validation';
 import React from 'react';
+
 interface ResetModalProps {
   form: FormState;
   errors: ErrorState;
@@ -10,21 +12,24 @@ interface ResetModalProps {
   setErrors: React.Dispatch<React.SetStateAction<ErrorState>>;
   handleResetPassword: () => void;
 }
+
 const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: ResetModalProps) => (
-  <div className="m-10 flex flex-col z-50">
+  <div className=" flex flex-col h-full w-full max-w-[360px] sm:max-w-[375px] p-4">
     {form.modalType === 'reset' && (
-      <div className="flex flex-col">
-        <p className="font-semibold text-[24px] mt-[30px] mb-[30px]">
-          비밀번호를 찾기 위해 <br />
-          가입 정보를 입력해 주세요.
+      <div className=" flex flex-col">
+        <p className="sm:hidden flex flex-col justify-center items-center text-neutral-800 mt-[30px]">
+          비밀번호 재설정
+        </p>
+        <p className="text-[28px] mt-[38px] leading-[135%] mb-[40px] sm:mb-[32px] sm:text-[24px] sm:leading-[130%] text-lg sm:text-xl font-semibold ">
+          가입정보가 <br />
+          인증 되었습니다.
         </p>
         <form
-          className="flex flex-col justify-between"
+          className="flex flex-col justify-between w-full max-w-md"
           onSubmit={(e) => {
             e.preventDefault();
             const newErrors: { otp?: string; password?: string; confirmPassword?: string } = {};
 
-            // 입력값 검증
             if (!form.otp) {
               newErrors.otp = 'OTP는 필수 입력값입니다.';
             }
@@ -44,138 +49,127 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
             }
 
             handleResetPassword();
-            setForm((prevForm) => ({
-              ...prevForm,
-              modalType: 'success'
-            }));
           }}
         >
-          <div>
-            {/* OTP 입력 */}
-            <label className="text-base font-semibold text-gray-700 mb-4">OTP</label>
+          <div className="mb-4">
+            <label className="text-base block text-neutral-800 font-semibold mb-2">OTP 인증 코드</label>
             <input
               type="text"
               placeholder="OTP를 입력해 주세요."
               value={form.otp}
               onChange={(e) => {
-                setForm({
-                  ...form,
-                  otp: e.target.value
-                });
-
+                setForm({ ...form, otp: e.target.value });
                 setErrors((prev) => ({ ...prev, otp: undefined }));
               }}
-              className={`w-full p-[13px] border rounded-xl mb-2 focus:outline-none focus:ring-2 ${
+              className={`w-full h-[40px] md:h-[48px] pl-[12px] md:pl-[16px] border rounded-[8px] focus:outline-none focus:ring-2 ${
                 errors.otp ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-[#B3916A]'
               }`}
             />
-            {errors.otp && <p className="text-sm text-red-500">{errors.otp}</p>}
+            <p className="text-sm mt-1 min-h-[5px] text-neutral-500 ml-[1px]">OTP는 자동으로 입력됩니다.</p>
+            <p className={`text-sm text-red-500 mt-1 min-h-[10px] ${errors.otp ? 'visible' : 'invisible'}`}>
+              {errors.otp || 'placeholder'}
+            </p>
 
             {/* 새 비밀번호 입력 */}
-            <div className="mb-4 text-base">
-              <label className="block font-semibold text-gray-700 mb-2">새 비밀번호</label>
-
+            <div className="text-base">
+              <label className="block text-neutral-800 font-semibold mb-2">새 비밀번호</label>
               <div className="relative">
                 <input
                   type={form.showPassword ? 'text' : 'password'}
                   placeholder="새 비밀번호를 입력해 주세요."
                   value={form.password}
                   onChange={(e) => {
+                    const newPassword = e.target.value;
                     setForm((prevForm) => ({
                       ...prevForm,
-                      password: e.target.value
+                      password: newPassword
                     }));
 
-                    // 즉시 검증
-                    if (form.confirmPassword && e.target.value !== form.confirmPassword) {
-                      setErrors((prev) => ({
-                        ...prev,
-                        confirmPassword: '비밀번호가 일치하지 않습니다.'
-                      }));
-                    } else {
-                      setErrors((prev) => ({
-                        ...prev,
-                        confirmPassword: undefined
-                      }));
-                    }
+                    setErrors((prevErrors) => ({
+                      ...prevErrors,
+                      password: isValidPassword(newPassword)
+                        ? undefined
+                        : '영문 + 숫자 또는 특수문자 조합, 8자~32자 입력하세요.'
+                    }));
                   }}
-                  className={`w-full p-[13px] pr-10 border rounded-xl focus:outline-none focus:ring-2 ${
+                  className={`w-full h-[40px] md:h-[48px] pl-[12px] md:pl-[16px] border rounded-[8px] focus:outline-none focus:ring-2 ${
                     errors.password ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-[#B3916A]'
                   }`}
                 />
-                <p className="text-sm text-neutral-600 mb-[20px]">
-                  영문 대•소문자/숫자/특수문자 중 2가지 이상 조합, 8자~32자
-                </p>
                 <button
                   type="button"
+                  tabIndex={-1}
                   onClick={() =>
                     setForm((prevForm) => ({
                       ...prevForm,
                       showPassword: !prevForm.showPassword
                     }))
                   }
-                  className="absolute right-3 top-7 text-neutral-500 transform -translate-y-1/2 hover:text-black"
+                  className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-black"
                 >
                   {form.showPassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
                 </button>
               </div>
-              {errors.password && <p className="text-sm text-red-500 mt-2">{errors.password}</p>}
+              <p className={`text-sm text-red-500 mt-1 min-h-[5px] ${errors.password ? 'visible' : 'invisible'}`}>
+                {errors.password || 'placeholder'}
+              </p>
             </div>
 
             {/* 비밀번호 확인 입력 */}
-            <div className="mb-4 ">
-              <label className="text-base block font-semibold text-gray-700 mb-2">비밀번호 확인</label>
-              <div className="relative">
-                <input
-                  type={form.showConfirmPassword ? 'text' : 'password'}
-                  placeholder="비밀번호를 다시 입력해 주세요."
-                  value={form.confirmPassword}
-                  onChange={(e) => {
-                    setForm((prevForm) => ({
-                      ...prevForm,
-                      confirmPassword: e.target.value
-                    }));
+            <div className="relative w-full">
+              <p className="block text-neutral-800 font-semibold mb-2">비밀번호 확인</p>
+              <input
+                type={form.showConfirmPassword ? 'text' : 'password'}
+                placeholder="비밀번호를 다시 입력해 주세요."
+                value={form.confirmPassword}
+                onChange={(e) => {
+                  setForm((prevForm) => ({
+                    ...prevForm,
+                    confirmPassword: e.target.value
+                  }));
 
-                    // 즉시 검증
-                    if (form.password && e.target.value !== form.password) {
-                      setErrors((prev) => ({
-                        ...prev,
-                        confirmPassword: '비밀번호가 일치하지 않습니다.'
-                      }));
-                    } else {
-                      setErrors((prev) => ({
-                        ...prev,
-                        confirmPassword: undefined
-                      }));
-                    }
-                  }}
-                  className={`w-full p-[13px] pr-10 border rounded-xl focus:outline-none focus:ring-2 ${
-                    errors.confirmPassword
-                      ? 'border-red-500 focus:ring-red-500'
-                      : 'border-gray-300 focus:ring-[#B3916A]'
-                  }`}
-                />
-                <button
-                  type="button"
-                  onClick={() =>
-                    setForm((prevForm) => ({
-                      ...prevForm,
-                      showConfirmPassword: !prevForm.showConfirmPassword
-                    }))
+                  if (form.password && e.target.value !== form.password) {
+                    setErrors((prev) => ({
+                      ...prev,
+                      confirmPassword: '비밀번호가 일치하지 않습니다.'
+                    }));
+                  } else {
+                    setErrors((prev) => ({
+                      ...prev,
+                      confirmPassword: undefined
+                    }));
                   }
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-black"
-                >
-                  {form.showConfirmPassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
-                </button>
-              </div>
-              {errors.confirmPassword && <p className="text-sm text-red-500 mt-2">{errors.confirmPassword}</p>}
+                }}
+                className={`text-[16px] font-medium leading-[135%] text-neutral-500 w-full h-[40px] sm:h-[48px] pl-[12px] sm:pl-[16px] border rounded-[8px] focus:outline-none focus:ring-2 ${
+                  errors.confirmPassword ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-[#B3916A]'
+                }`}
+              />
+              <p
+                className={`text-sm text-red-500 mt-1 min-h-[5px] ${errors.confirmPassword ? 'visible' : 'invisible'}`}
+              >
+                {errors.confirmPassword || 'placeholder'}
+              </p>
+              <button
+                type="button"
+                tabIndex={-1}
+                onClick={() =>
+                  setForm((prevForm) => ({
+                    ...prevForm,
+                    showConfirmPassword: !prevForm.showConfirmPassword
+                  }))
+                }
+                className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-black"
+              >
+                {form.showConfirmPassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
+              </button>
             </div>
           </div>
-          <div className="flex flex-col mt-[77px]">
+
+          {/* 완료 버튼 */}
+          <div className="flex flex-col">
             <button
               type="submit"
-              className="w-[352px] h-[48px] text-xl bg-[#B3916A] font-bold text-white py-[10px] rounded-xl hover:bg-[#a37e5f] transition"
-              // disabled={form.isLoading}
+              className="text-[18px] sm:text-[20px] text-white text-center font-semibold leading-[135%] mb-[14px] sm:mb-[12px] w-full max-w-md md:w-[352px] h-[48px] mt-[20px] text-xl bg-[#B3916A] py-[10px] rounded-xl hover:bg-[#a37e5f] transition"
             >
               {form.isLoading ? '처리 중...' : '완료'}
             </button>
