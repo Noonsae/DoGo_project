@@ -14,22 +14,45 @@ const InquiryCategory = ({ onCategoryChange }: InquiryCategoryProps) => {
     onCategoryChange(newCategory);
   };
   return (
-    <select
-      value={selectedCategory}
-      onChange={handleChange}
-      className={`flex h-[48px] px-4 py-2 items-center gap-1 sm:gap-2 md:gap-4 border rounded mt-2 w-full text-[16px] sm:text-[14px] md:text-[16px] lg:text-[18px] font-medium leading-[135%] ${
-        selectedCategory ? 'text-black' : 'text-[#A0A0A0]'
-      }`}
-    >
-      <option value="" disabled>
-        문의 사항의 카테고리를 선택해 주세요.
-      </option>
-      {categories.map((category) => (
-        <option key={category} value={category} className="text-black">
-          {category}
+    <div className="flex flex-col gap-4 mt-4 w-full max-w-[90%] sm:max-w-[500px] md:max-w-[600px] mx-auto">
+      <label className="font-semibold text-[#444]">
+        카테고리 <span className="ml-1 text-red-500">*</span>
+      </label>
+      <select
+        value={selectedCategory}
+        onChange={handleChange}
+        className={`flex flex-row justify-center w-full min-w-full sm:w-auto sm:max-w-[500px] md:max-w-[600px] h-[48px] 
+        items-center sm:gap-2 md:gap-4 border rounded text-[16px] sm:text-[14px] md:text-[16px] lg:text-[18px] 
+        font-medium leading-[135%] ${selectedCategory ? 'text-black' : 'text-[#A0A0A0]'}`}
+      >
+        <option value="" disabled>
+          문의 사항의 카테고리를 선택해 주세요.
         </option>
-      ))}
-    </select>
+        {categories.map((category) => (
+          <option key={category} value={category} className="text-black">
+            {category}
+          </option>
+        ))}
+      </select>
+      <style jsx global>{`
+        select {
+          width: 100%;
+          max-width: 600px;
+        }
+        @media (max-width: 640px) {
+          select {
+            width: 100%;
+            max-width: 90%;
+          }
+        }
+
+        @supports (-webkit-touch-callout: none) {
+          select {
+            font-size: 16px;
+          }
+        }
+      `}</style>
+    </div>
   );
 };
 
