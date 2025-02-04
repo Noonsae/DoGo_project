@@ -1,3 +1,3 @@
 import { Tables } from "./supabase-type";
 
-export type BookingType = Tables<'bookings'>;
+export type BookingDataType = Tables<'bookings'>;
