@@ -1,26 +1,21 @@
 import React, { useState } from 'react';
 import { SignUpProps } from '@/types/supabase/supabase-sign-up-type';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import CloseEyesIcon from '@/components/ui/icon/CloseEyesIcon';
-import OpenEyesIcon from '@/components/ui/icon/OpenEyesIcon';
 import LogoAuth from '@/components/ui/icon/LogoAuth';
 import handleSignupAction from '../../actions/handleSignupAction';
 import Swal from 'sweetalert2';
+import InputField from './InputField';
 const SignUpUser = ({
   email,
   setEmail,
   password,
   setPassword,
-  setBusinessNumber,
   phone,
   setPhone,
   nickname,
   setNickname,
   name,
   setName,
-  error,
-  setError,
   handleSignup
 }: SignUpProps) => {
   const [form, setForm] = useState({
@@ -35,6 +30,7 @@ const SignUpUser = ({
     name?: string;
     nickname?: string;
     confirmPassword?: string;
+    password?: string;
   }>({});
   const router = useRouter();
 
@@ -122,121 +118,73 @@ const SignUpUser = ({
             일반 회원 회원가입
           </p>
 
-          <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px] font-pretendard text-[16px] font-semibold leading-[135%]">
-            이메일
-          </p>
-          <input
+          <InputField
+            label="이메일"
             type="email"
             placeholder="이메일을 입력해 주세요."
-            value={email}
+            value={email ?? ''}
             onChange={(e) => handleInputChange('email', e.target.value)}
-            className={`mb-[4px] sm:mb-[8px] w-[400px] h-[48px] sm:w-[450px] sm:h-[56px]  px-3 border rounded-[8px] focus:outline-none ${
-              errors.email
-                ? 'border-red-500 focus:ring-red-500'
-                : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
-            }`}
+            className="mb-[4px] sm:mb-[8px]"
           />
           {errors.email && <p className="text-[14px] text-red-500">{errors.email}</p>}
 
-          <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px] font-pretendard text-[16px] font-semibold leading-[135%]">
-            비밀번호
-          </p>
-          <div className="relative">
-            <input
-              type={form.updatePassword ? 'text' : 'password'}
-              placeholder="비밀번호를 입력해 주세요."
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-[400px] h-[48px] sm:w-[450px] sm:h-[56px] mb-[20px] sm:mb-[24px]  px-3 border border-[#BFBFBF] rounded-[8px] focus:border-[#B3916A] focus:outline-none"
-            />
-            <p className="text-xs pb-[4px] mb-[12px] sm:mb-[16px] px-1 text-gray-700">
-              영문 대•소문자/숫자/특수문자 중 2가지 이상 조합, 8자~32자
-            </p>
-            <button
-              type="button"
-              tabIndex={-1}
-              onClick={() => setForm((prevForm) => ({ ...prevForm, updatePassword: !prevForm.updatePassword }))}
-              className="absolute right-[-25px] top-7 transform -translate-y-1/2 text-gray-600 hover:text-black"
-            >
-              {form.updatePassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
-            </button>
-          </div>
+          <InputField
+            label="비밀번호"
+            type="password"
+            placeholder="비밀번호를 입력해 주세요."
+            value={password ?? ''}
+            onChange={(e) => setPassword(e.target.value)}
+            error={errors.password}
+            isPassword
+            togglePasswordVisibility={() => setForm((prev) => ({ ...prev, updatePassword: !prev.updatePassword }))}
+            isPasswordVisible={form.updatePassword}
+            helperText="영문 대•소문자/숫자/특수문자 중 2가지 이상 조합, 8자~32자"
+            className="mb-[4px] sm:mb-[8px]"
+          />
 
-          <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px] font-pretendard text-[16px] font-semibold leading-[135%]">
-            비밀번호 확인
-          </p>
-          <div className="relative">
-            <input
-              type={form.checkUpdatePassword ? 'text' : 'password'}
-              placeholder="비밀번호를 다시 입력해 주세요."
-              value={form.confirmPassword}
-              onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-              className={`w-[400px] h-[48px] sm:w-[450px] sm:h-[56px] mb-[20px] sm:mb-[24px]  px-3 border rounded-[8px] focus:outline-none ${
-                errors.confirmPassword
-                  ? 'border-red-500 focus:ring-red-500'
-                  : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
-              }`}
-            />
-            <button
-              type="button"
-              tabIndex={-1}
-              onClick={() =>
-                setForm((prevForm) => ({ ...prevForm, checkUpdatePassword: !prevForm.checkUpdatePassword }))
-              }
-              className="absolute right-[-25px] top-7 transform -translate-y-1/2 text-gray-600 hover:text-black"
-            >
-              {form.checkUpdatePassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
-            </button>
-          </div>
-          {errors.confirmPassword && <p className="text-sm  text-red-500">{errors.confirmPassword}</p>}
+          <InputField
+            label="비밀번호 확인"
+            type="password"
+            placeholder="비밀번호를 다시 입력해 주세요."
+            value={form.confirmPassword}
+            onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+            error={errors.confirmPassword}
+            isPassword
+            togglePasswordVisibility={() =>
+              setForm((prev) => ({ ...prev, checkUpdatePassword: !prev.checkUpdatePassword }))
+            }
+            isPasswordVisible={form.checkUpdatePassword}
+            className="mb-[4px] sm:mb-[8px]"
+          />
 
-          <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px] font-pretendard text-[16px] font-semibold leading-[135%]">
-            휴대폰 번호
-          </p>
-          <input
+          <InputField
+            label="휴대폰 번호"
             type="tel"
             placeholder="휴대폰 번호를 입력해 주세요."
-            value={phone}
+            value={phone ?? ''}
             onChange={(e) => handleInputChange('phone', e.target.value)}
-            className={`w-[400px] h-[48px] mb-[4px] sm:mb-[8px] sm:w-[450px] sm:h-[56px] px-3 border rounded-[8px] focus:outline-none ${
-              errors.phone
-                ? 'border-red-500 focus:ring-red-500'
-                : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
-            }`}
+            className="mb-[4px] sm:mb-[8px]"
+            error={errors.phone}
           />
-          {errors.phone && <p className="text-[14px] mb-[12px] sm:mb-[16px] text-red-500">{errors.phone}</p>}
 
-          <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px] font-pretendard text-[16px] font-semibold leading-[135%]">
-            이름
-          </p>
-          <input
+          <InputField
+            label="이름"
             type="text"
             placeholder="이름을 입력해 주세요."
-            value={name}
+            value={name ?? ''}
             onChange={(e) => handleInputChange('name', e.target.value)}
-            className={`w-[400px] mb-[4px] sm:mb-[8px] h-[48px] sm:w-[450px] sm:h-[56px]  px-3 border rounded-[8px] focus:outline-none ${
-              errors.name
-                ? 'border-red-500  focus:ring-red-500'
-                : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
-            }`}
+            className="mb-[4px] sm:mb-[8px]"
+            error={errors.name}
           />
-          {errors.name && <p className="text-[14px] text-red-500">{errors.name}</p>}
 
-          <p className="mt-[20px] sm:mt-[24px] font-pretendard mb-[4px] sm:mb-[8px] text-[16px] font-semibold leading-[135%]">
-            닉네임
-          </p>
-          <input
+          <InputField
+            label="닉네임"
             type="text"
             placeholder="닉네임을 입력해 주세요."
-            value={nickname}
+            value={nickname ?? ''}
             onChange={(e) => handleInputChange('nickname', e.target.value)}
-            className={`w-[400px] mb-[4px] sm:mb-[8px] h-[48px] sm:w-[450px] sm:h-[56px] px-3 border rounded-[8px] focus:outline-none ${
-              errors.nickname
-                ? 'border-red-500  focus:ring-red-500'
-                : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
-            }`}
+            error={errors.nickname}
           />
-          {errors.nickname && <p className="text-[14px] text-red-500">{errors.nickname}</p>}
 
           <button
             type="button"
