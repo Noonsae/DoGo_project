@@ -53,37 +53,42 @@ export type Database = {
           check_in_date: string
           check_out_date: string
           created_at: string
+          details: string
           id: string
+          request: string | null
           room_id: string
           status: string
+          user_first_name: string
           user_id: string
+          user_last_name: string
         }
         Insert: {
           check_in_date: string
           check_out_date: string
           created_at?: string
+          details: string
           id?: string
+          request?: string | null
           room_id?: string
           status: string
+          user_first_name: string
           user_id?: string
+          user_last_name: string
         }
         Update: {
           check_in_date?: string
           check_out_date?: string
           created_at?: string
+          details?: string
           id?: string
+          request?: string | null
           room_id?: string
           status?: string
+          user_first_name?: string
           user_id?: string
+          user_last_name?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "bookings_room_id_fkey"
-            columns: ["room_id"]
-            isOneToOne: false
-            referencedRelation: "rooms"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "bookings_user_id_fkey"
             columns: ["user_id"]
