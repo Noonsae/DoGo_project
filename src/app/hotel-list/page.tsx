@@ -20,6 +20,7 @@ import HotelCardList from './_components/HotelsCardList';
 import AsideFilter from './_components/AsideFilter';
 // import SortBtn from './_components/SortBtn';
 import HotelListSkeleton from '../../components/ui/skeleton/HotelListSkeleton';
+import AppliedFilters from './[id]/_components/AppliedFilters';
 
 /**
  * 1. url에서 필터 조건을 가져온다. useSearchParams 활용
@@ -138,7 +139,7 @@ const HotelList = () => {
     // 중복된 이름을 제거
     const uniqueFilteredNames = Array.from(new Set(filteredNames));
 
-    return uniqueFilteredNames.length > 0 ? uniqueFilteredNames.join(', ') : ''; // 값이 있으면 쉼표로 연결
+    return uniqueFilteredNames.length > 0 ? uniqueFilteredNames.join('') : ''; // 값이 있으면 쉼표로 연결
   };
 
   const getServiceNames = (serviceIds: string[], services: { service_id: string; services: { name: string } }[]) => {
@@ -150,60 +151,39 @@ const HotelList = () => {
     // 중복된 서비스 이름 제거
     const uniqueFilteredServiceNames = Array.from(new Set(filteredServiceNames));
 
-    return uniqueFilteredServiceNames.length > 0 ? uniqueFilteredServiceNames.join(', ') : '';
+    return uniqueFilteredServiceNames.length > 0 ? uniqueFilteredServiceNames.join('') : '';
   };
 
   // const isLoadingInitialData = !data && isFetchingNextPage;
 
   return (
-    <div className="w-full max-w-[1300px] mx-auto px-[50px] pt-[200px] pb-[50px] flex flex-row justify-between gap-[30px] ">
+    <div
+      className="w-full max-w-[1300px] mx-auto  pt-[200px] pb-[50px] flex flex-row justify-between gap-[30px]  
+              max-[958px]:flex-col"
+    >
       <ScrollSearchBox />
 
       <AsideFilter onFilterChange={(newFilters) => setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }))} />
 
-      <div className="">
-        <div className="flex justify-between items-center mb-4">
-          <div>
-            <p className="text-[24px] text-[#232527] font-semibold">
-              {/* 결과의 대한 갯수 가져오기 */}총 {data?.pages[0].totalCount}개의 결과를 불러왔습니다.
-            </p>
-            <p className="mt-2 text-base text-[#777] font-medium">
-              적용된 필터: {/* 성급 필터 */}
-              {filters.stars.length > 0 && `${filters.stars.join(', ')}성`}
-              {filters.facilityIds.length > 0 && (
-                <span>
-                  {getFilteredNames(
-                    filters.facilityIds,
-                    uniqueHotels.flatMap((hotel) => hotel.facilities)
-                  )}
-                  ,
-                </span>
-              )}
-              {filters.serviceIds.length > 0 && (
-                <span>
-                  ,{' '}
-                  {getServiceNames(
-                    filters.serviceIds,
-                    uniqueHotels.flatMap((hotel) => hotel.services)
-                  )}
-                </span>
-              )}
-            </p>
-          </div>
-          {/* 일단 주석
+      <div>
+        <AppliedFilters
+          filters={filters}
+          getFilteredNames={getFilteredNames}
+          getServiceNames={getServiceNames}
+          data={data?.pages[0] ?? { items: [], totalCount: 0 }}
+          uniqueHotels={uniqueHotels}
+        />
+        {/* 일단 주석
           <SortBtn sortOrder={sort as sortOrder} /> */}
-        </div>
 
         {/* hotel list card */}
-        <ul className="flex flex-col gap-8">
+        <ul className="w-full flex flex-col gap-8 outline outline-2 outline-red-500">
           {isLoading
             ? Array.from({ length: 10 }, (_, index) => <HotelListSkeleton key={index} />)
             : uniqueHotels.map((hotel) => (
-                <li key={hotel.id}>
-                  <button onClick={() => handleSaveHistoryAndMoveDetailsPage(hotel)}>
-                    <HotelCardList hotel={hotel} isFavorite={favoriteStatus[hotel.id] || false} hotelId={hotel.id} />
-                  </button>
-                </li>
+                <button key={hotel.id} onClick={() => handleSaveHistoryAndMoveDetailsPage(hotel)}>
+                  <HotelCardList hotel={hotel} isFavorite={favoriteStatus[hotel.id] || false} hotelId={hotel.id} />
+                </button>
               ))}
         </ul>
 
