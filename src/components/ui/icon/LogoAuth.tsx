@@ -5,8 +5,8 @@ const LogoAuth = () => {
     <div>
       <svg
         className="mb-[40px]"
-        width="141"
-        height="38"
+        width="139.947"
+        height="36.813"
         viewBox="0 0 141 38"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
