@@ -126,9 +126,7 @@ const HotelList = () => {
     <div className="w-full max-w-[1300px] mx-auto px-[50px] pt-[200px] pb-[50px] flex flex-row justify-between gap-[30px] ">
       <ScrollSearchBox />
 
-      <AsideFilter
-      // onFilterChange={(newFilters) => setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }))}
-      />
+      <AsideFilter/>
 
       <div>
         <div className="flex justify-between items-center mb-4">
