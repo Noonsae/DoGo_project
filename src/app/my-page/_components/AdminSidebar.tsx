@@ -13,6 +13,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ currentTab, setCurrentTab }
     { id: 'company', label: '업체 리스트' },
     { id: 'requests', label: '협력 요청' },
     { id: 'bookings', label: '예약 리스트' },
+    { id: 'inquiry', label: '문의 리스트'},
   ];
 
   return (
