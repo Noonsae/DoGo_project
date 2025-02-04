@@ -186,7 +186,7 @@ const SignUpBusiness = ({
         </button>
         <div className="w-full flex flex-row justify-center mb-[80px]">
           <span className="text-center text-gray-500">이미 계정이 있으신가요?</span>
-          <button onClick={handelSignIn} className=" text-[#B3916A] font-semibold underline">
+          <button onClick={handelSignIn} className="ml-[8px] sm:ml-[12px] text-[#B3916A] font-semibold underline">
             로그인
           </button>
         </div>
