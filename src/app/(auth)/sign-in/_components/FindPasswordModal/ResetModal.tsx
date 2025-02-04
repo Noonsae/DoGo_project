@@ -52,7 +52,7 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
           }}
         >
           <div className="mb-4">
-            <label className="text-base block font-semibold text-gray-700 mb-2">OTP 인증 코드</label>
+            <label className="text-base block text-neutral-800 font-semibold mb-2">OTP 인증 코드</label>
             <input
               type="text"
               placeholder="OTP를 입력해 주세요."
@@ -72,7 +72,7 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
 
             {/* 새 비밀번호 입력 */}
             <div className="text-base">
-              <label className="block font-semibold text-gray-700 mb-2">새 비밀번호</label>
+              <label className="block text-neutral-800 font-semibold mb-2">새 비밀번호</label>
               <div className="relative">
                 <input
                   type={form.showPassword ? 'text' : 'password'}
@@ -117,7 +117,7 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
 
             {/* 비밀번호 확인 입력 */}
             <div className="relative w-full">
-              <p className="block font-semibold text-gray-700 mb-2">비밀번호 확인</p>
+              <p className="block text-neutral-800 font-semibold mb-2">비밀번호 확인</p>
               <input
                 type={form.showConfirmPassword ? 'text' : 'password'}
                 placeholder="비밀번호를 다시 입력해 주세요."

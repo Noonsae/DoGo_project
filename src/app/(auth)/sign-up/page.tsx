@@ -30,11 +30,12 @@ const Page = () => {
   };
   return (
     <div className="flex flex-col justify-center items-center min-h-screen px-4 sm:px-6 lg:px-8">
-      <div className="mt-[50px]">
-        <LogoAuth />
+      <div className="flex justify-center mt-[60px] sm:mt-[80px]">
+        <LogoAuth className="w-[74px] h-[21px] sm:w-[139.947px] sm:h-[36.813px]" />
       </div>
+
       <div>
-        <p className="w-full mb-[40px] mt-[40px] max-w-[400px] text-[24px] font-pretendard font-semibold leading-[135%] not-italic">
+        <p className="text-neutral-800 flex flex-col justify-center items-center w-full mb-[40px] mt-[40px] max-w-[400px] text-[24px] font-pretendard font-semibold leading-[135%] not-italic">
           회원 유형 선택
         </p>
 
@@ -43,14 +44,14 @@ const Page = () => {
           {/* 일반 회원가입 */}
           <div
             onClick={() => handleSelect('user')}
-            className={`flex flex-col items-center p-6 rounded-lg border w-1/2 sm:w-[190px] h-auto min-h-[175px] cursor-pointer ${
+            className={`pl-[16px] pr-[16px] pt-[20px] pb-[20px] sm:pl-[16px] sm:pr-[16px] sm:pt-[20px] sm:pb-[20px]  flex flex-col items-center rounded-lg border w-1/2 sm:w-[190px] h-auto min-h-[175px] cursor-pointer ${
               userType === 'user' ? 'border-[#B3916A] bg-[#FDF9F4]' : 'border-gray-300'
             }`}
           >
             <UserIcon />
-            <p className="font-medium text-neutral-800 text-[18px] m-[4px]">일반 회원가입</p>
+            <p className="font-medium text-neutral-800  text-[16px] lg:text-[18px]">일반 회원가입</p>
             <p
-              className={`text-[16px] sm:text-[16px] text-xs mt-1 ${
+              className={`text-[14px] sm:text-[16px] text-xs mt-2 ${
                 userType === 'user' ? 'text-[#B3916A]' : 'text-gray-500'
               }`}
             >
@@ -61,14 +62,14 @@ const Page = () => {
           {/* 사업자 회원가입 */}
           <div
             onClick={() => handleSelect('business')}
-            className={`flex flex-col items-center py-[10px] sm:py-[14px] rounded-lg border w-1/2 sm:w-[190px] h-auto min-h-[175px] cursor-pointer ${
+            className={`pl-[16px] pr-[16px] pt-[20px] pb-[20px] sm:pl-[16px] sm:pr-[16px] sm:pt-[20px] sm:pb-[20px] flex flex-col items-center sm:py-[14px] rounded-lg border w-1/2 sm:w-[190px] h-auto min-h-[175px] cursor-pointer ${
               userType === 'business' ? 'border-[#B3916A] bg-[#FDF9F4]' : 'border-gray-300'
             }`}
           >
             <BusinessIcon />
-            <p className=" font-medium text-neutral-800 text-[18px] m-[4px]">사업자 회원가입</p>
+            <p className=" font-medium text-neutral-800 text-[16px] lg:text-[18px]">사업자 회원가입</p>
             <p
-              className={`text-[16px] sm:text-[16px] text-xs mt-1 ${
+              className={`text-[14px] sm:text-[16px] text-xs mt-2 ${
                 userType === 'business' ? 'text-[#B3916A]' : 'text-gray-500'
               }`}
             >
@@ -86,11 +87,11 @@ const Page = () => {
           다음
         </button>
 
-        <p className="w-full sm:w-[400px]  flex justify-center text-neutral-600">
+        <p className="flex flex-row items-center w-full sm:w-[400px] justify-center text-neutral-600">
           이미 계정이 있으신가요?
           <button
             onClick={handleSignIn}
-            className="ml-[8px] sm:ml-[12px]  text-[16px] sm:text-[18px] text-[var(--brand-Darker,#534431)] font-semibold font-pretendard leading-[135%]"
+            className=" ml-[8px] sm:ml-[12px]  text-[16px] sm:text-[16px] text-[var(--brand-Darker,#534431)] font-semibold font-pretendard leading-[135%]"
           >
             로그인
           </button>

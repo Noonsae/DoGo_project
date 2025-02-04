@@ -100,9 +100,9 @@ const SignUpBusiness = ({
     <div className=" flex flex-col min-h-screen items-center px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-[320px] sm:max-w-[400px]">
         <div className="flex justify-center mt-[140px]">
-          <LogoAuth />
+          <LogoAuth className="w-[74px] h-[21px] sm:w-[139.947px] sm:h-[36.813px]" />
         </div>
-        <p className="text-[24px] sm:text-[28px] md:text-[20px] mt-[40px] font-semibold leading-[135%] text-center text-[#444] mb-[12px] sm:mb-[16px]">
+        <p className="text-[24px] sm:text-[24px] font-semibold leading-[135%] text-center text-neutral-800 mb-[12px] sm:mb-[16px]">
           사업자 회원 회원가입
         </p>
 
@@ -113,7 +113,7 @@ const SignUpBusiness = ({
           value={email ?? ''}
           onChange={(e) => handleInputChange('email', e.target.value)}
           error={errors.email}
-          className="mt-[4px] sm:mt-[8px]"
+          className="mt-[4px] sm:mt-[4px]"
         />
 
         <BusinessInputField
@@ -123,7 +123,7 @@ const SignUpBusiness = ({
           value={password ?? ''}
           onChange={(e) => setPassword(e.target.value)}
           error={errors.password || ''}
-          className="mt-[4px] sm:mt-[8px]"
+          className="mt-[4px] sm:mt-[4px]"
           isPassword
           isPasswordVisible={form.showPassword}
           togglePasswordVisibility={() =>
@@ -139,7 +139,7 @@ const SignUpBusiness = ({
           value={form.confirmPassword}
           onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
           error={errors.confirmPassword || ''}
-          className="mt-[4px] sm:mt-[8px]"
+          className="mt-[4px] sm:mt-[4px]"
           isPassword
           isPasswordVisible={form.showConfirmPassword}
           togglePasswordVisibility={() =>
@@ -153,7 +153,7 @@ const SignUpBusiness = ({
           placeholder="이름을 입력해주세요"
           value={name ?? ''}
           onChange={(e) => handleInputChange('name', e.target.value)}
-          className="mt-[4px] sm:mt-[8px]"
+          className="mt-[4px] sm:mt-[4px]"
           error={errors.name}
         />
 
@@ -164,7 +164,7 @@ const SignUpBusiness = ({
           value={phone ?? ''}
           onChange={(e) => handleInputChange('phone', e.target.value)}
           error={errors.phone}
-          className="mt-[4px] sm:mt-[8px]"
+          className="mt-[4px] sm:mt-[4px]"
         />
 
         <BusinessInputField
@@ -174,7 +174,7 @@ const SignUpBusiness = ({
           value={businessNumber ?? ''}
           onChange={(e) => handleInputChange('businessNumber', e.target.value)}
           error={errors.businessNumber}
-          className="mt-[4px] sm:mt-[8px]"
+          className="mt-[4px] sm:mt-[4px]"
         />
         <button
           type="button"

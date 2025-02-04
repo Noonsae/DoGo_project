@@ -81,18 +81,17 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
   };
   return (
     <div className=" fixed inset-0 bg-black bg-opacity-50 flex sm:items-center items-start justify-center z-50 px-0 sm:px-4">
-      <div className=" w-full sm:max-w-[424px] min-h-screen sm:min-h-0 sm:h-auto bg-white sm:rounded-lg shadow-lg relative px-4 sm:px-10 sm:py-8 overflow-y-auto">
+      <div className="w-full sm:max-w-[424px] min-h-screen sm:min-h-0 sm:h-auto bg-white sm:rounded-lg shadow-lg relative px-9 sm:px-9 sm:py-9 overflow-y-auto">
         <p className=" sm:hidden flex flex-col justify-center items-center text-neutral-800 mt-[30px]">아이디 찾기</p>
-        <button
-          onClick={onClose}
-          className="absolute mt-[20px] sm:mt-[41px] mr-[20px] sm:mr-[41px] top-3 right-3 text-neutral-800 hover:text-black font-bold cursor-pointer"
-        >
-          <CloseButtonIcon />
-        </button>
+        <div className="flex flex-row justify-end ">
+          <button onClick={onClose} className="text-neutral-800 hover:text-black font-bold cursor-pointer">
+            <CloseButtonIcon />
+          </button>
+        </div>
 
         {form.modalType === 'input' && (
           <div className="flex flex-col h-full justify-center">
-            <p className="text-xl sm:text-2xl font-bold mt-[36px] mb-10 sm:mb-[40px]">
+            <p className="text-neutral-900 text-xl sm:text-2xl font-bold mt-[24px] mb-10 sm:mb-[24px]">
               DoGo 가입 정보로 <br /> 아이디를 확인하세요.
             </p>
 
@@ -128,7 +127,8 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
             >
               <div>
                 <div className="mt-8 sm:mt-[30px]">
-                  <label className="block text-neutral-800  mb-[4px] sm:mb-[8px]">이름</label>
+                  <label className="block text-neutral-800 mb-[4px] sm:mb-[8px] font-semibold">이름</label>
+
                   <input
                     type="text"
                     placeholder="이름을 입력해 주세요."
@@ -146,7 +146,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
                   {errors.name || 'placeholder'}
                 </p>
 
-                <label className="block mt-4 sm:mt-[20px] text-neutral-800 mb-[4px] sm:mb-[8px]">
+                <label className="text-neutral-800 font-semibold block mt-4 sm:mt-[20px] mb-[4px] sm:mb-[8px]">
                   {' '}
                   {form.activeTab === 'user' ? '휴대폰 번호' : '담당자 번호'}
                 </label>
@@ -194,7 +194,6 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
               <p className="text-lg sm:text-xl font-semibold">
                 <span className="text-[#B3916A]">{form.resultEmail}</span>입니다.
               </p>
-              <p className="text-sm sm:text-[15px] text-gray-500 mt-2">정보 보호를 위해 아이디의 일부만 보여집니다.</p>
             </div>
             <button
               onClick={onClose}

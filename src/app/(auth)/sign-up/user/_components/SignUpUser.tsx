@@ -5,6 +5,7 @@ import LogoAuth from '@/components/ui/icon/LogoAuth';
 import handleSignupAction from '../../actions/handleSignupAction';
 import Swal from 'sweetalert2';
 import InputField from './InputField';
+import InputPassword from './InputPassword';
 const SignUpUser = ({
   email,
   setEmail,
@@ -111,9 +112,10 @@ const SignUpUser = ({
     <div className=" flex flex-col min-h-screen items-center px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-[320px] sm:max-w-[400px]">
         <div className="flex justify-center mt-[140px]">
-          <LogoAuth />
+          <LogoAuth className="w-[74px] h-[21px] sm:w-[139.947px] sm:h-[36.813px]" />
         </div>
-        <p className="text-[24px] sm:text-[28px] md:text-[20px] mt-[40px] font-semibold leading-[135%] text-center text-[#444] mb-[12px] sm:mb-[16px]">
+
+        <p className="text-[24px] sm:text-[24px] md:text-[20px] mt-[40px] font-semibold leading-[135%] text-center text-neutral-800 mb-[12px] sm:mb-[16px]">
           일반 회원 회원가입
         </p>
 
@@ -123,11 +125,10 @@ const SignUpUser = ({
           placeholder="이메일을 입력해 주세요."
           value={email ?? ''}
           onChange={(e) => handleInputChange('email', e.target.value)}
-          className="mt-[4px] sm:mt-[8px]"
           error={errors.email}
         />
 
-        <InputField
+        <InputPassword
           label="비밀번호"
           type="password"
           placeholder="비밀번호를 입력해 주세요."
@@ -140,14 +141,13 @@ const SignUpUser = ({
           helperText="영문 대•소문자/숫자/특수문자 중 2가지 이상 조합, 8자~32자"
         />
 
-        <InputField
+        <InputPassword
           label="비밀번호 확인"
           type="password"
           placeholder="비밀번호를 다시 입력해 주세요."
           value={form.confirmPassword}
           onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
           error={errors.confirmPassword}
-          className="mt-[4px] sm:mt-[8px]"
           isPassword
           togglePasswordVisibility={() =>
             setForm((prev) => ({ ...prev, checkUpdatePassword: !prev.checkUpdatePassword }))
@@ -160,7 +160,6 @@ const SignUpUser = ({
           type="tel"
           placeholder="휴대폰 번호를 입력해 주세요."
           value={phone ?? ''}
-          className="mt-[4px] sm:mt-[8px]"
           onChange={(e) => handleInputChange('phone', e.target.value)}
           error={errors.phone}
         />
@@ -169,7 +168,6 @@ const SignUpUser = ({
           label="이름"
           type="text"
           placeholder="이름을 입력해 주세요."
-          className="mt-[4px] sm:mt-[8px]"
           value={name ?? ''}
           onChange={(e) => handleInputChange('name', e.target.value)}
           error={errors.name}
@@ -179,12 +177,10 @@ const SignUpUser = ({
           label="닉네임"
           type="text"
           placeholder="닉네임을 입력해 주세요."
-          className="mt-[4px] sm:mt-[8px]"
           value={nickname ?? ''}
           onChange={(e) => handleInputChange('nickname', e.target.value)}
           error={errors.nickname}
         />
-
         <button
           type="button"
           onClick={handleSignUp}
