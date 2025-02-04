@@ -1,85 +1,88 @@
-//유저 문의 페이지
 'use client';
 
 import React, { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
+import InquiryModal from '@/app/my-page/_components/InquiryModal';
 
 // 문의 데이터를 나타내는 인터페이스 정의
 interface Inquiry {
-  id: string; // 문의 ID
-  title: string; // 문의 제목
-  content: string; // 문의 내용
-  created_at: string; // 작성일
-  status: 'pending' | 'answered' | 'closed'; // 문의 상태
+  id: string;
+  category: string;
+  title: string;
+  content: string;
+  created_at: string;
+  status: 'pending' | 'answered' | 'closed';
+  assigned_to: string;
   answer?: {
-    content: string; // 답변 내용
-    created_at: string; // 답변 작성일
+    content: string;
+    created_at: string;
   };
 }
 
 const UserInquiryPage: React.FC = () => {
-  const [inquiries, setInquiries] = useState<Inquiry[]>([]); // 문의 리스트
-  const [selectedInquiry, setSelectedInquiry] = useState<Inquiry | null>(null); // 선택된 문의
-  const [loading, setLoading] = useState(true); // 로딩 상태
-  const [error, setError] = useState<string | null>(null); // 에러 메시지
+  const [inquiries, setInquiries] = useState<Inquiry[]>([]);
+  const [selectedInquiry, setSelectedInquiry] = useState<Inquiry | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const userId = '현재 로그인된 유저 ID'; // 실제 로그인된 유저 ID 가져오기
 
   useEffect(() => {
-    // 사용자 문의 데이터 가져오기
-    const fetchInquiries = async () => {
-      try {
-        setLoading(true);
-        const {
-          data: { user },
-          error: authError
-        } = await browserSupabase().auth.getUser();
-
-        if (authError || !user) {
-          throw new Error('로그인 정보가 없습니다.');
-        }
-
-        const { data, error } = await browserSupabase()
-          .from('contacts')
-          .select(
-            `
-            id,
-            title,
-            content,
-            created_at,
-            answers (
-              content,
-              created_at
-            )
-          `
-          )
-          .eq('user_id', user.id);
-        console.log({ data, error });
-
-        if (error) throw error;
-
-        // 데이터 포맷팅
-        const formattedData = data.map((inquiry: any) => ({
-          id: inquiry.id,
-          title: inquiry.title,
-          content: inquiry.content,
-          created_at: inquiry.created_at,
-          status: inquiry.status,
-          answer: inquiry.answers?.[0] || null
-        }));
-
-        setInquiries(formattedData);
-      } catch (err) {
-        console.error('Error fetching inquiries:', err);
-        setError('문의 데이터를 불러오는 중 오류가 발생했습니다.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchInquiries();
   }, []);
 
-  const handleSelectInquiry = (inquiry: Inquiry) => {
-    setSelectedInquiry(inquiry);
+  // 문의 목록 가져오기
+  const fetchInquiries = async () => {
+    try {
+      setLoading(true);
+      const {
+        data: { user },
+        error: authError
+      } = await browserSupabase().auth.getUser();
+
+      if (authError || !user) {
+        throw new Error('로그인 정보가 없습니다.');
+      }
+
+      const { data, error } = await browserSupabase()
+        .from('inquiries')
+        .select(`id, category, title, content, created_at, status, assigned_to, answers (content, created_at)`)
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      const formattedData = data.map((inquiry: any) => ({
+        id: inquiry.id,
+        category: inquiry.category,
+        title: inquiry.title,
+        content: inquiry.content,
+        created_at: inquiry.created_at,
+        status: inquiry.status,
+        assigned_to: inquiry.assigned_to || '',
+        answer: inquiry.answers?.[0] || null
+      }));
+
+      setInquiries(formattedData);
+    } catch (err) {
+      console.error('Error fetching inquiries:', err);
+      setError('문의 데이터를 불러오는 중 오류가 발생했습니다.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 문의 삭제 핸들러
+  const handleDeleteInquiry = async (id: string) => {
+    try {
+      const { error } = await browserSupabase().from('inquiries').delete().eq('id', id);
+      if (error) throw error;
+
+      setInquiries((prev) => prev.filter((inquiry) => inquiry.id !== id));
+    } catch (err) {
+      console.error('Error deleting inquiry:', err);
+      setError('문의 삭제 중 오류가 발생했습니다.');
+    }
   };
 
   if (loading) return <p className="text-center text-gray-500">로딩 중...</p>;
@@ -89,6 +92,12 @@ const UserInquiryPage: React.FC = () => {
     <div className="p-6 bg-white rounded-lg shadow">
       <h1 className="text-2xl font-bold mb-4">1대1 문의</h1>
 
+      {/* 문의 등록 버튼 */}
+      <button className="mb-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600" onClick={() => setIsModalOpen(true)}>
+        문의 등록하기
+      </button>
+
+      {/* 문의 목록과 상세 정보 표시 */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* 문의 리스트 */}
         <div>
@@ -96,13 +105,7 @@ const UserInquiryPage: React.FC = () => {
           <ul className="space-y-4">
             {inquiries.length === 0 && <p className="text-center text-gray-500">등록된 문의가 없습니다.</p>}
             {inquiries.map((inquiry) => (
-              <li
-                key={inquiry.id}
-                onClick={() => handleSelectInquiry(inquiry)}
-                className={`p-4 border rounded shadow cursor-pointer ${
-                  selectedInquiry?.id === inquiry.id ? 'bg-gray-100' : ''
-                }`}
-              >
+              <li key={inquiry.id} onClick={() => setSelectedInquiry(inquiry)} className={`p-4 border rounded shadow cursor-pointer ${selectedInquiry?.id === inquiry.id ? 'bg-gray-100' : ''}`}>
                 <h3 className="font-bold">{inquiry.title}</h3>
                 <p className="text-sm text-gray-500">작성일: {new Date(inquiry.created_at).toLocaleDateString()}</p>
                 <p className={`mt-1 font-semibold ${getStatusClass(inquiry.status)}`}>
@@ -139,36 +142,21 @@ const UserInquiryPage: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* 모달 추가 */}
+      <InquiryModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} userId={userId} role="user" onInquirySubmitted={fetchInquiries} />
     </div>
   );
 };
 
-// 상태에 따른 스타일 반환 함수
+// 문의 상태에 따른 스타일 적용
 const getStatusClass = (status: string) => {
-  switch (status) {
-    case 'pending':
-      return 'text-yellow-500';
-    case 'answered':
-      return 'text-green-500';
-    case 'closed':
-      return 'text-gray-500';
-    default:
-      return 'text-gray-500';
-  }
+  return status === 'pending' ? 'text-yellow-500' : status === 'answered' ? 'text-green-500' : 'text-gray-500';
 };
 
-// 상태 라벨 반환 함수
+// 상태 라벨 변환
 const getStatusLabel = (status: string) => {
-  switch (status) {
-    case 'pending':
-      return '대기 중';
-    case 'answered':
-      return '답변 완료';
-    case 'closed':
-      return '종료됨';
-    default:
-      return '알 수 없음';
-  }
+  return status === 'pending' ? '대기 중' : status === 'answered' ? '답변 완료' : '종료됨';
 };
 
 export default UserInquiryPage;

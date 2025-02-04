@@ -2,55 +2,61 @@
 
 import React, { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
+import InquiryModal from '@/app/my-page/_components/InquiryModal';
 
+// 문의 데이터를 나타내는 인터페이스 정의
 interface Inquiry {
   id: string;
   title: string;
   content: string;
-  user_id: string | null; // 수정: string -> string | null
+  user_id: string | null;
   created_at: string;
 }
 
 const ITEMS_PER_PAGE = 10;
 
-const InquiryPage: React.FC = () => {
+const BusinessInquiryPage: React.FC = () => {
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const businessId = '현재 로그인된 업체 ID'; // 실제 로그인된 업체 ID 가져와야 함
 
   useEffect(() => {
-    const fetchInquiries = async () => {
-      try {
-        setLoading(true);
-
-        const { data, error, count } = await browserSupabase()
-          .from('contacts')
-          .select('id, title, content, user_id, created_at', { count: 'exact' })
-          .range((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE - 1);
-
-        if (error) throw error;
-
-        setInquiries(data || []);
-        if (count) {
-          setTotalPages(Math.ceil(count / ITEMS_PER_PAGE));
-        }
-      } catch (err) {
-        console.error('Error fetching inquiries:', err);
-        setError('문의 데이터를 불러오는 중 오류가 발생했습니다.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchInquiries();
   }, [currentPage]);
 
+  // 문의 목록 가져오기
+  const fetchInquiries = async () => {
+    try {
+      setLoading(true);
+
+      const { data, error, count } = await browserSupabase()
+        .from('contacts')
+        .select('id, title, content, user_id, created_at', { count: 'exact' })
+        .eq('user_id', businessId) // 업체 ID로 필터링
+        .range((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE - 1);
+
+      if (error) throw error;
+
+      setInquiries(data || []);
+      if (count) {
+        setTotalPages(Math.ceil(count / ITEMS_PER_PAGE));
+      }
+    } catch (err) {
+      console.error('Error fetching inquiries:', err);
+      setError('문의 데이터를 불러오는 중 오류가 발생했습니다.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 문의 삭제 핸들러
   const handleDeleteInquiry = async (id: string) => {
     try {
       const { error } = await browserSupabase().from('contacts').delete().eq('id', id);
-
       if (error) throw error;
 
       setInquiries((prev) => prev.filter((inquiry) => inquiry.id !== id));
@@ -60,19 +66,26 @@ const InquiryPage: React.FC = () => {
     }
   };
 
+  // 페이지 변경 핸들러
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
   };
 
-  if (loading) return <p>로딩 중...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) return <p className="text-center text-gray-500">로딩 중...</p>;
+  if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
     <div className="p-6 bg-white rounded-lg shadow">
-      <h2 className="text-2xl font-bold mb-4">문의 관리</h2>
+      <h2 className="text-2xl font-bold mb-4">업체 문의 관리</h2>
 
+      {/* 문의 등록 버튼 */}
+      <button className="mb-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600" onClick={() => setIsModalOpen(true)}>
+        업체 문의 등록하기
+      </button>
+
+      {/* 문의 목록 */}
       {inquiries.length === 0 ? (
         <p>등록된 문의가 없습니다.</p>
       ) : (
@@ -105,7 +118,7 @@ const InquiryPage: React.FC = () => {
         </table>
       )}
 
-      {/* Pagination */}
+      {/* 페이지네이션 */}
       <div className="flex justify-center mt-4">
         <button
           onClick={() => handlePageChange(currentPage - 1)}
@@ -123,8 +136,11 @@ const InquiryPage: React.FC = () => {
           다음
         </button>
       </div>
+
+      {/* 모달 추가 */}
+      <InquiryModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} userId={businessId} role="business" onInquirySubmitted={fetchInquiries} />
     </div>
   );
 };
 
-export default InquiryPage;
+export default BusinessInquiryPage;
