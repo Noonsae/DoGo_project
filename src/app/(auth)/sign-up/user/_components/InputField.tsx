@@ -34,10 +34,7 @@ const InputField = ({
   return (
     <div className="w-full">
       {/* 라벨 */}
-      <p className="mt-[20px] sm:mt-[24px] mb-[4px] sm:mb-[8px] font-pretendard text-[16px] font-semibold leading-[135%]">
-        {label}
-      </p>
-
+      <p className="mt-[20px] sm:mt-[24px] font-pretendard text-[16px] font-semibold leading-[135%]">{label}</p>
       {/* 입력 필드 */}
       <div className="relative">
         <input
@@ -45,7 +42,7 @@ const InputField = ({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          className={`w-full max-w-[400px] h-[48px] sm:max-w-[450px] sm:h-[56px] px-3 border rounded-[8px] focus:outline-none ${
+          className={`w-full max-w-[340px] sm:max-w-[400px] h-[44px] sm:h-[48px] px-3 border rounded-[8px] focus:outline-none ${
             error ? 'border-red-500 focus:ring-red-500' : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
           } ${className}`}
         />
@@ -56,7 +53,7 @@ const InputField = ({
             type="button"
             tabIndex={-1}
             onClick={togglePasswordVisibility}
-            className="absolute right-[10px] sm:right-[25px] top-1/2 transform -translate-y-1/2 text-neutral-500 hover:text-neutral-500"
+            className="absolute right-[8px] sm:right-[16px] top-1/2 transform -translate-y-2 text-neutral-500 hover:text-neutral-500"
           >
             {isPasswordVisible ? (
               <CloseEyesIcon className="text-neutral-500" />
