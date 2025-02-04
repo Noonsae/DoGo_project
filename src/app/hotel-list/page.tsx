@@ -20,7 +20,7 @@ import HotelCardList from './_components/HotelsCardList';
 import AsideFilter from './_components/AsideFilter';
 // import SortBtn from './_components/SortBtn';
 import HotelListSkeleton from '../../components/ui/skeleton/HotelListSkeleton';
-import AppliedFilters from './[id]/_components/AppliedFilters';
+import AppliedFilters from './_components/AppliedFilters';
 
 /**
  * 1. url에서 필터 조건을 가져온다. useSearchParams 활용

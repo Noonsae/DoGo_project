@@ -19,6 +19,15 @@ interface AsideFilterProps {
   onFilterChange: (newFilters: FiltersType) => void; // 필터 업데이트를 상위 컴포넌트로 전달
 }
 
+const FILTERS = [
+  { label: '전체', key: 'filters' },
+  { label: '호텔 성급', key: 'stars' },
+  { label: '침대 종류', key: 'beds' },
+  { label: '공용 시설', key: 'facilities' },
+  { label: '서비스', key: 'services' },
+  { label: '가격', key: 'price' }
+];
+
 const AsideFilter = ({ onFilterChange }: AsideFilterProps) => {
   const router = useRouter();
 
@@ -29,6 +38,7 @@ const AsideFilter = ({ onFilterChange }: AsideFilterProps) => {
   const [selectedFacilities, setSelectedFacilities] = useState<FacilitiesType[]>([]);
   const [selectedBedTypes, setSelectedBedTypes] = useState<string[]>([]);
   const { location, checkIn, checkOut, stay, details } = useSearchStore();
+  const [isMobile, setIsMobile] = useState(false);
 
   // 성급 필터
   const handleHotelGradeChange = (grade: number) => {
@@ -67,7 +77,6 @@ const AsideFilter = ({ onFilterChange }: AsideFilterProps) => {
     const updatedFacilities = selectedFacilities.map((facility) => facility.id);
     const updatedServices = selectedServices.map((service) => service.id);
     const updatedBedTypes = selectedBedTypes;
-
     const updatedLabel = ''; // label의 기본값을 설정 (필요한 경우 다른 값으로 설정 가능)
     const updatedFacilityIds = updatedFacilities; // 시설 아이디
     const updatedServiceIds = updatedServices; // 서비스 아이디
@@ -120,12 +129,48 @@ const AsideFilter = ({ onFilterChange }: AsideFilterProps) => {
       services: [],
       beds: []
     });
-    console.log({ resetUrl });
     await router.push(resetUrl); // 페이지 이동
   };
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 360px)');
+
+    // ✅ 초기 실행
+    setIsMobile(mediaQuery.matches);
+
+    // ✅ resize 이벤트 핸들러 추가
+    const handleResize = () => setIsMobile(mediaQuery.matches);
+    mediaQuery.addEventListener('change', handleResize);
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleResize);
+    };
+  }, []);
+
+  const handleFilterClick = (section: string) => {
+    router.push(`/hotel-mobile?page=${section}`);
+  };
+
+  if (isMobile) {
+    return (
+      <div className="fixed top-[148px] z-50 bg-white left-0 w-full p-4  ">
+        <div className="flex overflow-x-scroll gap-3 scrollbar-hide">
+          {FILTERS.map(({ label, key }) => (
+            <button
+              key={key}
+              className="flex-shrink-0 bg-white text-#636363 px-4 py-2 rounded-[1px] border border-gray-300 text-sm font-semibold  whitespace-nowrap"
+              onClick={() => handleFilterClick(key)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <aside className="w-[298px] h-[1350px] px-4 py-3">
+    <aside className="  px-4 py-3 max-lg:flex-row">
       {/* 필터 - 적용 및 필터 초기화 */}
       <div className="flex flex-row items-center justify-between mb-[70px]">
         <div className="flex flex-row gap-4">
@@ -138,7 +183,7 @@ const AsideFilter = ({ onFilterChange }: AsideFilterProps) => {
       </div>
 
       {/* 가격 1박 기준 */}
-      <div className="w-full h-[156px] py-[28px] border-y-2 border-[#e2e2e2] flex flex-col justify-start ">
+      <div className="w-full h-[156px] py-[28px]  border-[#e2e2e2] flex flex-col justify-start ">
         <p className="text-lg font-semibold mb-2">
           가격 <span className="text-sm text-gray-500">1박 기준</span>
         </p>
