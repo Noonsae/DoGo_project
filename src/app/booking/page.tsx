@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 import useAuthStore from '@/store/useAuth';
@@ -24,33 +24,54 @@ const Booking = () => {
   const [lastName, setLastName] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
 
+  const [request, setRequest] = useState([]);
+
   const searchParams = useSearchParams();
   const priceParam = searchParams.get('price');
-  const roomPrice = priceParam ? parseInt(priceParam, 10) : 0;
+  const total_amount = priceParam ? parseInt(priceParam, 10) : 0;
 
   const { user } = useAuthStore();
   const userId: string | null = user?.id ?? null;
   const { data: userData } = useUserQuery(userId);
-  const safeUserData = userData || { email: null, phone_number: null };
+  const safeUserData = userData || { user_name: null, email: null, phone_number: null };
 
   const roomId = searchParams.get('room_id');
   const { data: roomData } = useRoomQuery(roomId) as { data: BookingRoomData | undefined };
 
+  console.log(roomData);
+
+  // ToDo 숙박기간을 통해 check_In_Date와 check_Out_Date를 계산하는 함수 필요
+  const [checkInDate, checkOutDate] = ['2025-02-06', '2025-02-07'];
+
+  // 02.06 + 2박3일 = 02.08
+
   // 유효성 검사
-  const validateForm = () => {
+  useEffect(() => {
     const isValid = firstName.trim() !== '' && lastName.trim() !== '';
     setIsFormValid(isValid);
+  }, [firstName, lastName]);
+
+  const bookingData = {
+    check_in_date: checkInDate, // 체크인 날짜
+    check_out_date: checkOutDate, // 체크아웃 날짜
+    created_at: new Date().toISOString(), // 생성 시간 (현재 시간)
+    request: request, // 요청 사항
+    room_id: roomId || '', // 객실 ID
+    hotel_id: roomData?.hotels?.id,
+    status: 'confirmed', // 예약 상태
+    total_amount: total_amount, // 총 금액
+    user_first_name: firstName || 'Unknown', // 사용자 이름
+    user_last_name: lastName || 'Unknown', // 사용자 성
+    user_id: userId || 'unknown' // 사용자 ID
   };
 
-  const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFirstName(e.target.value);
-    validateForm(); // 변경될 때마다 유효성 검사
-  };
+  const today = new Date();
 
-  const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLastName(e.target.value);
-    validateForm(); // 변경될 때마다 유효성 검사
-  };
+  const year = today.getFullYear(); // 연도 (예: 2025)
+  const month = today.getMonth() + 1; // 월 (0부터 시작하므로 +1, 예: 2)
+  const day = today.getDate(); // 일 (예: 5)
+
+  console.log(`${year}-${month}-${day}`); // 2025-2-5
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
@@ -73,7 +94,7 @@ const Booking = () => {
                 className="border p-3 mt-2 rounded-md"
                 placeholder="영문으로 작성해주세요"
                 value={firstName}
-                onChange={handleFirstNameChange}
+                onChange={(e) => setFirstName(e.target.value)}
               />
             </div>
             <div className="flex flex-col justify-center">
@@ -82,7 +103,7 @@ const Booking = () => {
                 className="border p-3 mt-2 rounded-md"
                 placeholder="영문으로 작성해주세요"
                 value={lastName}
-                onChange={handleLastNameChange}
+                onChange={(e) => setLastName(e.target.value)}
               />
             </div>
           </div>
@@ -93,7 +114,7 @@ const Booking = () => {
         <Requests />
 
         {/* TossPaymentsButton 활성화 조건 전달 */}
-        <AgreementAndPayment roomPrice={roomPrice} isFormValid={isFormValid} />
+        <AgreementAndPayment isFormValid={isFormValid} bookingData={bookingData} />
       </div>
     </div>
   );
