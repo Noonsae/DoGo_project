@@ -53,7 +53,7 @@ const HotelAttraction = () => {
                 </span>
                 <span className="text-neutral-500 font-normal text-base ml-1">(3,222)</span>
               </div>
-              <p className="flex justify-end items-end mt-2  font-semibold text-2xl">146,000원</p>
+              <p className="flex justify-end items-end mt-2  font-semibold text-2xl">146,500원</p>
             </div>
           </a>
 

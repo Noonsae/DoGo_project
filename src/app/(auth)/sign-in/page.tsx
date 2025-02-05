@@ -74,8 +74,8 @@ const SignInPage = () => {
       {form.isFindPasswordOpen && <FindPasswordModal onClose={() => setForm({ ...form, isFindPasswordOpen: false })} />}
       <div className="flex justify-center items-center min-h-screen px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-[400px] lg:h-auto">
-          <div className="mt-[94px] mb-[40px] flex flex-col justify-center items-center">
-            <LogoAuth />
+          <div className="flex justify-center mt-[140px]">
+            <LogoAuth className="w-[74px] h-[21px] sm:w-[139.947px] sm:h-[36.813px]" />
           </div>
 
           <div className="flex justify-between mb-[40px] border-b-2 ">

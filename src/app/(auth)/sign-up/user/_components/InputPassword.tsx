@@ -18,7 +18,7 @@ interface InputFieldProps {
   helperText?: React.ReactNode;
 }
 
-const InputField = ({
+const InputPassword = ({
   label,
   type = 'text',
   placeholder,
@@ -33,16 +33,19 @@ const InputField = ({
 }: InputFieldProps) => {
   return (
     <div className="w-full">
-      <p className="mt-[20px] sm:mt-[24px] font-pretendard text-[16px] font-semibold leading-[135%]">{label}</p>
-      <div className="relative mt-[4px]">
+      <p className=" mt-[20px] sm:mt-[24px] font-pretendard text-[16px] font-semibold leading-[135%]">{label}</p>
+
+      <div
+        className={`  w-full max-w-[340px] sm:max-w-[400px] h-[44px] sm:h-[48px] flex items-center border ${
+          error ? 'border-red-500' : 'border-[#BFBFBF]'
+        } rounded-[8px] focus-within:border-[#B3916A]`}
+      >
         <input
           type={isPassword ? (isPasswordVisible ? 'text' : 'password') : type}
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          className={`mt-[4px] w-full max-w-[340px] sm:max-w-[400px] h-[44px] sm:h-[48px] px-3 border rounded-[8px] focus:outline-none ${
-            error ? 'border-red-500 focus:ring-red-500' : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
-          } ${className}`}
+          className=" flex-1 px-3 h-full focus:outline-none bg-transparent"
         />
 
         {isPassword && togglePasswordVisibility && (
@@ -68,4 +71,4 @@ const InputField = ({
   );
 };
 
-export default InputField;
+export default InputPassword;

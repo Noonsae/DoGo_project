@@ -12,7 +12,8 @@ const generateUrl = ({
   minPrice = 0,
   maxPrice = 2000000,
   facilities = [],
-  services = []
+  services = [],
+  beds = []
 }: Partial<SearchState>): string => {
   try {
     // location과 label 처리
@@ -37,6 +38,8 @@ const generateUrl = ({
     // 제공 서비스 처리
     const parsedServices = Array.isArray(services) ? services.join(',') : '';
 
+    const parsedBeds = beds.length > 0 ? encodeURIComponent(beds.join(',')) : '';
+
     // 쿼리 파라미터 생성
     const queryParams = [
       processedLocation && `location=${encodeURIComponent(processedLocation)}`,
@@ -54,7 +57,8 @@ const generateUrl = ({
       parsedMinPrice && `minPrice=${encodeURIComponent(parsedMinPrice)}`,
       parsedMaxPrice && `maxPrice=${encodeURIComponent(parsedMaxPrice)}`,
       parsedFacilities && `facilities=${encodeURIComponent(parsedFacilities)}`,
-      parsedServices && `services=${encodeURIComponent(parsedServices)}`
+      parsedServices && `services=${encodeURIComponent(parsedServices)}`,
+      parsedBeds && `beds=${encodeURIComponent(parsedBeds)}` // 인코딩된 beds를 그대로 쿼리 파라미터로 전달
     ]
       .filter(Boolean) // 값이 있는 항목만 필터링
       .join('&'); // '&'로 연결
