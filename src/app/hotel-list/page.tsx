@@ -49,6 +49,8 @@ const HotelList = () => {
   const sort = searchParams.get('sort') || '';
   const beds = searchParams.get('beds')?.split(',') || []; // beds 파라미터를 URL에서 가져옴
 
+  const [tab, setTab] = useState<'date' | 'flexible'>('date'); // 탭 상태
+
   const [filters, setFilters] = useState<FiltersType>({
     label: '',
     stars: [],
@@ -158,7 +160,7 @@ const HotelList = () => {
       className="w-full max-w-[1300px] mx-auto  pt-[200px] pb-[50px] flex flex-row justify-between gap-[30px]  
               max-[958px]:flex-col"
     >
-      <ScrollSearchBox />
+      <ScrollSearchBox tab={tab} setTab={setTab} />
 
       <AsideFilter onFilterChange={(newFilters) => setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }))} />
 
