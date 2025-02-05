@@ -39,7 +39,7 @@ const Sidebar: React.FC<SidebarProps> = ({ roomData }) => {
         </p>
         <p className="text-gray-700 mt-2"> 총 결제 금액</p>
         <p className="font-semibold text-lg">
-          {roomData?.price !== undefined ? `${roomData.price.toLocaleString()}원` : '가격 정보 없음'}
+          {roomData?.price !== undefined ? `${(roomData.price * Number(stay) * Number(room_count)).toLocaleString()}원` : '가격 정보 없음'}
         </p>
       </div>
     </aside>
