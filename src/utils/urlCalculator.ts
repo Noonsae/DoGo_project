@@ -53,20 +53,32 @@ export const processInput = (text: string): { location: string; label: { label: 
   };
 };
 
-// 3. 여행 기간 정보 칼큘레이터
-export const parseSchedule = (stayInput: string): { stay: string;} => {
-  const removeKorean = (text: string): string => text.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, ''); // 한글 제거
-
-  // 여행 기간 처리 (예: "3박4일" -> "34")
-  const stay = stayInput ? removeKorean(sanitizeInput(stayInput)) : '';
-
-  // // 월 정보 처리 (예: "june" -> 그대로 사용)
-  // const month = monthInput ? monthInput.trim().toLowerCase() : '';
-
-  return { stay: stay || ''};
+// 4. 여행 기간 정보 변환기
+const monthMapping: { [key: string]: number } = {
+  January: 1,
+  February: 2,
+  March: 3,
+  April: 4,
+  May: 5,
+  June: 6,
+  July: 7,
+  August: 8,
+  September: 9,
+  October: 10,
+  November: 11,
+  December: 12,
 };
 
-// 4. 예약 정보 디테일 칼큘레이터
+export const parseSchedule = (stayInput: string, monthInput: string): { stay: string; month: number | null } => {
+  const removeKorean = (text: string): string => text.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+  const stay = stayInput ? removeKorean(sanitizeInput(stayInput)) : '';
+  const trimmedMonthInput = monthInput.trim(); // 공백 제거
+  const month = monthMapping[trimmedMonthInput] || null; // 매핑된 값 가져오기
+
+  return { stay, month };
+};
+
+// 5. 예약 정보 디테일 칼큘레이터
 export const parseDetails = (details: string): { room: string; adult: string; child: string; pet: string } => {
 
   const extractedDetails = {
@@ -112,7 +124,7 @@ export const parseDetails = (details: string): { room: string; adult: string; ch
   return extractedDetails;
 };
 
-// 5. 호텔 성급 칼큘레이터
+// 6. 호텔 성급 칼큘레이터
 export const parseStars = (grade: string): number => {
   const match = grade.match(/성급:\s*(\d+)/);
   if (match) {
@@ -123,7 +135,7 @@ export const parseStars = (grade: string): number => {
   return 0; // 기본값
 };
 
-// 6. 편의시설(facilities) 칼큘레이터
+// 7. 편의시설(facilities) 칼큘레이터
 export const parseFacilities = (facilities: string): string[] => {
   // 쉼표로 구분된 문자열을 배열로 변환
   return facilities ? facilities.split(',').map((item) => item.trim()) : [];

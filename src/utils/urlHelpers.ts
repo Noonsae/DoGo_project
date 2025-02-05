@@ -6,7 +6,7 @@ const generateUrl = ({
   checkIn = '',
   checkOut = '',
   stay: stayInput = '',
-  // month: monthInput = '',
+  month: monthInput = '',
   details = '',
   stars = [],
   minPrice = 0,
@@ -20,7 +20,7 @@ const generateUrl = ({
     const { location: processedLocation, label } = processInput(location);
 
     // 예약 일정 처리
-    const { stay } = parseSchedule(stayInput);
+    const { stay, month } = parseSchedule(stayInput, monthInput);
 
     // 예약 정보 디테일 처리
     const { room, adult, child, pet } = parseDetails(details);
@@ -47,6 +47,7 @@ const generateUrl = ({
       checkIn && `checkIn=${encodeURIComponent(sanitizeInput(checkIn))}`,
       checkOut && `checkOut=${encodeURIComponent(sanitizeInput(checkOut))}`,
       stay && `stay=${encodeURIComponent(stay)}`,
+      month && `month=${encodeURIComponent(month)}`,
       room && `room=${encodeURIComponent(room)}`,
       adult && `adult=${encodeURIComponent(adult)}`,
       pet && `pet=${encodeURIComponent(pet)}`,
