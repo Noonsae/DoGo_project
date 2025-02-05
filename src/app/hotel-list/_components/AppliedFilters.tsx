@@ -12,15 +12,9 @@ interface AppliedFilterProps {
   }[];
 }
 
-const AppliedFilters: React.FC<AppliedFilterProps> = ({
-  filters,
-  data,
-  getFilteredNames,
-  getServiceNames,
-  uniqueHotels
-}) => {
+const AppliedFilters = ({ filters, data, getFilteredNames, getServiceNames, uniqueHotels }: AppliedFilterProps) => {
   return (
-    <div className="flex flex-wrap justify-start items-start mb-4 gap-4">
+    <div className="flex flex-wrap justify-start items-start mt-7 mb-2 gap-4">
       <div className="mt-2 text-base text-[#777] font-medium">
         <p className="text-[24px] text-[#232527] font-semibold max-[360px]:text-[15px] max-[360px]:text-[#A0A0A0] max-[360px]:ml-[20px] max-[360px]:font-medium">
           총 {data.totalCount}개의 결과
