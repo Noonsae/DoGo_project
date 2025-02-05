@@ -159,7 +159,7 @@ const SearchBox = () => {
             {/* 모달 */}
             {activeModal === 'location' && (
               <div ref={modalRef}>
-                <LocationModal />
+                <LocationModal onClose={() => setActiveModal(null)} />
               </div>
             )}
             {activeModal === 'duration' && (
