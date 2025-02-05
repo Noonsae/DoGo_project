@@ -11,6 +11,7 @@ export type HotelRoomProps = {
 export interface BookingRoomData {
   room_name: string;
   hotels?: {
+    id?: string;
     name?: string;
     check_in?: string;
     check_out?: string;
