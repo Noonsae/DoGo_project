@@ -30,7 +30,7 @@ const AgreementAndPayment = ({
 
   return (
     <div className="bg-white shadow-lg rounded-lg p-6 w-[892px]">
-      <p className="text-lg font-semibold">다음 사항에 동의해 주세요.</p>
+      <p className="text-lg font-semibold">{`다음 사항에 동의해 주세요. (필수)`}</p>
       <span className="text-neutral-600">동의가 있어야 결제하기 버튼이 활성화됩니다.</span>
       <div className="mt-10 space-y-2">
         <label className="flex items-center space-x-2">

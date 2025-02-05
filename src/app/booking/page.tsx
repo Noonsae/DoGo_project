@@ -109,7 +109,7 @@ const Booking = () => {
         </section>
 
         <section className="bg-white shadow-lg rounded-lg p-6 w-[892px]">
-          <p className="text-lg font-semibold">투숙객 정보</p>
+          <p className="text-lg font-semibold">{`투숙객 정보 (필수)`}</p>
           <p className="text-neutral-600 mb-2">자동완성기능을 사용할 경우 정확한 정보 확인이 어렵습니다.</p>
           <div className="flex flex-row items-center justify-around">
             <div className="flex flex-col justify-center">
