@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import fetchBookingData from '@/utils/fetchBookingData';
+import fetchBookingData from '@/utils/api/fetch/fetchBookingData';
 import { fetchBookingDataType } from '@/types/supabase/booking-type';
 
 const useFetchBookingData = (bookingId: string | null) => {

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchRoomQuery } from '@/utils/fetchRoomsData';
+import { fetchRoomQuery } from '@/utils/api/fetch/fetchRoomsData';
 
 const useRoomQuery = (roomId: string | null) => {
   return useQuery({

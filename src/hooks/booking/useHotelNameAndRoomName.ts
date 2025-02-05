@@ -1,5 +1,5 @@
 import { useQuery, QueryFunctionContext } from '@tanstack/react-query';
-import fetchBookingHotelNameAndRoomName from '@/utils/fetchBookingHotelNameAndRoomName';
+import fetchBookingHotelNameAndRoomName from '@/utils/api/fetch/fetchBookingHotelNameAndRoomName';
 
 const useHotelNameAndRoomName = (hotelId: string, roomId: string) => {
   return useQuery({

@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 
 import useSearchStore from '@/store/useSearchStore';
 
-import generateUrl from '@/utils/urlHelpers';
+import generateUrl from '@/utils/calculator/urlHelpers';
 
 import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
 

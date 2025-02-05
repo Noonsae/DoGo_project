@@ -11,7 +11,7 @@ import CalendarForm from './CalendarForm';
 import FlexibleForm from './FlexibleForm';
 import ActionButton from './ActionButton';
 
-import { today_date } from '@/utils/todayCalculator';
+import { today_date } from '@/utils/calculator/todayCalculator';
 
 const DurationModal = ({
   tab,

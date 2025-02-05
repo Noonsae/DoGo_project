@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import useSearchStore from '@/store/useSearchStore';
-import generateUrl from '@/utils/urlHelpers';
+import generateUrl from '@/utils/calculator/urlHelpers';
 
 import { FacilitiesType } from '@/types/supabase/facilities-type';
 import { ServicesType } from '@/types/supabase/services-type';

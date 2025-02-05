@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import fetchHotelsFilter from '@/utils/fetchHotelsFilter';
+import fetchHotelsFilter from '@/utils/api/fetch/fetchHotelsFilter';
 import {
   UseFetchHotelsFilterParamsType,
   FetchHotelsFilterResponse,

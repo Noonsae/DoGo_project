@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 
 import useSearchStore from '@/store/useSearchStore';
 
-import generateUrl from '@/utils/urlHelpers';
+import generateUrl from '@/utils/calculator/urlHelpers';
 
 import LocationModal from './location/LocationModal';
 import DurationModal from './duration/DurationModal';
@@ -15,7 +15,13 @@ import DetailsModal from './details/DetailsModal';
 import HiSearchIcon from '../icon/HiSearchIcon';
 import useSearchHistoryStore from '@/store/useSearchHistoryStore';
 
-const ScrollSearchBox = ({ tab, setTab }: { tab: 'date' | 'flexible'; setTab: (value: 'date' | 'flexible') => void }) => {
+const ScrollSearchBox = ({
+  tab,
+  setTab
+}: {
+  tab: 'date' | 'flexible';
+  setTab: (value: 'date' | 'flexible') => void;
+}) => {
   const [isSearchBoxClicked, setIsSearchBoxClicked] = useState(false);
   const [activeModal, setActiveModal] = useState<'location' | 'duration' | 'details' | null>(null); // 모달 상태
 
