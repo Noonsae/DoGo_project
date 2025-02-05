@@ -53,11 +53,12 @@ export type Database = {
           check_in_date: string
           check_out_date: string
           created_at: string
-          details: string
+          hotel_id: string
           id: string
-          request: string | null
+          request: string[] | null
           room_id: string
           status: string
+          total_amount: number
           user_first_name: string
           user_id: string
           user_last_name: string
@@ -66,11 +67,12 @@ export type Database = {
           check_in_date: string
           check_out_date: string
           created_at?: string
-          details: string
+          hotel_id?: string
           id?: string
-          request?: string | null
+          request?: string[] | null
           room_id?: string
           status: string
+          total_amount: number
           user_first_name: string
           user_id?: string
           user_last_name: string
@@ -79,16 +81,31 @@ export type Database = {
           check_in_date?: string
           check_out_date?: string
           created_at?: string
-          details?: string
+          hotel_id?: string
           id?: string
-          request?: string | null
+          request?: string[] | null
           room_id?: string
           status?: string
+          total_amount?: number
           user_first_name?: string
           user_id?: string
           user_last_name?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "bookings_hotel_id_fkey"
+            columns: ["hotel_id"]
+            isOneToOne: false
+            referencedRelation: "hotels"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "rooms"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "bookings_user_id_fkey"
             columns: ["user_id"]
