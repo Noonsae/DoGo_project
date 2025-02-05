@@ -74,24 +74,35 @@ const DetailsModal = ({ onClose }: { onClose: () => void }) => {
               </p>
             </div>
             <div className="flex items-center space-x-2">
-              <div>
-                <IoIosRemoveCircleOutlineIcon
-                  onClick={() => handleChange(key as keyof typeof filters, false)}
-                  className="text-[#B3916A] text-[25px] cursor-pointer"
-                />
-              </div>
+              {/* - 버튼 */}
+              <button
+                onClick={() =>
+                  filters[key as keyof typeof filters] > 1 && handleChange(key as keyof typeof filters, false)
+                }
+                disabled={filters[key as keyof typeof filters] <= 1}
+                className={`text-[25px] ${
+                  filters[key as keyof typeof filters] > 1
+                    ? 'text-[#B3916A] hover:text-[#8F7455]'
+                    : 'text-[#D3D3D3] cursor-not-allowed'
+                }`}
+                aria-label={`${key} 감소 버튼`}
+              >
+                <IoIosRemoveCircleOutlineIcon />
+              </button>
               <span className="text-lg">{filters[key as keyof typeof filters]}</span>
-              <div>
-                <IoIosAddCircleOutlineIcon
-                  onClick={() => handleChange(key as keyof typeof filters, true)}
-                  className="text-[#B3916A] text-[25px] cursor-pointer"
-                />
-              </div>
+              {/* + 버튼 */}
+              <button
+                onClick={() => handleChange(key as keyof typeof filters, true)}
+                className="text-[#B3916A] text-[25px] hover:text-[#8F7455]"
+                aria-label={`${key} 증가 버튼`}
+              >
+                <IoIosAddCircleOutlineIcon />
+              </button>
             </div>
           </div>
-          {/* 문구 */}
         </div>
       ))}
+
       {/* 버튼 영역 */}
       <div className="w-full flex justify-evenly mt-8">
         <button
