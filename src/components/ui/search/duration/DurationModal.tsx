@@ -8,7 +8,7 @@ import { MonthList } from '@/constants/constant';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 
-import FiCalendarIcon from '../icon/FiCalendarIcon';
+import FiCalendarIcon from '../../icon/FiCalendarIcon';
 
 const DurationModal = ({ onClose }: { onClose: () => void }) => {
   const { setCheckIn, setCheckOut, setMonth, setStay } = useSearchStore();

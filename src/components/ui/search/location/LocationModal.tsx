@@ -1,12 +1,10 @@
 'use client';
 
-import { useState } from 'react';
-
 import useSearchHistoryStore from '@/store/useSearchHistoryStore';
 
 import { locations } from '@/constants/constant';
-import IoMdPinIcon from '../icon/IoMdPinIcon';
-import IoCloseIcon from '../icon/IoCloseIcon';
+import IoMdPinIcon from '../../icon/IoMdPinIcon';
+import IoCloseIcon from '../../icon/IoCloseIcon';
 import useSearchStore from '@/store/useSearchStore';
 
 const LocationModal = ({ onClose }: { onClose: () => void }) => {
