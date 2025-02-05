@@ -27,7 +27,7 @@ const Booking = () => {
   const [lastName, setLastName] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
 
-  const [request, setRequest] = useState([]);
+   const [request, setRequest] = useState<string[]>([]);
 
   const searchParams = useSearchParams();
   const priceParam = searchParams.get('price');
@@ -97,6 +97,8 @@ const Booking = () => {
     }
   };
 
+  console.log(request);
+
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
       <Sidebar roomData={roomData} />
@@ -135,7 +137,7 @@ const Booking = () => {
 
         <ContactInfo userData={safeUserData} selectedCode={selectedCode} setSelectedCode={setSelectedCode} />
 
-        <Requests />
+        <Requests request={request} setRequest={setRequest} />
 
         {/* TossPaymentsButton 활성화 조건 전달 */}
         <AgreementAndPayment isFormValid={isFormValid} bookingData={bookingData} />
