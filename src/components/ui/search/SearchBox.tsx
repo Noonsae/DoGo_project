@@ -11,9 +11,9 @@ import generateUrl from '@/utils/urlHelpers';
 
 import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
 
-import LocationModal from './LocationModal';
-import DurationModal from './DurationModal';
-import DetailsModal from './DetailsModal';
+import LocationModal from './location/LocationModal';
+import DurationModal from './duration/DurationModal';
+import DetailsModal from './details/DetailsModal';
 
 import HiSearchIcon from '../icon/HiSearchIcon';
 import useSearchHistoryStore from '@/store/useSearchHistoryStore';
@@ -65,7 +65,7 @@ const SearchBox = () => {
   );
 
   const url = generateUrl({ location, checkIn, checkOut, stay, month, details }); // URL 생성
-  
+
   const handleSearchClick = async () => {
     const { location } = useSearchStore.getState();
     if (location) {

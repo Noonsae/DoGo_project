@@ -9,9 +9,9 @@ import useSearchStore from '@/store/useSearchStore';
 
 import generateUrl from '@/utils/urlHelpers';
 
-import LocationModal from './LocationModal';
-import DurationModal from './DurationModal';
-import DetailsModal from './DetailsModal';
+import LocationModal from './location/LocationModal';
+import DurationModal from './duration/DurationModal';
+import DetailsModal from './details/DetailsModal';
 import HiSearchIcon from '../icon/HiSearchIcon';
 import useSearchHistoryStore from '@/store/useSearchHistoryStore';
 
