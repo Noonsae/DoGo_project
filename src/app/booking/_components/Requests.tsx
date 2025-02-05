@@ -8,13 +8,15 @@ const Requests = () => {
       <div className="mt-4 space-y-2">
         <label className="flex items-center space-x-2">
           <input type="checkbox" className="w-5 h-5" />
-          <span>{`유아용 침대 (가능한 경우)`}</span>
+          <span>{`유아용 침대 (선택사항)`}</span>
         </label>
-        <input className="border p-3 w-full rounded-md" placeholder="별도의 요청사항을 작성해 주세요." />
+
         <label className="flex items-center space-x-2">
           <input type="checkbox" className="w-5 h-5" />
-          <span>{`예약한 객실은 서로 붙여주세요. (가능한 경우)`}</span>
+          <span>{`예약한 객실은 서로 붙여주세요. (선택사항)`}</span>
         </label>
+
+        <input className="border p-3 w-full rounded-md" placeholder="별도의 요청사항을 작성해 주세요." />
       </div>
     </section>
   );
