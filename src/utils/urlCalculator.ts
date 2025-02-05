@@ -82,8 +82,8 @@ export const parseSchedule = (stayInput: string, monthInput: string): { stay: st
 export const parseDetails = (details: string): { room: string; adult: string; child: string; pet: string } => {
 
   const extractedDetails = {
-    room: '0',
-    adult: '0',
+    room: '1',
+    adult: '1',
     child: '0',
     pet: '0'
   };
