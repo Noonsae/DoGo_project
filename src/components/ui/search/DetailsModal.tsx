@@ -104,19 +104,19 @@ const DetailsModal = ({ onClose }: { onClose: () => void }) => {
       ))}
 
       {/* 버튼 영역 */}
-      <div className="w-full flex justify-evenly mt-8">
+      <div className="w-full flex justify-end gap-[] mt-8">
         <button
-          onClick={handleSaveDetails} // zustand에 저장
-          className="w-[124px] h-[44px] px-6 py-[10px] bg-[#B3916A] text-white text-[18px] rounded-[8px] hover:bg-[#8F7455] active:bg-[#6B573F]"
+          onClick={handleResetFilters} // 상태값 초기화
+          className="w-[124px] px-6 py-[10px] text-[18px] font-semibold text-[#B3916A] hover:text-[#8f7455]"
         >
-          적용하기
+          초기화
         </button>
 
         <button
-          onClick={handleResetFilters} // 상태값 초기화
-          className="w-[124px] h-[44px] px-6 py-[10px] bg-[#efefef] text-gray-800 rounded-[8px] border border-gray-200 hover:bg-[#bfbfbf] active:bg-[#a0a0a0]"
+          onClick={handleSaveDetails} // zustand에 저장
+          className="w-[124px] px-6 py-[10px] bg-[#B3916A] text-white text-[18px] font-semibold rounded-lg hover:bg-[#8F7455] active:bg-[#6B573F]"
         >
-          초기화
+          적용하기
         </button>
       </div>
     </div>
