@@ -7,51 +7,57 @@ import useAuthStore from '@/store/useAuth';
 interface Policy {
   id: string;
   policy_name: string;
-  description: string | null; // null을 허용하도록 수정
+  description: string | null;
   created_at: string;
 }
 
-// 현재 로그인한 사용자 -> 사용자가 소유하는 호텔 데이터 가져오기 -> 호텔 id 가져오기
 const PolicyPage = () => {
   const [policies, setPolicies] = useState<Policy[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [newPolicy, setNewPolicy] = useState({ policy_name: '', description: '' });
+  const [hotelId, setHotelId] = useState<string | null>(null); // 🔹 호텔 ID 상태 추가
+
   const user = useAuthStore((state) => state.user);
   const userId = user?.id;
 
-  // 내 유저 정보 + 내 호텔 정보 -> 정책을 가져와야 한다.
-  // 정책 데이터 가져오기
+  // 로그인된 사용자의 호텔 ID 가져오기
   useEffect(() => {
-    const supabase = browserSupabase();
-    const fetchPolicies = async () => {
+    const fetchHotelId = async () => {
       try {
-        if (!userId) {
-          return;
-        }
+        if (!userId) return;
 
-        const { data: hotelIdData, error: hotelIdError } = await supabase
+        const { data, error } = await browserSupabase()
           .from('hotels')
           .select('id')
           .eq('user_id', userId)
           .maybeSingle();
 
-        if (hotelIdData === null) {
-          return;
+        if (error) throw error;
+        if (data) {
+          setHotelId(data.id); // 🔹 호텔 ID 상태 업데이트
         }
+      } catch (err) {
+        console.error('Error fetching hotel ID:', err);
+        setError('호텔 정보를 불러오는 중 오류가 발생했습니다.');
+      }
+    };
 
-        if (hotelIdData.id) {
-          return;
-        }
+    fetchHotelId();
+  }, [userId]);
 
-        const { data, error } = await supabase
+  // 호텔 ID가 있을 때만 정책 데이터 가져오기
+  useEffect(() => {
+    const fetchPolicies = async () => {
+      try {
+        if (!hotelId) return;
+
+        const { data, error } = await browserSupabase()
           .from('policies')
           .select('id, policy_name, description, created_at')
-          .eq('hotel_id', hotelIdData.id);
+          .eq('hotel_id', hotelId);
 
         if (error) throw error;
-
-        // 데이터가 null일 가능성 처리
         setPolicies(data || []);
       } catch (err) {
         console.error('Error fetching policies:', err);
@@ -62,35 +68,41 @@ const PolicyPage = () => {
     };
 
     fetchPolicies();
-  }, [userId]);
+  }, [hotelId]);
 
-  // // 정책 추가 함수
-  // const handleAddPolicy = async () => {
-  //   try {
-  //     const { data, error } = await browserSupabase()
-  //       .from('policies')
-  //       .insert([
-  //         {
-  //           policy_name: newPolicy.policy_name,
-  //           description: newPolicy.description || null, // null을 허용하도록 처리
-  //           hotel_id: hotelId,
-  //           created_at: new Date().toISOString()
-  //         }
-  //       ]);
+  // 정책 추가
+  const handleAddPolicy = async () => {
+    try {
+      if (!hotelId) {
+        alert('호텔 정보를 찾을 수 없습니다.');
+        return;
+      }
 
-  //     if (error) throw error;
+      const { data, error } = await browserSupabase()
+        .from('policies')
+        .insert([
+          {
+            policy_name: newPolicy.policy_name,
+            description: newPolicy.description || null,
+            hotel_id: hotelId, // 🔹 수정된 hotelId 적용
+            created_at: new Date().toISOString(),
+          },
+        ])
+        .select();
 
-  //     if (data) {
-  //       setPolicies((prev) => [...prev, data[0]]);
-  //       setNewPolicy({ policy_name: '', description: '' });
-  //     }
-  //   } catch (err) {
-  //     console.error('Error adding policy:', err);
-  //     setError('정책 추가 중 오류가 발생했습니다.');
-  //   }
-  // };
+      if (error) throw error;
 
-  // 정책 삭제 함수
+      if (data) {
+        setPolicies((prev) => [...prev, data[0]]);
+        setNewPolicy({ policy_name: '', description: '' });
+      }
+    } catch (err) {
+      console.error('Error adding policy:', err);
+      setError('정책 추가 중 오류가 발생했습니다.');
+    }
+  };
+
+  // 정책 삭제
   const handleDeletePolicy = async (policyId: string) => {
     try {
       const { error } = await browserSupabase().from('policies').delete().eq('id', policyId);
@@ -128,9 +140,9 @@ const PolicyPage = () => {
             onChange={(e) => setNewPolicy({ ...newPolicy, description: e.target.value })}
             className="border p-2 rounded"
           ></textarea>
-          {/* <button onClick={handleAddPolicy} className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
+          <button onClick={handleAddPolicy} className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
             정책 추가
-          </button> */}
+          </button>
         </div>
       </div>
 
