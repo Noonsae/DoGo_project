@@ -18,7 +18,7 @@ const FacilityList: React.FC<FacilitiesFilterProps> = ({ selectedFacilities, onF
             <button
               type="button"
               onClick={() => onFacilityChange(facility)}
-              className={`px-3 py-1 rounded-full border ${
+              className={`px-3 py-1 rounded-full border border-neutral-300 ${
                 selectedFacilities.some((fac) => fac.id === facility.id)
                   ? 'bg-[#B3916A] text-white'
                   : 'bg-white text-gray-700'
