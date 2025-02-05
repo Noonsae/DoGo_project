@@ -4,8 +4,7 @@ export const sanitizeInput = (text: string): string => {
 };
 
 // 1. 호텔 지역 정보(location) 칼큘레이터
-export const convertToEnglish = (text: string) => {  
-
+export const convertToEnglish = (text: string) => {
   // 한글을 영어로 변환하는 로직 (예: 간단한 매핑)
   const conversionMap: { [key: string]: string } = {
     제주: 'jeju',
@@ -27,7 +26,6 @@ export const convertToEnglish = (text: string) => {
 
 // 2. 호텔 이름 또는 주소(Label) 칼큘레이터
 export const parseLabel = (input: string): { label: string } => {
-  
   return {
     label: input // label로 설정
   };
@@ -35,10 +33,9 @@ export const parseLabel = (input: string): { label: string } => {
 
 // 3. 메인 로직: convertToEnglish or parseLabel 상황에 따라 나눠서 처리하기
 export const processInput = (text: string): { location: string; label: { label: string } } => {
-
   const converted = convertToEnglish(text);
   if (converted) {
-    // 변환 가능한 경우 location으로 처리    
+    // 변환 가능한 경우 location으로 처리
     return {
       location: converted,
       label: { label: '' }
@@ -66,21 +63,27 @@ const monthMapping: { [key: string]: number } = {
   September: 9,
   October: 10,
   November: 11,
-  December: 12,
+  December: 12
 };
 
 export const parseSchedule = (stayInput: string, monthInput: string): { stay: string; month: number | null } => {
+  // 한글 및 특문 없애기
   const removeKorean = (text: string): string => text.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
   const stay = stayInput ? removeKorean(sanitizeInput(stayInput)) : '';
-  const trimmedMonthInput = monthInput.trim(); // 공백 제거
-  const month = monthMapping[trimmedMonthInput] || null; // 매핑된 값 가져오기
+
+  // "여행월: EnglishMonth"에서 EnglishMonth 추출
+  const englishMonth = monthInput.split(':').pop()?.trim();
+  if (!englishMonth || !monthMapping[englishMonth]) {
+    throw new Error(`Invalid month format or month not recognized: ${monthInput}`);
+  }
+
+  const month = monthMapping[englishMonth] || null; // 매핑된 값 가져오기
 
   return { stay, month };
 };
 
 // 5. 예약 정보 디테일 칼큘레이터
 export const parseDetails = (details: string): { room: string; adult: string; child: string; pet: string } => {
-
   const extractedDetails = {
     room: '1',
     adult: '1',
@@ -146,4 +149,3 @@ export const parseServices = (services: string): string[] => {
   // 쉼표로 구분된 문자열을 배열로 변환
   return services ? services.split(',').map((item) => item.trim()) : [];
 };
-
