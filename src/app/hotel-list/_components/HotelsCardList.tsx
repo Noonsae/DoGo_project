@@ -59,7 +59,7 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
 
   return (
     <div>
-      <li className="flex  items-center rounded-[12px] shadow-md p-4 bg-white relative transition-all duration-300 outline outline-2 outline-blue-500 max-[360px]:w-[320px] max-[360px]:h-[188px] max-[360px]:ml-[20px] max-[360px]:p-[0px]">
+      <li className="flex  items-center rounded-[12px] mr-[50px] shadow-md p-4 bg-white relative transition-all duration-300  max-[360px]:w-[320px] max-[360px]:h-[188px] max-[360px]:ml-[20px] max-[360px]:p-[0px]">
         {/* 왼쪽 이미지 */}
         <div className="relative overflow-hidden rounded-md w-[324px] h-[240px] max-[360px]:w-[116px] max-[360px]:h-[172px] max-[360px]:ml-[8px] max-[360px]:mr-[8px]">
           <Image
@@ -71,12 +71,24 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
           />
         </div>
         {/* 오른쪽 텍스트 */}
-        <div className="w-[492px] h-[240px] ml-1 flex flex-col justify-between items-start max-[360px]:w-[180px] max-[360px]:h-[172px] outline outline-2 outline-black-500">
-          <div>
+        <div
+          className="w-[492px] h-[240px] ml-1 flex flex-col justify-between items-start 
+                max-[360px]:w-[180px] max-[360px]:h-[172px] 
+               "
+        >
+          <div className="w-full max-[360px]:w-full overflow-hidden">
             {/* 호텔 이름과 별점 */}
             <div className="flex items-start justify-between w-full">
-              <div className="flex flex-row gap-2 max-[360px]:flex-col max-[360px]:gap-[10px]">
-                <h3 className="mb-1 text-2xl font-bold text-gray-900 max-[360px]:text-[16px]">{hotel.name}</h3>
+              <div className="flex flex-row gap-2 max-[360px]:flex-col max-[360px]:gap-[10px] w-full">
+                <h3
+                  className="mb-1 text-2xl font-bold text-gray-900 
+                      max-[360px]:text-[16px] max-[360px]:w-[90%] 
+                      max-[360px]:truncate max-[360px]:overflow-hidden 
+                      max-[360px]:text-ellipsis max-[360px]:whitespace-nowrap 
+                      max-[360px]:text-left"
+                >
+                  {hotel.name}
+                </h3>
                 <div className="flex items-center max-[360px]:mt-[-23px]">
                   <RenderStars stars={hotel.stars ?? 0} />
                 </div>
@@ -84,11 +96,29 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
             </div>
 
             {/* 호텔 설명 */}
-            <p className="w-[65%] text-lg text-gray-700 leading-[1.45] text-left font-normal break-words whitespace-normal max-[360px]:text-[14px] max-[360px]:w-full">
+            <p
+              className="text-lg text-gray-700 leading-[1.45] text-left font-normal 
+              break-words whitespace-normal 
+              max-[360px]:text-[14px] max-[360px]:w-full 
+              max-[360px]:truncate max-[360px]:overflow-hidden 
+              max-[360px]:text-ellipsis max-[360px]:whitespace-nowrap 
+               max-[360px]:text-left"
+            >
+              {' '}
+              {/* 🔥 왼쪽 정렬 유지 */}
               {hotel.description || '설명 없음'}
             </p>
-            <p className="text-base text-left text-gray-600 max-[360px]:text-[12px]">{hotel.address}</p>
 
+            <p
+              className="text-base text-left text-gray-600 
+              max-[360px]:text-[12px] max-[360px]:truncate 
+              max-[360px]:overflow-hidden max-[360px]:text-ellipsis 
+              max-[360px]:whitespace-nowrap max-[360px]:w-[90%]"
+            >
+              {' '}
+              {/* 🔥 주소도 동일 적용 */}
+              {hotel.address}
+            </p>
             {/* 리뷰 */}
             {!reviewsLoading && (
               <div className="flex flex-row items-center">
@@ -137,7 +167,10 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
         </div>
 
         {/* 하트 아이콘 */}
-        <div className="absolute top-[25px] right-[16px] text-2xl max-[360px]:top-[-8px] max-[360px]:left-[290px]">
+        <div
+          className="absolute top-[25px] right-[16px] text-2xl 
+                max-[360px]:top-[5px] max-[360px]:left-[285px]"
+        >
           <button
             onClick={(e) => {
               e.stopPropagation();
