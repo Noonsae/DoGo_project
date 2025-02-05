@@ -12,26 +12,29 @@ import FiCalendarIcon from '../icon/FiCalendarIcon';
 
 const DurationModal = ({ onClose }: { onClose: () => void }) => {
   const { setCheckIn, setCheckOut, setMonth, setStay } = useSearchStore();
+
   const [tab, setTab] = useState<'date' | 'flexible'>('flexible'); // 탭 상태
+
   const [selectedDateRange, setSelectedDateRange] = useState({ start: '', end: '' }); // 날짜 지정 값
+
   const [selectedStayOption, setSelectedStayOption] = useState(''); // 단일 선택된 숙박 옵션
   const [selectedMonth, setSelectedMonth] = useState<string>(''); // 다중 선택된 달
 
-    const handleDateSelect = (info: any) => {
-      const { startStr, endStr } = info;
-      setSelectedDateRange({ start: startStr, end: endStr });
+  const handleDateSelect = (info: any) => {
+    const { startStr, endStr } = info;
+    setSelectedDateRange({ start: startStr, end: endStr });
   };
 
   // 캘린더 폼 모달 저장 버튼
-    const applyChanges = () => {
-      if (selectedDateRange.start && selectedDateRange.end) {
-        const formattedSchedule = `체크인: ${selectedDateRange.start}, 체크아웃: ${selectedDateRange.end}`;
-        // setCheckIn(selectedDateRange.start);
-        // setCheckOut(selectedDateRange.end);
-        setMonth(formattedSchedule);
-        setStay(formattedSchedule);
-      }
-    };
+  const applyChanges = () => {
+    if (selectedDateRange.start && selectedDateRange.end) {
+      const formattedSchedule = `체크인: ${selectedDateRange.start}, 체크아웃: ${selectedDateRange.end}`;
+      // setCheckIn(selectedDateRange.start);
+      // setCheckOut(selectedDateRange.end);
+      setCheckIn(formattedSchedule);
+      setCheckOut(formattedSchedule);
+    }
+  };
 
   // 저장 버튼
   const handleSaveSchedule = () => {
@@ -40,17 +43,22 @@ const DurationModal = ({ onClose }: { onClose: () => void }) => {
       // 날짜 지정 옵션 저장
       // setCheckIn(selectedDateRange.start);
       // setCheckOut(selectedDateRange.end);
-      setMonth(formattedSchedule);
-      setStay(formattedSchedule);
+      setCheckIn(formattedSchedule);
+      setCheckOut(formattedSchedule);
     } else if (tab === 'flexible') {
       // 유동적인 옵션 저장
       const stayDetails = selectedStayOption ? `숙박 옵션: ${selectedStayOption}` : '';
       const monthDetails = selectedMonth ? `여행 월: ${selectedMonth}` : '';
-      if (stayDetails || monthDetails) {
-        const formattedSchedule = [stayDetails, monthDetails].filter(Boolean).join(' | ');
-        setMonth(formattedSchedule);
-        setStay(formattedSchedule);
+
+      // 각각 별도로 상태 업데이트
+      if (stayDetails) {
+        setStay(stayDetails); // 숙박 옵션만 업데이트
       }
+      if (monthDetails) {
+        setMonth(monthDetails); // 여행 월만 업데이트
+      }
+
+      console.log(selectedStayOption, selectedMonth);
     }
     onClose();
   };
@@ -59,14 +67,14 @@ const DurationModal = ({ onClose }: { onClose: () => void }) => {
   const handleResetSchedule = () => {
     // ToDo : checkIn, checkOut
     setSelectedStayOption('');
-    setSelectedMonth('');    
-  }
+    setSelectedMonth('');
+    setStay('');
+    setMonth('');
+  };
 
   return (
     <div className="fixed left-1/2 top-1/2 bg-white w-[592px] px-9 p-8 rounded-[12px] shadow-[0px_4px_12px_rgba(0,0,0,0.1)] z-50 transform -translate-x-1/2 -translate-y-1/2">
-      <p className="mb-6 text-[18px] text-[#636363] font-normal leading-[1.45]">
-        원하는 일정을 선택해주세요.
-      </p>
+      <p className="mb-6 text-[18px] text-[#636363] font-normal leading-[1.45]">원하는 일정을 선택해주세요.</p>
       {/* 탭 */}
       <div className="w-[270px] h-[43px] mx-auto flex justify-center mb-3 p-1 bg-[#EFEFEF] rounded-full">
         {/* 캘린더폼 활용해서 만든 이후 onClick={() => setTab('data')}  */}
