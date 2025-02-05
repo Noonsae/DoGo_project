@@ -1,11 +1,16 @@
-import { loadTossPayments } from '@tosspayments/payment-sdk';
 import { useParams } from 'next/navigation';
 
-const TossPaymentsButton = ({ disabled, roomPrice }: { disabled?: boolean; roomPrice: number }) => {
+import { PostBookingDataType } from '@/types/supabase/booking-type';
 
+import { loadTossPayments } from '@tosspayments/payment-sdk';
+import usePostBookingData from '@/hooks/booking/usePostBookingData';
+
+const TossPaymentsButton = ({ disabled, bookingData }: { disabled?: boolean; bookingData: PostBookingDataType }) => {
   const clientKey = process.env.NEXT_PUBLIC_TOSS_PAYMENTS_TEST_CLIENT_API_KEY; // 환경 변수 사용
+  
+  const mutation = usePostBookingData();
 
-  const { id } = useParams(); // URL에서 id를 가져옴
+  const { id } = useParams();
 
   const handlePayment = async () => {
     if (!clientKey) {
@@ -13,6 +18,16 @@ const TossPaymentsButton = ({ disabled, roomPrice }: { disabled?: boolean; roomP
       return;
     }
 
+    const booking_data = await mutation.mutateAsync(bookingData);
+
+    if (!booking_data) {
+      return alert('?')
+    };
+
+    console.log(booking_data[0].id);
+
+    const booking_id = booking_data[0].id;
+        
     const tossPayments = await loadTossPayments(clientKey);
 
     // TODO_01 : 고유 주문 번호 booking 테이블에서 가져오기
@@ -21,11 +36,11 @@ const TossPaymentsButton = ({ disabled, roomPrice }: { disabled?: boolean; roomP
 
     try {
       await tossPayments.requestPayment('카드', {
-        amount: roomPrice, // 결제 예시 금액
+        amount: bookingData.total_amount, // 결제 예시 금액
         orderId: `ORDER_${Date.now()}`, // 고유 주문 ID
         orderName: '테스트 결제', // 주문명 예시
         customerName: '홍길동', // 고객명 예시
-        successUrl: `${window.location.origin}/booking/${id}`, // 결제 성공 시 이동할 URL
+        successUrl: `${window.location.origin}/booking/${booking_id}`, // 결제 성공 시 이동할 URL
         failUrl: `${window.location.origin}/booking/fail` // 결제 실패 시 이동할 URL
       });
 
@@ -34,8 +49,6 @@ const TossPaymentsButton = ({ disabled, roomPrice }: { disabled?: boolean; roomP
       console.error('결제 요청 중 오류:', error);
     }
   };
-
-  // 결제가 성공했을 경우 예약페이지에 입력된 데이터를 db에 저장하는 로직이 필요함.
 
   return (
     <button
