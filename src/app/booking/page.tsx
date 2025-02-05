@@ -29,7 +29,10 @@ const Booking = () => {
 
   const searchParams = useSearchParams();
   const priceParam = searchParams.get('price');
-  const total_amount = priceParam ? parseInt(priceParam, 10) : 0;
+  const stay = searchParams.get('stay');
+  const room_count = searchParams.get('room');
+
+  const total_amount = priceParam ? parseInt(priceParam, 10) * Number(stay) * Number(room_count) : 0;
 
   const { user } = useAuthStore();
   const userId: string | null = user?.id ?? null;
