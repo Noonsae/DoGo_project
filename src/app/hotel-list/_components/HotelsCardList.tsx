@@ -131,7 +131,9 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
               <span className="font-semibold text-2xl max-[360px]:text-[18px]">
                 {formatKoreanCurrency(hotel.min_price as number)}원
               </span>
-              <span className="text-gray-500 text-base font-medium max-[360px]:text-[15px]">/1박</span>
+              <span className="text-gray-500 text-base font-medium max-[360px]:text-[15px]">
+                &nbsp; / &nbsp;1박
+              </span>
             </div>
           </div>
         </div>
