@@ -158,7 +158,7 @@ const HotelList = () => {
 
   return (
     <div
-      className="w-full max-w-[1300px] mx-auto  pt-[200px] pb-[50px] flex flex-row justify-between gap-[30px]  
+      className="w-full max-w-[1300px] mx-auto  pt-[200px] pb-[50px] flex flex-row justify-between  
               max-[958px]:flex-col"
     >
       <ScrollSearchBox />
@@ -177,7 +177,7 @@ const HotelList = () => {
           <SortBtn sortOrder={sort as sortOrder} /> */}
 
         {/* hotel list card */}
-        <ul className="w-full flex flex-col gap-8 outline outline-2 outline-red-500">
+        <ul className="w-full flex flex-col gap-8 ">
           {isLoading
             ? Array.from({ length: 10 }, (_, index) => <HotelListSkeleton key={index} />)
             : uniqueHotels.map((hotel) => (
