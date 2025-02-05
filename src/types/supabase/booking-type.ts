@@ -16,15 +16,15 @@ export interface fetchBookingDataType extends Tables<'bookings'> {
 }
 
 export interface PostBookingDataType {
-  created_at: string;
-  user_id: string;
   check_in_date: string;
   check_out_date: string;
-  hotel_id: string;
-  request: string[] | null;
+  created_at: string;
+  request: string[];
   room_id: string;
+  hotel_id: string;
   status: string;
   total_amount: number;
   user_first_name: string;
   user_last_name: string;
+  user_id: string;
 }

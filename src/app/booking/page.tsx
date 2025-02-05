@@ -15,6 +15,7 @@ import AgreementAndPayment from './_components/AgreementAndPayment ';
 import { countryCodes } from '@/constants/constant';
 
 import { BookingRoomData } from '@/types/hotel/hotel-room-type';
+import { PostBookingDataType } from '@/types/supabase/booking-type';
 
 const Booking = () => {
   const [selectedCode, setSelectedCode] = useState(countryCodes[0].code);
@@ -51,13 +52,13 @@ const Booking = () => {
     setIsFormValid(isValid);
   }, [firstName, lastName]);
 
-  const bookingData = {
+  const bookingData: PostBookingDataType = {
     check_in_date: checkInDate, // 체크인 날짜
     check_out_date: checkOutDate, // 체크아웃 날짜
     created_at: new Date().toISOString(), // 생성 시간 (현재 시간)
     request: request, // 요청 사항
     room_id: roomId || '', // 객실 ID
-    hotel_id: roomData?.hotels?.id,
+    hotel_id: roomData?.hotels?.id ?? '',
     status: 'confirmed', // 예약 상태
     total_amount: total_amount, // 총 금액
     user_first_name: firstName || 'Unknown', // 사용자 이름
