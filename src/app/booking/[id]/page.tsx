@@ -52,7 +52,7 @@ const BookingConfirmPage = () => {
       {/* 예약 번호 */}
       <div className="  rounded-lg p-6 border border-gray-200">
         <p className="text-lg font-semibold text-gray-700">나의 예약 번호</p>
-        <p className="text-gray-800 mt-2"> {fetchBookingData?.id.split('-')[0] ?? '예약 정보 없음'}</p>
+        <p className="text-gray-800 mt-2"> {fetchBookingData?.id ?? '예약 정보 없음'}</p>
         <div className="flex flex-row items-center">
           <FileIcon />
           <button
