@@ -3,8 +3,8 @@ import React from 'react';
 
 import useSearchStore from '@/store/useSearchStore'; // zustand store import
 
-import IoIosRemoveCircleOutlineIcon from '../icon/IoIosRemoveCircleOutlineIcon';
-import IoIosAddCircleOutlineIcon from '../icon/IoIosAddCircleOutlineIcon';
+import IoIosRemoveCircleOutlineIcon from '../../icon/IoIosRemoveCircleOutlineIcon';
+import IoIosAddCircleOutlineIcon from '../../icon/IoIosAddCircleOutlineIcon';
 
 const DetailsModal = ({ onClose }: { onClose: () => void }) => {
   const { setDetails } = useSearchStore(); // zustand의 setDetails 사용

@@ -11,9 +11,9 @@ import generateUrl from '@/utils/urlHelpers';
 
 import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
 
-import LocationModal from './LocationModal';
-import DurationModal from './DurationModal';
-import DetailsModal from './DetailsModal';
+import LocationModal from './location/LocationModal';
+import DurationModal from './duration/DurationModal';
+import DetailsModal from './details/DetailsModal';
 
 import HiSearchIcon from '../icon/HiSearchIcon';
 import useSearchHistoryStore from '@/store/useSearchHistoryStore';
@@ -65,7 +65,7 @@ const SearchBox = () => {
   );
 
   const url = generateUrl({ location, checkIn, checkOut, stay, month, details }); // URL 생성
-  
+
   const handleSearchClick = async () => {
     const { location } = useSearchStore.getState();
     if (location) {
@@ -123,11 +123,11 @@ const SearchBox = () => {
               >
                 <div className="w-1/2 h-full">
                   <p className="text-[15px] text-[#636363] font-medium">숙박 기간</p>
-                  <span className="text-[16px] text-[#A0A0A0] font-medium">{stayDuration || `기간 선택`}</span>
+                  <span className="text-[16px] text-[#A0A0A0] font-medium">{stay || `기간 선택`}</span>
                 </div>
                 <div className="w-1/2 h-full px-[16px]">
                   <p className="text-[15px] text-[#636363] font-medium">여행 시기</p>
-                  <span className="text-[16px] text-[#A0A0A0] font-medium">{travelMonth || `기간 선택`}</span>
+                  <span className="text-[16px] text-[#A0A0A0] font-medium">{month || `기간 선택`}</span>
                 </div>
               </div>
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
 
 import { useRouter } from 'next/navigation';
@@ -9,9 +9,9 @@ import useSearchStore from '@/store/useSearchStore';
 
 import generateUrl from '@/utils/urlHelpers';
 
-import LocationModal from './LocationModal';
-import DurationModal from './DurationModal';
-import DetailsModal from './DetailsModal';
+import LocationModal from './location/LocationModal';
+import DurationModal from './duration/DurationModal';
+import DetailsModal from './details/DetailsModal';
 import HiSearchIcon from '../icon/HiSearchIcon';
 import useSearchHistoryStore from '@/store/useSearchHistoryStore';
 
@@ -61,7 +61,6 @@ const ScrollSearchBox = () => {
     await router.push(searchUrl); // 페이지 이동
     inactiveSearchBox();
   };
-  
 
   const handleKeyDownEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -113,13 +112,14 @@ const ScrollSearchBox = () => {
           >
             <div className={`w-1/2 py-2 items-center`}>
               {/* check_in 상태를 text로 나타냄.*/}
-              <p className="text-[15px] text-[#777]">숙박 기간</p>
-              {isSearchBoxClicked && <p className="text-base text-[#444]">{checkIn || '기간 선택'}</p>}
+              {isSearchBoxClicked && <p className="text-[15px] text-[#777]">숙박 기간</p>}
+              <p className="text-base text-[#444]">{checkIn ? checkIn : stay || '기간 선택'}</p>
             </div>
             <div className="w-1/2 py-2 items-center">
               {/* check_out 상태를 text로 나타냄.*/}
-              <p className="text-[15px] text-[#777]">여행 시기</p>
-              {isSearchBoxClicked && <p className="text-base text-[#444]">{checkOut || '기간 선택'}</p>}
+              {isSearchBoxClicked && <p className="text-[15px] text-[#777]">여행 시기</p>}
+
+              <p className="text-base text-[#444]">{checkOut ? checkOut : month || '기간 선택'}</p>
             </div>
           </div>
 
@@ -147,6 +147,7 @@ const ScrollSearchBox = () => {
           </button>
         </div>
         {activeModal === 'location' && <LocationModal onClose={() => setActiveModal(null)} />}
+
         {activeModal === 'duration' && <DurationModal onClose={() => setActiveModal(null)} />}
 
         {activeModal === 'details' && <DetailsModal onClose={() => setActiveModal(null)} />}
