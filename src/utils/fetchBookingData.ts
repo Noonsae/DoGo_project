@@ -1,30 +1,38 @@
 import { browserSupabase } from '@/supabase/supabase-client';
+  
+import { fetchBookingDataType } from '@/types/supabase/booking-type';
 
-export const fetchRoomQuery = async (roomId: string) => {
+const fetchBookingData = async (bookingId: string): Promise<fetchBookingDataType | null> => {
   const supabase = browserSupabase();
 
   const { data, error } = await supabase
-
     .from('bookings')
     .select(
       `
       *,
-      rooms:room_id (
-        room_name,
-        hotel_id
+      rooms (
+        hotel_id,
+        id,
+        room_name
       ),
-      hotels:rooms.hotel_id (
-        name
+      hotels (
+        id,
+        name,
+        address,
+        check_in,
+        check_out
       )
     `
     )
-    .eq('id', roomId)
+    .eq('id', bookingId)
     .single();
 
   if (error) {
-    console.error('객실 정보를 불러오는 중 오류 발생:', error.message);
+    console.error('Error fetching booking data:', error.message);
     return null;
   }
 
   return data;
 };
+
+export default fetchBookingData;
