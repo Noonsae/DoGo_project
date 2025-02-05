@@ -1,7 +1,16 @@
 import { useState } from 'react';
+
+import { PostBookingDataType } from '@/types/supabase/booking-type';
+
 import TossPaymentsButton from './TossPaymentsButton';
 
-const AgreementAndPayment = ({ roomPrice, isFormValid }: { roomPrice: number; isFormValid : boolean}) => {
+const AgreementAndPayment = ({
+  isFormValid,
+  bookingData
+}: {
+  isFormValid: boolean;
+  bookingData: PostBookingDataType;
+}) => {
   // 체크박스 상태 관리
   const [agreements, setAgreements] = useState({
     ageConfirmation: false,
@@ -44,10 +53,10 @@ const AgreementAndPayment = ({ roomPrice, isFormValid }: { roomPrice: number; is
       </div>
       <div className="mt-6 flex justify-end items-center">
         <span className="text-2xl mr-[20px] font-semibold text-[#B3916A]">
-          {roomPrice ? roomPrice.toLocaleString() + '원' : '가격 없음'}
+          {bookingData.total_amount ? bookingData.total_amount.toLocaleString() + '원' : '가격 없음'}
         </span>
         {/* 결제 버튼을 활성화 또는 비활성화 */}
-        <TossPaymentsButton disabled={!allAgree || !isFormValid} roomPrice={roomPrice} />
+        <TossPaymentsButton disabled={!allAgree || !isFormValid} bookingData={bookingData} />
       </div>
     </div>
   );
