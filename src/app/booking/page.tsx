@@ -17,6 +17,8 @@ import { countryCodes } from '@/constants/constant';
 import { BookingRoomData } from '@/types/hotel/hotel-room-type';
 import { PostBookingDataType } from '@/types/supabase/booking-type';
 
+import Swal from 'sweetalert2';
+
 const Booking = () => {
   const [selectedCode, setSelectedCode] = useState(countryCodes[0].code);
 
@@ -77,6 +79,24 @@ const Booking = () => {
 
   console.log(`${year}-${month}-${day}`); // 2025-2-5
 
+  // 영문이름 작성란 onChange 함수
+  const handleEnglishInput = (value: string, setValue: (newValue: string) => void) => {
+    // 1. 영어로만 구성되어 있는지 확인
+    if (/^[a-zA-Z]*$/.test(value)) {
+      // 첫 문자만 대문자로 변환
+      const formattedValue = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+      setValue(formattedValue);
+    } else {
+      Swal.fire({
+        icon: 'warning',
+        title: '입력 오류',
+        text: '영문으로만 입력해주세요.',
+        confirmButtonColor: '#B3916A',
+        confirmButtonText: '확인'
+      });
+    }
+  };
+
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
       <Sidebar roomData={roomData} />
@@ -98,7 +118,7 @@ const Booking = () => {
                 className="border p-3 mt-2 rounded-md"
                 placeholder="영문으로 작성해주세요"
                 value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
+                onChange={(e) => handleEnglishInput(e.target.value, setFirstName)}
               />
             </div>
             <div className="flex flex-col justify-center">
@@ -107,7 +127,7 @@ const Booking = () => {
                 className="border p-3 mt-2 rounded-md"
                 placeholder="영문으로 작성해주세요"
                 value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                onChange={(e) => handleEnglishInput(e.target.value, setLastName)}
               />
             </div>
           </div>
