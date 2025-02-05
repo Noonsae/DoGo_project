@@ -1,12 +1,15 @@
 import { useSearchParams } from 'next/navigation';
-import useRoomQuery from '@/hooks/room/useRoomsData';
+
 import { BookingRoomData } from '@/types/hotel/hotel-room-type';
 
-const Sidebar = () => {
-  const searchParams = useSearchParams();
-  const roomId = searchParams.get('room_id');
+interface SidebarProps {
+  roomData?: BookingRoomData;
+}
 
-  const { data: roomData } = useRoomQuery(roomId) as { data: BookingRoomData | undefined };
+const Sidebar: React.FC<SidebarProps> = ({ roomData }) => {
+  const searchParams = useSearchParams();
+  const stay = searchParams.get('stay');
+  const room_count = searchParams.get('room');
 
   return (
     <aside className="ml-auto w-[278px] h-[682px] bg-white p-10 shadow-md rounded-lg mt-[50px] border border-gray-300">
@@ -31,9 +34,13 @@ const Sidebar = () => {
 
       <div className="mt-6 p-4 border-t">
         <p className="text-gray-700">가격 상세정보</p>
-        <p className="font-semibold text-lg">객실 1개 x 1박</p>
+        <p className="font-semibold text-lg">
+          객실 {room_count}개 x {stay}박
+        </p>
         <p className="text-gray-700 mt-2"> 총 결제 금액</p>
-        <p className="font-semibold text-lg">{roomData ? `${roomData.price.toLocaleString()}원` : 'Loading...'}</p>
+        <p className="font-semibold text-lg">
+          {roomData?.price !== undefined ? `${roomData.price.toLocaleString()}원` : '가격 정보 없음'}
+        </p>
       </div>
     </aside>
   );

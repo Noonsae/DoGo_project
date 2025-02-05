@@ -47,8 +47,6 @@ const generateUrl = ({
       checkIn && `checkIn=${encodeURIComponent(sanitizeInput(checkIn))}`,
       checkOut && `checkOut=${encodeURIComponent(sanitizeInput(checkOut))}`,
       stay && `stay=${encodeURIComponent(stay)}`,
-      // ToDo stay, month 각각 처리하기
-      // month && `month=${encodeURIComponent(month)}`,
       room && `room=${encodeURIComponent(room)}`,
       adult && `adult=${encodeURIComponent(adult)}`,
       pet && `pet=${encodeURIComponent(pet)}`,

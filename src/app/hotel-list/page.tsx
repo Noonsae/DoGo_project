@@ -4,7 +4,6 @@ import React, { useEffect, useState, useRef } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import useAuthStore from '@/store/useAuth';
 import useHistoryStore from '@/store/useHistoryStore';
 
 import useFavoriteStore from '@/hooks/favorite/useFavoriteStore';
@@ -12,13 +11,11 @@ import useFetchHotelsFilter from '@/hooks/hotel/useFetchHotelsFilter';
 
 import { HotelWithPriceOnly } from '@/types/supabase/hotel-type';
 import { FiltersType, sortOrder } from '@/types/hotel/hotel-filter-type';
-import { UserType } from '@/types/supabase/user-type';
 
 import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
 
 import HotelCardList from './_components/HotelsCardList';
 import AsideFilter from './_components/AsideFilter';
-// import SortBtn from './_components/SortBtn';
 import HotelListSkeleton from '../../components/ui/skeleton/HotelListSkeleton';
 import AppliedFilters from './_components/AppliedFilters';
 
@@ -33,6 +30,9 @@ const HotelList = () => {
   const location = searchParams.get('location') || '';
   const checkIn = searchParams.get('checkIn') || '';
   const checkOut = searchParams.get('checkOut') || '';
+  const stayHash = searchParams.get('stay')?.match(/\d+/)?.[0] || '1';
+  const roomHash = searchParams.get('room') || '1';
+
   // TODO: 추후 수정
   const stars =
     searchParams
@@ -62,9 +62,6 @@ const HotelList = () => {
 
   const observerRef = useRef<HTMLDivElement | null>(null);
 
-  // 사용자 정보
-  const user = useAuthStore((state) => state.user) as UserType | null;
-
   // 즐겨찾기 상태
   const { favoriteStatus, initializeFavorites } = useFavoriteStore();
 
@@ -78,7 +75,7 @@ const HotelList = () => {
     hotel.service_ids = hotel.service_ids ?? null;
 
     addHotel(hotel);
-    router.push(`/hotel-list/${hotel.id}`);
+    router.push(`/hotel-list/${hotel.id}?stay=${stayHash}&room=${roomHash}`);
   };
 
   // 필터 데이터 호출
@@ -173,8 +170,6 @@ const HotelList = () => {
           data={data?.pages[0] ?? { items: [], totalCount: 0 }}
           uniqueHotels={uniqueHotels}
         />
-        {/* 일단 주석
-          <SortBtn sortOrder={sort as sortOrder} /> */}
 
         {/* hotel list card */}
         <ul className="w-full flex flex-col gap-8 outline outline-2 outline-red-500">

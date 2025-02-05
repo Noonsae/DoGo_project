@@ -74,38 +74,49 @@ const DetailsModal = ({ onClose }: { onClose: () => void }) => {
               </p>
             </div>
             <div className="flex items-center space-x-2">
-              <div>
-                <IoIosRemoveCircleOutlineIcon
-                  onClick={() => handleChange(key as keyof typeof filters, false)}
-                  className="text-[#B3916A] text-[25px] cursor-pointer"
-                />
-              </div>
+              {/* - 버튼 */}
+              <button
+                onClick={() =>
+                  filters[key as keyof typeof filters] > 1 && handleChange(key as keyof typeof filters, false)
+                }
+                disabled={filters[key as keyof typeof filters] <= 1}
+                className={`text-[25px] ${
+                  filters[key as keyof typeof filters] > 1
+                    ? 'text-[#B3916A] hover:text-[#8F7455]'
+                    : 'text-[#D3D3D3] cursor-not-allowed'
+                }`}
+                aria-label={`${key} 감소 버튼`}
+              >
+                <IoIosRemoveCircleOutlineIcon />
+              </button>
               <span className="text-lg">{filters[key as keyof typeof filters]}</span>
-              <div>
-                <IoIosAddCircleOutlineIcon
-                  onClick={() => handleChange(key as keyof typeof filters, true)}
-                  className="text-[#B3916A] text-[25px] cursor-pointer"
-                />
-              </div>
+              {/* + 버튼 */}
+              <button
+                onClick={() => handleChange(key as keyof typeof filters, true)}
+                className="text-[#B3916A] text-[25px] hover:text-[#8F7455]"
+                aria-label={`${key} 증가 버튼`}
+              >
+                <IoIosAddCircleOutlineIcon />
+              </button>
             </div>
           </div>
-          {/* 문구 */}
         </div>
       ))}
+
       {/* 버튼 영역 */}
-      <div className="w-full flex justify-evenly mt-8">
+      <div className="w-full flex justify-end mt-8">
         <button
-          onClick={handleSaveDetails} // zustand에 저장
-          className="w-[124px] h-[44px] px-6 py-[10px] bg-[#B3916A] text-white text-[18px] rounded-[8px] hover:bg-[#8F7455] active:bg-[#6B573F]"
+          onClick={handleResetFilters} // 상태값 초기화
+          className="w-[124px] px-6 py-[10px] text-[18px] font-semibold text-[#B3916A] hover:text-[#8f7455]"
         >
-          적용하기
+          초기화
         </button>
 
         <button
-          onClick={handleResetFilters} // 상태값 초기화
-          className="w-[124px] h-[44px] px-6 py-[10px] bg-[#efefef] text-gray-800 rounded-[8px] border border-gray-200 hover:bg-[#bfbfbf] active:bg-[#a0a0a0]"
+          onClick={handleSaveDetails} // zustand에 저장
+          className="w-[124px] px-6 py-[10px] bg-[#B3916A] text-white text-[18px] font-semibold rounded-lg hover:bg-[#8F7455] active:bg-[#6B573F]"
         >
-          초기화
+          적용하기
         </button>
       </div>
     </div>

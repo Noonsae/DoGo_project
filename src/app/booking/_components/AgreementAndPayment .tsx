@@ -1,7 +1,16 @@
 import { useState } from 'react';
+
+import { PostBookingDataType } from '@/types/supabase/booking-type';
+
 import TossPaymentsButton from './TossPaymentsButton';
 
-const AgreementAndPayment = ({ roomPrice }: { roomPrice: number }) => {
+const AgreementAndPayment = ({
+  isFormValid,
+  bookingData
+}: {
+  isFormValid: boolean;
+  bookingData: PostBookingDataType;
+}) => {
   // 체크박스 상태 관리
   const [agreements, setAgreements] = useState({
     ageConfirmation: false,
@@ -9,7 +18,7 @@ const AgreementAndPayment = ({ roomPrice }: { roomPrice: number }) => {
   });
 
   // 모든 체크박스가 체크되었는지 확인
-  const allChecked = Object.values(agreements).every((checked) => checked);
+  const allAgree = Object.values(agreements).every((checked) => checked);
 
   // 체크박스 상태 업데이트
   const handleCheckboxChange = (name: keyof typeof agreements) => {
@@ -44,10 +53,10 @@ const AgreementAndPayment = ({ roomPrice }: { roomPrice: number }) => {
       </div>
       <div className="mt-6 flex justify-end items-center">
         <span className="text-2xl mr-[20px] font-semibold text-[#B3916A]">
-          {roomPrice ? roomPrice.toLocaleString() + '원' : '가격 없음'}
+          {bookingData.total_amount ? bookingData.total_amount.toLocaleString() + '원' : '가격 없음'}
         </span>
         {/* 결제 버튼을 활성화 또는 비활성화 */}
-        <TossPaymentsButton disabled={!allChecked} roomPrice={roomPrice} />
+        <TossPaymentsButton disabled={!allAgree || !isFormValid} bookingData={bookingData} />
       </div>
     </div>
   );

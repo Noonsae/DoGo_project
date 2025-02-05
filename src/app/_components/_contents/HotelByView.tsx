@@ -31,7 +31,7 @@ const HotelByView = () => {
 
   return (
     <section className="box-border w-full max-w-[1300px] h-[850px] px-[50px] mx-auto py-[80px] pb-[120px]">
-      <h3 className="text-[24px] font-semibold">다양한 전망의 호텔들을 소개합니다.</h3>
+      <h3 className="text-[24px] font-semibold mb-1">다양한 전망의 호텔들을 소개합니다.</h3>
       <p className="text-[18px] text-[#636363] font-normal leading-[1.45]">
         탁 트인 전망과 감성을 더하는 객실 뷰를 통해 힐링과 여유를 만끽하세요.
       </p>
@@ -42,7 +42,7 @@ const HotelByView = () => {
             key={select.id}
             type="button"
             onClick={() => handleBtnClick(select.id)}
-            className={`w-[80px] h-[44px] mr-[12px] mt-[28px] border border-[#CDCDCD] rounded-[8px] text-[18px] font-semibold outline-none transition duration-200 ${
+            className={`mr-[12px] mt-[28px] px-6 py-[10px] border border-[#CDCDCD] rounded-[8px] text-[18px] font-semibold outline-none transition duration-200 ${
               selectedViews === select.id
                 ? 'bg-[#B3916A] text-white'
                 : 'bg-[#fff] text-[#777] font-medium hover:bg-[#8F7455] hover:text-[#fff] active:bg-[#6B573F]'

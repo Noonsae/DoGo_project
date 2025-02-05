@@ -146,9 +146,7 @@ const ScrollSearchBox = () => {
             <p className="text-[20px] font-semibold">검색</p>
           </button>
         </div>
-        {activeModal === 'location' && (
-          <LocationModal/>
-        )}
+        {activeModal === 'location' && <LocationModal onClose={() => setActiveModal(null)} />}
         {activeModal === 'duration' && <DurationModal onClose={() => setActiveModal(null)} />}
 
         {activeModal === 'details' && <DetailsModal onClose={() => setActiveModal(null)} />}
