@@ -170,7 +170,7 @@ const AsideFilter = ({ onFilterChange }: AsideFilterProps) => {
   }
 
   return (
-    <aside className="  px-4 py-3 max-lg:flex-row">
+    <aside className=" w-[298px] px-4 py-3 max-lg:flex-row">
       {/* 필터 - 적용 및 필터 초기화 */}
       <div className="flex flex-row items-center justify-between mb-[70px]">
         <div className="flex flex-row gap-4">
