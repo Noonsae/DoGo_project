@@ -5,6 +5,7 @@ import ReviewThumbUpIcon from '../icon/ReviewThumbUpIcon';
 import RenderStars from '../icon/RenderStars';
 import DropDownIcon from '../icon/DropDownIcon';
 import DropUpIcon from '../icon/DropUpIcon';
+import CloseButtonIcon from '../icon/CloseButtonIcon';
 
 const ReviewsModal = ({
   isOpen,
@@ -71,15 +72,26 @@ const ReviewsModal = ({
   }, [reviews, sortOption, activeTab]);
 
   if (!isOpen) return null;
-
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white shadow-lg p-6 rounded-lg overflow-y-auto scrollbar-hide w-[600px] h-[740px]">
+      <div className="bg-white shadow-lg p-6 rounded-lg overflow-y-auto scrollbar-hide w-full h-full sm:w-[600px] sm:h-[700px] md:w-[600px] md:h-[700px] max-w-4xl">
         {/* 상단 헤더 */}
-        <div className="flex justify-between items-center h-[67px] mb-4 bg-[#221A1A] -mx-6 -mt-6 px-6 py-2 rounded-t-lg">
-          <h1 className="text-white font-semibold">이용후기</h1>
+        <div className="z-50 sticky top flex justify-between items-center h-[67px]  bg-[#221A1A] -mx-6 -mt-6 px-6 py-2 rounded-t-lg">
+          <h1 className="flex flex-col items-center justify-center w-full text-center text-[20px] font-semibold leading-[135%] text-[#FDF9F4] font-pretendard ">
+            이용후기
+          </h1>
           <button onClick={onClose} className="text-gray-300 hover:text-white px-2 py-1 rounded-md">
-            닫기
+            <CloseButtonIcon />
           </button>
         </div>
 
@@ -87,7 +99,9 @@ const ReviewsModal = ({
           {/* 버튼 그룹 */}
           <div className="flex">
             <button
-              className={`px-4 py-2 text-sm font-bold ${activeTab === 'all' ? 'text-[#B3916A]' : 'text-gray-500'}`}
+              className={`gap-[20px] text-sm font-bold flex justify-center items-center px-4 md:px-4 py-3 md:py-2 h-[56px] md:h-[48px]${
+                activeTab === 'all' ? 'text-[#B3916A]' : 'text-gray-500'
+              }`}
               onClick={() => setActiveTab('all')}
             >
               전체 리뷰
@@ -114,7 +128,8 @@ const ReviewsModal = ({
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-4">
               <div className="flex flex-col items-center">
-                <span className="text-4xl font-black">{ReviewThumbUpIcon()}</span>
+                <ReviewThumbUpIcon className="text-4xl font-black w-[64px] h-[64px] sm:w-[40px] sm:h-[40px]" />
+                {/* <span className="text-4xl font-black">{ReviewThumbUpIcon()}</span> */}
               </div>
               <span className="text-5xl font-extrabold mt-1.5 -ml-2 text-[#232527]">{averageRating.toFixed(1)}</span>
             </div>
@@ -184,23 +199,23 @@ const ReviewsModal = ({
                     alt="Profile"
                     height={80}
                     width={80}
-                    className="w-[50px] h-[50px] rounded-full object-cover"
+                    className="w-[50px] h-[50px] flex rounded-full object-cover"
                   />
-                  <div className="flex justify-between w-full">
+                  <div className=" w-full flex flex-col  sm:flex-row justify-between ">
                     <p className="font-bold text-[#444] text-lg">{review.users?.nickname || '익명'}</p>
                     <p className="text-sm text-gray-500">작성일: {new Date(review.created_at).toLocaleDateString()}</p>
                   </div>
                 </div>
                 <p>{RenderStars(review.rating)}</p>
-                <div className="flex gap-1 h-[80px]">
+                <div className="flex gap-2 h-[80px]">
                   {Array.isArray(review.review_img_url) ? (
                     review.review_img_url.map((url, index) =>
                       typeof url === 'string' ? (
-                        <Image key={index} src={url} alt={`review-image-${index}`} height={80} width={80} />
+                        <Image key={index} src={url} alt={`review-image-${index}`} height={96} width={96} />
                       ) : null
                     )
                   ) : typeof review.review_img_url === 'string' ? (
-                    <Image src={review.review_img_url} alt="review-image" height={80} width={80} />
+                    <Image src={review.review_img_url} alt="review-image" height={96} width={96} />
                   ) : null}
                 </div>
                 <div className="mt-4">
