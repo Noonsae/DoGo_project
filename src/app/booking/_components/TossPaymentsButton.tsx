@@ -4,9 +4,12 @@ import { PostBookingDataType } from '@/types/supabase/booking-type';
 
 import { loadTossPayments } from '@tosspayments/payment-sdk';
 import usePostBookingData from '@/hooks/booking/usePostBookingData';
+import useHotelNameAndRoomName from '@/hooks/booking/useHotelNameAndRoomName';
 
 const TossPaymentsButton = ({ disabled, bookingData }: { disabled?: boolean; bookingData: PostBookingDataType }) => {
   const clientKey = process.env.NEXT_PUBLIC_TOSS_PAYMENTS_TEST_CLIENT_API_KEY; // 환경 변수 사용
+
+  const { data: product } = useHotelNameAndRoomName(bookingData.hotel_id, bookingData.room_id);
   
   const mutation = usePostBookingData();
 
@@ -24,8 +27,6 @@ const TossPaymentsButton = ({ disabled, bookingData }: { disabled?: boolean; boo
       return alert('?')
     };
 
-    console.log(booking_data[0].id);
-
     const booking_id = booking_data[0].id;
         
     const tossPayments = await loadTossPayments(clientKey);
@@ -38,8 +39,8 @@ const TossPaymentsButton = ({ disabled, bookingData }: { disabled?: boolean; boo
       await tossPayments.requestPayment('카드', {
         amount: bookingData.total_amount, // 결제 예시 금액
         orderId: `ORDER_${Date.now()}`, // 고유 주문 ID
-        orderName: '테스트 결제', // 주문명 예시
-        customerName: '홍길동', // 고객명 예시
+        orderName: `${product?.hotelName} - ${product?.roomName}`, // 주문명 예시
+        customerName: `${bookingData.user_last_name} ${bookingData.user_first_name}`, // 고객명 예시
         successUrl: `${window.location.origin}/booking/${booking_id}`, // 결제 성공 시 이동할 URL
         failUrl: `${window.location.origin}/booking/fail` // 결제 실패 시 이동할 URL
       });
