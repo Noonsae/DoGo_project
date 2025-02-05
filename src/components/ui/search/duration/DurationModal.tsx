@@ -11,42 +11,32 @@ import CalendarForm from './CalendarForm';
 import FlexibleForm from './FlexibleForm';
 import ActionButton from './ActionButton';
 
-const DurationModal = ({ onClose }: { onClose: () => void }) => {
+import { today_date } from '@/utils/todayCalculator';
+
+const DurationModal = ({
+  tab,
+  setTab,
+  onClose
+}: {
+  tab: 'date' | 'flexible';
+  setTab: (value: 'date' | 'flexible') => void;
+  onClose: () => void;
+}) => {
   const { setCheckIn, setCheckOut, setMonth, setStay } = useSearchStore();
 
-  const [tab, setTab] = useState<'date' | 'flexible'>('date'); // 탭 상태
-
-  const [selectedDateRange, setSelectedDateRange] = useState({ start: '', end: '' }); // 날짜 지정 값
+  const [selectedDateRange, setSelectedDateRange] = useState({ start: today_date, end: '' }); // 날짜 지정 값
 
   const [selectedStayOption, setSelectedStayOption] = useState(''); // 단일 선택된 숙박 옵션
   const [selectedMonth, setSelectedMonth] = useState<string>(''); // 다중 선택된 달
 
-  const handleDateClick = (info: any) => {
-    const clickedDate = info.dateStr;
-    console.log(clickedDate);
-
-    if (!selectedDateRange.start || (selectedDateRange.start && selectedDateRange.end)) {
-      // 시작 날짜 설정
-      setSelectedDateRange({ start: clickedDate, end: '' });
-    } else if (!selectedDateRange.end) {
-      // 종료 날짜 설정
-      if (new Date(clickedDate) >= new Date(selectedDateRange.start)) {
-        setSelectedDateRange({ start: selectedDateRange.start, end: clickedDate });
-      } else {
-        alert('종료 날짜는 시작 날짜 이후여야 합니다.');
-      }
-    }
-  };
-
   // 저장 버튼
   const handleSaveSchedule = () => {
     if (tab === 'date') {
-      const formattedSchedule = `체크인: ${selectedDateRange.start}, 체크아웃: ${selectedDateRange.end}`;
-      // 날짜 지정 옵션 저장
-      // setCheckIn(selectedDateRange.start);
-      // setCheckOut(selectedDateRange.end);
-      setCheckIn(formattedSchedule);
-      setCheckOut(formattedSchedule);
+      const checkIn_schedule = selectedDateRange.start;
+      const checkOut_schedule = selectedDateRange.end;
+
+      setCheckIn(checkIn_schedule);
+      setCheckOut(checkOut_schedule);
     } else if (tab === 'flexible') {
       // 유동적인 옵션 저장
       const stayDetails = selectedStayOption ? `숙박 옵션: ${selectedStayOption}` : '';
@@ -70,8 +60,11 @@ const DurationModal = ({ onClose }: { onClose: () => void }) => {
     // ToDo : checkIn, checkOut
     setSelectedStayOption('');
     setSelectedMonth('');
+    setCheckIn('');
+    setCheckOut('');
     setStay('');
     setMonth('');
+    setSelectedDateRange({ start: today_date, end: '' });
   };
 
   return (
@@ -83,10 +76,7 @@ const DurationModal = ({ onClose }: { onClose: () => void }) => {
 
       {/* 캘린더 폼 Date 탭 선택 시 렌더링 */}
       {tab === 'date' && (
-        <CalendarForm
-          selectedDateRange={selectedDateRange}
-          handleDateClick={handleDateClick}
-        />
+        <CalendarForm selectedDateRange={selectedDateRange} setSelectedDateRange={setSelectedDateRange} />
       )}
 
       {/* 유동적인 계획 탭 선택 시 렌더링 */}

@@ -15,7 +15,7 @@ import DetailsModal from './details/DetailsModal';
 import HiSearchIcon from '../icon/HiSearchIcon';
 import useSearchHistoryStore from '@/store/useSearchHistoryStore';
 
-const ScrollSearchBox = () => {
+const ScrollSearchBox = ({ tab, setTab }: { tab: 'date' | 'flexible'; setTab: (value: 'date' | 'flexible') => void }) => {
   const [isSearchBoxClicked, setIsSearchBoxClicked] = useState(false);
   const [activeModal, setActiveModal] = useState<'location' | 'duration' | 'details' | null>(null); // 모달 상태
 
@@ -110,17 +110,34 @@ const ScrollSearchBox = () => {
               activeModal === 'duration' ? 'outline-[#B3916A]' : ''
             } ${isSearchBoxClicked ? 'h-[68px]' : 'h-[48px]'}`}
           >
-            <div className={`w-1/2 py-2 items-center`}>
-              {/* check_in 상태를 text로 나타냄.*/}
-              {isSearchBoxClicked && <p className="text-[15px] text-[#777]">숙박 기간</p>}
-              <p className="text-base text-[#444]">{checkIn ? checkIn : stay || '기간 선택'}</p>
-            </div>
-            <div className="w-1/2 py-2 items-center">
-              {/* check_out 상태를 text로 나타냄.*/}
-              {isSearchBoxClicked && <p className="text-[15px] text-[#777]">여행 시기</p>}
+            {tab === 'date' ? (
+              <>
+                <div className={`w-1/2 py-2 items-center`}>
+                  {/* check_in 상태를 text로 나타냄.*/}
+                  {isSearchBoxClicked && <p className="text-[15px] text-[#777]">체크인</p>}
+                  <p className="text-base text-[#444]">{checkIn || '기간 선택'}</p>
+                </div>
+                <div className="w-1/2 py-2 items-center">
+                  {/* check_out 상태를 text로 나타냄.*/}
+                  {isSearchBoxClicked && <p className="text-[15px] text-[#777]">체크아웃</p>}
 
-              <p className="text-base text-[#444]">{checkOut ? checkOut : month || '기간 선택'}</p>
-            </div>
+                  <p className="text-base text-[#444]">{checkOut || '기간 선택'}</p>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className={`w-1/2 py-2 items-center`}>
+                  {/* stay 상태를 text로 나타냄.*/}
+                  {isSearchBoxClicked && <p className="text-[15px] text-[#777]">숙박 기간</p>}
+                  <p className="text-base text-[#444]">{stay || '기간 선택'}</p>
+                </div>
+                <div className="w-1/2 py-2 items-center">
+                  {/* month 상태를 text로 나타냄.*/}
+                  {isSearchBoxClicked && <p className="text-[15px] text-[#777]">여행 시기</p>}
+                  <p className="text-base text-[#444]">{month || '기간 선택'}</p>
+                </div>
+              </>
+            )}
           </div>
 
           {/* 세부 정보 */}
@@ -148,7 +165,7 @@ const ScrollSearchBox = () => {
         </div>
         {activeModal === 'location' && <LocationModal onClose={() => setActiveModal(null)} />}
 
-        {activeModal === 'duration' && <DurationModal onClose={() => setActiveModal(null)} />}
+        {activeModal === 'duration' && <DurationModal tab={tab} setTab={setTab} onClose={() => setActiveModal(null)} />}
 
         {activeModal === 'details' && <DetailsModal onClose={() => setActiveModal(null)} />}
       </div>
