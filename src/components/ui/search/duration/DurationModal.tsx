@@ -21,19 +21,20 @@ const DurationModal = ({ onClose }: { onClose: () => void }) => {
   const [selectedStayOption, setSelectedStayOption] = useState(''); // 단일 선택된 숙박 옵션
   const [selectedMonth, setSelectedMonth] = useState<string>(''); // 다중 선택된 달
 
-  const handleDateSelect = (info: any) => {
-    const { startStr, endStr } = info;
-    setSelectedDateRange({ start: startStr, end: endStr });
-  };
+  const handleDateClick = (info: any) => {
+    const clickedDate = info.dateStr;
+    console.log(clickedDate);
 
-  // 캘린더 폼 모달 저장 버튼
-  const applyChanges = () => {
-    if (selectedDateRange.start && selectedDateRange.end) {
-      const formattedSchedule = `체크인: ${selectedDateRange.start}, 체크아웃: ${selectedDateRange.end}`;
-      // setCheckIn(selectedDateRange.start);
-      // setCheckOut(selectedDateRange.end);
-      setCheckIn(formattedSchedule);
-      setCheckOut(formattedSchedule);
+    if (!selectedDateRange.start || (selectedDateRange.start && selectedDateRange.end)) {
+      // 시작 날짜 설정
+      setSelectedDateRange({ start: clickedDate, end: '' });
+    } else if (!selectedDateRange.end) {
+      // 종료 날짜 설정
+      if (new Date(clickedDate) >= new Date(selectedDateRange.start)) {
+        setSelectedDateRange({ start: selectedDateRange.start, end: clickedDate });
+      } else {
+        alert('종료 날짜는 시작 날짜 이후여야 합니다.');
+      }
     }
   };
 
@@ -83,8 +84,8 @@ const DurationModal = ({ onClose }: { onClose: () => void }) => {
       {/* 캘린더 폼 Date 탭 선택 시 렌더링 */}
       {tab === 'date' && (
         <CalendarForm
-          handleDateSelect={(info) => setSelectedDateRange({ start: info.startStr, end: info.endStr })}
           selectedDateRange={selectedDateRange}
+          handleDateClick={handleDateClick}
         />
       )}
 

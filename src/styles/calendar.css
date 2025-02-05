@@ -1,1 +1,5 @@
 /* 캘린더폼에 적용시킬 css */
+
+.custom-day-cell {
+  pointer-events: auto; /* 클릭 가능하도록 설정 */
+}

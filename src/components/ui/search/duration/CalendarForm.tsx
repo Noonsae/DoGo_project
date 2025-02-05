@@ -1,11 +1,15 @@
+"use client"
+
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 
+import '@/styles/calendar.css';
+
 const CalendarForm = ({
-  handleDateSelect,
+  handleDateClick,
   selectedDateRange
 }: {
-  handleDateSelect: (info: any) => void;
+  handleDateClick: (info: any) => void;
   selectedDateRange: { start: string; end: string };
 }) => {
   return (
@@ -16,23 +20,13 @@ const CalendarForm = ({
         <FullCalendar
           plugins={[dayGridPlugin]}
           initialView="dayGridMonth"
-          dayCellContent={(arg) => {
-            // arg.dayNumber는 날짜 숫자
-            return (
-              // 버튼 onClick -> state 넣기
-              <div className="custom-day-cell">
-                {/* <span>{arg.dayNumber}</span> */}
-                <span>{arg.date.getDate()}</span>
-              </div>
-            );
-          }}
           locale="ko"
           height="274px"
           events={[]}
-          selectable
-          select={(info) => handleDateSelect(info)}
-          headerToolbar={false}
           dayMaxEventRows
+          headerToolbar={false}
+          dateClick={handleDateClick} // 날짜 클릭 이벤트 핸들러
+          dayCellContent={(arg) => <span>{arg.date.getDate()}</span>}
         />
 
         {/* 두 번째 달력 */}
@@ -42,13 +36,16 @@ const CalendarForm = ({
           locale="ko"
           height="274px"
           events={[]}
-          selectable
-          select={(info) => handleDateSelect(info)}
-          headerToolbar={false}
           dayMaxEventRows
+          headerToolbar={false}
           initialDate={new Date(new Date().setMonth(new Date().getMonth() + 1))} // 다음 달 표시
+          dateClick={handleDateClick} // 날짜 클릭 이벤트 핸들러
+          dayCellContent={(arg) => <span>{arg.date.getDate()}</span>}
         />
       </div>
+      <p className="text-sm text-gray-500">
+        선택된 날짜: {selectedDateRange.start || '없음'} ~ {selectedDateRange.end || '없음'}
+      </p>
     </div>
   );
 };
