@@ -86,11 +86,12 @@ const ReviewsModal = ({
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white shadow-lg  rounded-lg overflow-y-auto scrollbar-hide w-full h-full sm:w-[600px] sm:h-[700px] md:w-[600px] md:h-[700px] max-w-4xl">
         {/* 상단 헤더 */}
-        <div className="sticky top-0 z-50  flex justify-between items-center h-[67px]  bg-[#221A1A] -mx-6 -mt-6 px-6 py-2 rounded-t-lg">
-          <h1 className="flex flex-col items-center justify-center w-full text-center text-[20px] font-semibold leading-[135%] text-[#FDF9F4] font-pretendard ">
+
+        <div className="sticky top-0 z-50 flex justify-between items-center h-[67px]  bg-[#221A1A] -mx-6 -mt-6 px-6 py-2 rounded-t-lg">
+          <h1 className="flex flex-col items-center justify-center ml-[60px] w-full text-center text-[20px] font-semibold leading-[135%] text-[#FDF9F4] font-pretendard ">
             이용후기
           </h1>
-          <button onClick={onClose} className="text-gray-300 hover:text-white px-2 py-1 rounded-md">
+          <button onClick={onClose} className=" mr-[32px] text-gray-300 hover:text-white px-2 py-1 rounded-md">
             <CloseButtonIcon />
           </button>
         </div>
@@ -151,8 +152,8 @@ const ReviewsModal = ({
             </div>
           </div>
 
-          <div className="mt-10 flex justify-between">
-            <h2 className="text-lg font-bold text-[#444]">총 {sortedReviews.length}개의 후기</h2>
+          <div className="mt-10 flex justify-between items-center">
+            <h2 className="text-lg font-bold text-[#444] ml-[20px]">총 {sortedReviews.length}개의 후기</h2>
             {/* 드롭다운 정렬 버튼 */}
             <div className="relative mb-4">
               {/* 드롭다운 버튼 */}
