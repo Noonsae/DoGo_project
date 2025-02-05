@@ -104,7 +104,7 @@ const DetailsModal = ({ onClose }: { onClose: () => void }) => {
       ))}
 
       {/* 버튼 영역 */}
-      <div className="w-full flex justify-end gap-[] mt-8">
+      <div className="w-full flex justify-end mt-8">
         <button
           onClick={handleResetFilters} // 상태값 초기화
           className="w-[124px] px-6 py-[10px] text-[18px] font-semibold text-[#B3916A] hover:text-[#8f7455]"
