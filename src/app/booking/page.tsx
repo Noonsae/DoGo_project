@@ -19,10 +19,16 @@ import { PostBookingDataType } from '@/types/supabase/booking-type';
 
 import Swal from 'sweetalert2';
 import useSearchStore from '@/store/useSearchStore';
-
-import calculateRandomStayDates from '@/utils/calculator/randomStayDatesCalculator';
+import { getDayOfWeek } from '@/utils/calculator/dateCalculator';
 
 const Booking = () => {
+
+  // 검색창에 입력하여 저장된 상태 결과값
+  const checkIn = useSearchStore((state) => state.checkIn);
+  const checkOut = useSearchStore((state) => state.checkOut);
+  const stay = useSearchStore((state) => state.stay);
+  const month = useSearchStore((state) => state.month);
+
   // 국가코드
   const [selectedCode, setSelectedCode] = useState(countryCodes[0].code);
 
@@ -36,13 +42,10 @@ const Booking = () => {
 
   // url에 저장된 데이터 사용
   const searchParams = useSearchParams();
-  const roomId = searchParams.get('room_id'); // 해당 페이지에 객실 ID
+  const roomId = searchParams.get('room_id'); // 해당 페이지에 객실 ID  
   const priceParam = searchParams.get('price'); // 객실의 1박 기준 가격 정보
   const room_count = searchParams.get('room'); // 객실 예약 예정 개수
-
-  // TODO 얘 좀 수정해야 할 듯?
-  const stay_number = searchParams.get('stay'); // 사용자가 머무르고 싶은 기간
-  const total_amount = priceParam ? parseInt(priceParam, 10) * Number(stay_number) * Number(room_count) : 0;
+  const total_amount = priceParam ? parseInt(priceParam, 10) * Number(stay) * Number(room_count) : 0;
 
   // 유저에 대한 정보를 요청
   const { user } = useAuthStore();
@@ -53,16 +56,13 @@ const Booking = () => {
   // roomId와 일치하는 정보를 요청
   const { data: roomData } = useRoomQuery(roomId) as { data: BookingRoomData | undefined };
 
-  // 검색창에 입력한 결과값을 가져옴
-  const { checkIn, checkOut, stay, month } = useSearchStore();
-  // const { startDate: stayStartDate, endDate: stayEndDate } = calculateRandomStayDates(month, Number(stay));
+  // 날짜에 맞는 요일 계산
+  const CheckInDayOfWeek = getDayOfWeek(checkIn);
+  const CheckOutDayOfWeek = getDayOfWeek(checkOut);
 
-  const [checkInDate, checkOutDate] = [checkIn ? checkIn : month, checkOut ? checkOut : ""];
+  const testCheck_in_date: string = `${checkIn} ${CheckInDayOfWeek}`;
 
-  //  ? checkIn : stayStartDate
-  // ? checkOut : stayEndDate
-
-  console.log('어떻게 출력되는지 한번 볼까?', "시작일:", checkInDate, "종료일:", checkOutDate);
+  console.log(testCheck_in_date);
 
   // 유효성 검사
   useEffect(() => {
@@ -71,8 +71,8 @@ const Booking = () => {
   }, [firstName, lastName]);
 
   const bookingData: PostBookingDataType = {
-    check_in_date: String(checkInDate), // 체크인 날짜
-    check_out_date: String(checkOutDate), // 체크아웃 날짜
+    check_in_date: String(CheckInDayOfWeek), // 체크인 날짜 + 해당 요일
+    check_out_date: String(CheckOutDayOfWeek), // 체크아웃 날짜 + 해당 요일
     created_at: new Date().toISOString(), // 생성 시간 (현재 시간)
     request: request, // 요청 사항
     room_id: roomId || '', // 객실 ID
