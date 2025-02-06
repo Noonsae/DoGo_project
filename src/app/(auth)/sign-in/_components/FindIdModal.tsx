@@ -81,19 +81,26 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
   };
   return (
     <div className=" fixed inset-0 bg-black bg-opacity-50 flex sm:items-center items-start justify-center z-50 px-0 sm:px-4">
-      <div className="w-full sm:max-w-[424px] min-h-screen sm:min-h-0 sm:h-auto bg-white sm:rounded-lg shadow-lg relative px-9 sm:px-9 sm:py-9 overflow-y-auto">
-        <div>
-          <p className=" sm:hidden flex flex-col justify-center items-center text-neutral-800 mt-[30px]">아이디 찾기</p>
-          <div className="flex flex-row justify-end ">
-            <button onClick={onClose} className="text-neutral-800 hover:text-black font-bold cursor-pointer">
-              <CloseButtonIcon />
-            </button>
-          </div>
+      <div
+        className="w-full sm:max-w-[424px] p-5 sm:p-9 min-h-screen sm:min-h-0 sm:h-auto bg-white sm:rounded-lg shadow-lg relative overflow-y-auto
+"
+      >
+        <div className="relative mt-[30px]">
+          {/* 아이디 찾기 (가운데 정렬) */}
+          <p className="sm:hidden text-neutral-800 text-center">아이디 찾기</p>
+
+          {/* 닫기 버튼 (우측 정렬 유지) */}
+          <button
+            onClick={onClose}
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 text-neutral-800 hover:text-black font-bold cursor-pointer"
+          >
+            <CloseButtonIcon />
+          </button>
         </div>
 
         {form.modalType === 'input' && (
           <div className="flex flex-col h-full justify-center">
-            <p className="text-neutral-900 text-xl sm:text-2xl font-bold mt-[24px] mb-10 sm:mb-[24px]">
+            <p className="mt-[38px] text-neutral-900 text-xl sm:text-2xl font-bold sm:mt-[24px] mb-10 sm:mb-[24px]">
               DoGo 가입 정보로 <br /> 아이디를 확인하세요.
             </p>
 
@@ -139,8 +146,10 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
                       setForm((prevForm) => ({ ...prevForm, name: e.target.value }));
                       setErrors((prev) => ({ ...prev, name: undefined }));
                     }}
-                    className={`gap-[4px] text-[15px] text-neutral-500 w-full max-w-[352px] h-[48px] pl-4 pt-2 pb-2 border rounded-[8px] focus:outline-none focus:ring-2 ${
-                      errors.name ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-black'
+                    className={`gap-[4px] text-[15px] text-neutral-800 w-full max-w-[352px] h-[48px] pl-4 pt-2 pb-2 border rounded-[8px] focus:outline-none focus:ring-1 border-[#B3916A] ${
+                      errors.name
+                        ? 'border-red-500 focus:ring-red-500'
+                        : 'border-gray-300 focus:border-[#B3916A] focus:ring-[#B3916A]'
                     }`}
                   />
                 </div>
@@ -161,8 +170,10 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
                     setForm((prevForm) => ({ ...prevForm, phone: formattedPhone }));
                     setErrors((prev) => ({ ...prev, phone: undefined }));
                   }}
-                  className={`gap-[4px] text-neutral-500 text-[15px] w-full max-w-[352px] h-[48px] pl-4 pt-2 pb-2 border rounded-[8px] mb-1 focus:outline-none focus:ring-2 ${
-                    errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-black'
+                  className={`gap-[4px] text-neutral-800 text-[15px] w-full max-w-[352px] h-[48px] pl-4 pt-2 pb-2 border rounded-[8px] mb-1 focus:outline-none focus:ring-1 ${
+                    errors.phone
+                      ? 'border-red-500 focus:ring-red-500'
+                      : 'border-gray-300 focus:border-[#B3916A] focus:ring-[#B3916A]'
                   }`}
                 />
                 <p className={`text-sm text-red-500 mt-1 min-h-[10px] ${errors.phone ? 'visible' : 'invisible'}`}>
@@ -170,10 +181,10 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
                 </p>
               </div>
 
-              <div className="flex flex-col rounded">
+              <div className="flex flex-col rounded mt-[169px] sm:mt-[80px]">
                 <button
                   type="submit"
-                  className="text-white text-center  text-[18px] sm:text-[20px] font-semibold leading-[135%] w-full bg-[#B3916A] mt-[100px] sm:mt-[80px]  py-4 rounded-xl hover:bg-[#a37e5f] transition"
+                  className="flex flex-col justify-center items-center text-white text-center text-[18px] sm:text-[20px] font-semibold leading-[135%] w-full bg-[#B3916A] h-[48px]  py-4 rounded-xl hover:bg-[#a37e5f] transition"
                   disabled={form.isLoading}
                 >
                   {form.isLoading ? '조회 중...' : '아이디 찾기'}
@@ -199,7 +210,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
             </div>
             <button
               onClick={onClose}
-              className="w-full max-w-[352px] mt-[180px] sm:mt-[180px] bg-[#B3916A] font-bold text-white py-4 rounded-xl hover:bg-[#a37e5f] transition"
+              className="flex flex-col justify-center items-center h-[48px] text-[20px] leading-[27px] font-semibold text-center text-white mt-[286px] w-full max-w-[352px] sm:mt-[180px] bg-[#B3916A] py-4 rounded-xl hover:bg-[#a37e5f] transition"
             >
               확인
             </button>
@@ -213,17 +224,17 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
                 <div className="mb-[13px]">
                   <WarningIcon />
                 </div>
-                <p className="text-lg sm:text-xl font-semibold text-neutral-700 text-center leading-[135%]">
+                <p className="text-lg sm:text-xl font-semibold text-neutral-800 text-center leading-[135%]">
                   입력하신 정보와 일치하는 <br /> 아이디가 존재하지 않습니다.
                 </p>
-                <p className="text-sm mt-3 text-neutral-500 text-center leading-[145%]">
+                <p className="text-sm mt-3 text-neutral-800 text-center leading-[145%]">
                   입력하신 가입 정보를 다시 한 번 확인해 주세요.
                 </p>
               </div>
             </div>
             <button
               onClick={onClose}
-              className=" text-[18px] sm:text-[20px] text-white text-center leading-[135%] h-[48px] md:text-[20px] w-full max-w-[352px] mt-[40px] bg-[#B3916A] font-bold py-4 rounded-xl hover:bg-[#a37e5f] transition"
+              className="flex felx-col justify-center items-center mt-[166px] text-[18px] sm:text-[20px] text-white text-center leading-[135%] h-[48px] md:text-[20px] w-full max-w-[352px] sm:mt-[40px] bg-[#B3916A] font-bold py-4 rounded-xl hover:bg-[#a37e5f] transition"
             >
               확인
             </button>
