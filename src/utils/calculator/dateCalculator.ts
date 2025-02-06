@@ -5,6 +5,25 @@ const month = today.getMonth() + 1;
 const day = today.getDate();
 export const today_date = `${year}-${month}-${day}`;
 
+/**
+ * 특정 날짜로부터 month 계산
+ * @param checkInDate YYYY-MM-DD 형식
+ * @returns 체크인 기준 월
+ */
+export const getMonthFromDate = (checkInDate: string): number => {
+  return new Date(checkInDate).getMonth() + 1;
+};
+
+/**
+ * 문자열에서 Date 객체로 변환 
+ * @param checkInDate YYYY-MM-DD 형식
+ * @returns Date 객체
+ */
+export const convertToDate = (dateString: string): Date | null => {
+  if (!dateString) return null; // dateString이 없으면 null 반환
+  return new Date(dateString);
+};
+
 // YYYY-MM-DD 형식의 문자열을 받도록 타입 정의
 type DateString = string;
 
