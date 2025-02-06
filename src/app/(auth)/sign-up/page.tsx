@@ -51,11 +51,11 @@ const Page = () => {
             <UserIcon />
             <p className="font-medium text-neutral-800  text-[16px] lg:text-[18px]">일반 회원가입</p>
             <p
-              className={`text-[14px] sm:text-[16px] text-xs mt-2 ${
+              className={`text-[14px] sm:text-[16px] text-xs mt-2 flex flex-col items-center justify-items-center${
                 userType === 'user' ? 'text-[#B3916A]' : 'text-gray-500'
               }`}
             >
-              만 19세 이상의 일반 회원
+              만 19세 이상의 <br /> 일반 회원
             </p>
           </div>
 
