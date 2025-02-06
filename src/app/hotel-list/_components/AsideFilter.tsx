@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import useSearchStore from '@/store/useSearchStore';
-import generateUrl from '@/utils/urlHelpers';
+import generateUrl from '@/utils/calculator/urlHelpers';
 
 import { FacilitiesType } from '@/types/supabase/facilities-type';
 import { ServicesType } from '@/types/supabase/services-type';
@@ -40,7 +40,7 @@ const AsideFilter = ({ onFilterChange }: AsideFilterProps) => {
   const [selectedServices, setSelectedServices] = useState<ServicesType[]>([]);
   const [selectedFacilities, setSelectedFacilities] = useState<FacilitiesType[]>([]);
   const [selectedBedTypes, setSelectedBedTypes] = useState<string[]>([]);
-  const { location, checkIn, checkOut, stay, details } = useSearchStore();
+  const { location, checkIn, checkOut, stay, details, month } = useSearchStore();
   const [isMobile, setIsMobile] = useState(false);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false); // ✅ 모달 상태 추가
 
@@ -100,6 +100,7 @@ const AsideFilter = ({ onFilterChange }: AsideFilterProps) => {
       checkIn,
       checkOut,
       stay,
+      month,
       details,
       stars: updatedStars,
       minPrice: updatedMinPrice,
@@ -108,6 +109,7 @@ const AsideFilter = ({ onFilterChange }: AsideFilterProps) => {
       services: updatedServices,
       beds: updatedBedTypes
     });
+
     router.push(url);
   }, [selectedGrade, minPriceValue, maxPriceValue, selectedFacilities, selectedServices, selectedBedTypes]);
 

@@ -33,6 +33,7 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   const hotelId = params?.id; // URL 파라미터에서 호텔 ID 추출
 
   const [activeTab, setActiveTab] = useState('overview'); // 활성화된 네비게이션 탭 상태
+  const [tab, setTab] = useState<'date' | 'flexible'>('date'); // 검색창 기간선택 관련 탭 상태
   const user = useAuthStore((state) => state.user) as UserType | null; // 사용자 정보 가져오기
   const { favoriteStatus, toggleFavorite, initializeFavorites } = useFavoriteStore(); // 즐겨찾기 관련 상태와 함수 가져오기
   const { reviews, allReviews } = useHotelReviews(hotelId); // 리뷰 데이터 가져오기
@@ -99,7 +100,7 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
       {/* AlwaysVisibleSearchBox를 항상 화면 상단에 고정 */}
       <div className="fixed top-0 left-0 w-full z-30 bg-white border-b-0">
         <div className="[&>div]:border-b-0">
-          <ScrollSearchBox />
+          <ScrollSearchBox tab={tab} setTab={setTab} />
         </div>
       </div>
       {/* 나머지 콘텐츠 */}

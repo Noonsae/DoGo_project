@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import fetchFacilities from '@/utils/fetchFacilities'; // Supabase에서 시설 데이터를 가져오는 함수
+import fetchFacilities from '@/utils/api/fetch/fetchFacilities'; // Supabase에서 시설 데이터를 가져오는 함수
 
 const useFacilities = () => {
   return useQuery({

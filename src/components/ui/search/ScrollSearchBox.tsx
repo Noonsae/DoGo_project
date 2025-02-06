@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 
 import useSearchStore from '@/store/useSearchStore';
 
-import generateUrl from '@/utils/urlHelpers';
+import generateUrl from '@/utils/calculator/urlHelpers';
 
 import LocationModal from './location/LocationModal';
 import DurationModal from './duration/DurationModal';
@@ -15,7 +15,13 @@ import DetailsModal from './details/DetailsModal';
 import HiSearchIcon from '../icon/HiSearchIcon';
 import useSearchHistoryStore from '@/store/useSearchHistoryStore';
 
-const ScrollSearchBox = () => {
+const ScrollSearchBox = ({
+  tab,
+  setTab
+}: {
+  tab: 'date' | 'flexible';
+  setTab: (value: 'date' | 'flexible') => void;
+}) => {
   const [isSearchBoxClicked, setIsSearchBoxClicked] = useState(false);
   const [activeModal, setActiveModal] = useState<'location' | 'duration' | 'details' | null>(null); // 모달 상태
 
@@ -35,7 +41,7 @@ const ScrollSearchBox = () => {
     setActiveModal(null);
     setIsSearchBoxClicked(false); // SearchBox 상태 초기화
   };
-
+  
   // 외부 클릭 감지
   useClickAway(
     searchBoxRef,
@@ -51,21 +57,31 @@ const ScrollSearchBox = () => {
 
   const url = generateUrl({ location, checkIn, checkOut, stay, month, details }); // URL 생성
 
-  const handleSearchClick = async () => {
+  const handleSearchClick = async (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
     const { location } = useSearchStore.getState();
     if (location) {
       useSearchHistoryStore.getState().addHistory(location);
     }
     setLocation('');
     const searchUrl = url;
-    await router.push(searchUrl); // 페이지 이동
     inactiveSearchBox();
+    await router.push(searchUrl); // 페이지 이동
   };
 
-  const handleKeyDownEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDownEnter = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault(); // 기본 엔터 키 동작 방지
-      handleSearchClick(); // 검색 함수 실행
+      e.stopPropagation();
+
+      const { location } = useSearchStore.getState();
+      if (location) {
+        useSearchHistoryStore.getState().addHistory(location);
+      }
+      setLocation('');
+      const searchUrl = url;
+      inactiveSearchBox();
+      await router.push(searchUrl); // 페이지 이동
     }
   };
 
@@ -110,17 +126,34 @@ const ScrollSearchBox = () => {
               activeModal === 'duration' ? 'outline-[#B3916A]' : ''
             } ${isSearchBoxClicked ? 'h-[68px]' : 'h-[48px]'}`}
           >
-            <div className={`w-1/2 py-2 items-center`}>
-              {/* check_in 상태를 text로 나타냄.*/}
-              {isSearchBoxClicked && <p className="text-[15px] text-[#777]">숙박 기간</p>}
-              <p className="text-base text-[#444]">{checkIn ? checkIn : stay || '기간 선택'}</p>
-            </div>
-            <div className="w-1/2 py-2 items-center">
-              {/* check_out 상태를 text로 나타냄.*/}
-              {isSearchBoxClicked && <p className="text-[15px] text-[#777]">여행 시기</p>}
+            {tab === 'date' ? (
+              <>
+                <div className={`w-1/2 py-2 items-center`}>
+                  {/* check_in 상태를 text로 나타냄.*/}
+                  {isSearchBoxClicked && <p className="text-[15px] text-[#777]">체크인</p>}
+                  <p className="text-base text-[#444]">{checkIn || '기간 선택'}</p>
+                </div>
+                <div className="w-1/2 py-2 items-center">
+                  {/* check_out 상태를 text로 나타냄.*/}
+                  {isSearchBoxClicked && <p className="text-[15px] text-[#777]">체크아웃</p>}
 
-              <p className="text-base text-[#444]">{checkOut ? checkOut : month || '기간 선택'}</p>
-            </div>
+                  <p className="text-base text-[#444]">{checkOut || '기간 선택'}</p>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className={`w-1/2 py-2 items-center`}>
+                  {/* stay 상태를 text로 나타냄.*/}
+                  {isSearchBoxClicked && <p className="text-[15px] text-[#777]">숙박 기간</p>}
+                  <p className="text-base text-[#444]">{`${stay}` || '기간 선택'}</p>
+                </div>
+                <div className="w-1/2 py-2 items-center">
+                  {/* month 상태를 text로 나타냄.*/}
+                  {isSearchBoxClicked && <p className="text-[15px] text-[#777]">여행 시기</p>}
+                  <p className="text-base text-[#444]">{month || '기간 선택'}</p>
+                </div>
+              </>
+            )}
           </div>
 
           {/* 세부 정보 */}
@@ -135,7 +168,7 @@ const ScrollSearchBox = () => {
           </div>
 
           <button
-            onClick={handleSearchClick}
+            onClick={(e) => handleSearchClick}
             className={`w-[124px] flex flex-row items-center justify-center gap-1 bg-[#B3916A] rounded-[8px] text-white ${
               isSearchBoxClicked ? 'h-[68px]' : 'h-[48px]'
             }`}
@@ -148,7 +181,7 @@ const ScrollSearchBox = () => {
         </div>
         {activeModal === 'location' && <LocationModal onClose={() => setActiveModal(null)} />}
 
-        {activeModal === 'duration' && <DurationModal onClose={() => setActiveModal(null)} />}
+        {activeModal === 'duration' && <DurationModal tab={tab} setTab={setTab} onClose={() => setActiveModal(null)} />}
 
         {activeModal === 'details' && <DetailsModal onClose={() => setActiveModal(null)} />}
       </div>

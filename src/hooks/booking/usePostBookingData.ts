@@ -1,6 +1,5 @@
-import { postBookingData } from '@/utils/postBookingData';
+import { postBookingData } from '@/utils/api/post/postBookingData';
 import { useMutation } from '@tanstack/react-query';
-
 
 const usePostBookingData = () => {
   return useMutation({

@@ -3,3 +3,22 @@
 .custom-day-cell {
   pointer-events: auto; /* 클릭 가능하도록 설정 */
 }
+
+.fc {
+  overflow: hidden !important; /* 스크롤 바 제거 */
+  box-sizing: border-box !important;
+  width: 100% !important;
+  margin: 0 auto; /* 가운데 정렬 */
+}
+
+.fc-scroller {
+  overflow: hidden !important; /* 내부 스크롤 바 제거 */
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.fc-scroller-harness {
+  border: 1px solid red !important;
+}

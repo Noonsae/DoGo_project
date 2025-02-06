@@ -25,9 +25,7 @@ export default function SignUpBusinessPage() {
         nickname,
         role: 'business'
       });
-
-      console.log(result); // 응답 확인
-
+      
       if (!result.success) {
         // ✅ 중복 이메일 체크
         if (result.message === '이미 사용 중인 이메일입니다.') {

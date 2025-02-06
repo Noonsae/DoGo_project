@@ -45,7 +45,6 @@ const TossPaymentsButton = ({ disabled, bookingData }: { disabled?: boolean; boo
         failUrl: `${window.location.origin}/booking/fail` // 결제 실패 시 이동할 URL
       });
 
-      console.log(id);
     } catch (error) {
       console.error('결제 요청 중 오류:', error);
     }

@@ -93,7 +93,10 @@ const UserInquiryPage: React.FC = () => {
       <h1 className="text-2xl font-bold mb-4">1대1 문의</h1>
 
       {/* 문의 등록 버튼 */}
-      <button className="mb-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600" onClick={() => setIsModalOpen(true)}>
+      <button
+        className="mb-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+        onClick={() => setIsModalOpen(true)}
+      >
         문의 등록하기
       </button>
 
@@ -105,7 +108,13 @@ const UserInquiryPage: React.FC = () => {
           <ul className="space-y-4">
             {inquiries.length === 0 && <p className="text-center text-gray-500">등록된 문의가 없습니다.</p>}
             {inquiries.map((inquiry) => (
-              <li key={inquiry.id} onClick={() => setSelectedInquiry(inquiry)} className={`p-4 border rounded shadow cursor-pointer ${selectedInquiry?.id === inquiry.id ? 'bg-gray-100' : ''}`}>
+              <li
+                key={inquiry.id}
+                onClick={() => setSelectedInquiry(inquiry)}
+                className={`p-4 border rounded shadow cursor-pointer ${
+                  selectedInquiry?.id === inquiry.id ? 'bg-gray-100' : ''
+                }`}
+              >
                 <h3 className="font-bold">{inquiry.title}</h3>
                 <p className="text-sm text-gray-500">작성일: {new Date(inquiry.created_at).toLocaleDateString()}</p>
                 <p className={`mt-1 font-semibold ${getStatusClass(inquiry.status)}`}>
@@ -144,7 +153,13 @@ const UserInquiryPage: React.FC = () => {
       </div>
 
       {/* 모달 추가 */}
-      <InquiryModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} userId={userId} role="user" onInquirySubmitted={fetchInquiries} />
+      <InquiryModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        userId={userId}
+        role="user"
+        onInquirySubmitted={fetchInquiries}
+      />
     </div>
   );
 };

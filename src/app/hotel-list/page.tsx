@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
@@ -28,11 +28,9 @@ const HotelList = () => {
   // TODO: 재사용 로직으로 변경
   const searchParams = useSearchParams();
   const location = searchParams.get('location') || '';
-  const checkIn = searchParams.get('checkIn') || '';
-  const checkOut = searchParams.get('checkOut') || '';
   const stayHash = searchParams.get('stay')?.match(/\d+/)?.[0] || '1';
   const roomHash = searchParams.get('room') || '1';
-
+  
   // TODO: 추후 수정
   const stars =
     searchParams
@@ -48,6 +46,8 @@ const HotelList = () => {
   const serviceIds = searchParams.get('services')?.split(',') || [];
   const sort = searchParams.get('sort') || '';
   const beds = searchParams.get('beds')?.split(',') || []; // beds 파라미터를 URL에서 가져옴
+
+  const [tab, setTab] = useState<'date' | 'flexible'>('date'); // 탭 상태
 
   const [filters, setFilters] = useState<FiltersType>({
     label: '',
@@ -158,7 +158,7 @@ const HotelList = () => {
       className="w-full max-w-[1300px] mx-auto  pt-[200px] pb-[50px] flex flex-row justify-between  
               max-[958px]:flex-col"
     >
-      <ScrollSearchBox />
+      <ScrollSearchBox tab={tab} setTab={setTab} />
 
       <AsideFilter onFilterChange={(newFilters) => setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }))} />
 
