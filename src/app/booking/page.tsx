@@ -75,6 +75,8 @@ const Booking = () => {
     user_id: userId || 'unknown' // 사용자 ID
   };
 
+  console.log('bookingData:', bookingData);
+
   // 유효성 검사
   useEffect(() => {
     const isValid = firstName.trim() !== '' && lastName.trim() !== '';
