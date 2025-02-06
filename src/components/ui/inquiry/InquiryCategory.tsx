@@ -15,14 +15,14 @@ const InquiryCategory = ({ onCategoryChange }: InquiryCategoryProps) => {
   };
 
   return (
-    <div className="flex flex-col gap-4 mt-4 w-full max-w-[90%] sm:max-w-[500px] md:max-w-[600px] mx-auto">
-      <label className="font-semibold text-[#444]">
+    <div className="flex flex-col gap-2 mt-4 w-full max-w-[90%] sm:max-w-[500px] md:max-w-[600px] mx-auto">
+      <label className="text-neutral-800 font-pretendard text-[16px] font-semibold leading-[135%] mt-[32px] sm:mt-[60px]">
         카테고리 <span className="ml-1 text-red-500">*</span>
       </label>
       <select
         value={selectedCategory}
         onChange={handleChange}
-        className={`px-[16px] py-[8px] w-full min-w-full sm:w-auto sm:max-w-[500px] md:max-w-[600px] h-[48px] 
+        className={`w-[320px] h-[48px] px-[16px] py-[8px] min-w-full sm:w-auto sm:max-w-[500px] md:max-w-[600px]  
   items-center border rounded text-[16px] sm:text-[14px] md:text-[16px] lg:text-[18px] font-medium leading-[135%] 
   bg-white bg-no-repeat bg-[right_16px_center] ${selectedCategory ? 'text-black' : 'text-[#A0A0A0]'}`}
         style={{
