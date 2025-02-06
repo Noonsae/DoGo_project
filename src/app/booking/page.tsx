@@ -18,38 +18,51 @@ import { BookingRoomData } from '@/types/hotel/hotel-room-type';
 import { PostBookingDataType } from '@/types/supabase/booking-type';
 
 import Swal from 'sweetalert2';
+import useSearchStore from '@/store/useSearchStore';
+
+import calculateRandomStayDates from '@/utils/calculator/randomStayDatesCalculator';
 
 const Booking = () => {
+  // 국가코드
   const [selectedCode, setSelectedCode] = useState(countryCodes[0].code);
 
-  // Input 필드 상태 관리
+  // 영문이름 필드 상태 관리
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
 
-   const [request, setRequest] = useState<string[]>([]);
+  // 추가 요청 사항 상태 관리
+  const [request, setRequest] = useState<string[]>([]);
 
+  // url에 저장된 데이터 사용
   const searchParams = useSearchParams();
-  const priceParam = searchParams.get('price');
-  const stay = searchParams.get('stay');
-  const room_count = searchParams.get('room');
+  const roomId = searchParams.get('room_id'); // 해당 페이지에 객실 ID
+  const priceParam = searchParams.get('price'); // 객실의 1박 기준 가격 정보
+  const room_count = searchParams.get('room'); // 객실 예약 예정 개수
 
-  const total_amount = priceParam ? parseInt(priceParam, 10) * Number(stay) * Number(room_count) : 0;
+  // TODO 얘 좀 수정해야 할 듯?
+  const stay_number = searchParams.get('stay'); // 사용자가 머무르고 싶은 기간
+  const total_amount = priceParam ? parseInt(priceParam, 10) * Number(stay_number) * Number(room_count) : 0;
 
+  // 유저에 대한 정보를 요청
   const { user } = useAuthStore();
   const userId: string | null = user?.id ?? null;
   const { data: userData } = useUserQuery(userId);
   const safeUserData = userData || { user_name: null, email: null, phone_number: null };
 
-  const roomId = searchParams.get('room_id');
+  // roomId와 일치하는 정보를 요청
   const { data: roomData } = useRoomQuery(roomId) as { data: BookingRoomData | undefined };
 
-  console.log(roomData);
+  // 검색창에 입력한 결과값을 가져옴
+  const { checkIn, checkOut, stay, month } = useSearchStore();
+  // const { startDate: stayStartDate, endDate: stayEndDate } = calculateRandomStayDates(month, Number(stay));
 
-  // ToDo 숙박기간을 통해 check_In_Date와 check_Out_Date를 계산하는 함수 필요
-  const [checkInDate, checkOutDate] = ['2025-02-06', '2025-02-07'];
+  const [checkInDate, checkOutDate] = [checkIn ? checkIn : month, checkOut ? checkOut : ""];
 
-  // 02.06 + 2박3일 = 02.08
+  //  ? checkIn : stayStartDate
+  // ? checkOut : stayEndDate
+
+  console.log('어떻게 출력되는지 한번 볼까?', "시작일:", checkInDate, "종료일:", checkOutDate);
 
   // 유효성 검사
   useEffect(() => {
@@ -58,8 +71,8 @@ const Booking = () => {
   }, [firstName, lastName]);
 
   const bookingData: PostBookingDataType = {
-    check_in_date: checkInDate, // 체크인 날짜
-    check_out_date: checkOutDate, // 체크아웃 날짜
+    check_in_date: String(checkInDate), // 체크인 날짜
+    check_out_date: String(checkOutDate), // 체크아웃 날짜
     created_at: new Date().toISOString(), // 생성 시간 (현재 시간)
     request: request, // 요청 사항
     room_id: roomId || '', // 객실 ID
@@ -70,14 +83,6 @@ const Booking = () => {
     user_last_name: lastName || 'Unknown', // 사용자 성
     user_id: userId || 'unknown' // 사용자 ID
   };
-
-  const today = new Date();
-
-  const year = today.getFullYear(); // 연도 (예: 2025)
-  const month = today.getMonth() + 1; // 월 (0부터 시작하므로 +1, 예: 2)
-  const day = today.getDate(); // 일 (예: 5)
-
-  console.log(`${year}-${month}-${day}`); // 2025-2-5
 
   // 영문이름 작성란 onChange 함수
   const handleEnglishInput = (value: string, setValue: (newValue: string) => void) => {
@@ -96,8 +101,6 @@ const Booking = () => {
       });
     }
   };
-
-  console.log(request);
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
