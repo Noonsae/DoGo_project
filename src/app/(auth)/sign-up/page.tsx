@@ -30,46 +30,55 @@ const Page = () => {
   };
   return (
     <div className="flex flex-col justify-center items-center min-h-screen px-4 sm:px-6 lg:px-8">
-      <div className="flex justify-center ">
-        <LogoAuth className="w-[74px] h-[21px] sm:w-[139.947px] sm:h-[36.813px]" />
+      <div className="flex justify-center">
+        <LogoAuth className="" />
       </div>
 
       <div>
-        <p className="text-neutral-800 flex flex-col justify-center items-center w-full mb-[40px] mt-[40px] max-w-[400px] text-[24px] font-pretendard font-semibold leading-[135%] not-italic">
+        <p className="mt-[40px] md:mt-10 sm:mt-6 mb-[48px] md:mb-12 sm:mb-8 text-neutral-800 flex flex-col justify-center items-center w-full max-w-[400px] text-[24px] font-pretendard font-semibold leading-[135%] not-italic">
           회원 유형 선택
         </p>
 
         {/* 회원 유형 선택 */}
-        <div className="flex flex-row justify-between gap-4 mb-8">
+        <div className="flex flex-row justify-between gap-x-[20px] sm:gap-x-[16px] mb-[48px] md:mb-12 sm:mb-8">
           {/* 일반 회원가입 */}
           <div
             onClick={() => handleSelect('user')}
-            className={`pl-[16px] pr-[16px] pt-[20px] pb-[20px] sm:pl-[16px] sm:pr-[16px] sm:pt-[20px] sm:pb-[20px]  flex flex-col items-center rounded-lg border w-1/2 sm:w-[190px] h-auto min-h-[175px] cursor-pointer ${
+            className={`w-[152px] h-[178px] sm:w-[190px] sm:h-[175px] pl-[16px] pr-[16px] pt-[20px] pb-[20px] sm:pl-[16px] sm:pr-[16px] sm:pt-[20px] sm:pb-[20px]  flex flex-col items-center  rounded-lg border min-h-[175px] cursor-pointer ${
               userType === 'user' ? 'border-[#B3916A] bg-[#FDF9F4]' : 'border-gray-300'
             }`}
           >
             <UserIcon />
-            <p className="font-medium text-neutral-800  text-[16px] lg:text-[18px]">일반 회원가입</p>
+            <p className="text-neutral-700 text-center font-pretendard text-[16px] font-normal leading-[145%] sm:text-[18px]  lg:text-[18px]">
+              일반 회원가입
+            </p>
             <p
-              className={`text-[14px] sm:text-[16px] text-xs mt-2 ${
+              className={`text-neutral-700 text-center font-pretendard text-[14px] sm:text-[16px] font-normal leading-[145%] text-xs mt-2 ${
                 userType === 'user' ? 'text-[#B3916A]' : 'text-gray-500'
               }`}
             >
-              만 19세 이상의 일반 회원
+              <span className="hidden sm:inline">만 19세 이상의 일반 회원</span>
+              <span className="sm:hidden block">
+                만 19세 이상의
+                <br />
+                <span className="text-center block">일반 회원</span>
+              </span>
             </p>
           </div>
 
           {/* 사업자 회원가입 */}
           <div
             onClick={() => handleSelect('business')}
-            className={`pl-[16px] pr-[16px] pt-[20px] pb-[20px] sm:pl-[16px] sm:pr-[16px] sm:pt-[20px] sm:pb-[20px] flex flex-col items-center sm:py-[14px] rounded-lg border w-1/2 sm:w-[190px] h-auto min-h-[175px] cursor-pointer ${
+            className={`w-[152px] h-[178px] sm:w-[190px] sm:h-[175px] pl-[16px] pr-[16px] pt-[20px] pb-[20px] sm:pl-[16px] sm:pr-[16px] sm:pt-[20px] sm:pb-[20px]  flex flex-col items-center rounded-lg border  min-h-[175px] cursor-pointer ${
               userType === 'business' ? 'border-[#B3916A] bg-[#FDF9F4]' : 'border-gray-300'
             }`}
           >
             <BusinessIcon />
-            <p className=" font-medium text-neutral-800 text-[16px] lg:text-[18px]">사업자 회원가입</p>
+            <p className="text-neutral-700 text-center font-pretendard text-[16px] font-normal leading-[145%] sm:text-[18px]  lg:text-[18px] ">
+              사업자 회원가입
+            </p>
             <p
-              className={`text-[14px] sm:text-[16px] text-xs mt-2 ${
+              className={`text-[14px] sm:text-[16px] text-xs mt-2 flex flex-col items-center justify-items-center ${
                 userType === 'business' ? 'text-[#B3916A]' : 'text-gray-500'
               }`}
             >
