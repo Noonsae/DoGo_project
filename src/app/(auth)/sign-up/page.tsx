@@ -30,7 +30,7 @@ const Page = () => {
   };
   return (
     <div className="flex flex-col justify-center items-center min-h-screen px-4 sm:px-6 lg:px-8">
-      <div className="flex justify-center mt-[60px] sm:mt-[80px]">
+      <div className="flex justify-center ">
         <LogoAuth className="w-[74px] h-[21px] sm:w-[139.947px] sm:h-[36.813px]" />
       </div>
 
