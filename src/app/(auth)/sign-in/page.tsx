@@ -88,7 +88,7 @@ const SignInPage = () => {
             </button>
             <button
               className={`pb-2 w-1/2 text-center ${
-                form.activeTab === 'business' ? 'border-b-2 border-neutral-800' : 'text-neutral-400'
+                form.activeTab === 'business' ? 'border-b-2 border-neutral-800 text-[16px]' : 'text-neutral-400'
               }`}
               onClick={() => setForm({ ...form, activeTab: 'business', email: '', password: '' })}
             >
@@ -115,7 +115,7 @@ const SignInPage = () => {
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               className="w-full sm:w-[400px] h-[48px] pt-[8px] pb-[8px] px-[16px] border border-neutral-300 rounded-[8px] mb-[12px] focus:outline-none focus:ring-2 focus:ring-black"
             />
-            <div className="flex items-center justify-end text-sm text-gray-500 mb-4">
+            <div className="flex items-center justify-end text-sm text-gray-500 mb-[26px]">
               <button
                 type="button"
                 onClick={() => setForm({ ...form, isFindIdModalOpen: true })}
@@ -134,12 +134,12 @@ const SignInPage = () => {
             </div>
             <button
               type="submit"
-              className="w-full max-w-[400px] text-[20px] bg-[#B3916A] font-pretendard font-semibold leading-[135%] not-italic text-white py-3 rounded-lg hover:bg-[#a37e5f] transition mb-[12px] sm:mb-[16px]"
+              className="w-full max-w-[400px] text-[20px] bg-[#B3916A] font-pretendard font-semibold leading-[135%] not-italic text-white py-3 rounded-lg hover:bg-[#a37e5f] transition mb-[12px]"
             >
               로그인
             </button>
           </form>
-          <p className=" w-full sm:w-[400px] p-[12px] flex justify-center text-neutral-600">
+          <p className=" w-full sm:w-[400px] mb-[48px] flex justify-center text-neutral-600">
             계정이 없으신가요?
             <button onClick={handleSignUp} className="text-[#534431] ml-3 font-semibold">
               회원가입
@@ -153,9 +153,9 @@ const SignInPage = () => {
                 <hr className="flex-grow border-neutral-300" />
               </div>
 
-              <div className="text-center mt-8">
+              <div className="text-center ">
                 {form.activeTab === 'user' ? <KakaoSignIn /> : <div className="min-h-[50px] invisible"></div>}
-                <div className="flex w-full max-w-[400px] justify-center items-center text-sm text-gray-500 mt-4">
+                <div className="mt-[26px] mb-[40px] sm:mb-[80px] flex w-full max-w-[400px] justify-center items-center text-sm text-gray-500">
                   <button
                     type="button"
                     className="flex-1 text-right m-[2px] hover:underline"
