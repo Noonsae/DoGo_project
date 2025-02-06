@@ -29,13 +29,13 @@ const Page = () => {
     router.push('/sign-in');
   };
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen px-4 sm:px-6 lg:px-8">
-      <div className="flex justify-center">
-        <LogoAuth className="" />
+    <div className="sm:flex flex-col justify-center items-center min-h-screen px-4 sm:px-6 lg:px-8">
+      <div className="flex justify-center mt-[40px]">
+        <LogoAuth className=" w-[74px] h-[21px] sm:w-[139.947px] sm:h-[36.813px]" />
       </div>
 
       <div>
-        <p className="mt-[40px] md:mt-10 sm:mt-6 mb-[48px] md:mb-12 sm:mb-8 text-neutral-800 flex flex-col justify-center items-center w-full max-w-[400px] text-[24px] font-pretendard font-semibold leading-[135%] not-italic">
+        <p className="sm:mt-6 mb-[48px] md:mb-12 sm:mb-8 text-neutral-800 flex flex-col justify-center items-center w-full max-w-[400px] text-[24px] font-pretendard font-semibold leading-[135%] not-italic">
           회원 유형 선택
         </p>
 
@@ -44,7 +44,7 @@ const Page = () => {
           {/* 일반 회원가입 */}
           <div
             onClick={() => handleSelect('user')}
-            className={`w-[152px] h-[178px] sm:w-[190px] sm:h-[175px] pl-[16px] pr-[16px] pt-[20px] pb-[20px] sm:pl-[16px] sm:pr-[16px] sm:pt-[20px] sm:pb-[20px]  flex flex-col items-center  rounded-lg border min-h-[175px] cursor-pointer ${
+            className={` w-[152px] h-[178px] sm:w-[190px] sm:h-[175px] pl-[16px] pr-[16px] pt-[20px] pb-[20px] sm:pl-[16px] sm:pr-[16px] sm:pt-[20px] sm:pb-[20px]  flex flex-col items-center  rounded-lg border min-h-[175px] cursor-pointer ${
               userType === 'user' ? 'border-[#B3916A] bg-[#FDF9F4]' : 'border-gray-300'
             }`}
           >
@@ -53,7 +53,7 @@ const Page = () => {
               일반 회원가입
             </p>
             <p
-              className={`text-neutral-700 text-center font-pretendard text-[14px] sm:text-[16px] font-normal leading-[145%] text-xs mt-2 ${
+              className={` text-center font-pretendard text-[14px] sm:text-[16px] font-normal leading-[145%] text-xs mt-2 w-[158px] ${
                 userType === 'user' ? 'text-[#B3916A]' : 'text-gray-500'
               }`}
             >
