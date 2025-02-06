@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
@@ -28,8 +28,6 @@ const HotelList = () => {
   // TODO: 재사용 로직으로 변경
   const searchParams = useSearchParams();
   const location = searchParams.get('location') || '';
-  const checkIn = searchParams.get('checkIn') || '';
-  const checkOut = searchParams.get('checkOut') || '';
   const stayHash = searchParams.get('stay')?.match(/\d+/)?.[0] || '1';
   const roomHash = searchParams.get('room') || '1';
   
