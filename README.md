@@ -1,40 +1,17 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## 프로젝트: DoGo
 
-## Getting Started
 
-First, run the development server:
+## 프로젝트 소개
+DoGo는 사용자와 숙박 제공자를 연결하는 통합 숙박 예약 플랫폼으로, 간편한 숙소 검색, 예약, 결제 기능을 제공합니다. 또한 사업자가 직접 숙소를 등록하고 관리할 수 있는 기능을 포함하여, 사용자와 숙박 제공자 모두에게 편리한 서비스를 제공합니다.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 팀원소개
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# DoGo_project
+|최민석|서지안|박우석|정설화|최한솔|
+|---|---|---|---|---|
+|![title](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FFaThB%2FbtsL9OMyXWu%2FTmxOv0ndyOikvfUMPFXum0%2Fimg.png)|![title](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbCyxJX%2FbtsL8GWkId3%2FHcketKmGejF9MaaI6Jyxz1%2Fimg.png)|![title](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdiupAp%2FbtsL8Is7Y2l%2FHc9AkaOzK3Ca9r6y9jtneK%2Fimg.png)|![title](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbIbmbA%2FbtsL8ZBk8HD%2Fwpky53KwDa6dsNPMa949q0%2Fimg.png)|---|
+팀장|부팀장|팀원|팀원|디자이너|
+레이아웃, 메인페이지, 검색창, 필터| 마이페이지| 호텔리스트, 호텔상세페이지|로그인, 회원가입, 문의하기|웹/모바일 UI/UX 디자이너|
 
 ```
 DoGo_project
