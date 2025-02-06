@@ -15,7 +15,7 @@ const InquiryCategory = ({ onCategoryChange }: InquiryCategoryProps) => {
   };
 
   return (
-    <div className="flex flex-col gap-2 mt-4 w-full max-w-[90%] sm:max-w-[500px] md:max-w-[600px] mx-auto">
+    <div className="flex flex-col gap-2 w-full max-w-[90%] sm:max-w-[500px] md:max-w-[600px] mx-auto">
       <label className="text-neutral-800 font-pretendard text-[16px] font-semibold leading-[135%] mt-[32px] sm:mt-[60px]">
         카테고리 <span className="ml-1 text-red-500">*</span>
       </label>
