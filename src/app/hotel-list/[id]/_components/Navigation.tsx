@@ -40,14 +40,14 @@ const Navigation = ({ activeTab, scrollToSection, setActiveTab }: NavigationType
 
   return (
     <div>
-      <div className="fixed top-[148px] left-0 w-full z-20 bg-white border-b-0 shadow-sm">
+      <div className="fixed top-[148px] left-0 w-full z-20 bg-white border-b border-gray-300 shadow-sm">
         <div className="max-w-[1200px] mx-auto">
-          <ul className="flex ml-4 gap-[52px] py-4">
+          <ul className="flex ml-4 gap-[52px]">
             {sections.map((tab) => (
               <li key={tab.id} className="text-center">
                 <a
                   href={`#${tab.id}`}
-                  className={`cursor-pointer pb-2 text-[16px] ${
+                  className={`cursor-pointer text-[16px] flex items-center justify-center h-[40px] px-4 pt-[18.5px] pb-[18.5px] ${
                     activeTab === tab.id ? 'border-b-2 border-[#B3916A] text-[#534431] font-semibold' : 'text-[#777]'
                   }`}
                   onClick={(e) => {

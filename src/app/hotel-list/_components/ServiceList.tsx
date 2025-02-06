@@ -18,7 +18,7 @@ const ServiceList: React.FC<ServicesFilterProps> = ({ selectedServices, onServic
             <button
               type="button"
               onClick={() => onServiceChange(service)}
-              className={`px-3 py-1 rounded-full border ${
+              className={`px-3 py-1 rounded-full border border-neutral-300 ${
                 selectedServices.some((svc) => svc.id === service.id)
                   ? 'bg-[#B3916A] text-white'
                   : 'bg-white text-gray-700'
