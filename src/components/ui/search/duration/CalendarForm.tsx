@@ -82,7 +82,7 @@ const CalendarForm = () => {
 
   return (
     <div>
-      <div className="grid grid-cols-2 gap-6 mb-6">
+      <div className="grid grid-cols-2 gap-6 mb-4">
         {/* 첫 번째 달력 */}
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
