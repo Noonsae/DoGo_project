@@ -85,14 +85,16 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
         className="w-full sm:max-w-[424px] p-5 sm:p-9 min-h-screen sm:min-h-0 sm:h-auto bg-white sm:rounded-lg shadow-lg relative overflow-y-auto
 "
       >
-        <div className="w-full flex items-center justify-center relative">
-          {/* 아이디 찾기 (가운데 정렬) */}
-          <p className="text-neutral-800 text-lg sm:text-xl font-semibold sm:hidden">아이디 찾기</p>
+        <div className="mt-[14px] w-full flex items-center justify-center relative">
+          {/* 아이디 찾기 (모바일에서만 보임, 가운데 정렬) */}
+          <p className=" absolute inset-0 flex items-center justify-center text-neutral-800 text-lg sm:text-xl font-semibold sm:hidden">
+            아이디 찾기
+          </p>
 
           {/* 닫기 버튼 (우측 정렬 유지) */}
           <button
             onClick={onClose}
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 text-neutral-800 hover:text-black font-bold cursor-pointer"
+            className="absolute right-1 text-neutral-800 hover:text-black font-bold cursor-pointer"
           >
             <CloseButtonIcon />
           </button>
