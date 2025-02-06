@@ -46,12 +46,12 @@ DoGo_project
 │     ├─ greee.webp
 │     ├─ olheum.webp
 │     └─ trid.webp
-├─ README.md
 ├─ src
 │  ├─ actions
 │  │  └─ auth.ts
 │  ├─ app
 │  │  ├─ (auth)
+│  │  │  ├─ layout.tsx
 │  │  │  ├─ sign-in
 │  │  │  │  ├─ actions
 │  │  │  │  │  └─ login.ts
@@ -65,9 +65,7 @@ DoGo_project
 │  │  │  │     │  ├─ ResetModal.tsx
 │  │  │  │     │  └─ SuccessModal.tsx
 │  │  │  │     ├─ KakaoSignIn.tsx
-│  │  │  │     ├─ KaKaoUpdate.tsx
-│  │  │  │     ├─ RoleBusiness.tsx
-│  │  │  │     └─ RoleUser.tsx
+│  │  │  │     └─ KaKaoUpdate.tsx
 │  │  │  └─ sign-up
 │  │  │     ├─ actions
 │  │  │     │  └─ handleSignupAction.ts
@@ -75,12 +73,15 @@ DoGo_project
 │  │  │     │  ├─ error.tsx
 │  │  │     │  ├─ page.tsx
 │  │  │     │  └─ _components
+│  │  │     │     ├─ BusinessInputField.tsx
 │  │  │     │     └─ SignUpBusiness.tsx
 │  │  │     ├─ page.tsx
 │  │  │     └─ user
 │  │  │        ├─ error.tsx
 │  │  │        ├─ page.tsx
 │  │  │        └─ _components
+│  │  │           ├─ InputField.tsx
+│  │  │           ├─ InputPassword.tsx
 │  │  │           └─ SignUpUser.tsx
 │  │  ├─ api
 │  │  │  ├─ auth
@@ -100,6 +101,10 @@ DoGo_project
 │  │  │  ├─ hotel
 │  │  │  │  └─ [id]
 │  │  │  │     └─ route.ts
+│  │  │  ├─ inquiries
+│  │  │  │  └─ route.ts
+│  │  │  ├─ payments
+│  │  │  │  └─ verify.ts
 │  │  │  ├─ policy
 │  │  │  │  └─ route.ts
 │  │  │  ├─ review
@@ -112,7 +117,17 @@ DoGo_project
 │  │  │     └─ user
 │  │  │        └─ route.ts
 │  │  ├─ booking
-│  │  │  └─ page.tsx
+│  │  │  ├─ fail
+│  │  │  │  └─ page.tsx
+│  │  │  ├─ page.tsx
+│  │  │  ├─ [id]
+│  │  │  │  └─ page.tsx
+│  │  │  └─ _components
+│  │  │     ├─ AgreementAndPayment .tsx
+│  │  │     ├─ ContactInfo.tsx
+│  │  │     ├─ Requests.tsx
+│  │  │     ├─ Sidebar.tsx
+│  │  │     └─ TossPaymentsButton.tsx
 │  │  ├─ contact
 │  │  │  └─ page.tsx
 │  │  ├─ event
@@ -134,7 +149,9 @@ DoGo_project
 │  │  │  │     ├─ HotelRoom.tsx
 │  │  │  │     └─ Navigation.tsx
 │  │  │  └─ _components
+│  │  │     ├─ AppliedFilters.tsx
 │  │  │     ├─ AsideFilter.tsx
+│  │  │     ├─ BedTypeList.tsx
 │  │  │     ├─ DualSlider.tsx
 │  │  │     ├─ FacilityList.tsx
 │  │  │     ├─ HotelsCardList.tsx
@@ -151,15 +168,17 @@ DoGo_project
 │  │  │  │  │  └─ page.tsx
 │  │  │  │  ├─ cooperation
 │  │  │  │  │  └─ page.tsx
+│  │  │  │  ├─ inquiry
+│  │  │  │  │  └─ page.tsx
 │  │  │  │  └─ page.tsx
 │  │  │  ├─ business
 │  │  │  │  ├─ booking
 │  │  │  │  │  └─ page.tsx
-│  │  │  │  ├─ BusinessLayout.tsx
 │  │  │  │  ├─ hotel
 │  │  │  │  │  └─ page.tsx
 │  │  │  │  ├─ inquiry
 │  │  │  │  │  └─ page.tsx
+│  │  │  │  ├─ layout.tsx
 │  │  │  │  ├─ policy
 │  │  │  │  │  └─ page.tsx
 │  │  │  │  ├─ profile
@@ -174,11 +193,13 @@ DoGo_project
 │  │  │  │  │  └─ page.tsx
 │  │  │  │  ├─ inquiry
 │  │  │  │  │  └─ page.tsx
+│  │  │  │  ├─ layout.tsx
 │  │  │  │  ├─ profile
 │  │  │  │  │  └─ page.tsx
-│  │  │  │  ├─ review
-│  │  │  │  │  └─ page.tsx
-│  │  │  │  └─ UserLayout.tsx
+│  │  │  │  └─ review
+│  │  │  │     ├─ page.tsx
+│  │  │  │     └─ write
+│  │  │  │        └─ page.tsx
 │  │  │  └─ _components
 │  │  │     ├─ AdminSidebar.tsx
 │  │  │     ├─ BookingList.tsx
@@ -190,13 +211,14 @@ DoGo_project
 │  │  │     ├─ CooperationRequests.tsx
 │  │  │     ├─ FavoritesContent.tsx
 │  │  │     ├─ HotelManagement.tsx
+│  │  │     ├─ InquiryList.tsx
 │  │  │     ├─ InquiryManagement.tsx
+│  │  │     ├─ InquiryModal.tsx
 │  │  │     ├─ PolicyManageMent.tsx
 │  │  │     ├─ ProfileContent.tsx
 │  │  │     ├─ ProfileManagement.tsx
 │  │  │     ├─ ReviewsContent.tsx
 │  │  │     ├─ RoomManageMent.tsx
-│  │  │     ├─ SidebarWrapper.tsx
 │  │  │     └─ UserSidebar.tsx
 │  │  ├─ page.tsx
 │  │  ├─ _components
@@ -214,8 +236,11 @@ DoGo_project
 │  ├─ components
 │  │  ├─ common
 │  │  │  ├─ ErrorPage.tsx
-│  │  │  └─ Example.tsx
+│  │  │  ├─ Example.tsx
+│  │  │  └─ InquiryFloatingButton.tsx
 │  │  ├─ layout
+│  │  │  ├─ AuthHeader.tsx
+│  │  │  ├─ ClientWrapper.tsx
 │  │  │  ├─ Footer.tsx
 │  │  │  ├─ Header.tsx
 │  │  │  ├─ Logo.tsx
@@ -223,8 +248,8 @@ DoGo_project
 │  │  │     ├─ HamburgerBtn.tsx
 │  │  │     └─ MyPageIcon.tsx
 │  │  └─ ui
-│  │     ├─ hotel-down-image
-│  │     │  └─ Modal.tsx
+│  │     ├─ hotel-mobile
+│  │     │  └─ modal.tsx
 │  │     ├─ hotel-review
 │  │     │  └─ ReviewsModal.tsx
 │  │     ├─ hotel-room
@@ -238,6 +263,7 @@ DoGo_project
 │  │     │  ├─ CloseEyesIcon.tsx
 │  │     │  ├─ CopyAddressIcon.tsx
 │  │     │  ├─ DividerIcon.tsx
+│  │     │  ├─ DownIcon.tsx
 │  │     │  ├─ DropDownIcon.tsx
 │  │     │  ├─ DropUpIcon.tsx
 │  │     │  ├─ FiCalendarIcon.tsx
@@ -245,9 +271,12 @@ DoGo_project
 │  │     │  ├─ FiChevronLeftIcon.tsx
 │  │     │  ├─ FiChevronRight.tsx
 │  │     │  ├─ FiChevronRightIcon.tsx
+│  │     │  ├─ FileIcon.tsx
+│  │     │  ├─ GoBackIcon.tsx
 │  │     │  ├─ HiOutlineMenuIcon.tsx
 │  │     │  ├─ HiOutlineRefreshIcon.tsx
 │  │     │  ├─ HiSearchIcon.tsx
+│  │     │  ├─ InstanceIcon.tsx
 │  │     │  ├─ IoCheckmarkCircle.tsx
 │  │     │  ├─ IoCloseIcon.tsx
 │  │     │  ├─ IoIosAddCircleOutlineIcon.tsx
@@ -260,6 +289,7 @@ DoGo_project
 │  │     │  ├─ ParentIcon.tsx
 │  │     │  ├─ PinIcon.tsx
 │  │     │  ├─ RatingIcon.tsx
+│  │     │  ├─ RefreshIcon.tsx
 │  │     │  ├─ RenderStars.tsx
 │  │     │  ├─ ReviewThumbUpIcon.tsx
 │  │     │  ├─ RiThumbUpFillIcon.tsx
@@ -267,11 +297,21 @@ DoGo_project
 │  │     │  ├─ SubwayIcon.tsx
 │  │     │  ├─ UserIcon.tsx
 │  │     │  └─ WarningIcon.tsx
-│  │     ├─ MyCalendar.tsx
+│  │     ├─ inquiry
+│  │     │  ├─ InquiryCategory.tsx
+│  │     │  ├─ InquiryForm.tsx
+│  │     │  └─ InquiryModal.tsx
 │  │     ├─ search
-│  │     │  ├─ DetailsModal.tsx
-│  │     │  ├─ DurationModal.tsx
-│  │     │  ├─ LocationModal.tsx
+│  │     │  ├─ details
+│  │     │  │  └─ DetailsModal.tsx
+│  │     │  ├─ duration
+│  │     │  │  ├─ ActionButton.tsx
+│  │     │  │  ├─ CalendarForm.tsx
+│  │     │  │  ├─ DurationModal.tsx
+│  │     │  │  ├─ DurationTab.tsx
+│  │     │  │  └─ FlexibleForm.tsx
+│  │     │  ├─ location
+│  │     │  │  └─ LocationModal.tsx
 │  │     │  ├─ ScrollSearchBox.tsx
 │  │     │  └─ SearchBox.tsx
 │  │     ├─ sign-up
@@ -291,6 +331,10 @@ DoGo_project
 │  ├─ fonts
 │  │  └─ PretendardVariable.woff2
 │  ├─ hooks
+│  │  ├─ booking
+│  │  │  ├─ useFetchBookingData.ts
+│  │  │  ├─ useHotelNameAndRoomName.ts
+│  │  │  └─ usePostBookingData.ts
 │  │  ├─ favorite
 │  │  │  └─ useFavoriteStore.ts
 │  │  ├─ formatCurrency
@@ -308,8 +352,11 @@ DoGo_project
 │  │  │  └─ kakaomap.tsx
 │  │  ├─ review
 │  │  │  └─ useHotelReviews.ts
-│  │  └─ room
-│  │     └─ useHotelRooms.ts
+│  │  ├─ room
+│  │  │  ├─ useHotelRooms.ts
+│  │  │  └─ useRoomsData.ts
+│  │  └─ user
+│  │     └─ useUserData.ts
 │  ├─ middleware.ts
 │  ├─ store
 │  │  ├─ useAuth.ts
@@ -317,6 +364,7 @@ DoGo_project
 │  │  ├─ useSearchHistoryStore.ts
 │  │  └─ useSearchStore.ts
 │  ├─ styles
+│  │  ├─ calendar.css
 │  │  └─ globals.css
 │  ├─ supabase
 │  │  ├─ middleware.ts
@@ -361,15 +409,29 @@ DoGo_project
 │  │     ├─ history-state-type.ts
 │  │     └─ search-state-type.ts
 │  └─ utils
-│     ├─ fetchFacilities.ts
-│     ├─ fetchHotelsByLocation.ts
-│     ├─ fetchHotelsByView.ts
-│     ├─ fetchHotelsFilter.ts
-│     ├─ fetchServices.ts
-│     ├─ urlCalculator.ts
-│     └─ urlHelpers.ts
+│     ├─ api
+│     │  ├─ fetch
+│     │  │  ├─ fetchBookingData.ts
+│     │  │  ├─ fetchBookingHotelNameAndRoomName.ts
+│     │  │  ├─ fetchFacilities.ts
+│     │  │  ├─ fetchHotelsByLocation.ts
+│     │  │  ├─ fetchHotelsByView.ts
+│     │  │  ├─ fetchHotelsFilter.ts
+│     │  │  ├─ fetchRoomsData.ts
+│     │  │  ├─ fetchServices.ts
+│     │  │  └─ fetchUserData.ts
+│     │  └─ post
+│     │     └─ postBookingData.ts
+│     └─ calculator
+│        ├─ dateCalculator.ts
+│        ├─ randomStayDatesCalculator.ts
+│        ├─ urlCalculator.ts
+│        ├─ urlHelpers.ts
+│        └─ validation.ts
 ├─ supabase
 │  ├─ .gitignore
+│  ├─ .temp
+│  │  └─ cli-latest
 │  └─ config.toml
 ├─ tailwind.config.ts
 └─ tsconfig.json
