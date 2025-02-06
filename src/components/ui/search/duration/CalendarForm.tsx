@@ -4,40 +4,81 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction'; // needed for dayClick
 
-import '@/styles/calendar.css';
-import Swal from 'sweetalert2';
 import useSearchStore from '@/store/useSearchStore';
 
+import Swal from 'sweetalert2';
+
+import '@/styles/calendar.css';
+
 const CalendarForm = () => {
-  
   const checkIn = useSearchStore((state) => state.checkIn);
   const checkOut = useSearchStore((state) => state.checkOut);
   const setCheckIn = useSearchStore((state) => state.setCheckIn);
   const setCheckOut = useSearchStore((state) => state.setCheckOut);
 
-  // 첫 번째 달력 클릭 핸들러
-  const handleCalendarStartDateClick = (info: { dateStr: string }) => {
-    setCheckIn(info.dateStr);
-    validateDates(info.dateStr, checkOut); // 날짜 검증
-  };
+  const today = new Date();
 
-  // 두 번째 달력 클릭 핸들러
-  const handleCalendarFinishDateClick = (info: { dateStr: string }) => {
-    setCheckOut(info.dateStr);
-    validateDates(checkIn, info.dateStr); // 날짜 검증
-  };
-
-  const validateDates = (startDate: string, finishDate: string) => {
+  // 날짜 유효성 검증 함수 - 시작일은 종료일보다
+  const isValidDateRange = (startDate: string, finishDate: string) => {
     if (startDate && finishDate && new Date(startDate) > new Date(finishDate)) {
       Swal.fire({
         icon: 'warning',
         title: '날짜를 확인해주세요.',
-        text: '시작일은 종료일보다 이후여야 합니다.',
+        text: '종료일이 시작일보다 이릅니다.',
         confirmButtonColor: '#B3916A',
         confirmButtonText: '날짜 다시 선택하기'
       });
+      return false;
+    }
+    return true;
+  };
+
+  // 첫 번째 달력 클릭 핸들러
+  const handleCalendarStartDateClick = (info: { dateStr: string }) => {
+    const selectedDate = new Date(info.dateStr);
+
+    if (selectedDate < today) {
+      Swal.fire({
+        icon: 'warning',
+        title: '날짜를 확인해주세요.',
+        text: '시작일은 오늘 이전으로 선택할 수 없습니다.',
+        confirmButtonColor: '#B3916A',
+        confirmButtonText: '날짜 다시 선택하기'
+      });
+      return; // 날짜 선택 무효화
+    }
+
+    if (!checkOut || isValidDateRange(info.dateStr, checkOut)) {
+      setCheckIn(info.dateStr);
     }
   };
+
+  // 두 번째 달력 클릭 핸들러
+  const handleCalendarFinishDateClick = (info: { dateStr: string }) => {
+    const selectedDate = new Date(info.dateStr);
+
+    if (selectedDate < today) {
+      Swal.fire({
+        icon: 'warning',
+        title: '날짜를 확인해주세요.',
+        text: '종료일은 오늘 이전으로 선택할 수 없습니다.',
+        confirmButtonColor: '#B3916A',
+        confirmButtonText: '날짜 다시 선택하기'
+      });
+      return; // 날짜 선택 무효화
+    }
+
+    if (!checkIn || isValidDateRange(checkIn, info.dateStr)) {
+      setCheckOut(info.dateStr);
+    }
+  };
+
+  const stay = useSearchStore((state) => state.stay);
+  const month = useSearchStore((state) => state.month);
+
+  console.log('checkIn:', checkIn, 'checkOut:', checkOut);
+  console.log('stay:', stay);
+  console.log('month:', month);
 
   return (
     <div>
