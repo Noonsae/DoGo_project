@@ -110,7 +110,7 @@ const UpModal = ({ isOpen, onClose, images = [], name }: ModalProps) => {
                 key={index}
                 onClick={() => handleSelectImage(index)}
                 className={`w-[120px] h-[120px] rounded-lg overflow-hidden cursor-pointer ${
-                  index === currentIndex ? 'ring-2 ring-[#B3916A]' : 'opacity-50'
+                  index === currentIndex ? 'ring-1 ring-[#B3916A]' : 'opacity-50'
                 }`}
               >
                 <Image

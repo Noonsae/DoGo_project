@@ -17,7 +17,7 @@ const InputModal = ({ form, setForm, errors, setErrors, handleFindPassword, hand
     </p>
     <div className="flex border-b-2 w-full">
       <button
-        className={`flex-1 pb-2 text-center ${
+        className={` flex-1 pb-2 text-center ${
           form.activeTab === 'user' ? 'border-b-2 border-gray-500 font-bold' : 'text-gray-400'
         }`}
         onClick={() => handleTabChange('user')}
@@ -53,7 +53,7 @@ const InputModal = ({ form, setForm, errors, setErrors, handleFindPassword, hand
               setForm((prevForm) => ({ ...prevForm, email: e.target.value }));
               setErrors((prev) => ({ ...prev, email: undefined }));
             }}
-            className={`w-full h-[40px] md:h-[48px] pl-[12px] md:pl-[16px] border rounded-[8px] focus:outline-none focus:ring-2 ${
+            className={`w-full h-[40px] md:h-[48px] pl-[12px] md:pl-[16px] border rounded-[8px] focus:outline-none focus:ring-1 ${
               errors.email
                 ? 'border-red-500 focus:ring-red-500'
                 : 'border-gray-300 focus:border-[#B3916A] focus:ring-[#B3916A]'
@@ -78,7 +78,7 @@ const InputModal = ({ form, setForm, errors, setErrors, handleFindPassword, hand
             }));
             setErrors((prev) => ({ ...prev, phone: undefined }));
           }}
-          className={`appearance-none w-full h-[40px] md:h-[48px] pl-[12px] md:pl-[16px] border rounded-[8px] focus:outline-none focus:ring-2 ${
+          className={`appearance-none w-full h-[40px] md:h-[48px] pl-[12px] md:pl-[16px] border rounded-[8px] focus:outline-none focus:ring-1 ${
             errors.phone
               ? 'border-red-500 focus:ring-red-500'
               : 'border-gray-300 focus:border-[#B3916A] focus:ring-[#B3916A]'
@@ -92,7 +92,7 @@ const InputModal = ({ form, setForm, errors, setErrors, handleFindPassword, hand
       <div className="flex flex-col rounded mt-[269px] sm:mt-[40px]">
         <button
           type="submit"
-          className="flex flex-col justify-center items-center h-[48px] text-[18px] sm:text-[20px] text-white text-center font-semibold leading-[135%] w-full sm:mb-[16px] max-w-[360px] sm:max-w-[375px] md:max-w-[352px] bg-[#B3916A] py-[12px] md:py-[15px] rounded-xl hover:bg-[#a37e5f] transition"
+          className="h-[48px] flex flex-col justify-center items-center text-[18px] sm:text-[20px] text-white text-center font-semibold leading-[135%] w-full sm:mb-[16px] max-w-[360px] sm:max-w-[375px] md:max-w-[352px] bg-[#B3916A] py-[12px] md:py-[15px] rounded-xl hover:bg-[#a37e5f] transition"
         >
           {form.isLoading ? '조회중' : '비밀번호찾기'}
         </button>

@@ -58,19 +58,15 @@ const Modal = ({ isOpen, onClose, room, hotelData }: ModalProps) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#221A1A] bg-opacity-30 ">
       <div className=" bg-white rounded shadow-lg w-full h-full md:w-[600px] md:h-[700px] max-w-4xl overflow-y-auto scrollbar-hide">
         <div className="w-full sticky top-0 z-10 bg-[#221A1A] text-[#FDF9F4] text-[18px] sm:text-[20px] md:text-[22px] lg:text-[24px] font-bold text-center">
-          <div className="flex items-center justify-between px-4 py-2 w-full bg-[#221A1A] text-[#FDF9F4] text-[18px] sm:text-[20px] md:text-[22px] lg:text-[24px] font-bold">
-            {/* 객실 이름 - 가운데 정렬 */}
-            <div className="flex-1 flex justify-center items-center">{room.room_name}</div>
+          <div className="h-[56px] sm:h-[67px] flex items-center justify-between px-4 py-2 w-full bg-[#221A1A] text-[#FDF9F4] text-[18px] sm:text-[20px] md:text-[22px] lg:text-[24px] font-bold">
+            <div className="flex-1 text-center">{room.room_name}</div>
             <button
               onClick={onClose}
-              className="mb-[10px] pt-[22px] pr-[22px] flex flex-row justify-end text-[#FDF9F4] hover: font-bold cursor-pointer"
+              className="ml-auto flex items-center justify-center text-[#FDF9F4] font-bold cursor-pointer p-2"
             >
               <CloseButtonIcon />
             </button>
           </div>
-          {/* </div> */}
-          {/* <IoCloseIcon onClick={onClose} className="absolute top-4 right-4 text-2xl cursor-pointer" /> */}
-          {/* 네비게이션 탭 */}
           <nav className="bg-white flex border-b sticky top-0 z-10">
             {[
               { id: 'info', label: '객실 정보' },
@@ -91,9 +87,7 @@ const Modal = ({ isOpen, onClose, room, hotelData }: ModalProps) => {
             ))}
           </nav>
         </div>
-        {/* 콘텐츠 */}
         <div className="space-y-6">
-          {/* 객실 정보 */}
           <section id="info" className="space-y-4">
             <div className="relative w-full h-[240px] md:h-64 bg-gray-100">
               {Array.isArray(room.room_img_url) && room.room_img_url.length > 0 ? (
@@ -134,14 +128,12 @@ const Modal = ({ isOpen, onClose, room, hotelData }: ModalProps) => {
               </ul>
             </div>
           </section>
-
-          {/* 객실 편의 시설 */}
           <section id="amenities" className="space-y-4 p-6 mt-0">
             <h3 className="font-semibold text-[20px] sm:text-[22px]">객실 편의 시설</h3>
             <ul className="grid grid-cols-3 md:grid-cols-4 text-gray-700">
               {Array.isArray(room.option) && room.option.length > 0 ? (
                 room.option.map((item, index) => (
-                  <li key={index} className="text-[15px] flex items-center space-x-2 p-2">
+                  <li key={index} className="text-[14px] flex items-center space-x-2 p-2">
                     <IoCheckmarkCircle />
                     <span>{item as string}</span>
                   </li>
@@ -151,8 +143,6 @@ const Modal = ({ isOpen, onClose, room, hotelData }: ModalProps) => {
               )}
             </ul>
           </section>
-
-          {/* 가격 상세 정보 */}
           <section id="price" className="space-y-4 p-6">
             <h3 className="text-lg font-semibold text-[20px] sm:text-[22px]">가격 상세 정보</h3>
             <ul className="space-y-2 text-gray-700">
@@ -163,8 +153,6 @@ const Modal = ({ isOpen, onClose, room, hotelData }: ModalProps) => {
             </ul>
           </section>
         </div>
-
-        {/* 하단 고정 버튼과 가격 */}
         <div className="sticky bottom-0 left-0 w-full bg-white border-t p-4 flex justify-between items-center">
           <p className="text-neutral-900 text-[18px] sm:text-[20px] md:text-[22px] lg:text-[24px] font-semibold">
             {room.price.toLocaleString()}원{' '}
@@ -172,7 +160,6 @@ const Modal = ({ isOpen, onClose, room, hotelData }: ModalProps) => {
               /1박
             </span>
           </p>
-
           <button
             onClick={() => handleBooking(room)}
             className="text-[16px] sm:text-[18px] md:text-[20px] bg-[#B3916A] text-white py-2 px-6 rounded-md hover:bg-[#8B5E3C]"
