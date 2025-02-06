@@ -29,14 +29,13 @@ const HotelByLocation = () => {
         회원님들께 가장 높은 평가를 받은 인기 호텔들을 엄선하여 추천해드려요.
       </p>
 
-      {/* 슬라이드로 구현될 예정 */}
-      <div className="flex flex-row gap-2">
+      <div className="grid xxs:grid-cols-5 lg:grid-cols-10 md:gird-cols-8 max-w-[936px] sm:grid-cols-9 xs:grid-cols-6">
         {locations.map((location) => (
           <button
             key={location.id}
             type="button"
             onClick={() => handleBtnClick(location.id)}
-            className={`w-[80px] h-[44px] mr-[12px] mt-[28px] border border-[#CDCDCD] rounded-[8px] text-[18px] font-semibold outline-none transition duration-200 ${
+            className={`md:w-[80px] md:h-[44px] xxs:w-[58px] xxs:h-[36px] mr-[12px] mt-[28px] border border-[#CDCDCD] rounded-[8px] text-[18px] font-semibold outline-none transition duration-200 ${
               selectedLocations === location.id
                 ? 'bg-[#B3916A] text-white'
                 : 'bg-[#fff] text-[#777] font-medium hover:bg-[#8F7455] hover:text-[#fff] active:bg-[#6B573F]'

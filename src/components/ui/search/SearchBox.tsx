@@ -106,25 +106,29 @@ const SearchBox = () => {
       {isSticky ? (
         <ScrollSearchBox tab={tab} setTab={setTab} />
       ) : (
-        <div className="w-full max-w-[1300px] h-full mx-auto px-[50px] -mt-[210px]">
+        <div className="w-full max-w-[1300px] h-full mx-auto px-[50px] lg:mt-[-210px]">
           {/* 🔹 모달이 열리면 딤드(배경 오버레이) 추가 */}
           {activeModal && (
             <div
-              className="fixed inset-0 bg-[rgba(0,0,0,0.4)] z-40"
+              className="fixed inset-0 bg-[rgba(0,0,0,0.4)] z-40 xxs:hidden md:block"
               onClick={closeModal} // 딤드 클릭 시 모달 닫기
             />
           )}
 
-          <section className="w-full max-w-[1200px] h-[160px] mx-auto px-[32px] py-[24px] rounded-[8px] bg-white shadow-[0px_4px_12px_rgba(0,0,0,0.1)]">
-            <p className="text-[20px] font-semibold mb-[16px]">숙소 검색</p>
-
+          {/* 검색창 ui */}
+          <section className="w-full max-w-[1200px] lg:h-[160px] mx-auto px-[32px] py-[24px] rounded-[8px] bg-white shadow-[0px_4px_12px_rgba(0,0,0,0.1)] xxs:h-[48px] xxs:py-3 xxs:px-4 xxs:mt-[-75px]">
+            <p className="text-[20px] font-semibold mb-[16px] lg:block xxs:hidden">숙소 검색</p>
+            <div className="lg:hidden xxs:flex flex-row gap-2">
+              <HiSearchIcon className="text-[#A0A0A0]" />
+              <p className="text-[#A0A0A0] text-[16px] font-medium ">여행지나 숙소를 검색해주세요</p>
+            </div>
             <div className="w-full h-[68px] flex flex-row gap-3 rounded-[8px]">
               {/* 여행지 검색 */}
               <label
                 onClick={() => openModal('location')}
                 className={`block w-[25%] max-w-[288px] h-full px-[16px] py-[12px] border rounded-[8px] cursor-pointer ${
                   activeModal === 'location' ? 'border-[#B3916A]' : 'border-[#BFBFBF]'
-                }`}
+                } xxs:hidden lg:block `}
               >
                 <span className="text-[15px] text-[#636363] font-medium">여행지</span>
                 <input
@@ -140,7 +144,7 @@ const SearchBox = () => {
               {/* 체크인과 체크아웃 */}
               <div
                 onClick={() => openModal('duration')}
-                className={`w-[35%] max-w-[400px] h-full flex flex-row px-[16px] py-[12px] border rounded-[8px] cursor-pointer ${
+                className={`w-[35%] max-w-[400px] h-full flex flex-row px-[16px] py-[12px] border rounded-[8px] cursor-pointer lg:flex xxs:hidden ${
                   activeModal === 'duration' ? 'border-[#B3916A]' : 'border-[#BFBFBF]'
                 }`}
               >
@@ -178,7 +182,7 @@ const SearchBox = () => {
                 onClick={() => openModal('details')}
                 className={`w-[25%] max-w-[288px] h-full px-[16px] py-[12px] border rounded-[8px]  cursor-pointer ${
                   activeModal === 'details' ? 'border-[#B3916A]' : 'border-[#BFBFBF]'
-                }`}
+                } xxs:hidden lg:block`}
               >
                 <p className="max-w-[272px] text-[15px] text-[#636363] font-medium">객실 및 인원</p>
                 <p className="max-w-[272px] text-[16px] text-[#A0A0A0] font-medium truncate">
@@ -189,7 +193,7 @@ const SearchBox = () => {
               {/* 검색 버튼 */}
               <button
                 onClick={handleSearchClick}
-                className="w-[11%] max-w-[124px] h-full flex flex-row justify-center items-center bg-[#B3916A] text-white text-[20px] text-center font-semibold rounded-[8px] outline-none hover:bg-[#8F7455] active:bg-[#6B573F] disabled:bg-[#EFEFEF] disabled:text-[#BFBFBF] transition duration-200"
+                className="w-[11%] max-w-[124px] h-full flex flex-row justify-center items-center bg-[#B3916A] text-white text-[20px] text-center font-semibold rounded-[8px] outline-none hover:bg-[#8F7455] active:bg-[#6B573F] disabled:bg-[#EFEFEF] disabled:text-[#BFBFBF] transition duration-200 xxs:hidden lg:block"
               >
                 <div>
                   <HiSearchIcon className="inline-block w-6 h-6 -ml-1 mr-1 fill-white" />

@@ -36,13 +36,13 @@ const HotelByView = () => {
         탁 트인 전망과 감성을 더하는 객실 뷰를 통해 힐링과 여유를 만끽하세요.
       </p>
 
-      <div className="flex flex-row gap-2">
+      <div className="flex flex-wrap flex-row md:gap-2 xxs:gap-0">
         {Views.map((select) => (
           <button
             key={select.id}
             type="button"
             onClick={() => handleBtnClick(select.id)}
-            className={`mr-[12px] mt-[28px] px-6 py-[10px] border border-[#CDCDCD] rounded-[8px] text-[18px] font-semibold outline-none transition duration-200 ${
+            className={`mr-[12px] mt-[28px] md:px-6 xxs:px-4 md:py-2.5 xxs:py-2 border border-[#CDCDCD] rounded-[8px] md:text-[18px] xxs:text-[15px] font-semibold outline-none transition duration-200 ${
               selectedViews === select.id
                 ? 'bg-[#B3916A] text-white'
                 : 'bg-[#fff] text-[#777] font-medium hover:bg-[#8F7455] hover:text-[#fff] active:bg-[#6B573F]'
