@@ -40,26 +40,10 @@ const InputField = ({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          className={`w-full max-w-[340px] sm:max-w-[400px] h-[44px] sm:h-[48px] px-3 pr-12 border rounded-[8px] focus:outline-none ${
+          className={` w-full max-w-[340px] sm:max-w-[400px] h-[44px] sm:h-[48px] px-3 border rounded-[8px] focus:outline-none ${
             error ? 'border-red-500 focus:ring-red-500' : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
           } ${className}`}
         />
-
-        {/* 비밀번호 보기/숨기기 버튼 (input 안에서 고정) */}
-        {isPassword && togglePasswordVisibility && (
-          <button
-            type="button"
-            tabIndex={-1}
-            onClick={togglePasswordVisibility}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-500 hover:text-neutral-700"
-          >
-            {isPasswordVisible ? (
-              <CloseEyesIcon className="text-neutral-500" />
-            ) : (
-              <OpenEyesIcon className="text-neutral-500" />
-            )}
-          </button>
-        )}
       </div>
       {helperText && <p className="text-xs text-neutral-600 mt-1">{helperText}</p>}
 
