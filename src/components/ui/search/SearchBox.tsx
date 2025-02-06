@@ -22,6 +22,7 @@ const SearchBox = () => {
   const [tab, setTab] = useState<'date' | 'flexible'>('date'); // 탭 상태
   const { location, checkIn, checkOut, details, stay, month, setLocation } = useSearchStore();
   const [isSticky, setIsSticky] = useState(false); // 스크롤 상태 관리
+  const targetRef = useRef<HTMLDivElement | null>(null);
   const [activeModal, setActiveModal] = useState<'location' | 'duration' | 'details' | null>(null); // 모달 상태
 
   const modalRef = useRef<HTMLDivElement>(null);
@@ -40,13 +41,24 @@ const SearchBox = () => {
 
   // 스크롤 이벤트 핸들러
   useEffect(() => {
-    const handleScroll = () => {
-      setIsSticky(window.scrollY >= 300);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const sticky = !entry.isIntersecting; // 요소가 화면에서 벗어나면 sticky 상태로 변경
+        setIsSticky(sticky);
+        setActiveModal(null); // Sticky 상태가 활성화되면 모달 닫기
+      },
+      { threshold: 0.5 } // 요소가 50% 화면에 보일 때 기준
+    );
+
+    if (targetRef.current) {
+      observer.observe(targetRef.current);
+    }
+
+    return () => {
+      if (targetRef.current) {
+        observer.unobserve(targetRef.current);
+      }
     };
-    // TODO: intersection observer로 수정
-    // scroll 이벤트가 성능에 안좋음
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // 외부 클릭 감지 핸들러
@@ -72,7 +84,7 @@ const SearchBox = () => {
     if (location) {
       useSearchHistoryStore.getState().addHistory(location);
     }
-    
+
     const searchUrl = generateUrl({ location, checkIn, checkOut, stay, month, details }); // URL 생성
     await router.push(searchUrl); // 페이지 이동
     closeModal();
@@ -87,6 +99,10 @@ const SearchBox = () => {
 
   return (
     <>
+      {/* 감지 기준이 될 타겟 요소 */}
+
+      <div ref={targetRef} style={{ height: '20px', background: 'none' }} className="absolute top-[300px]"></div>
+
       {isSticky ? (
         <ScrollSearchBox tab={tab} setTab={setTab} />
       ) : (
