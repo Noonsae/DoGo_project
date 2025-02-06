@@ -1,7 +1,8 @@
 import { useSearchParams } from 'next/navigation';
 
 import { BookingRoomData } from '@/types/hotel/hotel-room-type';
-import { getBookingData } from '@/utils/booking/booking';
+import { useBookingStore } from '@/store/useBookingStore';
+
 
 interface SidebarProps {
   roomData?: BookingRoomData;
@@ -11,8 +12,9 @@ const Sidebar: React.FC<SidebarProps> = ({ roomData }) => {
 
   const searchParams = useSearchParams();  
   const room_count = searchParams.get('room');
+
+  const storedBookingData = useBookingStore((state) => state.temporaryBookingData);
   
-  const storedBookingData = getBookingData();
   const stay = storedBookingData!.stay;
 
   return (
