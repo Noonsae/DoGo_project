@@ -10,6 +10,8 @@ import AuthProvider from './_provider/AuthProvider';
 import InquiryFloatingButton from '@/components/common/InquiryFloatingButton';
 
 import '../styles/globals.css';
+import { headers } from 'next/headers';
+import ClientWrapper from '@/components/layout/ClientWrapper';
 
 const pretendard = localFont({
   src: '../fonts/PretendardVariable.woff2',
@@ -48,7 +50,10 @@ const RootLayout = ({
       <AuthProvider>
         <MyProvider>
           <body className="font-pretendard">
-            <Header />
+            {/* /⭐설명: auth 모바일 헤더 달라서 ClientWrapper로 감싸주었습니다. */}
+            <ClientWrapper>
+              <Header />
+            </ClientWrapper>
             {children}
             <Footer />
             <InquiryFloatingButton />
