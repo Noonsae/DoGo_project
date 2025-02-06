@@ -33,6 +33,13 @@ const CalendarForm = () => {
     return true;
   };
 
+  // 부모 태그의 특정 class를 추가해서 커스텀 스타일링
+  document.querySelectorAll('.child').forEach((child) => {
+    if (child.classList.contains('fc-highlight')) {
+      child.parentElement?.classList.add('parent-highlight');
+    }
+  });
+
   // 첫 번째 달력 클릭 핸들러
   const handleCalendarStartDateClick = (info: { dateStr: string }) => {
     const selectedDate = new Date(info.dateStr);
@@ -112,8 +119,10 @@ const CalendarForm = () => {
           />
         </div>
       </div>
-      <p className="text-sm text-gray-500">
-        선택된 날짜: {checkIn} ~ {checkOut}
+      <p className="text-sm text-gray-700 font-normal">
+        선택된 날짜 : &nbsp;
+        <span className=" text-base text-[#B3916A] font-normal">{checkIn}</span> ~{' '}
+        <span className=" text-base text-[#B3916A] font-normal">{checkOut}</span>
       </p>
     </div>
   );
