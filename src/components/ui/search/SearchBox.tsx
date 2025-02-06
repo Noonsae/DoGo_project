@@ -43,6 +43,8 @@ const SearchBox = () => {
     const handleScroll = () => {
       setIsSticky(window.scrollY >= 300);
     };
+    // TODO: intersection observer로 수정
+    // scroll 이벤트가 성능에 안좋음
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -65,15 +67,13 @@ const SearchBox = () => {
     ['mousedown', 'touchstart']
   );
 
-  const url = generateUrl({ location, checkIn, checkOut, stay, month, details }); // URL 생성
-
   const handleSearchClick = async () => {
-    const { location } = useSearchStore.getState();
+    // const { location } = useSearchStore.getState();
     if (location) {
       useSearchHistoryStore.getState().addHistory(location);
     }
-    setLocation('');
-    const searchUrl = url;
+    
+    const searchUrl = generateUrl({ location, checkIn, checkOut, stay, month, details }); // URL 생성
     await router.push(searchUrl); // 페이지 이동
     closeModal();
   };
@@ -135,11 +135,15 @@ const SearchBox = () => {
                   <>
                     <div className="w-1/2 h-full">
                       <p className="text-[15px] text-[#636363] font-medium">숙박 기간</p>
-                      <span className="text-[16px] text-[#A0A0A0] font-medium">{stay || `기간 선택`}</span>
+                      <span className="text-[16px] text-[#A0A0A0] font-medium">
+                        {`숙박 옵션: ${stay}박` || `기간 선택`}
+                      </span>
                     </div>
                     <div className="w-1/2 h-full px-[16px]">
                       <p className="text-[15px] text-[#636363] font-medium">여행 시기</p>
-                      <span className="text-[16px] text-[#A0A0A0] font-medium">{month || `기간 선택`}</span>
+                      <span className="text-[16px] text-[#A0A0A0] font-medium">
+                        {`숙박 월 : ${month}월` || `기간 선택`}
+                      </span>
                     </div>
                   </>
                 )}
@@ -186,7 +190,9 @@ const SearchBox = () => {
                 <DetailsModal onClose={() => setActiveModal(null)} />
               </div>
             )}
-          </section>
+            </section>
+            
+            
         </div>
       )}
     </>
