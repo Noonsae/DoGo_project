@@ -37,7 +37,7 @@ const AsideFilter = ({ onFilterChange }: AsideFilterProps) => {
   const [selectedServices, setSelectedServices] = useState<ServicesType[]>([]);
   const [selectedFacilities, setSelectedFacilities] = useState<FacilitiesType[]>([]);
   const [selectedBedTypes, setSelectedBedTypes] = useState<string[]>([]);
-  const { location, checkIn, checkOut, stay, details } = useSearchStore();
+  const { location, checkIn, checkOut, stay, details, month } = useSearchStore();
   const [isMobile, setIsMobile] = useState(false);
 
   // 성급 필터
@@ -96,6 +96,7 @@ const AsideFilter = ({ onFilterChange }: AsideFilterProps) => {
       checkIn,
       checkOut,
       stay,
+      month,
       details,
       stars: updatedStars,
       minPrice: updatedMinPrice,
@@ -104,6 +105,7 @@ const AsideFilter = ({ onFilterChange }: AsideFilterProps) => {
       services: updatedServices,
       beds: updatedBedTypes
     });
+
     router.push(url);
   }, [selectedGrade, minPriceValue, maxPriceValue, selectedFacilities, selectedServices, selectedBedTypes]);
 
