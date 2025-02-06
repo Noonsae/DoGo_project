@@ -139,7 +139,7 @@ const AsideFilter = ({ onFilterChange }: AsideFilterProps) => {
   };
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(max-width: 360px)');
+    const mediaQuery = window.matchMedia('(max-width: 958px)');
 
     // ✅ 초기 실행
     setIsMobile(mediaQuery.matches);
@@ -159,7 +159,7 @@ const AsideFilter = ({ onFilterChange }: AsideFilterProps) => {
 
   if (isMobile) {
     return (
-      <div className="fixed top-[148px] z-50 bg-white left-0 w-full p-4 ">
+      <div className="fixed top-[148px] z-20 bg-white left-0 w-full p-4 ">
         <div className="flex overflow-x-scroll gap-3 scrollbar-hide">
           <button
             className="flex bg-white text-[#636363] px-4 py-2 gap-1  border border-gray-300 text-sm font-semibold whitespace-nowrap rounded-[9999px]"

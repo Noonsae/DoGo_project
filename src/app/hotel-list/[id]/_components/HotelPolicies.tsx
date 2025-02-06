@@ -45,8 +45,13 @@ const HotelPolicies = ({ hotelId }: HotelPoliciesProps) => {
   // 정책 데이터 렌더링
   return (
     <>
-      <div className="w-full mx-auto" style={{ marginBottom: '120px' }}>
-        <h2 className="text-neutral-900 text-[28px] font-semibold mb-4">숙소 정책</h2>
+      <div
+        className="w-full mx-auto max-[360px]:px-5"
+        style={{ marginBottom: window.innerWidth <= 360 ? '0px' : '120px' }}
+      >
+        <h2 className="text-neutral-900 text-[28px] font-semibold mb-4 max-[360px]:text-lg max-[360px]:text-[#232527]">
+          숙소 정책
+        </h2>
 
         {sections.map((section, index) => {
           const policy = policies.find((p) => p.policy_name.trim() === section.trim());
@@ -60,11 +65,11 @@ const HotelPolicies = ({ hotelId }: HotelPoliciesProps) => {
               }`}
             >
               <div
-                className="cursor-pointer py-3 flex justify-between items-center"
+                className="cursor-pointer py-3 flex justify-between items-center max-[360px]:text-[16px] max-[360px]:text-[#444] max-[360px]:font-semibold"
                 onClick={() => toggleSection(section)}
               >
                 <span>{section}</span>
-                <span>
+                <span className="mr-2">
                   {openSection === section ? (
                     <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
@@ -93,7 +98,7 @@ const HotelPolicies = ({ hotelId }: HotelPoliciesProps) => {
                   {policy?.description && Array.isArray(policy.description) && policy.description.length > 0 ? (
                     <ul className="list-disc pl-5">
                       {policy.description.map((item: string, index: number) => (
-                        <li className="mb-1" key={index}>
+                        <li className="mb-1 max-[360px]:text-[14px] max-[360px]:text-[#777]" key={index}>
                           {item}
                         </li>
                       ))}

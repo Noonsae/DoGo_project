@@ -41,7 +41,7 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
             alt={hotelData.name || 'Default Image'}
             width={594} // 명확한 크기 설정
             height={363}
-            className="object-cover max-[360px]:h-[260px]"
+            className="object-cover h-[363px] max-[360px]:h-[260px]"
             onClick={() => openModal(validImage(hotelData.main_img_url))}
           />
           {Array.isArray(hotelData.hotel_img_urls) && (
@@ -64,7 +64,6 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
                 key={index}
                 className="relative overflow-hidden"
                 style={{
-                  aspectRatio: '16/9',
                   borderRadius:
                     index === 1
                       ? '0 16px 0 0' // 두 번째 이미지: 우측 상단 둥글게
@@ -80,7 +79,7 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
                   alt={`Image ${index + 1}`}
                   width={291} // 명확한 크기 설정
                   height={175}
-                  className="object-cover"
+                  className="object-cover h-[175px]"
                 />
                 {index === 1 && (
                   <button
@@ -106,26 +105,26 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
       </div>
       {/* 호텔 정보 */}
       <div className="mt-4 text-center lg:text-left max-[360px]:px-[20px]">
-        <div className="flex mt-2">
-          <h2 className="text-neutral-900 text-[28px] font-semibold max-[360px]:text-[20px]">
+        <div className="flex mt-2 max-[360px]:justify-between max-[360px]:items-center max-[360px]:mt-3">
+          <h2 className="text-neutral-900 text-[28px] font-semibold max-[360px]:text-[20px] max-[360px]:w-[85%] max-[360px]:text-left ">
             {hotelData.name || 'Hotel Name'}
           </h2>
-          <span className="flex justify-center items-center ml-2">
+          <span className="flex justify-center items-center ml-2 max-[360px]:absolute max-[360px]:bottom-[220px] max-[360px]:left-3">
             <RenderStars stars={hotelData.stars} />
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                toggleFavorite(hotelId);
-              }}
-              className={` ml-[30px] p-2 rounded-full shadow-md bg-white text-gray-600 hidden max-[360px]:block ${
-                favoriteStatus[hotelId] ? 'active' : ''
-              }`}
-            >
-              {favoriteStatus[hotelId] ? '❤️' : '🤍'}
-            </button>
           </span>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleFavorite(hotelId);
+            }}
+            className={` ml-[30px] p-2 rounded-full shadow-md bg-white text-gray-600 hidden max-[360px]:block ${
+              favoriteStatus[hotelId] ? 'active' : ''
+            }`}
+          >
+            {favoriteStatus[hotelId] ? '❤️' : '🤍'}
+          </button>
         </div>
-        <p className="mt-2 text-gray-700 max-[360px]:flex  max-[360px]:text-left">
+        <p className="mt-2 text-gray-700 max-[360px]:flex max-[360px]:mt-6 max-[360px]:text-left max-[360px]:w-[85%]">
           {hotelData.description || 'No description available.'}
         </p>
       </div>
