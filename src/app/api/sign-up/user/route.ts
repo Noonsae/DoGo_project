@@ -43,6 +43,6 @@ export async function POST(request: Request) {
   if (insertError) {
     return NextResponse.json({ error: insertError.message }, { status: 400 });
   }
-  console.log('userId', userId);
+  
   return NextResponse.json({ message: '회원가입 성공' }, { status: 201 });
 }

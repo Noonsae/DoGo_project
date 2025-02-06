@@ -23,7 +23,6 @@ const BusinessHotelModal: React.FC<ModalProps> = ({ onClose, children }) => {
   };
 
   const handleSave = () => {
-    console.log('선택된 시설:', selectedFacilities);
     onClose(); // 저장 후 모달 닫기
   };
 

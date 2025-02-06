@@ -20,8 +20,6 @@ const BookingConfirmPage = () => {
   const { data: userData } = useUserQuery(userId);
   const safeUserData = userData || { user_name: null, email: null, phone_number: null };
 
-  console.log(userData);
-
   const handleHome = () => {
     router.push('/');
   };
@@ -29,8 +27,6 @@ const BookingConfirmPage = () => {
   const params = useParams();
 
   const { data: fetchBookingData } = useFetchBookingData(params.id as string);
-
-  console.log(fetchBookingData);
 
   const formatPhoneNumber = (phoneNumber: string): string => {
     return phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');

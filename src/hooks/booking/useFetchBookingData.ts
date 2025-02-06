@@ -7,8 +7,7 @@ const useFetchBookingData = (bookingId: string | null) => {
   return useQuery<fetchBookingDataType | null>({
     queryKey: ['bookings', bookingId],
     queryFn: async () => {
-      console.log(bookingId);
-
+      
       if (!bookingId) throw new Error('Booking ID가 없습니다.');
       return await fetchBookingData(bookingId);
     },

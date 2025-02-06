@@ -52,7 +52,6 @@ const UserInquiryPage: React.FC = () => {
           `
           )
           .eq('user_id', user.id);
-        console.log({ data, error });
 
         if (error) throw error;
 
