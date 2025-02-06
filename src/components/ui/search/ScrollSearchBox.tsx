@@ -41,7 +41,7 @@ const ScrollSearchBox = ({
     setActiveModal(null);
     setIsSearchBoxClicked(false); // SearchBox 상태 초기화
   };
-  
+
   // 외부 클릭 감지
   useClickAway(
     searchBoxRef,
@@ -58,7 +58,6 @@ const ScrollSearchBox = ({
   const url = generateUrl({ location, checkIn, checkOut, stay, month, details }); // URL 생성
 
   const handleSearchClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
-
     e.stopPropagation();
     const { location } = useSearchStore.getState();
     if (location) {
@@ -88,10 +87,23 @@ const ScrollSearchBox = ({
 
   return (
     <>
+      <div className="fixed left-0 top-[76px] w-full h-[76px] px-5 py-2.5 bg-white lg:hidden xxs:flex z-30">
+        <div className="w-full bg-[#f5f5f5] rounded-[8px] flex flex-row items-center gap-2 px-4 py-2">
+          <HiSearchIcon className="w-6 h-6 text-[#A0A0A0]" />
+          <div>
+            <p>{location ? location : '검색어를 입력해주세요.'} </p>
+            <p className='text-[14px] text-[#777] leading-[1.45]'>
+              <span>{checkIn || stay || '체크인'}</span> - <span>{checkOut || month || '체크아웃'}</span> •{' '}
+              <span>{details || '세부정보'}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
       <div
         ref={searchBoxRef}
         onClick={() => setIsSearchBoxClicked(true)}
-        className={`fixed left-0 top-[76px] w-full flex items-center bg-white border-b border-[#bfbfbf] z-30 ${
+        className={`fixed left-0 top-[76px] w-full lg:flex xxs:hidden items-center bg-white border-b border-[#bfbfbf] z-30  ${
           isSearchBoxClicked ? 'h-[116px] py-6' : 'h-[72px] py-3'
         }`}
       >

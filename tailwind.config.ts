@@ -12,8 +12,12 @@ const config: Config = {
         background: 'var(--background)',
         foreground: 'var(--foreground)'
       },
+      screens: {
+        xs: '480px', // 작은 스마트폰
+        xxs: '360px' // 매우 작은 스마트폰
+      },
       fontFamily: {
-        pretendard: ["var(--font-pretendard)", "sans-serif"],
+        pretendard: ['var(--font-pretendard)', 'sans-serif']
       }
     }
   },
