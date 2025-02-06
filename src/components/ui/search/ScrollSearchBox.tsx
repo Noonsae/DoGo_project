@@ -41,7 +41,7 @@ const ScrollSearchBox = ({
     setActiveModal(null);
     setIsSearchBoxClicked(false); // SearchBox 상태 초기화
   };
-
+  
   // 외부 클릭 감지
   useClickAway(
     searchBoxRef,
@@ -57,21 +57,31 @@ const ScrollSearchBox = ({
 
   const url = generateUrl({ location, checkIn, checkOut, stay, month, details }); // URL 생성
 
-  const handleSearchClick = async () => {
+  const handleSearchClick = async (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
     const { location } = useSearchStore.getState();
     if (location) {
       useSearchHistoryStore.getState().addHistory(location);
     }
     setLocation('');
     const searchUrl = url;
-    await router.push(searchUrl); // 페이지 이동
     inactiveSearchBox();
+    await router.push(searchUrl); // 페이지 이동
   };
 
-  const handleKeyDownEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDownEnter = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault(); // 기본 엔터 키 동작 방지
-      handleSearchClick(); // 검색 함수 실행
+      e.stopPropagation();
+
+      const { location } = useSearchStore.getState();
+      if (location) {
+        useSearchHistoryStore.getState().addHistory(location);
+      }
+      setLocation('');
+      const searchUrl = url;
+      inactiveSearchBox();
+      await router.push(searchUrl); // 페이지 이동
     }
   };
 
@@ -135,7 +145,7 @@ const ScrollSearchBox = ({
                 <div className={`w-1/2 py-2 items-center`}>
                   {/* stay 상태를 text로 나타냄.*/}
                   {isSearchBoxClicked && <p className="text-[15px] text-[#777]">숙박 기간</p>}
-                  <p className="text-base text-[#444]">{stay || '기간 선택'}</p>
+                  <p className="text-base text-[#444]">{`${stay}` || '기간 선택'}</p>
                 </div>
                 <div className="w-1/2 py-2 items-center">
                   {/* month 상태를 text로 나타냄.*/}
@@ -158,7 +168,7 @@ const ScrollSearchBox = ({
           </div>
 
           <button
-            onClick={handleSearchClick}
+            onClick={(e) => handleSearchClick}
             className={`w-[124px] flex flex-row items-center justify-center gap-1 bg-[#B3916A] rounded-[8px] text-white ${
               isSearchBoxClicked ? 'h-[68px]' : 'h-[48px]'
             }`}
