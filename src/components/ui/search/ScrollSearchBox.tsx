@@ -57,7 +57,8 @@ const ScrollSearchBox = ({
 
   const url = generateUrl({ location, checkIn, checkOut, stay, month, details }); // URL 생성
 
-  const handleSearchClick = async (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleSearchClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+
     e.stopPropagation();
     const { location } = useSearchStore.getState();
     if (location) {
@@ -168,7 +169,7 @@ const ScrollSearchBox = ({
           </div>
 
           <button
-            onClick={(e) => handleSearchClick}
+            onClick={handleSearchClick}
             className={`w-[124px] flex flex-row items-center justify-center gap-1 bg-[#B3916A] rounded-[8px] text-white ${
               isSearchBoxClicked ? 'h-[68px]' : 'h-[48px]'
             }`}
