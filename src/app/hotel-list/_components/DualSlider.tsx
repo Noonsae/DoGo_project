@@ -97,7 +97,7 @@ const DualSlider: React.FC<DualSliderProps> = ({
         {/* 값 표시 */}
         <div className="flex justify-start items-center text-[15px] mt-[24px] text-[#B3916A]">
           <span className="max-[360px]:mt-[24px]">{minPriceValue.toLocaleString()}원~</span>
-          <span className="max-[360px]mt-[24px]">{maxPriceValue.toLocaleString()}원</span>
+          <span className="max-[360px]mt-[24px] max-[360px]:mt-[23px]">{maxPriceValue.toLocaleString()}원</span>
         </div>
       </div>
     </>

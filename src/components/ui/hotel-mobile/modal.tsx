@@ -116,7 +116,7 @@ const FilterModal = ({ isOpen, setIsOpen }: FilterModalProps) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed h-full w-full inset-0 bottom-[100px] bg-opacity-50 flex items-center justify-center z-60">
+    <div className="fixed h-full w-full inset-0 top-[90px] bg-opacity-50 flex items-center justify-center z-60">
       <div
         className="bg-white  max-w-[9580px] w-full h-full relative "
         style={{
