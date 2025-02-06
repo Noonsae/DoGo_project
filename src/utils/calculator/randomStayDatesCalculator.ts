@@ -1,49 +1,42 @@
+// 현재 년도
+export const currentYear = new Date().getFullYear();
+
 /**
- * 선택한 달에서 랜덤 날짜와 숙박 기간을 계산하는 함수
- * @param month 선택한 달 (예: "February")
- * @param stay 숙박 기간 (예: 3)
- * @returns { stayStartDate: string, stayEndDate: string }
+ * 특정 연도와 월 기준으로 **오늘 이후의 랜덤 날짜**를 생성
+ * @param year 연도 (예: 2024)
+ * @param month 월 (1~12, 1월부터 시작)
+ * @returns YYYY-MM-DD 형식의 랜덤 날짜 (KST 기준, 오늘 이후)
  */
+export const getRandomDateAfterToday = (year: number, month: number): string => {
+  // 현재 날짜 객체 (KST 기준)
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // 시간 초기화 (00:00:00)
 
-const calculateRandomStayDates = (month: string, stay: number): { startDate: string; endDate: string } => {
-  // 영문 달 이름을 숫자로 매핑
-  const monthMapping: { [key: string]: number } = {
-    January: 1,
-    February: 2,
-    March: 3,
-    April: 4,
-    May: 5,
-    June: 6,
-    July: 7,
-    August: 8,
-    September: 9,
-    October: 10,
-    November: 11,
-    December: 12
-  };
+  // month는 1~12로 입력받지만, JS Date는 0~11이므로 -1 처리 필요
+  const actualMonth = month - 1;
 
-  // 영문 달을 숫자로 변환
-  const monthNumber = monthMapping[month];
-  if (!monthNumber) {
-    throw new Error(`Invalid month: ${month}`);
-  }
+  // 해당 월의 마지막 날짜 구하기
+  const lastDay = new Date(year, month, 0).getDate();
 
-  const year = new Date().getFullYear();
-  const startDate = new Date(`${year}-${monthNumber}-01`);
-  const daysInMonth = new Date(year, monthNumber, 0).getDate();
+  let randomDate: Date;
 
-  // 랜덤 시작일 선택
-  const randomStartDay = Math.floor(Math.random() * (daysInMonth - stay + 1)) + 1;
-  const randomStartDate = new Date(year, monthNumber - 1, randomStartDay);
+  do {
+    // 1일부터 마지막 날짜 사이에서 랜덤 날짜 생성
+    const randomDay = Math.floor(Math.random() * lastDay) + 1;
+    randomDate = new Date(year, actualMonth, randomDay);
+  } while (randomDate <= today); // 🔥 오늘 날짜보다 이후가 나올 때까지 반복
 
-  // 종료 날짜 계산
-  const randomEndDate = new Date(randomStartDate);
-  randomEndDate.setDate(randomStartDate.getDate() + stay - 1);
-
-  return {
-    startDate: randomStartDate.toISOString().split('T')[0], // yyyy-mm-dd 형식으로 반환
-    endDate: randomEndDate.toISOString().split('T')[0]
-  };
+  return formatDate(randomDate);
 };
 
-export default calculateRandomStayDates;
+/**
+ * 날짜를 YYYY-MM-DD 형식으로 변환
+ * @param date Date 객체
+ * @returns YYYY-MM-DD 형식의 문자열
+ */
+export const formatDate = (date: Date): string => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // 2자리 맞추기
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};

@@ -57,7 +57,8 @@ const ScrollSearchBox = ({
 
   const url = generateUrl({ location, checkIn, checkOut, stay, month, details }); // URL 생성
 
-  const handleSearchClick = async (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleSearchClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+
     e.stopPropagation();
     const { location } = useSearchStore.getState();
     if (location) {
@@ -145,12 +146,12 @@ const ScrollSearchBox = ({
                 <div className={`w-1/2 py-2 items-center`}>
                   {/* stay 상태를 text로 나타냄.*/}
                   {isSearchBoxClicked && <p className="text-[15px] text-[#777]">숙박 기간</p>}
-                  <p className="text-base text-[#444]">{`${stay}` || '기간 선택'}</p>
+                  <p className="text-base text-[#444]">{stay ? `숙박 옵션: ${stay}박` : `기간 선택`}</p>
                 </div>
                 <div className="w-1/2 py-2 items-center">
                   {/* month 상태를 text로 나타냄.*/}
                   {isSearchBoxClicked && <p className="text-[15px] text-[#777]">여행 시기</p>}
-                  <p className="text-base text-[#444]">{month || '기간 선택'}</p>
+                  <p className="text-base text-[#444]">{month ? `숙박 월 : ${month}월` : `기간 선택`}</p>
                 </div>
               </>
             )}
@@ -168,7 +169,7 @@ const ScrollSearchBox = ({
           </div>
 
           <button
-            onClick={(e) => handleSearchClick}
+            onClick={handleSearchClick}
             className={`w-[124px] flex flex-row items-center justify-center gap-1 bg-[#B3916A] rounded-[8px] text-white ${
               isSearchBoxClicked ? 'h-[68px]' : 'h-[48px]'
             }`}
