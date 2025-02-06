@@ -41,7 +41,7 @@ const InquiryModal = ({ isOpen, onClose, hotel_id }: InquiryModalProps) => {
         </div>
 
         {/* 폼 */}
-        <div className="mt-4 w-full max-w-[536px] mx-auto px-4 sm:px-6">
+        <div className=" w-full max-w-[536px] mx-auto">
           <InquiryCategory onCategoryChange={setCategory} />
 
           <InquiryForm ref={formRef} category={category} hotel_id={hotel_id || ''} />

@@ -103,7 +103,7 @@ const InquiryForm = forwardRef(({ category, hotel_id }: InquiryFormProps, ref) =
   }));
   return (
     <form className="flex flex-col gap-2 mt-4 w-full max-w-[90%] sm:max-w-[500px] md:max-w-[600px] mx-auto">
-      <label className="text-neutral-800 font-pretendard text-[16px] font-semibold leading-[135%]">
+      <label className="mt-[20px] text-neutral-800 font-pretendard text-[16px] font-semibold leading-[135%]">
         제목 <span className="ml-1 text-red-500">*</span>
       </label>
       <input
@@ -114,8 +114,8 @@ const InquiryForm = forwardRef(({ category, hotel_id }: InquiryFormProps, ref) =
         className="h-[48px] px-[16px] py-[8px] border rounded p-2"
       />
 
-      <label className="text-neutral-800 font-pretendard text-[16px] font-semibold leading-[135%] ">
-        문의 사항 <span className=" ml-1 text-red-500">*</span>
+      <label className="mt-[20px] text-neutral-800 font-pretendard text-[16px] font-semibold leading-[135%] ">
+        문의 사항 <span className="ml-1 text-red-500">*</span>
       </label>
       <textarea
         value={content}
