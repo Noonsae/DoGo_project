@@ -47,7 +47,7 @@ const TossPaymentsButton = ({ disabled, bookingData }: { disabled?: boolean; boo
       type="button"
       disabled={disabled}
       onClick={handlePayment}
-      className={`px-6 py-3 rounded-lg font-semibold ${
+      className={`px-6 py-2.5 rounded-[8px] text-[20px] font-semibold ${
         disabled
           ? 'bg-[#EFEFEF] text-[#BFBFBF] cursor-not-allowed'
           : 'bg-[#B3916A] text-white hover:bg-[#8F7455] active:bg-[#6B573F]'

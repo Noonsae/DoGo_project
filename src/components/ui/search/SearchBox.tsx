@@ -22,6 +22,7 @@ const SearchBox = () => {
   const [tab, setTab] = useState<'date' | 'flexible'>('date'); // 탭 상태
   const { location, checkIn, checkOut, details, stay, month, setLocation } = useSearchStore();
   const [isSticky, setIsSticky] = useState(false); // 스크롤 상태 관리
+  const targetRef = useRef<HTMLDivElement | null>(null);
   const [activeModal, setActiveModal] = useState<'location' | 'duration' | 'details' | null>(null); // 모달 상태
 
   const modalRef = useRef<HTMLDivElement>(null);
@@ -40,13 +41,24 @@ const SearchBox = () => {
 
   // 스크롤 이벤트 핸들러
   useEffect(() => {
-    const handleScroll = () => {
-      setIsSticky(window.scrollY >= 300);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const sticky = !entry.isIntersecting; // 요소가 화면에서 벗어나면 sticky 상태로 변경
+        setIsSticky(sticky);
+        setActiveModal(null); // Sticky 상태가 활성화되면 모달 닫기
+      },
+      { threshold: 0.5 } // 요소가 50% 화면에 보일 때 기준
+    );
+
+    if (targetRef.current) {
+      observer.observe(targetRef.current);
+    }
+
+    return () => {
+      if (targetRef.current) {
+        observer.unobserve(targetRef.current);
+      }
     };
-    // TODO: intersection observer로 수정
-    // scroll 이벤트가 성능에 안좋음
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // 외부 클릭 감지 핸들러
@@ -72,7 +84,7 @@ const SearchBox = () => {
     if (location) {
       useSearchHistoryStore.getState().addHistory(location);
     }
-    
+
     const searchUrl = generateUrl({ location, checkIn, checkOut, stay, month, details }); // URL 생성
     await router.push(searchUrl); // 페이지 이동
     closeModal();
@@ -87,10 +99,22 @@ const SearchBox = () => {
 
   return (
     <>
+      {/* 감지 기준이 될 타겟 요소 */}
+
+      <div ref={targetRef} style={{ height: '20px', background: 'none' }} className="absolute top-[300px]"></div>
+
       {isSticky ? (
         <ScrollSearchBox tab={tab} setTab={setTab} />
       ) : (
         <div className="w-full max-w-[1300px] h-full mx-auto px-[50px] -mt-[210px]">
+          {/* 🔹 모달이 열리면 딤드(배경 오버레이) 추가 */}
+          {activeModal && (
+            <div
+              className="fixed inset-0 bg-[rgba(0,0,0,0.4)] z-40"
+              onClick={closeModal} // 딤드 클릭 시 모달 닫기
+            />
+          )}
+
           <section className="w-full max-w-[1200px] h-[160px] mx-auto px-[32px] py-[24px] rounded-[8px] bg-white shadow-[0px_4px_12px_rgba(0,0,0,0.1)]">
             <p className="text-[20px] font-semibold mb-[16px]">숙소 검색</p>
 
@@ -136,13 +160,13 @@ const SearchBox = () => {
                     <div className="w-1/2 h-full">
                       <p className="text-[15px] text-[#636363] font-medium">숙박 기간</p>
                       <span className="text-[16px] text-[#A0A0A0] font-medium">
-                        { stay ? `숙박 옵션: ${stay}박` : `기간 선택`}
+                        {stay ? `숙박 옵션: ${stay}박` : `기간 선택`}
                       </span>
                     </div>
                     <div className="w-1/2 h-full px-[16px]">
                       <p className="text-[15px] text-[#636363] font-medium">여행 시기</p>
                       <span className="text-[16px] text-[#A0A0A0] font-medium">
-                        { month ? `숙박 월 : ${month}월` : `기간 선택`}
+                        {month ? `숙박 월 : ${month}월` : `기간 선택`}
                       </span>
                     </div>
                   </>
@@ -152,7 +176,7 @@ const SearchBox = () => {
               {/* 객실 및 인원 */}
               <div
                 onClick={() => openModal('details')}
-                className={`w-[25%] max-w-[288px] h-full px-[16px] py-[12px] border rounded-[8px] ${
+                className={`w-[25%] max-w-[288px] h-full px-[16px] py-[12px] border rounded-[8px]  cursor-pointer ${
                   activeModal === 'details' ? 'border-[#B3916A]' : 'border-[#BFBFBF]'
                 }`}
               >
@@ -190,9 +214,7 @@ const SearchBox = () => {
                 <DetailsModal onClose={() => setActiveModal(null)} />
               </div>
             )}
-            </section>
-            
-            
+          </section>
         </div>
       )}
     </>
