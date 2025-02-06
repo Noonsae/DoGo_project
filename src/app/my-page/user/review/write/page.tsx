@@ -1,27 +1,70 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { browserSupabase } from '@/supabase/supabase-client';
 import Image from 'next/image';
 
 const ReviewWritePage = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const bookingId = searchParams.get('booking_id'); // 예약 ID 가져오기
+
+  const [roomId, setRoomId] = useState<string | null>(null);
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState('');
   const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const [previewImages, setPreviewImages] = useState<string[]>([]);
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (!bookingId) return;
+
+    const fetchRoomId = async () => {
+      try {
+        const { data, error } = await browserSupabase()
+          .from('bookings')
+          .select('room_id')
+          .eq('id', bookingId)
+          .single();
+
+        if (error) throw error;
+        setRoomId(data?.room_id || null);
+      } catch (err) {
+        console.error('Error fetching room ID:', err);
+      }
+    };
+
+    fetchRoomId();
+  }, [bookingId]);
+
   // 별점 설정
   const handleRating = (value: number) => setRating(value);
 
-  // 이미지 업로드 핸들러
+  // 이미지 업로드 및 미리보기
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files) return;
+    if (!event.target.files || event.target.files.length === 0) {
+      console.error('파일이 선택되지 않았습니다.');
+      return;
+    }
 
     const file = event.target.files[0];
+
+    if (!file) {
+      console.error('파일이 없습니다.');
+      return;
+    }
+
+    // 이미지 미리보기 생성
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreviewImages((prev) => [...prev, reader.result as string]);
+    };
+    reader.readAsDataURL(file);
+
+    // Supabase에 이미지 업로드
     const fileExt = file.name.split('.').pop();
     const fileName = `${Date.now()}.${fileExt}`;
     const filePath = `reviews/${fileName}`;
@@ -34,7 +77,13 @@ const ReviewWritePage = () => {
     }
 
     const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/review_images/${filePath}`;
-    setImageUrls([...imageUrls, imageUrl]);
+    setImageUrls((prev) => [...prev, imageUrl]);
+  };
+
+  // 이미지 삭제 기능 (미리보기에서 제거)
+  const handleRemoveImage = (index: number) => {
+    setPreviewImages((prev) => prev.filter((_, i) => i !== index));
+    setImageUrls((prev) => prev.filter((_, i) => i !== index));
   };
 
   // 후기 제출 핸들러
@@ -44,19 +93,27 @@ const ReviewWritePage = () => {
       return;
     }
 
+    if (!roomId) {
+      setError('객실 정보가 없습니다.');
+      return;
+    }
+
     setLoading(true);
     try {
       const user = await browserSupabase().auth.getUser();
       if (!user.data.user) throw new Error('로그인이 필요합니다.');
 
-      const { data, error } = await browserSupabase().from('reviews').insert([
-        {
-          user_id: user.data.user.id,
-          rating,
-          comment: reviewText,
-          review_img_url: imageUrls,
-        },
-      ]);
+      const { data, error } = await browserSupabase()
+        .from('reviews')
+        .insert([
+          {
+            user_id: user.data.user.id,
+            room_id: roomId,
+            rating,
+            comment: reviewText,
+            review_img_url: imageUrls
+          }
+        ]);
 
       if (error) throw error;
       router.push('/my-page/user/review');
@@ -92,8 +149,16 @@ const ReviewWritePage = () => {
       <div className="mb-4">
         <p className="font-semibold">리뷰 이미지 등록하기</p>
         <div className="flex space-x-2 mt-2">
-          {imageUrls.map((url, index) => (
-            <Image key={index} src={url} alt="리뷰 이미지" width={80} height={80} className="rounded" />
+          {previewImages.map((url, index) => (
+            <div key={index} className="relative group">
+              <Image src={url} alt="리뷰 이미지" width={80} height={80} className="rounded" />
+              <button
+                className="absolute top-0 right-0 bg-red-500 text-white text-xs p-1 rounded-full opacity-75 hover:opacity-100"
+                onClick={() => handleRemoveImage(index)}
+              >
+                ×
+              </button>
+            </div>
           ))}
           <label className="cursor-pointer border border-gray-300 p-2 rounded">
             이미지 추가
@@ -115,10 +180,7 @@ const ReviewWritePage = () => {
 
       {/* 버튼 그룹 */}
       <div className="flex justify-end space-x-4">
-        <button
-          className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
-          onClick={() => setIsCancelModalOpen(true)}
-        >
+        <button className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400" onClick={() => setIsCancelModalOpen(true)}>
           취소
         </button>
         <button
@@ -137,10 +199,7 @@ const ReviewWritePage = () => {
             <p className="text-lg font-semibold mb-4">페이지를 나가시겠습니까?</p>
             <p className="text-sm text-gray-600 mb-4">페이지를 나가면 후기 등록 시 작성된 내용이 초기화됩니다.</p>
             <div className="flex justify-center space-x-4">
-              <button
-                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
-                onClick={() => setIsCancelModalOpen(false)}
-              >
+              <button className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400" onClick={() => setIsCancelModalOpen(false)}>
                 아니요
               </button>
               <button className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600" onClick={() => router.back()}>
