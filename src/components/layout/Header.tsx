@@ -2,8 +2,6 @@
 
 import Link from 'next/link';
 
-import useAuthStore from '@/store/useAuth';
-
 import Logo from './Logo';
 import MyPageIcon from './navigator/MyPageIcon';
 import HamburgerBtn from './navigator/HamburgerBtn';

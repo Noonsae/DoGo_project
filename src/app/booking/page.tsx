@@ -98,37 +98,48 @@ const Booking = () => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen">
+    <div className="w-full max-w-[1300px] px-[50px] mx-auto py-[60px] flex flex-row gap-[30px]">
       <Sidebar roomData={roomData} />
 
       {/* inner */}
-      <div className="max-w-[1000px] space-y-6 flex-1 container mx-auto px-4 py-28 pb-32">
-        <section className="bg-white shadow-lg rounded-lg p-6 w-[892px]">
-          <p className="text-lg font-semibold">체크인 정보</p>
-          <p className="text-neutral-600">예약하시려는 고객님의 정보를 입력해 주세요.</p>
-        </section>
+      <div className="w-full flex flex-col mt-[60px] items-center justify-center">
+        {/* 체크인 정보 */}
+        <section className="w-full px-9 py-4 mb-8 bg-white rounded-[12px] border border-[#E2E2E2]">
+          <div className="py-4 border-b border-[#E2E2E2]">
+            <p className="text-[20px] text-[#232527] font-semibold mb-2">체크인 정보</p>
+            <p className="text-[16px] leading-[1.45] font-normal text-neutral-600">
+              예약하시려는 고객님의 정보를 입력해 주세요.
+            </p>
+          </div>
 
-        <section className="bg-white shadow-lg rounded-lg p-6 w-[892px]">
-          <p className="text-lg font-semibold">{`투숙객 정보 (필수)`}</p>
-          <p className="text-neutral-600 mb-2">자동완성기능을 사용할 경우 정확한 정보 확인이 어렵습니다.</p>
-          <div className="flex flex-row items-center justify-around">
-            <div className="flex flex-col justify-center">
-              <p className="w-[400px]">영문 이름</p>
-              <input
-                className="border p-3 mt-2 rounded-md"
-                placeholder="영문으로 작성해주세요"
-                value={firstName}
-                onChange={(e) => handleEnglishInput(e.target.value, setFirstName)}
-              />
-            </div>
-            <div className="flex flex-col justify-center">
-              <p className="flex flex-col justify-end w-[400px]">영문 성</p>
-              <input
-                className="border p-3 mt-2 rounded-md"
-                placeholder="영문으로 작성해주세요"
-                value={lastName}
-                onChange={(e) => handleEnglishInput(e.target.value, setLastName)}
-              />
+          <div className="w-full py-4">
+            <p className="text-[20px] text-[#232527] font-semibold mb-1">{`투숙객 정보 (필수)`}</p>
+            <p className="text-neutral-600 mb-4">{`(자동완성기능을 사용할 경우 정확한 정보 확인이 어렵습니다.)`}</p>
+            <div className="flex flex-row items-center justify-between gap-5">
+              <div className="w-full">
+                <p className="mb-2 text-[16px] text-[#444]">
+                  영문 이름
+                  <span className="ml-1 text-[#FF5B45] text-[14px] leading-[1.45]">*</span>
+                </p>
+                <input
+                  className="w-full px-4 py-3 border border-[#BFBFBF] rounded-[8px]"
+                  placeholder="영문으로 작성해주세요"
+                  value={firstName}
+                  onChange={(e) => handleEnglishInput(e.target.value, setFirstName)}
+                />
+              </div>
+
+              <div className="w-full">
+                <p className="mb-2 text-[16px] text-[#444]">
+                  영문 성<span className="ml-1 text-[#FF5B45] text-[14px] leading-[1.45]">*</span>
+                </p>
+                <input
+                  className="w-full px-4 py-3 border border-[#BFBFBF] rounded-[8px]"
+                  placeholder="영문으로 작성해주세요"
+                  value={lastName}
+                  onChange={(e) => handleEnglishInput(e.target.value, setLastName)}
+                />
+              </div>
             </div>
           </div>
         </section>

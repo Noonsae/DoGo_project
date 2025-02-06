@@ -14,13 +14,10 @@ interface ResetModalProps {
 }
 
 const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: ResetModalProps) => (
-  <div className=" flex flex-col h-full w-full max-w-[360px] sm:max-w-[375px] p-4">
+  <div className=" flex flex-col h-full w-full max-w-[360px] sm:max-w-[375px] ">
     {form.modalType === 'reset' && (
       <div className=" flex flex-col">
-        <p className="sm:hidden flex flex-col justify-center items-center text-neutral-800 mt-[30px]">
-          비밀번호 재설정
-        </p>
-        <p className="text-[28px] mt-[38px] leading-[135%] mb-[40px] sm:mb-[32px] sm:text-[24px] sm:leading-[130%] text-lg sm:text-xl font-semibold ">
+        <p className="text-[24px] sm:text-[28px] leading-[135%] mb-[40px] sm:mb-[32px] sm:leading-[130%] text-lg sm:text-xl font-semibold ">
           가입정보가 <br />
           인증 되었습니다.
         </p>
@@ -52,7 +49,9 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
           }}
         >
           <div className="mb-4">
-            <label className="text-base block text-neutral-800 font-semibold mb-2">OTP 인증 코드</label>
+            <label className=" text-base block text-neutral-800 font-semibold mb-[4px] text-[16px]">
+              OTP 인증 코드
+            </label>
             <input
               type="text"
               placeholder="OTP를 입력해 주세요."
@@ -61,18 +60,17 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
                 setForm({ ...form, otp: e.target.value });
                 setErrors((prev) => ({ ...prev, otp: undefined }));
               }}
-              className={`w-full h-[40px] md:h-[48px] pl-[12px] md:pl-[16px] border rounded-[8px] focus:outline-none focus:ring-2 ${
+              className={`  text-neutral-800 w-full h-[40px] md:h-[48px] pl-[12px] md:pl-[16px] border rounded-[8px] focus:outline-none focus:ring-1 ${
                 errors.otp ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-[#B3916A]'
               }`}
             />
-            <p className="text-sm mt-1 min-h-[5px] text-neutral-500 ml-[1px]">OTP는 자동으로 입력됩니다.</p>
-            <p className={`text-sm text-red-500 mt-1 min-h-[10px] ${errors.otp ? 'visible' : 'invisible'}`}>
-              {errors.otp || 'placeholder'}
+            <p className="mt-[4px] mb-[20px] text-sm min-h-[5px] text-neutral-500 ml-[1px] ">
+              OTP는 자동으로 입력됩니다.
             </p>
 
             {/* 새 비밀번호 입력 */}
             <div className="text-base">
-              <label className="block text-neutral-800 font-semibold mb-2">새 비밀번호</label>
+              <label className="block text-neutral-800 font-semibold mb-[4px] text-[16px]">새 비밀번호</label>
               <div className="relative">
                 <input
                   type={form.showPassword ? 'text' : 'password'}
@@ -92,7 +90,7 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
                         : '영문 + 숫자 또는 특수문자 조합, 8자~32자 입력하세요.'
                     }));
                   }}
-                  className={`w-full h-[40px] md:h-[48px] pl-[12px] md:pl-[16px] border rounded-[8px] focus:outline-none focus:ring-2 ${
+                  className={`text-neutral-800 w-full h-[40px] md:h-[48px] pl-[12px] md:pl-[16px] border rounded-[8px] focus:outline-none focus:ring-1 ${
                     errors.password ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-[#B3916A]'
                   }`}
                 />
@@ -110,6 +108,7 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
                   {form.showPassword ? <CloseEyesIcon /> : <OpenEyesIcon />}
                 </button>
               </div>
+              <p className="text-[14px] text-neutral-600 ">영문 대•소문자/숫자/특수문자 중 2가지 이상 조합, 8자~32자</p>
               <p className={`text-sm text-red-500 mt-1 min-h-[5px] ${errors.password ? 'visible' : 'invisible'}`}>
                 {errors.password || 'placeholder'}
               </p>
@@ -117,7 +116,7 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
 
             {/* 비밀번호 확인 입력 */}
             <div className="relative w-full">
-              <p className="block text-neutral-800 font-semibold mb-2">비밀번호 확인</p>
+              <p className="block text-neutral-800 font-semibold mb-[4px] text-[16px]">비밀번호 확인</p>
               <input
                 type={form.showConfirmPassword ? 'text' : 'password'}
                 placeholder="비밀번호를 다시 입력해 주세요."
@@ -140,7 +139,7 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
                     }));
                   }
                 }}
-                className={`text-[16px] font-medium leading-[135%] text-neutral-500 w-full h-[40px] sm:h-[48px] pl-[12px] sm:pl-[16px] border rounded-[8px] focus:outline-none focus:ring-2 ${
+                className={`text-[16px] font-medium leading-[135%] text-neutral-800 w-full h-[40px] sm:h-[48px] pl-[12px] sm:pl-[16px] border rounded-[8px] focus:outline-none focus:ring-1 ${
                   errors.confirmPassword ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-[#B3916A]'
                 }`}
               />
@@ -169,7 +168,7 @@ const ResetModal = ({ form, errors, setForm, setErrors, handleResetPassword }: R
           <div className="flex flex-col">
             <button
               type="submit"
-              className="text-[18px] sm:text-[20px] text-white text-center font-semibold leading-[135%] mb-[14px] sm:mb-[12px] w-full max-w-md md:w-[352px] h-[48px] mt-[20px] text-xl bg-[#B3916A] py-[10px] rounded-xl hover:bg-[#a37e5f] transition"
+              className="h-[48px] text-[18px] mt-[207px] sm:mt-[40px] sm:text-[20px] text-white text-center font-semibold leading-[135%] mb-[14px] sm:mb-[12px] w-full max-w-md md:w-[352px] text-xl bg-[#B3916A] py-[10px] rounded-xl hover:bg-[#a37e5f] transition"
             >
               {form.isLoading ? '처리 중...' : '완료'}
             </button>

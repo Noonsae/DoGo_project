@@ -53,7 +53,7 @@ const Page = () => {
               일반 회원가입
             </p>
             <p
-              className={` text-center font-pretendard text-[14px] sm:text-[16px] font-normal leading-[145%] text-xs mt-2 w-[158px] ${
+              className={` text-center font-pretendard text-[16px] sm:text-[14px] font-normal leading-[145%] text-xs mt-2 w-[158px] ${
                 userType === 'user' ? 'text-[#B3916A]' : 'text-gray-500'
               }`}
             >
@@ -90,7 +90,7 @@ const Page = () => {
         {/* 다음 버튼 */}
         <button
           onClick={handleNext}
-          className="px-[24px] py-[8px] w-full max-w-[400px] text-[20px] bg-[#B3916A] font-pretendard font-semibold leading-[135%] not-italic text-white rounded-lg hover:bg-[#a37e5f] transition mb-[12px] sm:mb-[16px]
+          className="h-[48px] px-[24px] py-[8px] w-full max-w-[400px] text-[20px] bg-[#B3916A] font-pretendard font-semibold leading-[135%] not-italic text-white rounded-lg hover:bg-[#a37e5f] transition mb-[12px] sm:mb-[16px]
           "
         >
           다음
@@ -105,7 +105,6 @@ const Page = () => {
             로그인
           </button>
         </p>
-        {/* 커밋용주석 */}
         {userType === 'user' && (
           <>
             {/* 간편 회원가입 구분선 */}

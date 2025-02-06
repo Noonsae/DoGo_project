@@ -44,23 +44,7 @@ const InputField = ({
             error ? 'border-red-500 focus:ring-red-500' : 'border-[#BFBFBF] focus:border-[#B3916A] focus:outline-none'
           } ${className}`}
         />
-
-        {isPassword && togglePasswordVisibility && (
-          <button
-            type="button"
-            tabIndex={-1}
-            onClick={togglePasswordVisibility}
-            className="px-3 text-neutral-500 hover:text-neutral-500"
-          >
-            {isPasswordVisible ? (
-              <CloseEyesIcon className="text-neutral-500" />
-            ) : (
-              <OpenEyesIcon className="text-neutral-500" />
-            )}
-          </button>
-        )}
       </div>
-
       {helperText && <p className="text-xs text-neutral-600 mt-1">{helperText}</p>}
 
       {error && <p className="text-[14px] text-red-500">{error}</p>}

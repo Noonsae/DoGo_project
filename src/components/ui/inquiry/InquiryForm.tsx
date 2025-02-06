@@ -97,7 +97,6 @@ const InquiryForm = forwardRef(({ category, hotel_id }: InquiryFormProps, ref) =
       setLoading(false);
     }
   };
-  //커밋용
   useImperativeHandle(ref, () => ({
     submit: handleSubmit
   }));
@@ -111,7 +110,7 @@ const InquiryForm = forwardRef(({ category, hotel_id }: InquiryFormProps, ref) =
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        className="h-[48px] px-[16px] py-[8px] border rounded p-2"
+        className="h-[48px] px-[16px] py-[8px] border rounded p-2 border-neutral-400 focus:ring-1 focus:ring-[#B3916A] focus:border-[#B3916A] outline-none"
       />
 
       <label className="mt-[20px] text-neutral-800 font-pretendard text-[16px] font-semibold leading-[135%] ">
@@ -121,7 +120,7 @@ const InquiryForm = forwardRef(({ category, hotel_id }: InquiryFormProps, ref) =
         value={content}
         placeholder="문의하실 글의 내용을 작성해 주세요."
         onChange={(e) => setContent(e.target.value)}
-        className="px-[16px] py-[8px] flex flex-row border rounded p-2 h-[176px] resize-none "
+        className="px-[16px] py-[8px] flex flex-row border rounded p-2 h-[176px] resize-none border-neutral-400 focus:ring-1 focus:ring-[#B3916A] focus:border-[#B3916A] outline-none"
       />
     </form>
   );
