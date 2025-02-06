@@ -59,18 +59,13 @@ const Modal = ({ isOpen, onClose, room, hotelData }: ModalProps) => {
       <div className=" bg-white rounded shadow-lg w-full h-full md:w-[600px] md:h-[700px] max-w-4xl overflow-y-auto scrollbar-hide">
         <div className="w-full sticky top-0 z-10 bg-[#221A1A] text-[#FDF9F4] text-[18px] sm:text-[20px] md:text-[22px] lg:text-[24px] font-bold text-center">
           <div className="flex items-center justify-between px-4 py-2 w-full bg-[#221A1A] text-[#FDF9F4] text-[18px] sm:text-[20px] md:text-[22px] lg:text-[24px] font-bold">
-            {/* 객실 이름 - 가운데 정렬 */}
-            <div className="flex-1 flex justify-center items-center">{room.room_name}</div>
-            <button
-              onClick={onClose}
-              className="mb-[10px] pt-[22px] pr-[22px] flex flex-row justify-end text-[#FDF9F4] hover: font-bold cursor-pointer"
-            >
-              <CloseButtonIcon />
-            </button>
+            <div className="flex items-center justify-between w-full px-4 py-2">
+              <div className="flex-1 text-center">{room.room_name}</div>
+              <button onClick={onClose} className="p-2 text-[#FDF9F4] hover:font-bold cursor-pointer">
+                <CloseButtonIcon />
+              </button>
+            </div>
           </div>
-          {/* </div> */}
-          {/* <IoCloseIcon onClick={onClose} className="absolute top-4 right-4 text-2xl cursor-pointer" /> */}
-          {/* 네비게이션 탭 */}
           <nav className="bg-white flex border-b sticky top-0 z-10">
             {[
               { id: 'info', label: '객실 정보' },
@@ -141,7 +136,7 @@ const Modal = ({ isOpen, onClose, room, hotelData }: ModalProps) => {
             <ul className="grid grid-cols-3 md:grid-cols-4 text-gray-700">
               {Array.isArray(room.option) && room.option.length > 0 ? (
                 room.option.map((item, index) => (
-                  <li key={index} className="text-[15px] flex items-center space-x-2 p-2">
+                  <li key={index} className="text-[14px] flex items-center space-x-2 p-2">
                     <IoCheckmarkCircle />
                     <span>{item as string}</span>
                   </li>
