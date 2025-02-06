@@ -97,7 +97,6 @@ const InquiryForm = forwardRef(({ category, hotel_id }: InquiryFormProps, ref) =
       setLoading(false);
     }
   };
-  //커밋용
   useImperativeHandle(ref, () => ({
     submit: handleSubmit
   }));

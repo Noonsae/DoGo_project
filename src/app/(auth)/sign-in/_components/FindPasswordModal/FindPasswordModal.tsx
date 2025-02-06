@@ -154,7 +154,6 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
       document.body.style.overflow = 'auto';
     };
   }, []);
-  //커밋용
   return (
     <div className="fixed inset-0 z-50 flex sm:items-center items-start justify-center bg-black bg-opacity-50 px-0 sm:px-4">
       <div className="p-[20px] sm:p-[32px] flex flex-col items-center bg-white shadow-lg relative w-full h-screen sm:h-auto sm:max-w-[424px] sm:rounded-lg">
