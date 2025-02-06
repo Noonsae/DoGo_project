@@ -18,7 +18,11 @@ const DurationModal = ({
   setTab: (value: 'date' | 'flexible') => void;
   onClose: () => void;
 }) => {
-  const { setCheckIn, setCheckOut, setMonth, setStay } = useSearchStore();
+
+  const setCheckIn = useSearchStore((state) => state.setCheckIn);
+  const setCheckOut = useSearchStore((state) => state.setCheckOut);
+  const setStay = useSearchStore((state) => state.setStay);
+  const setMonth = useSearchStore((state) => state.setMonth);
 
   // 저장 버튼
   const handleSaveSchedule = () => {
@@ -26,8 +30,7 @@ const DurationModal = ({
   };
 
   // 초기화 버튼
-  const handleResetSchedule = () => {    
-
+  const handleResetSchedule = () => {
     setCheckIn('');
     setCheckOut('');
     setStay(null);
