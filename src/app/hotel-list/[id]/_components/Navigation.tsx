@@ -40,9 +40,9 @@ const Navigation = ({ activeTab, scrollToSection, setActiveTab }: NavigationType
 
   return (
     <div>
-      <div className="fixed top-[148px] left-0 w-full z-20 bg-white border-b border-gray-300 shadow-sm">
-        <div className="max-w-[1200px] mx-auto">
-          <ul className="flex ml-4 gap-[52px]">
+      <div className="fixed top-[148px] left-0 w-full z-20 bg-white border-b border-gray-300 shadow-sm overflow-visible">
+        <div className="max-w-[1200px] mx-auto overflow-x-auto max-[360px]:overflow-x-scroll scrollbar-hide">
+          <ul className="flex ml-4 gap-[52px] w-max max-[360px]:w-max max-[360px]:whitespace-nowrap">
             {sections.map((tab) => (
               <li key={tab.id} className="text-center">
                 <a
