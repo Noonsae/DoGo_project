@@ -28,30 +28,34 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
   return (
     <section
       id="overview"
-      className="scroll-mt-20 w-full mt-[60px] max-w-[1200px] mx-auto px-[50px] lg:px-[30px] xl:px-[20px] 2xl:px-0"
+      className="scroll-mt-20 w-full mt-[60px] max-w-[1200px] mx-auto px-[50px] max-[360px]:mt-0 max-[360px]:px-0"
     >
       <div className="flex flex-col lg:flex-row gap-[12px]">
         {/* 메인 이미지 */}
         <div
-          className="relative overflow-hidden"
-          style={{
-            aspectRatio: '16/9',
-            borderRadius: '16px 0 0 16px', // 좌측 상단과 좌측 하단 둥글게
-            boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' // 그림자 추가
-          }}
+          className="relative overflow-hidden rounded-[16px_0_0_16px] max-[360px]:rounded-none 
+             max-[360px]:w-full max-[360px]:h-[260px] shadow-md"
         >
           <Image
             src={validImage(hotelData.main_img_url)}
             alt={hotelData.name || 'Default Image'}
             width={594} // 명확한 크기 설정
             height={363}
-            className="object-cover"
+            className="object-cover max-[360px]:h-[260px]"
             onClick={() => openModal(validImage(hotelData.main_img_url))}
           />
+          {Array.isArray(hotelData.hotel_img_urls) && (
+            <div
+              className="absolute bottom-2 right-2 px-3 py-1 bg-black bg-opacity-50 text-white text-sm rounded-full 
+                  hidden max-[360px]:block"
+            >
+              +{hotelData.hotel_img_urls.length}
+            </div>
+          )}
         </div>
 
         {/* 추가 이미지 */}
-        <div className="grid grid-cols-2 gap-[12px]">
+        <div className="grid grid-cols-2 gap-[12px] max-[360px]:hidden">
           {(Array.isArray(hotelData.hotel_img_urls) ? hotelData.hotel_img_urls : [])
             .slice(1, 5)
             .filter((image): image is string => typeof image === 'string')
@@ -101,14 +105,29 @@ const HotelOverview = ({ hotelData, toggleFavorite, hotelId, favoriteStatus }: H
         </div>
       </div>
       {/* 호텔 정보 */}
-      <div className="mt-4 text-center lg:text-left">
+      <div className="mt-4 text-center lg:text-left max-[360px]:px-[20px]">
         <div className="flex mt-2">
-          <h2 className="text-neutral-900 text-[28px] font-semibold">{hotelData.name || 'Hotel Name'}</h2>
+          <h2 className="text-neutral-900 text-[28px] font-semibold max-[360px]:text-[20px]">
+            {hotelData.name || 'Hotel Name'}
+          </h2>
           <span className="flex justify-center items-center ml-2">
             <RenderStars stars={hotelData.stars} />
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleFavorite(hotelId);
+              }}
+              className={` ml-[30px] p-2 rounded-full shadow-md bg-white text-gray-600 hidden max-[360px]:block ${
+                favoriteStatus[hotelId] ? 'active' : ''
+              }`}
+            >
+              {favoriteStatus[hotelId] ? '❤️' : '🤍'}
+            </button>
           </span>
         </div>
-        <p className="mt-2 text-gray-700">{hotelData.description || 'No description available.'}</p>
+        <p className="mt-2 text-gray-700 max-[360px]:flex  max-[360px]:text-left">
+          {hotelData.description || 'No description available.'}
+        </p>
       </div>
       {/* 모달 */}
       <UpModal
