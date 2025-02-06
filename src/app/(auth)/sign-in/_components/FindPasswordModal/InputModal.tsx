@@ -9,10 +9,11 @@ interface InputModalProps {
   handleTabChange: (tab: 'user' | 'business') => void;
 }
 const InputModal = ({ form, setForm, errors, setErrors, handleFindPassword, handleTabChange }: InputModalProps) => (
-  <div className=" flex flex-col h-full w-full max-w-[360px] sm:max-w-[375px] p-4">
-    <p className=" sm:hidden flex flex-col justify-center items-center text-neutral-800 mt-[30px]">비밀번호 재설정 </p>
-    <p className="text-[20px] font-semibold leading-[135%] text-neutral-800  text-xl sm:text-2xl mt-6 sm:mt-10 mb-6 sm:mb-8">
-      비밀번호를 재설정하기 위해 <br /> 가입 정보를 입력해 주세요.
+  <div className=" flex flex-col h-full w-full max-w-[360px] sm:max-w-[375px] ">
+    <p className="mb-[32px] sm:mb-[40px] mt-[38px] sm:mt-[36px] text-[24px] sm:text-[28px] leading-[32.4px] sm:leading-[37.8px] font-semibold text-[#232527]">
+      비밀번호를 찾기위해
+      <br />
+      가입 정보를 입력해 주세요.
     </p>
     <div className="flex border-b-2 w-full">
       <button
@@ -53,7 +54,9 @@ const InputModal = ({ form, setForm, errors, setErrors, handleFindPassword, hand
               setErrors((prev) => ({ ...prev, email: undefined }));
             }}
             className={`w-full h-[40px] md:h-[48px] pl-[12px] md:pl-[16px] border rounded-[8px] focus:outline-none focus:ring-2 ${
-              errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-black'
+              errors.email
+                ? 'border-red-500 focus:ring-red-500'
+                : 'border-gray-300 focus:border-[#B3916A] focus:ring-[#B3916A]'
             }`}
           />
         </div>
@@ -76,7 +79,9 @@ const InputModal = ({ form, setForm, errors, setErrors, handleFindPassword, hand
             setErrors((prev) => ({ ...prev, phone: undefined }));
           }}
           className={`appearance-none w-full h-[40px] md:h-[48px] pl-[12px] md:pl-[16px] border rounded-[8px] focus:outline-none focus:ring-2 ${
-            errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-black'
+            errors.phone
+              ? 'border-red-500 focus:ring-red-500'
+              : 'border-gray-300 focus:border-[#B3916A] focus:ring-[#B3916A]'
           }`}
         />
         <p className={`text-sm text-red-500 mt-1 min-h-[10px] ${errors.phone ? 'visible' : 'invisible'}`}>
@@ -84,10 +89,10 @@ const InputModal = ({ form, setForm, errors, setErrors, handleFindPassword, hand
         </p>
       </div>
 
-      <div className="flex flex-col rounded mt-[90px]">
+      <div className="flex flex-col rounded mt-[269px] sm:mt-[40px]">
         <button
           type="submit"
-          className=" text-[18px] sm:text-[20px] text-white text-center font-semibold leading-[135%] w-full mb-[14px] sm:mb-[12px] max-w-[360px] sm:max-w-[375px] md:max-w-[352px] bg-[#B3916A] py-[12px] md:py-[15px] rounded-xl hover:bg-[#a37e5f] transition"
+          className="flex flex-col justify-center items-center h-[48px] text-[18px] sm:text-[20px] text-white text-center font-semibold leading-[135%] w-full sm:mb-[16px] max-w-[360px] sm:max-w-[375px] md:max-w-[352px] bg-[#B3916A] py-[12px] md:py-[15px] rounded-xl hover:bg-[#a37e5f] transition"
         >
           {form.isLoading ? '조회중' : '비밀번호찾기'}
         </button>
