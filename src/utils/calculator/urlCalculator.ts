@@ -1,9 +1,5 @@
-// 공통) 빈칸 및 특수문자를 제거
-export const sanitizeInput = (text: string): string => {
-  return text.replace(/[^a-zA-Z0-9가-힣]/g, '');
-};
-
 // 1. 호텔 지역 정보(location) 칼큘레이터
+
 export const convertToEnglish = (text: string) => {
   // 한글을 영어로 변환하는 로직 (예: 간단한 매핑)
   const conversionMap: { [key: string]: string } = {
@@ -50,39 +46,7 @@ export const processInput = (text: string): { location: string; label: { label: 
   };
 };
 
-// 4. 여행 기간 정보 변환기
-const monthMapping: { [key: string]: number } = {
-  January: 1,
-  February: 2,
-  March: 3,
-  April: 4,
-  May: 5,
-  June: 6,
-  July: 7,
-  August: 8,
-  September: 9,
-  October: 10,
-  November: 11,
-  December: 12
-};
-
-export const parseSchedule = (stayInput: string, monthInput: string): { stay: string; month: number | null } => {
-  // 한글 및 특문 없애기
-  const removeKorean = (text: string): string => text.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-  const stay = stayInput ? removeKorean(sanitizeInput(stayInput)) : '';
-
-  // "여행월: EnglishMonth"에서 EnglishMonth 추출
-  const englishMonth = monthInput.split(':').pop()?.trim();
-  if (!englishMonth || !monthMapping[englishMonth]) {
-    throw new Error(`Invalid month format or month not recognized: ${monthInput}`);
-  }
-
-  const month = monthMapping[englishMonth] || null; // 매핑된 값 가져오기
-
-  return { stay, month };
-};
-
-// 5. 예약 정보 디테일 칼큘레이터
+// 4. 예약 정보 디테일 칼큘레이터
 export const parseDetails = (details: string): { room: string; adult: string; child: string; pet: string } => {
   const extractedDetails = {
     room: '1',
@@ -127,7 +91,7 @@ export const parseDetails = (details: string): { room: string; adult: string; ch
   return extractedDetails;
 };
 
-// 6. 호텔 성급 칼큘레이터
+// 5. 호텔 성급 칼큘레이터
 export const parseStars = (grade: string): number => {
   const match = grade.match(/성급:\s*(\d+)/);
   if (match) {
@@ -138,13 +102,13 @@ export const parseStars = (grade: string): number => {
   return 0; // 기본값
 };
 
-// 7. 편의시설(facilities) 칼큘레이터
+// 6. 편의시설(facilities) 칼큘레이터
 export const parseFacilities = (facilities: string): string[] => {
   // 쉼표로 구분된 문자열을 배열로 변환
   return facilities ? facilities.split(',').map((item) => item.trim()) : [];
 };
 
-// 8. 호텔 제공 서비스(services) 칼큘레이터
+// 7. 호텔 제공 서비스(services) 칼큘레이터
 export const parseServices = (services: string): string[] => {
   // 쉼표로 구분된 문자열을 배열로 변환
   return services ? services.split(',').map((item) => item.trim()) : [];
