@@ -11,26 +11,44 @@ interface ContactInfoProps {
   setSelectedCode: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const ContactInfo: React.FC<ContactInfoProps> = ({
-  userData,
-  selectedCode,
-  setSelectedCode
-}) => {
+const ContactInfo: React.FC<ContactInfoProps> = ({ userData, selectedCode, setSelectedCode }) => {
   return (
-    <section className="bg-white shadow-lg rounded-lg p-6 w-[892px]">
-      <p className="text-lg font-semibold">연락처 정보</p>
-      <p className="flex flex-col justify-end">이메일 정보</p>
-      <input value={userData?.email || ''} className="border p-3 w-full mt-2 rounded-md" placeholder="이메일" />
-      <label htmlFor="countryCode" className="text-lg font-semibold">
-        휴대폰 번호
-      </label>
-      <div className="flex space-y-2 mt-2 justify-around flex-row">
-        <div className="flex flex-col">
+    <section className="w-full px-9 py-4 mb-8 bg-white rounded-[12px] border border-[#E2E2E2]">
+      {/* 연락처 정보 */}
+      <div className="py-4 border-b border-[#e2e2e2] mb-4">
+        <p className="text-[20px] text-[#232527] font-semibold mb-2">연락처 정보</p>
+        <p className="text-[16px] leading-[1.45] font-normal text-neutral-600">
+          예약에 업데이트 사항이 있는 경우, 입력하신 연락처 정보로 안내드립니다.
+        </p>
+      </div>
+
+      {/* 이메일주소 입력 */}
+      <div className="mb-5">
+        <p className="mb-2 text-[16px] text-[#444] font-semibold">
+          이메일 주소
+          <span className="ml-1 text-[#FF5B45] text-[14px] leading-[1.45]">*</span>
+        </p>
+        <input
+          value={userData?.email || ''}
+          className=" w-full px-4 py-3 text-[#232527] rounded-[8px] border border-[#BFBFBF]"
+          placeholder="이메일"
+        />
+      </div>
+
+      {/* 휴대폰 번호 입력 */}
+      <div>
+        <label htmlFor="countryCode" className="text-[16px] text-[#444] font-semibold">
+          휴대폰 번호
+          <span className="ml-1 text-[#FF5B45] text-[14px] leading-[1.45]">*</span>
+        </label>
+
+        <div className="flex flex-row items-center justify-between gap-5 mt-2 pb-4">
           <select
             id="countryCode"
             value={selectedCode}
+            aria-placeholder="나라를 선택해 주세요."
             onChange={(e) => setSelectedCode(e.target.value)}
-            className="border rounded-md p-3 mt-2 w-[400px]"
+            className="w-full border px-4 py-3 rounded-[8px] text-[#232527]"
           >
             {countryCodes.map((country) => (
               <option key={country.code} value={country.code}>
@@ -38,12 +56,11 @@ const ContactInfo: React.FC<ContactInfoProps> = ({
               </option>
             ))}
           </select>
+          <input
+            value={userData?.phone_number || '전화번호를 입력해주세요.'}
+            className="w-full border px-4 py-3 rounded-[8px] text-[#232527]"
+          />
         </div>
-        <input
-          value={userData?.phone_number || ''}
-          className="border mt-2 p-3 rounded-md w-[400px]"
-          placeholder="전화번호를 입력해주세요"
-        />
       </div>
     </section>
   );

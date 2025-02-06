@@ -35,7 +35,7 @@ const Sidebar: React.FC<SidebarProps> = ({ roomData }) => {
   console.log(checkOutWeek);
 
   return (
-    <aside className="w-[278px] h-[422px] bg-white px-4 rounded-[12px] mt-[50px] border border-[#e2e2e2]">
+    <aside className="w-[278px] h-[422px] bg-white px-4 rounded-[12px] mt-[60px] border border-[#e2e2e2]">
       {/* 호텔 정보 */}
       <div className="w-full py-5 flex flex-row items-center justify-start gap-2 border-b border-[#E2E2E2]">
         <HiBuildingOffice />
