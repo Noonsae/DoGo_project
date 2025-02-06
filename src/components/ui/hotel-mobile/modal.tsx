@@ -48,71 +48,70 @@ const FilterModal = ({ isOpen, setIsOpen }: FilterModalProps) => {
     beds: searchParams.get('beds')?.split(',') || []
   });
 
-  // ✅ URL 변경될 때 필터 상태 동기화
+  // ✅ URL 변경될 때 필터 상태 동기화 (기존 location 유지)
   useEffect(() => {
-    setFilters({
-      label: searchParams.get('label') || '',
-      stars: searchParams.get('stars')?.split(',').map(Number).filter(Boolean) || [],
-      minPrice: parseInt(searchParams.get('minPrice') || '0', 10),
-      maxPrice: parseInt(searchParams.get('maxPrice') || '2000000', 10),
-      location: searchParams.get('location') || '',
-      facilityIds: searchParams.get('facilities')?.split(',') || [],
-      serviceIds: searchParams.get('services')?.split(',') || [],
-      beds: searchParams.get('beds')?.split(',') || []
-    });
-
-    // ✅ 특정 URL이면 모달 자동 열기
-    if (searchParams.get('filter') === 'open') {
-      setIsOpen(true);
-    } else {
-      setIsOpen(false);
-    }
+    setFilters((prev) => ({
+      ...prev,
+      location: searchParams.get('location') || prev.location || '', // ✅ 기존 location 유지
+      label: searchParams.get('label') || prev.label || '',
+      stars: searchParams.get('stars')?.split(',').map(Number).filter(Boolean) || prev.stars || [],
+      minPrice: parseInt(searchParams.get('minPrice') || `${prev.minPrice}`, 10),
+      maxPrice: parseInt(searchParams.get('maxPrice') || `${prev.maxPrice}`, 10),
+      facilityIds: searchParams.get('facilities')?.split(',') || prev.facilityIds || [],
+      serviceIds: searchParams.get('services')?.split(',') || prev.serviceIds || [],
+      beds: searchParams.get('beds')?.split(',') || prev.beds || []
+    }));
   }, [searchParams]);
 
   // ✅ 필터 값 변경 핸들러
   const handleFilterChange = (key: keyof FiltersType, value: any) => {
-    setFilters((prev) => ({ ...prev, [key]: value }));
+    setFilters((prev) => ({
+      ...prev,
+      [key]: key === 'beds' ? (Array.isArray(value) ? value : [value]) : value
+    }));
   };
 
-  // ✅ 필터 적용 후 URL 변경 (replace 사용 → 뒤로 가기 시 유지됨)
+  // ✅ 필터 적용 후 URL 변경 (location 유지)
   const applyFilters = () => {
-    console.log('🚀 적용되는 필터 상태:', filters); // 필터 값 확인
+    console.log('🚀 적용되는 필터 상태:', filters);
+
     const url = generateUrl({
-      label: filters.label || '',
+      // label: filters.label || searchParams.get('label') || '', // ✅ label 유지
+      location: filters.location || searchParams.get('location') || '',
       stars: filters.stars || [],
       minPrice: filters.minPrice ?? 0,
       maxPrice: filters.maxPrice ?? 2000000,
-      facilities: filters.facilityIds || [], // ✅ 매개변수 이름 변경
-      services: filters.serviceIds || [], // ✅ 매개변수 이름 변경
+      facilities: filters.facilityIds || [],
+      services: filters.serviceIds || [],
       beds: filters.beds || []
     });
 
-    console.log('🔗 생성된 URL:', url); // 최종 URL 확인
-    router.push(url); // ✅ 변경된 URL 즉시 적용
+    console.log('🔗 생성된 URL:', url);
+    router.push(url);
     setIsOpen(false);
   };
 
-  // ✅ 필터 초기화
+  // ✅ 필터 초기화 (location 유지)
   const resetFilters = () => {
     setFilters({
-      label: '',
+      location: searchParams.get('location') || '', // ✅ 기존 location 유지
+      label: searchParams.get('label') || '',
       stars: [],
       minPrice: 0,
       maxPrice: 2000000,
-      location: '',
       facilityIds: [],
       serviceIds: [],
       beds: []
     });
 
-    router.replace('/hotel-list'); // 초기화 후 기본 경로로 이동
+    router.replace('/hotel-list');
     setIsOpen(false);
   };
 
-  // ✅ 모달 닫기
+  // ✅ 모달 닫기 함수 유지
   const closeModal = () => {
     setIsOpen(false);
-    router.back(); // 뒤로 가기 (URL에서 필터 파라미터 제거)
+    router.back();
   };
 
   if (!isOpen) return null;
