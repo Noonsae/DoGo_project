@@ -1,12 +1,16 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { browserSupabase } from '@/supabase/supabase-client';
 import Image from 'next/image';
 
 const ReviewWritePage = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const bookingId = searchParams.get('booking_id'); // 예약 ID 가져오기
+
+  const [roomId, setRoomId] = useState<string | null>(null);
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState('');
   const [imageUrls, setImageUrls] = useState<string[]>([]);
@@ -14,6 +18,27 @@ const ReviewWritePage = () => {
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!bookingId) return;
+
+    const fetchRoomId = async () => {
+      try {
+        const { data, error } = await browserSupabase()
+          .from('bookings')
+          .select('room_id')
+          .eq('id', bookingId)
+          .single();
+
+        if (error) throw error;
+        setRoomId(data?.room_id || null);
+      } catch (err) {
+        console.error('Error fetching room ID:', err);
+      }
+    };
+
+    fetchRoomId();
+  }, [bookingId]);
 
   // 별점 설정
   const handleRating = (value: number) => setRating(value);
@@ -68,6 +93,11 @@ const ReviewWritePage = () => {
       return;
     }
 
+    if (!roomId) {
+      setError('객실 정보가 없습니다.');
+      return;
+    }
+
     setLoading(true);
     try {
       const user = await browserSupabase().auth.getUser();
@@ -78,10 +108,10 @@ const ReviewWritePage = () => {
         .insert([
           {
             user_id: user.data.user.id,
+            room_id: roomId,
             rating,
             comment: reviewText,
             review_img_url: imageUrls
-            //TODO :  room_id: 
           }
         ]);
 
@@ -169,16 +199,10 @@ const ReviewWritePage = () => {
             <p className="text-lg font-semibold mb-4">페이지를 나가시겠습니까?</p>
             <p className="text-sm text-gray-600 mb-4">페이지를 나가면 후기 등록 시 작성된 내용이 초기화됩니다.</p>
             <div className="flex justify-center space-x-4">
-              <button
-                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
-                onClick={() => setIsCancelModalOpen(false)}
-              >
+              <button className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400" onClick={() => setIsCancelModalOpen(false)}>
                 아니요
               </button>
-              <button
-                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-                onClick={() => router.back()}
-              >
+              <button className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600" onClick={() => router.back()}>
                 예
               </button>
             </div>

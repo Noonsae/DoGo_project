@@ -1,30 +1,33 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link'; // Next.js의 Link 컴포넌트
+import { useRouter } from 'next/navigation';
 import { browserSupabase } from '@/supabase/supabase-client';
 
-// 예약 데이터 타입 정의
 interface Booking {
-  id: string; // 예약 ID
-  room_id: string; // 객실 ID
-  check_in_date: string; // 체크인 날짜
-  check_out_date: string; // 체크아웃 날짜
-  status: 'confirmed' | 'pending' | 'cancelled'; // 예약 상태
+  id: string;
+  room_id: string;
+  check_in_date: string;
+  check_out_date: string;
+  status: 'confirmed' | 'pending' | 'cancelled';
   room_details: {
-    room_name: string; // 객실 이름
-    price: number; // 객실 가격
-    room_img_url: string | null; // 객실 이미지 URL
+    room_name: string;
+    price: number;
+    room_img_url: string | null;
+  };
+  hotel_details: {
+    name: string;
+    address: string;
   };
 }
 
 const UserBookingPage: React.FC = () => {
-  const [bookings, setBookings] = useState<Booking[]>([]); // 예약 리스트 상태
-  const [loading, setLoading] = useState(true); // 로딩 상태
-  const [error, setError] = useState<string | null>(null); // 에러 상태
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
-    // 예약 데이터 가져오기
     const fetchBookings = async () => {
       try {
         setLoading(true);
@@ -37,7 +40,7 @@ const UserBookingPage: React.FC = () => {
           throw new Error('로그인 정보가 없습니다.');
         }
 
-        // Supabase에서 예약 데이터와 객실 데이터를 조인하여 가져옴
+        // Supabase에서 예약 데이터와 객실 및 호텔 정보를 조인하여 가져옴
         const { data, error } = await browserSupabase()
           .from('bookings')
           .select(
@@ -50,7 +53,12 @@ const UserBookingPage: React.FC = () => {
             rooms (
               room_name,
               price,
-              room_img_url
+              room_img_url,
+              hotel_id
+            ),
+            hotels (
+              name,
+              address
             )
           `
           )
@@ -70,6 +78,10 @@ const UserBookingPage: React.FC = () => {
               room_name: booking.rooms?.room_name || 'N/A',
               price: booking.rooms?.price || 0,
               room_img_url: typeof booking.rooms?.room_img_url === 'string' ? booking.rooms.room_img_url : null
+            },
+            hotel_details: {
+              name: booking.hotels?.name || 'N/A',
+              address: booking.hotels?.address || '주소 없음'
             }
           })) || [];
 
@@ -91,37 +103,43 @@ const UserBookingPage: React.FC = () => {
   return (
     <div className="p-6 bg-white rounded-lg shadow">
       <h1 className="text-2xl font-bold mb-4">내 예약</h1>
-      <ul className="space-y-4">
-        {bookings.length === 0 && (
-          <>
-            <h1 className="text-2xl font-bold mb-4">내 예약</h1>
-            <p className="text-[14px] font-medium text-gray-500">예약이 되어 있지 않습니다.</p>
-          </>
-        )}
-        {bookings.map((booking) => (
-          <li key={booking.id} className="p-4 border rounded shadow">
-            <div className="flex items-center space-x-4">
-              {/* 객실 이미지 */}
-              {booking.room_details.room_img_url && (
-                <img
-                  src={booking.room_details.room_img_url}
-                  alt={booking.room_details.room_name}
-                  className="w-24 h-24 object-cover rounded"
-                />
-              )}
-              <div className="flex-1">
-                <h3 className="font-bold text-lg">{booking.room_details.room_name}</h3>
-                <p>
-                  체크인: {new Date(booking.check_in_date).toLocaleDateString()} <br />
-                  체크아웃: {new Date(booking.check_out_date).toLocaleDateString()}
-                </p>
-                <p className={`mt-2 font-semibold ${getStatusClass(booking.status)}`}>상태: {booking.status}</p>
+      {bookings.length === 0 ? (
+        <p className="text-center text-gray-500">예약이 없습니다.</p>
+      ) : (
+        <ul className="space-y-4">
+          {bookings.map((booking) => (
+            <li
+              key={booking.id}
+              className="p-4 border rounded shadow cursor-pointer hover:bg-gray-100"
+              onClick={() => router.push(`/booking/${booking.id}`)}
+            >
+              <div className="flex items-center space-x-4">
+                {/* 객실 이미지 */}
+                {booking.room_details.room_img_url && (
+                  <img
+                    src={booking.room_details.room_img_url}
+                    alt={booking.room_details.room_name}
+                    className="w-24 h-24 object-cover rounded"
+                  />
+                )}
+                <div className="flex-1">
+                  <h3 className="font-bold text-lg">{booking.room_details.room_name}</h3>
+                  <p className="text-sm text-gray-600">{booking.hotel_details.name}</p>
+                  <p className="text-sm text-gray-500">{booking.hotel_details.address}</p>
+                  <p className="text-sm">
+                    체크인: {new Date(booking.check_in_date).toLocaleDateString()} <br />
+                    체크아웃: {new Date(booking.check_out_date).toLocaleDateString()}
+                  </p>
+                  <p className={`mt-2 font-semibold ${getStatusClass(booking.status)}`}>
+                    상태: {getStatusLabel(booking.status)}
+                  </p>
+                </div>
+                <p className="font-bold">{booking.room_details.price.toLocaleString()}원/박</p>
               </div>
-              <p className="font-bold">{booking.room_details.price.toLocaleString()}원/박</p>
-            </div>
-          </li>
-        ))}
-      </ul>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
@@ -138,6 +156,11 @@ const getStatusClass = (status: string) => {
     default:
       return 'text-gray-500';
   }
+};
+
+// 상태 라벨 변환
+const getStatusLabel = (status: string) => {
+  return status === 'confirmed' ? '예약 확정' : status === 'pending' ? '대기 중' : '취소됨';
 };
 
 export default UserBookingPage;
