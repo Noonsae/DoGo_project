@@ -20,7 +20,7 @@ const HotelRoom = ({ roomsData, getValidImageUrl, roomOption, hotelData }: Hotel
   const searchParams = useSearchParams();
   const checkIn = useSearchStore((state) => state.checkIn);
   const checkOut = useSearchStore((state) => state.checkOut);
-  const stay = useSearchStore((state) => state.stay);
+  const stay = useSearchStore((state) => state.stay) ?? 1;
   const month = useSearchStore((state) => state.month);
   const router = useRouter();
   const room_count = searchParams.get('room');
