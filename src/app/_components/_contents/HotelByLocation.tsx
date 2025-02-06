@@ -24,7 +24,7 @@ const HotelByLocation = () => {
 
   return (
     <section className="w-full max-w-[1300px] h-[850px] px-[50px] mx-auto  py-[80px] pb-[120px]">
-      <h3 className="text-[24px] font-semibold">각 지역별 인기 호텔을 소개합니다.</h3>
+      <h3 className="text-[24px] font-semibold mb-1">각 지역별 인기 호텔을 소개합니다.</h3>
       <p className="text-[18px] text-[#636363] font-normal leading-[1.45]">
         회원님들께 가장 높은 평가를 받은 인기 호텔들을 엄선하여 추천해드려요.
       </p>

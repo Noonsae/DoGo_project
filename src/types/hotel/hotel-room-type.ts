@@ -7,3 +7,16 @@ export type HotelRoomProps = {
   roomOption: React.ReactNode;
   hotelData: HotelType;
 };
+
+export interface BookingRoomData {
+  room_name: string;
+  hotels?: {
+    id?: string;
+    name?: string;
+    check_in?: string;
+    check_out?: string;
+  };
+  room_img_url?: string[];
+  room_count?: number;
+  price?: number; // 가격 속성 추가
+}

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { HotelWithPriceOnly } from '@/types/supabase/hotel-type';
-import fetchHotelsByLocationWithMinPrice from '@/utils/fetchHotelsByLocation';
+import fetchHotelsByLocationWithMinPrice from '@/utils/api/fetch/fetchHotelsByLocation';
 
 /**
  * 특정 location에 따라 호텔 데이터를 캐싱하고 반환하는 React Query 훅
@@ -19,7 +19,6 @@ const useHotelsByLocation = (location: string | undefined) => {
     enabled: !!location, // location이 있을 때만 활성화
     staleTime: Infinity, // 데이터가 신선한 상태로 간주되는 시간 (5분)
     refetchOnWindowFocus: false // 창 포커스 시 리패치 방지
-
   });
 };
 

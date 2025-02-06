@@ -80,22 +80,24 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
     setErrors({});
   };
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4 sm:px-0">
-      <div className="w-full max-w-[424px] h-full max-h-[635px] bg-white rounded-lg shadow-lg relative px-4 sm:px-10 sm:py-8">
-        <button
-          onClick={onClose}
-          className="absolute mt-[20px] sm:mt-[41px] mr-[20px] sm:mr-[41px] top-3 right-3 text-gray-500 hover:text-black font-bold cursor-pointer"
-        >
-          <CloseButtonIcon />
-        </button>
+    <div className=" fixed inset-0 bg-black bg-opacity-50 flex sm:items-center items-start justify-center z-50 px-0 sm:px-4">
+      <div className="w-full sm:max-w-[424px] min-h-screen sm:min-h-0 sm:h-auto bg-white sm:rounded-lg shadow-lg relative px-9 sm:px-9 sm:py-9 overflow-y-auto">
+        <div>
+          <p className=" sm:hidden flex flex-col justify-center items-center text-neutral-800 mt-[30px]">아이디 찾기</p>
+          <div className="flex flex-row justify-end ">
+            <button onClick={onClose} className="text-neutral-800 hover:text-black font-bold cursor-pointer">
+              <CloseButtonIcon />
+            </button>
+          </div>
+        </div>
 
         {form.modalType === 'input' && (
-          <div className="flex flex-col h-full">
-            <p className="text-xl sm:text-2xl font-bold mt-20 sm:mt-[36px] mb-10 sm:mb-[40px]">
+          <div className="flex flex-col h-full justify-center">
+            <p className="text-neutral-900 text-xl sm:text-2xl font-bold mt-[24px] mb-10 sm:mb-[24px]">
               DoGo 가입 정보로 <br /> 아이디를 확인하세요.
             </p>
 
-            <div className="flex border-b-2 w-full max-w-[352px]">
+            <div className="flex border-b-2 w-full max-w-[352px] ">
               <button
                 className={`flex-1 pb-2 sm:pb-[10px] text-center ${
                   form.activeTab === 'user'
@@ -127,7 +129,8 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
             >
               <div>
                 <div className="mt-8 sm:mt-[30px]">
-                  <label className="block text-gray-700 mb-1">이름</label>
+                  <label className="block text-neutral-800 mb-[4px] sm:mb-[8px] font-semibold">이름</label>
+
                   <input
                     type="text"
                     placeholder="이름을 입력해 주세요."
@@ -136,7 +139,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
                       setForm((prevForm) => ({ ...prevForm, name: e.target.value }));
                       setErrors((prev) => ({ ...prev, name: undefined }));
                     }}
-                    className={`text-[15px] w-full max-w-[352px] h-[48px] pl-4 pt-2 pb-2 border rounded-[8px] focus:outline-none focus:ring-2 ${
+                    className={`gap-[4px] text-[15px] text-neutral-500 w-full max-w-[352px] h-[48px] pl-4 pt-2 pb-2 border rounded-[8px] focus:outline-none focus:ring-2 ${
                       errors.name ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-black'
                     }`}
                   />
@@ -145,17 +148,20 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
                   {errors.name || 'placeholder'}
                 </p>
 
-                <label className="block mt-4 sm:mt-[20px] text-gray-700">휴대폰 번호</label>
+                <label className="text-neutral-800 font-semibold block mt-4 sm:mt-[20px] mb-[4px] sm:mb-[8px]">
+                  {' '}
+                  {form.activeTab === 'user' ? '휴대폰 번호' : '담당자 번호'}
+                </label>
                 <input
                   type="text"
                   placeholder="휴대폰 번호를 입력해 주세요."
                   value={form.phone}
                   onChange={(e) => {
-                    const formattedPhone = e.target.value.replace(/[^0-9-]/g, ''); // 숫자, - 만 허용
+                    const formattedPhone = e.target.value.replace(/[^0-9-]/g, '');
                     setForm((prevForm) => ({ ...prevForm, phone: formattedPhone }));
                     setErrors((prev) => ({ ...prev, phone: undefined }));
                   }}
-                  className={`text-[15px] w-full max-w-[352px] h-[48px] pl-4 pt-2 pb-2 border rounded-[8px] mb-1 focus:outline-none focus:ring-2 ${
+                  className={`gap-[4px] text-neutral-500 text-[15px] w-full max-w-[352px] h-[48px] pl-4 pt-2 pb-2 border rounded-[8px] mb-1 focus:outline-none focus:ring-2 ${
                     errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-black'
                   }`}
                 />
@@ -167,7 +173,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
               <div className="flex flex-col rounded">
                 <button
                   type="submit"
-                  className="w-full bg-[#B3916A] mt-8 sm:mt-[80px] font-bold text-white py-4 rounded-xl hover:bg-[#a37e5f] transition"
+                  className="text-white text-center  text-[18px] sm:text-[20px] font-semibold leading-[135%] w-full bg-[#B3916A] mt-[100px] sm:mt-[80px]  py-4 rounded-xl hover:bg-[#a37e5f] transition"
                   disabled={form.isLoading}
                 >
                   {form.isLoading ? '조회 중...' : '아이디 찾기'}
@@ -190,11 +196,10 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
               <p className="text-lg sm:text-xl font-semibold">
                 <span className="text-[#B3916A]">{form.resultEmail}</span>입니다.
               </p>
-              <p className="text-sm sm:text-[15px] text-gray-500 mt-2">정보 보호를 위해 아이디의 일부만 보여집니다.</p>
             </div>
             <button
               onClick={onClose}
-              className="w-full max-w-[352px] sm:mt-[180px] bg-[#B3916A] font-bold text-white py-4 rounded-xl hover:bg-[#a37e5f] transition"
+              className="w-full max-w-[352px] mt-[180px] sm:mt-[180px] bg-[#B3916A] font-bold text-white py-4 rounded-xl hover:bg-[#a37e5f] transition"
             >
               확인
             </button>
@@ -218,7 +223,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
             </div>
             <button
               onClick={onClose}
-              className="text-white text-center leading-[135%] h-[48px] text-[16px] sm:text-[18px] md:text-[20px] w-full max-w-[352px] mt-[40px] bg-[#B3916A] font-bold py-4 rounded-xl hover:bg-[#a37e5f] transition"
+              className=" text-[18px] sm:text-[20px] text-white text-center leading-[135%] h-[48px] md:text-[20px] w-full max-w-[352px] mt-[40px] bg-[#B3916A] font-bold py-4 rounded-xl hover:bg-[#a37e5f] transition"
             >
               확인
             </button>

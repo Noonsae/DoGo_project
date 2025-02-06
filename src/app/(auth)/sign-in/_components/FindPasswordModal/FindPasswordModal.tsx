@@ -6,7 +6,7 @@ import CloseButtonIcon from '@/components/ui/icon/CloseButtonIcon';
 import InputModal from './InputModal';
 import ResetModal from './ResetModal';
 import SuccessModal from './SuccessModal';
-import { isValidPassword } from '@/utils/validation';
+import { isValidPassword } from '@/utils/calculator/validation';
 import Swal from 'sweetalert2';
 
 const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
@@ -155,13 +155,15 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
     };
   }, []);
   return (
-    <div className="z-50 fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center ">
-      <div className="w-[424px] h-[635px] bg-white rounded-lg shadow-lg relative">
+    <div className="fixed inset-0 z-50 flex sm:items-center items-start justify-center bg-black bg-opacity-50 px-0 sm:px-4">
+      <div className="flex justify-center bg-white shadow-lg relative w-full h-screen sm:h-auto sm:max-w-[424px] sm:rounded-lg">
         <button
           onClick={onClose}
-          className="absolute mt-[36px] mr-[36px]  g-[12px] top-3 right-3 text-gray-500 hover:text-black font-bold cursor-pointer"
+          className="absolute mt-[36px] mr-[36px] top-3 right-3 text-gray-500 hover:text-black font-bold cursor-pointer"
         >
-          <CloseButtonIcon />
+          <div className="flex flex-row">
+            <CloseButtonIcon />
+          </div>
         </button>
         {form.modalType === 'input' && (
           <InputModal
@@ -182,7 +184,6 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
             handleResetPassword={handleResetPassword}
           />
         )}
-
         {form.modalType === 'success' && <SuccessModal form={form} onClose={onClose} />}
       </div>
     </div>

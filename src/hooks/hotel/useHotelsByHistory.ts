@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { HotelWithPriceOnly } from '@/types/supabase/hotel-type';
-import fetchHotelsByLocationWithMinPrice from '@/utils/fetchHotelsByLocation';
+import fetchHotelsByLocationWithMinPrice from '@/utils/api/fetch/fetchHotelsByLocation';
 
 /**
  * 특정 location에 따라 호텔 데이터를 캐싱하고 반환하는 React Query 훅

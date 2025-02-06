@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import fetchHotelsByViewWithMinPrice from '@/utils/fetchHotelsByView';
+import fetchHotelsByViewWithMinPrice from '@/utils/api/fetch/fetchHotelsByView';
 
 import { HotelWithMinPrice } from '@/types/supabase/room-type';
 

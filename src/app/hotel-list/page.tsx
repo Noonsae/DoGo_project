@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import useAuthStore from '@/store/useAuth';
 import useHistoryStore from '@/store/useHistoryStore';
 
 import useFavoriteStore from '@/hooks/favorite/useFavoriteStore';
@@ -12,14 +11,13 @@ import useFetchHotelsFilter from '@/hooks/hotel/useFetchHotelsFilter';
 
 import { HotelWithPriceOnly } from '@/types/supabase/hotel-type';
 import { FiltersType, sortOrder } from '@/types/hotel/hotel-filter-type';
-import { UserType } from '@/types/supabase/user-type';
 
 import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
 
 import HotelCardList from './_components/HotelsCardList';
 import AsideFilter from './_components/AsideFilter';
-import SortBtn from './_components/SortBtn';
 import HotelListSkeleton from '../../components/ui/skeleton/HotelListSkeleton';
+import AppliedFilters from './_components/AppliedFilters';
 
 /**
  * 1. url에서 필터 조건을 가져온다. useSearchParams 활용
@@ -30,8 +28,9 @@ const HotelList = () => {
   // TODO: 재사용 로직으로 변경
   const searchParams = useSearchParams();
   const location = searchParams.get('location') || '';
-  const checkIn = searchParams.get('checkIn') || '';
-  const checkOut = searchParams.get('checkOut') || '';
+  const stayHash = searchParams.get('stay')?.match(/\d+/)?.[0] || '1';
+  const roomHash = searchParams.get('room') || '1';
+  
   // TODO: 추후 수정
   const stars =
     searchParams
@@ -46,6 +45,9 @@ const HotelList = () => {
   const facilityIds = searchParams.get('facilities')?.split(',') || [];
   const serviceIds = searchParams.get('services')?.split(',') || [];
   const sort = searchParams.get('sort') || '';
+  const beds = searchParams.get('beds')?.split(',') || []; // beds 파라미터를 URL에서 가져옴
+
+  const [tab, setTab] = useState<'date' | 'flexible'>('date'); // 탭 상태
 
   const [filters, setFilters] = useState<FiltersType>({
     label: '',
@@ -54,13 +56,11 @@ const HotelList = () => {
     maxPrice: 2000000,
     location: '',
     facilityIds: [],
-    serviceIds: []
+    serviceIds: [],
+    beds
   });
 
   const observerRef = useRef<HTMLDivElement | null>(null);
-
-  // 사용자 정보
-  const user = useAuthStore((state) => state.user) as UserType | null;
 
   // 즐겨찾기 상태
   const { favoriteStatus, initializeFavorites } = useFavoriteStore();
@@ -75,7 +75,7 @@ const HotelList = () => {
     hotel.service_ids = hotel.service_ids ?? null;
 
     addHotel(hotel);
-    router.push(`/hotel-list/${hotel.id}`);
+    router.push(`/hotel-list/${hotel.id}?stay=${stayHash}&room=${roomHash}`);
   };
 
   // 필터 데이터 호출
@@ -86,8 +86,9 @@ const HotelList = () => {
       stars,
       minPrice,
       maxPrice,
-      facilityIds: facilityIds,
-      serviceIds: serviceIds
+      facilityIds,
+      serviceIds,
+      beds
     },
     sortOrder: sort as sortOrder
   });
@@ -96,9 +97,9 @@ const HotelList = () => {
 
   useEffect(() => {
     if (data || !isFetchingNextPage) {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1000);
+      // setTimeout(() => {
+      setIsLoading(false);
+      // }, 1000);
     }
   }, [data, isFetchingNextPage]);
 
@@ -122,39 +123,62 @@ const HotelList = () => {
     };
   }, [hasNextPage, isFetchingNextPage]);
 
+  const getFilteredNames = (
+    ids: string[],
+    items: { facility_id: string; facilities: { name: string } }[] // facility_id를 string으로 유지
+  ) => {
+    // 중복되는 값을 제거한 후, 필터링된 시설 이름을 반환
+    const uniqueIds = Array.from(new Set(ids)); // Set을 사용하여 중복 제거
+    const filteredNames = items
+      .filter((item) => uniqueIds.includes(item.facility_id)) // 중복 제거된 ids를 사용하여 필터링
+      .map((item) => item.facilities.name);
+
+    // 중복된 이름을 제거
+    const uniqueFilteredNames = Array.from(new Set(filteredNames));
+
+    return uniqueFilteredNames.length > 0 ? uniqueFilteredNames.join('') : ''; // 값이 있으면 쉼표로 연결
+  };
+
+  const getServiceNames = (serviceIds: string[], services: { service_id: string; services: { name: string } }[]) => {
+    // 중복되는 값을 제거한 후, 필터링된 서비스 이름을 반환
+    const uniqueServiceIds = Array.from(new Set(serviceIds)); // Set을 사용하여 중복 제거
+    const filteredServices = services.filter((service) => uniqueServiceIds.includes(service.service_id));
+    const filteredServiceNames = filteredServices.map((service) => service.services.name);
+
+    // 중복된 서비스 이름 제거
+    const uniqueFilteredServiceNames = Array.from(new Set(filteredServiceNames));
+
+    return uniqueFilteredServiceNames.length > 0 ? uniqueFilteredServiceNames.join('') : '';
+  };
+
   // const isLoadingInitialData = !data && isFetchingNextPage;
 
   return (
-    <div className="w-full max-w-[1300px] mx-auto px-[50px] pt-[200px] pb-[50px] flex flex-row justify-between gap-[30px] ">
-      <ScrollSearchBox />
+    <div
+      className="w-full max-w-[1300px] mx-auto  pt-[200px] pb-[50px] flex flex-row justify-between  
+              max-[958px]:flex-col"
+    >
+      <ScrollSearchBox tab={tab} setTab={setTab} />
 
-      <AsideFilter
-      // onFilterChange={(newFilters) => setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }))}
-      />
+      <AsideFilter onFilterChange={(newFilters) => setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }))} />
 
-      <div className="">
-        <div className="flex justify-between items-center mb-4">
-          <div>
-            <p className="text-[24px] text-[#232527] font-semibold">
-              {/* 결과의 대한 갯수 가져오기 */}총 {data?.pages[0].totalCount}개의 결과를 불러왔습니다.
-            </p>
-            <p className="mt-2 text-base text-[#777] font-medium">
-              적용된 필터: {filters.stars.length > 0 ? `${filters.stars.join(', ')}성` : '전체'}
-            </p>
-          </div>
-          <SortBtn sortOrder={sort as sortOrder} />
-        </div>
+      <div>
+        <AppliedFilters
+          filters={filters}
+          getFilteredNames={getFilteredNames}
+          getServiceNames={getServiceNames}
+          data={data?.pages[0] ?? { items: [], totalCount: 0 }}
+          uniqueHotels={uniqueHotels}
+        />
 
         {/* hotel list card */}
-        <ul className="flex flex-col gap-8">
+        <ul className="w-full flex flex-col gap-8 ">
           {isLoading
             ? Array.from({ length: 10 }, (_, index) => <HotelListSkeleton key={index} />)
             : uniqueHotels.map((hotel) => (
-                <li key={hotel.id}>
-                  <button onClick={() => handleSaveHistoryAndMoveDetailsPage(hotel)}>
-                    <HotelCardList hotel={hotel} isFavorite={favoriteStatus[hotel.id] || false} hotelId={hotel.id} />
-                  </button>
-                </li>
+                <button key={hotel.id} onClick={() => handleSaveHistoryAndMoveDetailsPage(hotel)}>
+                  <HotelCardList hotel={hotel} isFavorite={favoriteStatus[hotel.id] || false} hotelId={hotel.id} />
+                </button>
               ))}
         </ul>
 

@@ -7,6 +7,7 @@ import IoCheckmarkCircle from '../icon/IoCheckmarkCircle';
 import FiChevronLeftIcon from '../icon/FiChevronLeftIcon';
 import FiChevronRightIcon from '../icon/FiChevronRightIcon';
 import { useRouter } from 'next/navigation';
+import CloseButtonIcon from '../icon/CloseButtonIcon';
 type RoomType = Database['public']['Tables']['rooms']['Row'];
 interface ModalProps {
   isOpen: boolean;
@@ -17,7 +18,7 @@ interface ModalProps {
 const Modal = ({ isOpen, onClose, room, hotelData }: ModalProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeTab, setActiveTab] = useState('info');
-
+  const [currentIndex, setCurrentIndex] = useState(0);
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -54,46 +55,53 @@ const Modal = ({ isOpen, onClose, room, hotelData }: ModalProps) => {
     router.push(`/booking?hotel_id=${hotelData.id}&room_id=${room.id}&price=${room.price}`);
   };
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
-      <div className="bg-white rounded shadow-lg w-[600px] max-w-4xl relative h-[700px] overflow-y-auto scrollbar-hide">
-        {/* 닫기 버튼 */}
-        <div className="sticky top-0 z-10 bg-[#221A1A] text-white">
-          <h2 className="text-[#FDF9F4] text-[16px] sm:text-[18px] md:text-[20px] lg:text-[22px] text-xl font-bold p-4 text-center">
-            {room.room_name}
-          </h2>
-          <IoCloseIcon onClick={onClose} className="absolute top-4 right-4 text-2xl cursor-pointer" />
-        </div>
-
-        {/* 네비게이션 탭 */}
-        <nav className="bg-white flex  border-b sticky top-0 z-10">
-          {[
-            { id: 'info', label: '객실 정보' },
-            { id: 'amenities', label: '객실 편의 시설' },
-            { id: 'price', label: '가격 상세 정보' }
-          ].map((tab) => (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#221A1A] bg-opacity-30 ">
+      <div className=" bg-white rounded shadow-lg w-full h-full md:w-[600px] md:h-[700px] max-w-4xl overflow-y-auto scrollbar-hide">
+        <div className="w-full sticky top-0 z-10 bg-[#221A1A] text-[#FDF9F4] text-[18px] sm:text-[20px] md:text-[22px] lg:text-[24px] font-bold text-center">
+          <div className="flex items-center justify-between px-4 py-2 w-full bg-[#221A1A] text-[#FDF9F4] text-[18px] sm:text-[20px] md:text-[22px] lg:text-[24px] font-bold">
+            {/* 객실 이름 - 가운데 정렬 */}
+            <div className="flex-1 flex justify-center items-center">{room.room_name}</div>
             <button
-              key={tab.id}
-              onClick={() => scrollToSection(tab.id)}
-              className={`px-4 py-3 text-sm text-[16px] font-medium focus:font-semibold${
-                activeTab === tab.id ? 'border-b-2 border-[#B3916A]' : 'text-neutral-600 hover:text-[#000000] '
-              }`}
+              onClick={onClose}
+              className="mb-[10px] pt-[22px] pr-[22px] flex flex-row justify-end text-[#FDF9F4] hover: font-bold cursor-pointer"
             >
-              {tab.label}
+              <CloseButtonIcon />
             </button>
-          ))}
-        </nav>
-
+          </div>
+          {/* </div> */}
+          {/* <IoCloseIcon onClick={onClose} className="absolute top-4 right-4 text-2xl cursor-pointer" /> */}
+          {/* 네비게이션 탭 */}
+          <nav className="bg-white flex border-b sticky top-0 z-10">
+            {[
+              { id: 'info', label: '객실 정보' },
+              { id: 'amenities', label: '객실 편의 시설' },
+              { id: 'price', label: '가격 상세 정보' }
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => scrollToSection(tab.id)}
+                className={`px-4 py-3 text-sm text-[16px] font-medium focus:font-semibold ${
+                  activeTab === tab.id
+                    ? 'border-b-2 border-[#B3916A] text-[#B3916A]'
+                    : 'text-neutral-900 hover:text-[#000000]'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </nav>
+        </div>
         {/* 콘텐츠 */}
-        <div className="p-6 space-y-6">
+        <div className="space-y-6">
           {/* 객실 정보 */}
           <section id="info" className="space-y-4">
-            <div className="relative w-full h-64 bg-gray-100 rounded-md">
-              {(room.room_img_url as string[]).length > 0 ? (
+            <div className="relative w-full h-[240px] md:h-64 bg-gray-100">
+              {Array.isArray(room.room_img_url) && room.room_img_url.length > 0 ? (
                 <>
                   <img
                     src={(room.room_img_url as string[])[currentImageIndex]}
                     alt="Room"
-                    className="object-cover w-full h-full rounded-md"
+                    className="object-cover w-full h-full md:w-[calc(100%-64px)] md:mx-8"
                   />
                   <button
                     onClick={showPreviousImage}
@@ -107,6 +115,9 @@ const Modal = ({ isOpen, onClose, room, hotelData }: ModalProps) => {
                   >
                     <FiChevronRightIcon />
                   </button>
+                  <div className="absolute right-10 w-[65px] h-[27px] text-white bg-neutral-600 rounded-full text-sm flex justify-center items-center top-[202px] md:top-[215px] mb-[10px] md:mb-0">
+                    {currentImageIndex + 1} / {room.room_img_url.length}
+                  </div>
                 </>
               ) : (
                 <p className="flex items-center justify-center w-full h-full text-gray-500">
@@ -114,21 +125,23 @@ const Modal = ({ isOpen, onClose, room, hotelData }: ModalProps) => {
                 </p>
               )}
             </div>
-            <h3 className="text-lg font-semibold">객실 정보</h3>
-            <ul className="list-disc pl-6 text-gray-700">
-              <li>{room.bed_type}</li>
-              <li>{room.view}</li>
-              <li>{room.is_breakfast_included === '포함' ? '조식 포함' : '조식 불포함'}</li>
-            </ul>
+            <div className="p-6 m-0">
+              <p className="text-lg font-semibold text-[20px] sm:text-[22px]">객실 정보</p>
+              <ul className="list-disc pl-6 text-gray-700 mt-[20px]">
+                <li className="mb-[8px]">{room.bed_type}</li>
+                <li className="mb-[8px]">{room.view}</li>
+                <li className="mb-[16px]">{room.is_breakfast_included === '포함' ? '조식 포함' : '조식 불포함'}</li>
+              </ul>
+            </div>
           </section>
 
           {/* 객실 편의 시설 */}
-          <section id="amenities" className="space-y-4">
-            <h3 className="text-lg font-semibold">객실 편의 시설</h3>
-            <ul className="grid grid-cols-4 gap-4 text-gray-700">
+          <section id="amenities" className="space-y-4 p-6 mt-0">
+            <h3 className="font-semibold text-[20px] sm:text-[22px]">객실 편의 시설</h3>
+            <ul className="grid grid-cols-3 md:grid-cols-4 text-gray-700">
               {Array.isArray(room.option) && room.option.length > 0 ? (
                 room.option.map((item, index) => (
-                  <li key={index} className="flex items-center space-x-2 p-2">
+                  <li key={index} className="text-[15px] flex items-center space-x-2 p-2">
                     <IoCheckmarkCircle />
                     <span>{item as string}</span>
                   </li>
@@ -140,29 +153,29 @@ const Modal = ({ isOpen, onClose, room, hotelData }: ModalProps) => {
           </section>
 
           {/* 가격 상세 정보 */}
-          <section id="price" className="space-y-4">
-            <h3 className="text-lg font-semibold">가격 상세 정보</h3>
+          <section id="price" className="space-y-4 p-6">
+            <h3 className="text-lg font-semibold text-[20px] sm:text-[22px]">가격 상세 정보</h3>
             <ul className="space-y-2 text-gray-700">
               <li className="flex justify-between">
-                <span>객실 1개 x 1박</span>
-                <span>{room.price.toLocaleString()}원</span>
+                <span className="text-[16px] sm:text-[18px]">객실 1개 x 1박</span>
+                <span className="text-[16px] sm:text-[16px]">{room.price.toLocaleString()}원</span>
               </li>
             </ul>
           </section>
         </div>
 
         {/* 하단 고정 버튼과 가격 */}
-        <div className=" sticky bottom-0 left-0 w-full bg-white border-t p-4 flex justify-between items-center">
-          <p className="flex flex-row justify-center items-center text-neutral-900 text-[20px] sm:text-[22px] md:text-[24px] lg:text-[26px] font-semibold">
+        <div className="sticky bottom-0 left-0 w-full bg-white border-t p-4 flex justify-between items-center">
+          <p className="text-neutral-900 text-[18px] sm:text-[20px] md:text-[22px] lg:text-[24px] font-semibold">
             {room.price.toLocaleString()}원{' '}
-            <p className="ml-1 sm:ml-2 md:ml-4 text-[14px] sm:text-[15px] md:text-[16px] lg:text-[18px] font-medium text-neutral-500">
+            <span className="ml-1 sm:ml-2 md:ml-4 text-[14px] sm:text-[15px] md:text-[16px] lg:text-[18px] font-medium text-neutral-500">
               /1박
-            </p>
+            </span>
           </p>
 
           <button
             onClick={() => handleBooking(room)}
-            className="text-[16px] sm:text-[17px] md:text-[18px] lg:text-[20px] bg-[#B3916A] text-white py-2 px-6 rounded-md hover:bg-[#8B5E3C]"
+            className="text-[16px] sm:text-[18px] md:text-[20px] bg-[#B3916A] text-white py-2 px-6 rounded-md hover:bg-[#8B5E3C]"
           >
             예약하기
           </button>

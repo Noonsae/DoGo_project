@@ -1,7 +1,7 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 import { login } from './actions/login';
 import Swal from 'sweetalert2';
 import DividerIcon from '@/components/ui/icon/DividerIcon';
@@ -9,6 +9,7 @@ import FindIdModal from './_components/FindIdModal';
 import FindPasswordModal from './_components/FindPasswordModal/FindPasswordModal';
 import KakaoSignIn from './_components/KakaoSignIn';
 import LogoAuth from '@/components/ui/icon/LogoAuth';
+import Header from '@/components/layout/Header';
 
 const SignInPage = () => {
   const [form, setForm] = useState({
@@ -19,7 +20,6 @@ const SignInPage = () => {
     isFindPasswordOpen: false
   });
   const router = useRouter();
-
   const handleSignUp = () => {
     router.push('/sign-up');
   };
@@ -67,15 +67,14 @@ const SignInPage = () => {
       });
     }
   };
-
   return (
     <>
       {form.isFindIdModalOpen && <FindIdModal onClose={() => setForm({ ...form, isFindIdModalOpen: false })} />}
       {form.isFindPasswordOpen && <FindPasswordModal onClose={() => setForm({ ...form, isFindPasswordOpen: false })} />}
       <div className="flex justify-center items-center min-h-screen px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-[400px] lg:h-auto">
-          <div className="mt-[94px] mb-[40px] flex flex-col justify-center items-center">
-            <LogoAuth />
+          <div className="flex justify-center ">
+            <LogoAuth className="w-[74px] h-[21px] sm:w-[139.947px] sm:h-[36.813px]" />
           </div>
 
           <div className="flex justify-between mb-[40px] border-b-2 ">

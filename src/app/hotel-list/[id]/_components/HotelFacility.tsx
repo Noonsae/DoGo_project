@@ -19,7 +19,7 @@ const HotelFacility = ({ facilityData, roomOption, hotelId, serviceData }: Hotel
             <p className="text-gray-500 mt-4">등록된 시설 정보가 없습니다.</p>
           )}
         </div>
-
+        <p className="mt-10"></p>
         <div>
           <h3 className="text-lg font-semibold mb-2">서비스 시설</h3>
           <ul className="grid grid-cols-4 gap-4">
