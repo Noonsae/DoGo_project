@@ -1,4 +1,17 @@
 ## 프로젝트: DoGo
+ 🔗 Live Demo : [do-go-project.vercel.app/](https://do-go-project.vercel.app/)
+
+![Tech Stack](https://oopy.lazyrockets.com/api/v2/notion/image?src=attachment%3Ab4927a29-6e07-4c02-a399-ba028450102f%3AUntitled-1.png&blockId=ebb61c22-29a5-4dd4-a372-031aa2a07dba)
+
+
+
+## 목차
+1. [프로젝트 소개]
+2. [팀원 소개]
+2. [주요 기능]
+3. [기술 스택]
+4. [렌더링 방식]
+
 
 
 ## 프로젝트 소개
@@ -415,3 +428,119 @@ DoGo_project
 
 
 ```
+
+## 주요 기능
+### 🔐Auth
+🔓로그인
+- supabase sign ➡️
+- Kakao Social Login ➡️
+
+🔒회원가입
+- User (고객) ➡️ 
+- business (판매자) ➡️
+- admin (홈페이지 관리자) ➡️
+
+❓계정 & 비밀번호 찾기
+- 계정 찾기 ➡️
+- 비밀번호 찾기 ➡️
+
+### 👤MyPage
+👪사용자 페이지 (user)
+- 프로필 관리 ➡️ 사용자의 회원가입정보를 볼수 있으며 프로필 이미지, 닉네임, 휴대폰 번호를 변경할 수 있다.
+- 예약 목록 ➡️ 사용자가 예약한 호텔 정보를 볼수 있다.
+- 찜 목록
+- 작성한 후기 & 후기 작성하기
+- 1:1 문의 ➡️ 문의 내역을 확인 할수 있다.
+
+🧑‍🦰판매자 페이지 (business)
+- 호텔 등록 ➡️
+- 문의 관리 ➡️
+- 예약 관리 ➡️
+
+👩‍💼관리자 페이지 (admin)
+- 업체 리스트 ➡️
+- 협력 요청 ➡️
+- 예약 리스트 ➡️
+
+### 🏠Home
+- 검색 ➡️
+- 히스토리 ➡️ 
+- 필터 ➡️
+
+### 🏨Hotel List
+- 호텔 리스트 ➡️ 검색창에서 입력한 지역, 동네, 이름 정보를 기반으로 해당하는 호텔 목록을 표시합니다.
+- 필터 ➡️  URL을 활용하여 필터 조건을 적용, 사용자가 원하는 호텔 리스트만 볼 수 있도록 구현했습니다.
+- 즐겨찾기 ➡️ 사용자가 원하는 호텔을 저장할수 있으며, Custom Hock으로 분리하여 재사용성을 높였습니다.
+- 무한 스크롤 ➡️ Intersection Observer를 활용하여 무한 스크롤 기능을 구현했습니다.
+
+### 🛌Hotel Detail Page
+- 호텔 상세 정보 ➡️ 호텔의 ID 값을 기반으로 해당 호텔의 상세 페이지를 제공하며, 모든 호텔 정보를 확인할 수 있습니다.
+- 지도 ➡️ Kakao Map API를 사용하여 호텔의 위치 및 주변 정보를 시각적으로 제공했습니다.
+- 즐겨찾기 ➡️ 분리한 Custom Hock을 사용하여 즐겨찾기 기능을 재사용했습니다.
+- 예약하기 ➡️ Toss Payments를 활용하여 가상 결제 기능을 구현했으며, 실제 결제 프로세스와 유사한 UI 및 결제 과정을 경험할 수 있습니다.
+
+### 🍔LayOut
+- 헤더 ➡️
+- 푸터 ➡️
+- 문의하기 ➡️
+
+## 랜더링 방식 
+### 📌Sign in / Sign up - CSR ( server actions , middleware )
+- 보안 강화를 위해 로그인 처리는 서버에서 진행하고, Middleware로 접근을 제어하며, Zustand의 자동 로그인 상태 관리(setAuth)를 적용했습니다.
+- 이렇게 하면 클라이언트에서 민감한 정보가 노출되지 않고, 유지보수도 편리해지며, 로그인 상태가 자동으로 업데이트됩니다.
+### 📌MyPage - CSR
+- 마이페이지는 개인화된 데이터를 다루며 SEO가 필요 없는 페이지이기 때문에, 클라이언트에서 데이터를 불러와 즉시 렌더링할 수 있는 CSR을 사용했습니다.
+### 📌Home - SSR
+- Home 페이지는 SEO 최적화와 초기 로딩 속도를 개선하기 위해 SSR을 사용했습니다.
+- 검색 기능의 빠른 응답을 위해 서버에서 데이터를 미리 가져와 즉시 렌더링하도록 구현했습니다.
+### 📌Hotel List - CSR
+- 호텔 리스트 페이지는 유저가 필터랑, 정렬, 무한 스크롤을 사용하며 지속적으로 데이터를 갱신해야 되는 페이지 입니다. CSR은 유연하게 상태를 관리할 수 있고, 빠른 인터랙션과 캐싱을 활용한 최적화가 가능했기에 선택했습니다.
+- 초기 렌더링 속도가 느려지는 단점이 있지만, Skeleton UI를 활용하여 사용자 경험을 개선했습니다.
+### 📌Hotel Detail - CSR
+- 호텔 상세 페이지는 유저별  즐겨찾기,리뷰,로그인 같은 동적 상태가 많기에 서버에서 랜더링할 필요를 크지 않다고 판단하여 CSR을 선택했습니다.
+- 초기 렌더링 속도가 느려지는 단점이 있지만, Skeleton UI를 활용하여 사용자 경험을 개선했습니다.
+
+### 📌Bookibng - CSR
+- 예약 및 결제 페이지는 빠른 UX, 실시간 UI 업데이트, 그리고 보안성을 고려해야 하는데, CSR을 사용하면 즉각적인 UI 업데이트가 가능하고, 결제 정보는 서버에서만 처리되므로 보안 문제도 해결됩니다.
+
+## 기술 스택
+⭐ **Language**
+<br>
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+
+⭐ **Front-end & Libraries**
+<br>
+![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![FullCalendar](https://img.shields.io/badge/FullCalendar-4285F4?style=for-the-badge&logo=google-calendar&logoColor=white)
+![Zustand](https://img.shields.io/badge/Zustand-%23007ACC.svg?style=for-the-badge&logo=zustand&logoColor=white)  
+![TanStack Query](https://img.shields.io/badge/TanStack%20Query-FF4154?style=for-the-badge&logo=react-query&logoColor=white)  
+![SweetAlert2](https://img.shields.io/badge/SweetAlert2-ffcc00?style=for-the-badge&logo=javascript&logoColor=black)  
+![Slick Carousel](https://img.shields.io/badge/Slick%20Carousel-2A2A2A?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+
+
+⭐ **Back-emd**
+<br>
+![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
+
+⭐ **DevOps & Deployment**
+<br>
+![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)
+
+⭐ **Version Control**
+<br>
+![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
+![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white)
+
+⭐ **API**
+<br>
+![Kakao Map](https://img.shields.io/badge/Kakao%20Map-FFCD00?style=flat-square&logo=Kakao&logoColor=white)
+![Kakao Developers](https://img.shields.io/badge/Kakao%20Developers-FFCD00?style=flat-square&logo=Kakao&logoColor=black)
+![Toss Payments](https://img.shields.io/badge/Toss%20Payments-0051C7?style=flat-square&logo=Toss&logoColor=white)
+
+
+## ERD
+| ![Database Schema 1](https://github.com/user-attachments/assets/e2fa088c-810b-4a50-8d1c-cc4ea8917f10)|
+|--------------------------------------|
+| ![Database Schema 2](https://github.com/user-attachments/assets/8add5108-d68c-40b9-8145-0995acc18eb6)|
