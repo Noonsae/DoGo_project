@@ -48,10 +48,10 @@ const InquiryModal = ({ isOpen, onClose, hotel_id }: InquiryModalProps) => {
         </div>
 
         {/* 등록 버튼 */}
-        <div className="p-4 mt-6 flex justify-end">
+        <div className="p-[20px] sm:p-[32px] mt-6 flex justify-end">
           <button
             type="button"
-            className="px-[24px] py-[8px] text-[18px] sm:text-[16px] mr-[16px] sm:mr-[32px]  md:text-[18px] w-[117px] sm:w-[111px] h-[44px] flex items-center gap-2 leading-[135%] text-center justify-center bg-[#B08968] text-white rounded-lg font-semibold hover:bg-[#8E6B4A] transition"
+            className=" px-[24px] py-[8px] text-[18px] w-[117px] sm:w-[111px] h-[44px] flex items-center gap-2 leading-[135%] text-center justify-center bg-[#B08968] text-white rounded-lg font-semibold hover:bg-[#8E6B4A] transition"
             onClick={() => formRef.current?.submit()}
           >
             등록하기
