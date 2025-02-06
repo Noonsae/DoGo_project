@@ -85,9 +85,9 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
         className="w-full sm:max-w-[424px] p-5 sm:p-9 min-h-screen sm:min-h-0 sm:h-auto bg-white sm:rounded-lg shadow-lg relative overflow-y-auto
 "
       >
-        <div className="relative mt-[30px]">
+        <div className="w-full flex items-center justify-center relative">
           {/* 아이디 찾기 (가운데 정렬) */}
-          <p className="sm:hidden text-neutral-800 text-center">아이디 찾기</p>
+          <p className="text-neutral-800 text-lg sm:text-xl font-semibold sm:hidden">아이디 찾기</p>
 
           {/* 닫기 버튼 (우측 정렬 유지) */}
           <button
@@ -210,7 +210,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
             </div>
             <button
               onClick={onClose}
-              className="flex flex-col justify-center items-center h-[48px] text-[20px] leading-[27px] font-semibold text-center text-white mt-[286px] w-full max-w-[352px] sm:mt-[180px] bg-[#B3916A] py-4 rounded-xl hover:bg-[#a37e5f] transition"
+              className="h-[48px] flex flex-col justify-center items-center text-[20px] leading-[27px] font-semibold text-center text-white mt-[286px] w-full max-w-[352px] sm:mt-[180px] bg-[#B3916A] py-4 rounded-xl hover:bg-[#a37e5f] transition"
             >
               확인
             </button>
@@ -234,7 +234,7 @@ const FindIdModal = ({ onClose }: { onClose: () => void }) => {
             </div>
             <button
               onClick={onClose}
-              className="flex felx-col justify-center items-center mt-[166px] text-[18px] sm:text-[20px] text-white text-center leading-[135%] h-[48px] md:text-[20px] w-full max-w-[352px] sm:mt-[40px] bg-[#B3916A] font-bold py-4 rounded-xl hover:bg-[#a37e5f] transition"
+              className="h-[48px] flex felx-col justify-center items-center mt-[166px] text-[18px] sm:text-[20px] text-white text-center leading-[135%] md:text-[20px] w-full max-w-[352px] sm:mt-[40px] bg-[#B3916A] font-bold py-4 rounded-xl hover:bg-[#a37e5f] transition"
             >
               확인
             </button>

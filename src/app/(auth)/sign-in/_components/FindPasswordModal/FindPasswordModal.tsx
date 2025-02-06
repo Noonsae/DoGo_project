@@ -162,7 +162,7 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
           <p className="text-neutral-800 text-lg sm:text-xl font-semibold sm:hidden">비밀번호 재설정</p>
           <button
             onClick={onClose}
-            className="absolute right-4 text-gray-500 hover:text-black font-bold cursor-pointer"
+            className=" absolute right-4 text-gray-500 hover:text-black font-bold cursor-pointer"
           >
             <CloseButtonIcon />
           </button>

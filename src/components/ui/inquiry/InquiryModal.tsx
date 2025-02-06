@@ -35,13 +35,11 @@ const InquiryModal = ({ isOpen, onClose, hotel_id }: InquiryModalProps) => {
           <p className="text-[20px] sm:text-[18px] md:text-[20px] lg:text-[22px] font-semibold text-center text-[#FDF9F4]">
             문의하기
           </p>
-          <button
-            onClick={onClose}
-            className="absolute top-1/2 transform -translate-y-1/2 left-4 sm:right-4 sm:left-auto"
-          >
+          <button onClick={onClose} className="absolute top-1/2 right-4 transform -translate-y-1/2 ">
             <CloseButtonIcon className="text-white" />
           </button>
         </div>
+
         {/* 폼 */}
         <div className=" w-full max-w-[536px] mx-auto">
           <InquiryCategory onCategoryChange={setCategory} />

@@ -106,14 +106,14 @@ const SignInPage = () => {
               placeholder={form.activeTab === 'user' ? '일반 회원 이메일' : '사업자 이메일'}
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="w-full sm:w-[400px] h-[48px] pt-[8px] pb-[8px] px-[16px] border border-neutral-300 rounded-[8px] mb-[12px] focus:outline-none focus:ring-2 focus:ring-black"
+              className="w-full sm:w-[400px] h-[48px] pt-[8px] pb-[8px] px-[16px] border border-neutral-300 rounded-[8px] mb-[12px] focus:outline-none focus:ring-1 focus:ring-[#B3916A]"
             />
             <input
               type="password"
               placeholder="비밀번호"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
-              className="w-full sm:w-[400px] h-[48px] pt-[8px] pb-[8px] px-[16px] border border-neutral-300 rounded-[8px] mb-[12px] focus:outline-none focus:ring-2 focus:ring-black"
+              className="w-full sm:w-[400px] h-[48px] pt-[8px] pb-[8px] px-[16px] border border-neutral-300 rounded-[8px] mb-[12px] focus:outline-none focus:ring-1 focus:ring-[#B3916A]"
             />
             <div className="flex items-center justify-end text-sm text-gray-500 mb-[26px]">
               <button
@@ -134,7 +134,7 @@ const SignInPage = () => {
             </div>
             <button
               type="submit"
-              className="px-[24px] py-[8px] w-full max-w-[400px] text-[20px] bg-[#B3916A] font-pretendard font-semibold leading-[135%] not-italic text-white rounded-lg hover:bg-[#a37e5f] transition mb-[12px]"
+              className="h-[48px] px-[24px] py-[8px] w-full max-w-[400px] text-[20px] bg-[#B3916A] font-pretendard font-semibold leading-[135%] not-italic text-white rounded-lg hover:bg-[#a37e5f] transition mb-[12px]"
             >
               로그인
             </button>
