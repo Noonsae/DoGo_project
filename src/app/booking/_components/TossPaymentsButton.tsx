@@ -1,5 +1,3 @@
-import { useParams } from 'next/navigation';
-
 import { PostBookingDataType } from '@/types/supabase/booking-type';
 
 import { loadTossPayments } from '@tosspayments/payment-sdk';
@@ -13,8 +11,6 @@ const TossPaymentsButton = ({ disabled, bookingData }: { disabled?: boolean; boo
 
   const mutation = usePostBookingData();
 
-  const { id } = useParams();
-
   const handlePayment = async () => {
     if (!clientKey) {
       console.error('Toss Payments Client Key가 설정되지 않았습니다.');
@@ -24,16 +20,12 @@ const TossPaymentsButton = ({ disabled, bookingData }: { disabled?: boolean; boo
     const booking_data = await mutation.mutateAsync(bookingData);
 
     if (!booking_data) {
-      return alert('로그인이 필요한 서비스입니다.');
+      return alert('예약 관련 정보를 찾을 수 없습니다... 왜? ');
     }
 
     const booking_id = booking_data[0].id;
 
     const tossPayments = await loadTossPayments(clientKey);
-
-    // TODO_01 : 고유 주문 번호 booking 테이블에서 가져오기
-    // TODO_02 : 상품명은 호텔 이름 + 객실 이름
-    // TODO_03 : 고객명은 user.name
 
     try {
       await tossPayments.requestPayment('카드', {
@@ -44,6 +36,7 @@ const TossPaymentsButton = ({ disabled, bookingData }: { disabled?: boolean; boo
         successUrl: `${window.location.origin}/booking/${booking_id}`, // 결제 성공 시 이동할 URL
         failUrl: `${window.location.origin}/booking/fail` // 결제 실패 시 이동할 URL
       });
+
     } catch (error) {
       console.error('결제 요청 중 오류:', error);
     }
