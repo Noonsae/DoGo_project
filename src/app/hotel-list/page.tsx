@@ -32,7 +32,7 @@ const HotelList = () => {
   const checkOut = searchParams.get('checkOut') || '';
   const stayHash = searchParams.get('stay')?.match(/\d+/)?.[0] || '1';
   const roomHash = searchParams.get('room') || '1';
-
+  
   // TODO: 추후 수정
   const stars =
     searchParams
