@@ -10,7 +10,15 @@ export const convertToEnglish = (text: string) => {
     인천: 'incheon',
     울산: 'ulsan',
     대전: `daejeon`,
-    대구: 'daegu'
+    대구: 'daegu',
+    seoul: 'seoul',
+    jeju: 'jeju',
+    busan: 'busan',
+    gwangju: 'gwangju',
+    incheon: 'incheon',
+    ulsan: 'ulsan',
+    daejeon: 'daejeon',
+    daegu: 'daegu'
   };
 
   // 예외 처리: 변환할 필요가 없는 경우 (매핑되지 않은 경우)
@@ -27,6 +35,8 @@ export const parseLabel = (input: string): { label: string } => {
   };
 };
 
+// url에는 seoul과 같이 영어로 들어갈 수도 있는데, convertToEnglish 얘는 한글인 경우만 체크한다.
+// 그래서 label로 적용된다.
 // 3. 메인 로직: convertToEnglish or parseLabel 상황에 따라 나눠서 처리하기
 export const processInput = (text: string): { location: string; label: { label: string } } => {
   const converted = convertToEnglish(text);

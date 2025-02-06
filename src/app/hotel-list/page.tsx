@@ -29,7 +29,7 @@ const HotelList = () => {
   const searchParams = useSearchParams();
   const location = searchParams.get('location') || '';
   const room_count = searchParams.get('room');
-  
+
   // TODO: 추후 수정
   const stars =
     searchParams
@@ -49,14 +49,14 @@ const HotelList = () => {
   const [tab, setTab] = useState<'date' | 'flexible'>('date'); // 탭 상태
 
   const [filters, setFilters] = useState<FiltersType>({
-    label: '',
-    stars: [],
-    minPrice: 0,
-    maxPrice: 2000000,
-    location: '',
-    facilityIds: [],
-    serviceIds: [],
-    beds
+    label: searchParams.get('label') || '',
+    stars: searchParams.get('stars')?.split(',').map(Number).filter(Boolean) || [],
+    minPrice: parseInt(searchParams.get('minPrice') || '0', 10),
+    maxPrice: parseInt(searchParams.get('maxPrice') || '2000000', 10),
+    location: searchParams.get('location') || '',
+    facilityIds: searchParams.get('facilities')?.split(',') || [],
+    serviceIds: searchParams.get('services')?.split(',') || [],
+    beds: searchParams.get('beds')?.split(',') || []
   });
 
   const observerRef = useRef<HTMLDivElement | null>(null);
