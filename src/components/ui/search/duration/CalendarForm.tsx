@@ -12,8 +12,8 @@ import '@/styles/calendar.css';
 
 const CalendarForm = () => {
   const checkIn = useSearchStore((state) => state.checkIn);
-  const checkOut = useSearchStore((state) => state.checkOut);
   const setCheckIn = useSearchStore((state) => state.setCheckIn);
+  const checkOut = useSearchStore((state) => state.checkOut);
   const setCheckOut = useSearchStore((state) => state.setCheckOut);
 
   const today = new Date();
@@ -72,13 +72,6 @@ const CalendarForm = () => {
       setCheckOut(info.dateStr);
     }
   };
-
-  const stay = useSearchStore((state) => state.stay);
-  const month = useSearchStore((state) => state.month);
-
-  console.log('checkIn:', checkIn, 'checkOut:', checkOut);
-  console.log('stay:', stay);
-  console.log('month:', month);
 
   return (
     <div>
