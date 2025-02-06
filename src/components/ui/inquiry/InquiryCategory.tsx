@@ -13,17 +13,27 @@ const InquiryCategory = ({ onCategoryChange }: InquiryCategoryProps) => {
     setSelectedCategory(newCategory);
     onCategoryChange(newCategory);
   };
+
   return (
-    <div className="flex flex-col gap-4 mt-4 w-full max-w-[90%] sm:max-w-[500px] md:max-w-[600px] mx-auto">
-      <label className="font-semibold text-[#444]">
+    <div className="flex flex-col gap-2 w-full max-w-[90%] sm:max-w-[500px] md:max-w-[600px] mx-auto">
+      <label className="text-neutral-800 font-pretendard text-[16px] font-semibold leading-[135%] mt-[32px] sm:mt-[60px]">
         카테고리 <span className="ml-1 text-red-500">*</span>
       </label>
       <select
         value={selectedCategory}
         onChange={handleChange}
-        className={`flex flex-row justify-center w-full min-w-full sm:w-auto sm:max-w-[500px] md:max-w-[600px] h-[48px] 
-        items-center sm:gap-2 md:gap-4 border rounded text-[16px] sm:text-[14px] md:text-[16px] lg:text-[18px] 
-        font-medium leading-[135%] ${selectedCategory ? 'text-black' : 'text-[#A0A0A0]'}`}
+        className={`w-[320px] h-[48px] px-[16px] py-[8px] min-w-full sm:w-auto sm:max-w-[500px] md:max-w-[600px]  
+  items-center border rounded text-[16px] sm:text-[14px] md:text-[16px] lg:text-[18px] font-medium leading-[135%] 
+  bg-white bg-no-repeat bg-[right_16px_center] ${selectedCategory ? 'text-black' : 'text-[#A0A0A0]'}`}
+        style={{
+          WebkitAppearance: 'none', // 기본 화살표 제거 (Chrome, Safari)
+          MozAppearance: 'none', // 기본 화살표 제거 (Firefox)
+          appearance: 'none', // 기본 화살표 제거 (기본 스타일 적용)
+          backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="gray"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>')`,
+          backgroundPosition: 'right 16px center', // 화살표 오른쪽 16px 여백 추가
+          backgroundSize: '16px 16px',
+          backgroundRepeat: 'no-repeat'
+        }}
       >
         <option value="" disabled>
           문의 사항의 카테고리를 선택해 주세요.
@@ -34,24 +44,6 @@ const InquiryCategory = ({ onCategoryChange }: InquiryCategoryProps) => {
           </option>
         ))}
       </select>
-      <style jsx global>{`
-        select {
-          width: 100%;
-          max-width: 600px;
-        }
-        @media (max-width: 640px) {
-          select {
-            width: 100%;
-            max-width: 90%;
-          }
-        }
-
-        @supports (-webkit-touch-callout: none) {
-          select {
-            font-size: 16px;
-          }
-        }
-      `}</style>
     </div>
   );
 };

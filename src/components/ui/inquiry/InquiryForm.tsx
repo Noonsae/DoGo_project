@@ -102,8 +102,8 @@ const InquiryForm = forwardRef(({ category, hotel_id }: InquiryFormProps, ref) =
     submit: handleSubmit
   }));
   return (
-    <form className="flex flex-col gap-4 mt-4 w-full max-w-[90%] sm:max-w-[500px] md:max-w-[600px] mx-auto">
-      <label className="font-semibold text-[#444]">
+    <form className="flex flex-col gap-2 mt-4 w-full max-w-[90%] sm:max-w-[500px] md:max-w-[600px] mx-auto">
+      <label className="mt-[20px] text-neutral-800 font-pretendard text-[16px] font-semibold leading-[135%]">
         제목 <span className="ml-1 text-red-500">*</span>
       </label>
       <input
@@ -111,17 +111,17 @@ const InquiryForm = forwardRef(({ category, hotel_id }: InquiryFormProps, ref) =
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        className="border rounded p-2"
+        className="h-[48px] px-[16px] py-[8px] border rounded p-2"
       />
 
-      <label className="font-semibold text-[#444]">
+      <label className="mt-[20px] text-neutral-800 font-pretendard text-[16px] font-semibold leading-[135%] ">
         문의 사항 <span className="ml-1 text-red-500">*</span>
       </label>
       <textarea
         value={content}
         placeholder="문의하실 글의 내용을 작성해 주세요."
         onChange={(e) => setContent(e.target.value)}
-        className="flex flex-row border rounded p-2 h-[176px] resize-none "
+        className="px-[16px] py-[8px] flex flex-row border rounded p-2 h-[176px] resize-none "
       />
     </form>
   );
