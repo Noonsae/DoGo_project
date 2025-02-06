@@ -5,7 +5,7 @@ const UserIcon = () => {
   return (
     <div>
       <svg
-        className={`mt-[20px] mb-[20px] mr-[16px] ml-[16px] ${
+        className={`mt-[10.67px] mb-[10.67px] mr-[10.67px] ml-[10.67px] ${
           userType === 'user' ? 'fill-[#534431]' : 'fill-[#444444]'
         }`}
         width="43"
