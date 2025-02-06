@@ -9,13 +9,53 @@ import { HotelRoomProps } from '@/types/hotel/hotel-room-type';
 
 import Modal from '@/components/ui/hotel-room/Modal';
 import { useRouter, useSearchParams } from 'next/navigation';
+import useSearchStore from '@/store/useSearchStore';
+import { saveBookingData } from '@/utils/booking/booking';
+import Swal from 'sweetalert2';
 
 const HotelRoom = ({ roomsData, getValidImageUrl, roomOption, hotelData }: HotelRoomProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState<RoomType | null>(null);
   const formatKoreanCurrency = useFormatCurrency();
   const searchParams = useSearchParams();
-  
+  const checkIn = useSearchStore((state) => state.checkIn);
+  const checkOut = useSearchStore((state) => state.checkOut);
+  const stay = useSearchStore((state) => state.stay) ?? 1;
+  const month = useSearchStore((state) => state.month);
+  const router = useRouter();
+  const room_count = searchParams.get('room');
+
+  const handleBooking = (room: RoomType) => {
+    if (!checkIn || !checkOut) {
+      Swal.fire({
+        icon: 'warning',
+        title: '기간을 선택해주세요.',
+        text: '검색창을 통해 기간 선택 또는 원하시는 일정을 선택해주세요.',
+        showCancelButton: true, // 취소 버튼 추가
+        confirmButtonColor: '#B3916A', // 확인 버튼 색상
+        cancelButtonColor: '#B3916A', // 취소 버튼 색상
+        confirmButtonText: '조금 더 둘러볼게요', // 확인 버튼 텍스트
+        cancelButtonText: '일정 선택하러 갈래요' // 취소 버튼 텍스트
+      }).then((result) => {
+        if (result.dismiss === Swal.DismissReason.cancel) {
+          window.location.href = '/hotel-list'; // 호텔 목록 페이지로 이동
+        }
+      });
+
+      return;
+    }
+
+    const newBookingData = {
+      checkIn: checkIn,
+      checkOut: checkOut,
+      stay: stay,
+      month: month
+    };
+
+    saveBookingData(newBookingData);
+    router.push(`/booking?hotel_id=${hotelData.id}&room_id=${room.id}&price=${room.price}&room=${room_count}`);
+  };
+
   const openModal = (room: RoomType) => {
     setSelectedRoom(room);
     setIsModalOpen(true);
@@ -24,17 +64,6 @@ const HotelRoom = ({ roomsData, getValidImageUrl, roomOption, hotelData }: Hotel
   const closeModal = () => {
     setSelectedRoom(null);
     setIsModalOpen(false);
-  };
-  
-  const stay = searchParams.get('stay') || '1';
-  const roomHash = searchParams.get('room') || '1';
-
-  // 한솔🔥
-  const router = useRouter();
-  const handleBooking = (room: RoomType) => {
-    router.push(
-      `/booking?hotel_id=${hotelData.id}&room_id=${room.id}&price=${room.price}&stay=${stay}&room=${roomHash}`
-    );
   };
 
   return (
@@ -101,7 +130,9 @@ const HotelRoom = ({ roomsData, getValidImageUrl, roomOption, hotelData }: Hotel
                       <div className="mt-5 md:mt-0 text-right">
                         <p className="text-2xl font-semibold text-gray-900 mb-4">
                           {formatKoreanCurrency(room.price * Number(stay))} {''}
-                          <span className="text-neutral-500 text-base font-medium">/{''} {stay}박</span>
+                          <span className="text-neutral-500 text-base font-medium">
+                            /{''} {stay}박
+                          </span>
                         </p>
                         <button
                           onClick={() => handleBooking(room)} //🔥

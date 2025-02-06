@@ -28,8 +28,7 @@ const HotelList = () => {
   // TODO: 재사용 로직으로 변경
   const searchParams = useSearchParams();
   const location = searchParams.get('location') || '';
-  const stayHash = searchParams.get('stay')?.match(/\d+/)?.[0] || '1';
-  const roomHash = searchParams.get('room') || '1';
+  const room_count = searchParams.get('room');
   
   // TODO: 추후 수정
   const stars =
@@ -75,7 +74,7 @@ const HotelList = () => {
     hotel.service_ids = hotel.service_ids ?? null;
 
     addHotel(hotel);
-    router.push(`/hotel-list/${hotel.id}?stay=${stayHash}&room=${roomHash}`);
+    router.push(`/hotel-list/${hotel.id}?room=${room_count}`);
   };
 
   // 필터 데이터 호출
