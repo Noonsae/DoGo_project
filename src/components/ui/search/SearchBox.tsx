@@ -176,7 +176,7 @@ const SearchBox = () => {
               {/* 객실 및 인원 */}
               <div
                 onClick={() => openModal('details')}
-                className={`w-[25%] max-w-[288px] h-full px-[16px] py-[12px] border rounded-[8px] ${
+                className={`w-[25%] max-w-[288px] h-full px-[16px] py-[12px] border rounded-[8px]  cursor-pointer ${
                   activeModal === 'details' ? 'border-[#B3916A]' : 'border-[#BFBFBF]'
                 }`}
               >
