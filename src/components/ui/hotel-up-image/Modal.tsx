@@ -53,11 +53,14 @@ const UpModal = ({ isOpen, onClose, images = [], name }: ModalProps) => {
         }
       `}</style>
       <div className="relative bg-white rounded-lg shadow-lg w-full max-w-[1124px] h-full overflow-hidden md:w-[1124px] md:h-[767px] md:max-h-[767px]">
-        <div className="flex justify-center items-center px-6 bg-[#221A1A] text-white rounded-t-lg h-[56px] md:h-[67px]">
-          <h2 className="text-lg font-semibold">{name}</h2>
+        <div className="flex items-center px-6 bg-[#221A1A] text-white rounded-t-lg h-[56px] md:h-[67px] relative">
+          {/* 이름 (가운데 정렬) */}
+          <h2 className="flex-1 text-center text-lg font-semibold">{name}</h2>
+
+          {/* 닫기 버튼 (우측 정렬 유지) */}
           <IoCloseIcon
             onClick={onClose}
-            className="absolute top-3 right-3 text-xl cursor-pointer md:top-4 md:right-4 md:text-2xl"
+            className="absolute right-3 text-xl cursor-pointer md:right-4 md:text-2xl"
             aria-label="Close modal"
           />
         </div>

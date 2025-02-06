@@ -10,7 +10,7 @@ interface InputModalProps {
 }
 const InputModal = ({ form, setForm, errors, setErrors, handleFindPassword, handleTabChange }: InputModalProps) => (
   <div className=" flex flex-col h-full w-full max-w-[360px] sm:max-w-[375px] ">
-    <p className="mb-[32px] sm:mb-[40px] mt-[38px] sm:mt-[36px] text-[24px] sm:text-[28px] leading-[32.4px] sm:leading-[37.8px] font-semibold text-[#232527]">
+    <p className="mt-[36px] sm:mb-[40px] sm:mt-[36px] text-[24px] sm:text-[28px] leading-[32.4px] sm:leading-[37.8px] font-semibold text-[#232527]">
       비밀번호를 찾기위해
       <br />
       가입 정보를 입력해 주세요.

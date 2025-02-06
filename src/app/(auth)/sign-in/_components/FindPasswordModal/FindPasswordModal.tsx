@@ -158,11 +158,16 @@ const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {
     <div className="fixed inset-0 z-50 flex sm:items-center items-start justify-center bg-black bg-opacity-50 px-0 sm:px-4">
       <div className="p-[20px] sm:p-[32px] flex flex-col items-center bg-white shadow-lg relative w-full h-screen sm:h-auto sm:max-w-[424px] sm:rounded-lg">
         {/* 🔹 헤더: "비밀번호 재설정" + 닫기 버튼 (중앙 정렬) */}
-        <div className="w-full flex items-center justify-center relative">
-          <p className="text-neutral-800 text-lg sm:text-xl font-semibold sm:hidden">비밀번호 재설정</p>
+        <div className="mt-[14px] w-full flex items-center justify-center relative">
+          {/* 비밀번호 재설정 (모바일에서만 보임, 가운데 정렬) */}
+          <p className="absolute inset-0 flex items-center justify-center text-neutral-800 text-lg sm:text-xl font-semibold sm:hidden">
+            비밀번호 재설정
+          </p>
+
+          {/* 닫기 버튼 (우측 정렬 유지) */}
           <button
             onClick={onClose}
-            className=" absolute right-4 text-gray-500 hover:text-black font-bold cursor-pointer"
+            className="absolute right-1 text-neutral-800 hover:text-black font-bold cursor-pointer"
           >
             <CloseButtonIcon />
           </button>
