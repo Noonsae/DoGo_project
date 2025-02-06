@@ -15,12 +15,14 @@ interface ModalProps {
 
 const UpModal = ({ isOpen, onClose, images = [], name }: ModalProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';
       setCurrentIndex(0);
+      setSelectedImage(null);
     }
 
     return () => {
@@ -71,6 +73,7 @@ const UpModal = ({ isOpen, onClose, images = [], name }: ModalProps) => {
                 height={152}
                 quality={100}
                 className="w-full h-auto rounded-md mb-2"
+                onClick={() => setSelectedImage(image)}
               />
             ))}
           </div>
@@ -125,6 +128,32 @@ const UpModal = ({ isOpen, onClose, images = [], name }: ModalProps) => {
           </div>
         </div>
       </div>
+      {/* 모바일 확대 모달 */}
+      {selectedImage && (
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-90">
+          {/* 상단 닫기 버튼 */}
+          <div className="w-full h-[56px] bg-[#221A1A] flex items-center justify-between px-4">
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="w-full text-white flex justify-end pr-[16px] pt-[16px]"
+            >
+              <IoCloseIcon />
+            </button>
+          </div>
+
+          {/* 확대된 이미지 */}
+          <div className="relative w-full flex-1 flex items-center justify-center">
+            <Image
+              src={selectedImage}
+              alt="확대된 이미지"
+              width={360}
+              height={480}
+              quality={100}
+              className="w-full h-auto object-contain"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
