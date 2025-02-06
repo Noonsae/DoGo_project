@@ -19,8 +19,7 @@ import { PostBookingDataType } from '@/types/supabase/booking-type';
 
 import Swal from 'sweetalert2';
 
-import { getDayOfWeek } from '@/utils/calculator/dateCalculator';
-import { getBookingData } from '@/utils/booking/booking';
+import { useBookingStore } from '@/store/useBookingStore';
 
 const Booking = () => {
   // 국가코드
@@ -40,7 +39,7 @@ const Booking = () => {
   const priceParam = searchParams.get('price'); // 객실의 1박 기준 가격 정보
   const room_count = searchParams.get('room'); // 객실 예약 예정 개수
 
-  const storedBookingData = getBookingData();
+  const storedBookingData = useBookingStore((state) => state.temporaryBookingData);
 
   const checkIn = storedBookingData!.checkIn;
   const checkOut = storedBookingData!.checkOut;
@@ -57,13 +56,9 @@ const Booking = () => {
   // roomId와 일치하는 정보를 요청
   const { data: roomData } = useRoomQuery(roomId) as { data: BookingRoomData | undefined };
 
-  // 날짜에 맞는 요일 계산
-  const checkInDayOfWeek = getDayOfWeek(checkIn);
-  const checkOutDayOfWeek = getDayOfWeek(checkOut);
-
   const bookingData: PostBookingDataType = {
-    check_in_date: `${checkIn} ${checkInDayOfWeek}`, // 체크인 날짜 + 해당 요일
-    check_out_date: `${checkOut} ${checkOutDayOfWeek}`, // 체크아웃 날짜 + 해당 요일
+    check_in_date: checkIn, // 체크인 날짜 + 해당 요일
+    check_out_date: checkOut, // 체크아웃 날짜 + 해당 요일
     created_at: new Date().toISOString(), // 생성 시간 (현재 시간)
     request: request, // 요청 사항
     room_id: roomId || '', // 객실 ID
@@ -75,6 +70,7 @@ const Booking = () => {
     user_id: userId || 'unknown' // 사용자 ID
   };
 
+  console.log('storedBookingData:', storedBookingData);
   console.log('bookingData:', bookingData);
 
   // 유효성 검사
