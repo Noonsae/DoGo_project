@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 import useSearchStore from '@/store/useSearchStore';
 
 const CalendarForm = () => {
-  // TODO: c나누ㄱ
+  
   const checkIn = useSearchStore((state) => state.checkIn);
   const checkOut = useSearchStore((state) => state.checkOut);
   const setCheckIn = useSearchStore((state) => state.setCheckIn);
