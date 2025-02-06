@@ -157,5 +157,5 @@ const UpModal = ({ isOpen, onClose, images = [], name }: ModalProps) => {
     </div>
   );
 };
-
+//
 export default UpModal;
