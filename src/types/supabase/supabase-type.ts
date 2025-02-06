@@ -15,6 +15,7 @@ export type Database = {
           content: string
           created_at: string
           id: string
+          inquiry_id: string
           user_id: string
         }
         Insert: {
@@ -22,6 +23,7 @@ export type Database = {
           content: string
           created_at?: string
           id?: string
+          inquiry_id?: string
           user_id?: string
         }
         Update: {
@@ -29,6 +31,7 @@ export type Database = {
           content?: string
           created_at?: string
           id?: string
+          inquiry_id?: string
           user_id?: string
         }
         Relationships: [
@@ -37,6 +40,13 @@ export type Database = {
             columns: ["contact_id"]
             isOneToOne: false
             referencedRelation: "contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "answers_inquiry_id_fkey"
+            columns: ["inquiry_id"]
+            isOneToOne: false
+            referencedRelation: "inquiries"
             referencedColumns: ["id"]
           },
           {
