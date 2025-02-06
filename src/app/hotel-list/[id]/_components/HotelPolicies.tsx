@@ -54,6 +54,7 @@ const HotelPolicies = ({ hotelId }: HotelPoliciesProps) => {
           return (
             <div
               key={section}
+              id="policies"
               className={`${
                 index !== sections.length - 1 ? 'border-b border-gray-300' : '' // 마지막 항목은 border 제거
               }`}
