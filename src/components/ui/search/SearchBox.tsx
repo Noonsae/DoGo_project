@@ -91,6 +91,14 @@ const SearchBox = () => {
         <ScrollSearchBox tab={tab} setTab={setTab} />
       ) : (
         <div className="w-full max-w-[1300px] h-full mx-auto px-[50px] -mt-[210px]">
+          {/* 🔹 모달이 열리면 딤드(배경 오버레이) 추가 */}
+          {activeModal && (
+            <div
+              className="fixed inset-0 bg-[rgba(0,0,0,0.4)] z-40"
+              onClick={closeModal} // 딤드 클릭 시 모달 닫기
+            />
+          )}
+
           <section className="w-full max-w-[1200px] h-[160px] mx-auto px-[32px] py-[24px] rounded-[8px] bg-white shadow-[0px_4px_12px_rgba(0,0,0,0.1)]">
             <p className="text-[20px] font-semibold mb-[16px]">숙소 검색</p>
 
@@ -136,13 +144,13 @@ const SearchBox = () => {
                     <div className="w-1/2 h-full">
                       <p className="text-[15px] text-[#636363] font-medium">숙박 기간</p>
                       <span className="text-[16px] text-[#A0A0A0] font-medium">
-                        { stay ? `숙박 옵션: ${stay}박` : `기간 선택`}
+                        {stay ? `숙박 옵션: ${stay}박` : `기간 선택`}
                       </span>
                     </div>
                     <div className="w-1/2 h-full px-[16px]">
                       <p className="text-[15px] text-[#636363] font-medium">여행 시기</p>
                       <span className="text-[16px] text-[#A0A0A0] font-medium">
-                        { month ? `숙박 월 : ${month}월` : `기간 선택`}
+                        {month ? `숙박 월 : ${month}월` : `기간 선택`}
                       </span>
                     </div>
                   </>
@@ -190,9 +198,7 @@ const SearchBox = () => {
                 <DetailsModal onClose={() => setActiveModal(null)} />
               </div>
             )}
-            </section>
-            
-            
+          </section>
         </div>
       )}
     </>
