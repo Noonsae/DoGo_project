@@ -134,7 +134,7 @@ const SignInPage = () => {
             </div>
             <button
               type="submit"
-              className="w-full max-w-[400px] text-[20px] bg-[#B3916A] font-pretendard font-semibold leading-[135%] not-italic text-white py-3 rounded-lg hover:bg-[#a37e5f] transition mb-[12px]"
+              className="px-[24px] py-[8px] w-full max-w-[400px] text-[20px] bg-[#B3916A] font-pretendard font-semibold leading-[135%] not-italic text-white rounded-lg hover:bg-[#a37e5f] transition mb-[12px]"
             >
               로그인
             </button>

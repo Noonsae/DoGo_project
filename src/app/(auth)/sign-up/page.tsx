@@ -29,7 +29,7 @@ const Page = () => {
     router.push('/sign-in');
   };
   return (
-    <div className="sm:flex flex-col justify-center items-center min-h-screen px-4 sm:px-6 lg:px-8">
+    <div className="sm:flex flex-col justify-center items-center min-h-screen px-[20px] ">
       <div className="flex justify-center mt-[40px]">
         <LogoAuth className=" w-[74px] h-[21px] sm:w-[139.947px] sm:h-[36.813px]" />
       </div>
@@ -40,7 +40,7 @@ const Page = () => {
         </p>
 
         {/* 회원 유형 선택 */}
-        <div className="flex flex-row justify-between gap-x-[20px] sm:gap-x-[16px] mb-[48px] md:mb-12 sm:mb-8">
+        <div className="flex flex-row justify-center gap-x-[20px] sm:gap-x-[16px] mb-[48px] md:mb-12 sm:mb-8">
           {/* 일반 회원가입 */}
           <div
             onClick={() => handleSelect('user')}
@@ -90,7 +90,7 @@ const Page = () => {
         {/* 다음 버튼 */}
         <button
           onClick={handleNext}
-          className="w-full max-w-[400px] text-[20px] bg-[#B3916A] font-pretendard font-semibold leading-[135%] not-italic text-white py-3 rounded-lg hover:bg-[#a37e5f] transition mb-[12px] sm:mb-[16px]
+          className="px-[24px] py-[8px] w-full max-w-[400px] text-[20px] bg-[#B3916A] font-pretendard font-semibold leading-[135%] not-italic text-white rounded-lg hover:bg-[#a37e5f] transition mb-[12px] sm:mb-[16px]
           "
         >
           다음
@@ -119,7 +119,7 @@ const Page = () => {
             <KakaoSignIn />
 
             {/* 하단 링크 */}
-            <div className="flex w-full max-w-[400px] justify-center items-center text-sm text-gray-500 mt-4">
+            <div className="mb-[40px] sm:mb-[80px] flex w-full max-w-[400px] justify-center items-center text-sm text-gray-500 mt-4">
               <button
                 type="button"
                 className="flex-1 text-right m-[2px] hover:underline"
