@@ -8,13 +8,14 @@ import { RoomType } from '@/types/supabase/room-type';
 import { HotelRoomProps } from '@/types/hotel/hotel-room-type';
 
 import Modal from '@/components/ui/hotel-room/Modal';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const HotelRoom = ({ roomsData, getValidImageUrl, roomOption, hotelData }: HotelRoomProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState<RoomType | null>(null);
   const formatKoreanCurrency = useFormatCurrency();
-
+  const searchParams = useSearchParams();
+  
   const openModal = (room: RoomType) => {
     setSelectedRoom(room);
     setIsModalOpen(true);
@@ -24,11 +25,18 @@ const HotelRoom = ({ roomsData, getValidImageUrl, roomOption, hotelData }: Hotel
     setSelectedRoom(null);
     setIsModalOpen(false);
   };
+  
+  const stay = searchParams.get('stay') || '1';
+  const roomHash = searchParams.get('room') || '1';
+
   // 한솔🔥
   const router = useRouter();
   const handleBooking = (room: RoomType) => {
-    router.push(`/booking?hotel_id=${hotelData.id}&room_id=${room.id}&price=${room.price}`);
+    router.push(
+      `/booking?hotel_id=${hotelData.id}&room_id=${room.id}&price=${room.price}&stay=${stay}&room=${roomHash}`
+    );
   };
+
   return (
     <div>
       <section id="rooms" className="scroll-mt-20 mb-[120px]">
@@ -92,8 +100,8 @@ const HotelRoom = ({ roomsData, getValidImageUrl, roomOption, hotelData }: Hotel
                       </div>
                       <div className="mt-5 md:mt-0 text-right">
                         <p className="text-2xl font-semibold text-gray-900 mb-4">
-                          {formatKoreanCurrency(room.price)}{' '}
-                          <span className="text-neutral-500 text-base font-medium">/1박</span>
+                          {formatKoreanCurrency(room.price * Number(stay))} {''}
+                          <span className="text-neutral-500 text-base font-medium">/{''} {stay}박</span>
                         </p>
                         <button
                           onClick={() => handleBooking(room)} //🔥

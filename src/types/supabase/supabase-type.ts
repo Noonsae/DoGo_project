@@ -15,6 +15,7 @@ export type Database = {
           content: string
           created_at: string
           id: string
+          inquiry_id: string
           user_id: string
         }
         Insert: {
@@ -22,6 +23,7 @@ export type Database = {
           content: string
           created_at?: string
           id?: string
+          inquiry_id?: string
           user_id?: string
         }
         Update: {
@@ -29,6 +31,7 @@ export type Database = {
           content?: string
           created_at?: string
           id?: string
+          inquiry_id?: string
           user_id?: string
         }
         Relationships: [
@@ -37,6 +40,13 @@ export type Database = {
             columns: ["contact_id"]
             isOneToOne: false
             referencedRelation: "contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "answers_inquiry_id_fkey"
+            columns: ["inquiry_id"]
+            isOneToOne: false
+            referencedRelation: "inquiries"
             referencedColumns: ["id"]
           },
           {
@@ -53,30 +63,52 @@ export type Database = {
           check_in_date: string
           check_out_date: string
           created_at: string
+          hotel_id: string
           id: string
+          request: string[] | null
           room_id: string
           status: string
+          total_amount: number
+          user_first_name: string
           user_id: string
+          user_last_name: string
         }
         Insert: {
           check_in_date: string
           check_out_date: string
           created_at?: string
+          hotel_id?: string
           id?: string
+          request?: string[] | null
           room_id?: string
           status: string
+          total_amount: number
+          user_first_name: string
           user_id?: string
+          user_last_name: string
         }
         Update: {
           check_in_date?: string
           check_out_date?: string
           created_at?: string
+          hotel_id?: string
           id?: string
+          request?: string[] | null
           room_id?: string
           status?: string
+          total_amount?: number
+          user_first_name?: string
           user_id?: string
+          user_last_name?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "bookings_hotel_id_fkey"
+            columns: ["hotel_id"]
+            isOneToOne: false
+            referencedRelation: "hotels"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "bookings_room_id_fkey"
             columns: ["room_id"]

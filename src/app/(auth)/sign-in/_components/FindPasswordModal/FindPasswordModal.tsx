@@ -6,7 +6,7 @@ import CloseButtonIcon from '@/components/ui/icon/CloseButtonIcon';
 import InputModal from './InputModal';
 import ResetModal from './ResetModal';
 import SuccessModal from './SuccessModal';
-import { isValidPassword } from '@/utils/validation';
+import { isValidPassword } from '@/utils/calculator/validation';
 import Swal from 'sweetalert2';
 
 const FindPasswordModal = ({ onClose }: { onClose: () => void }) => {

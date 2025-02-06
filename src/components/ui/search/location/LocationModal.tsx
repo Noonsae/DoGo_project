@@ -1,18 +1,15 @@
 'use client';
 
-import { useState } from 'react';
-
 import useSearchHistoryStore from '@/store/useSearchHistoryStore';
 
 import { locations } from '@/constants/constant';
-import IoMdPinIcon from '../icon/IoMdPinIcon';
-import IoCloseIcon from '../icon/IoCloseIcon';
+import IoMdPinIcon from '../../icon/IoMdPinIcon';
+import IoCloseIcon from '../../icon/IoCloseIcon';
 import useSearchStore from '@/store/useSearchStore';
 
-const LocationModal = () => {
+const LocationModal = ({ onClose }: { onClose: () => void }) => {
   const history = useSearchHistoryStore((state) => state.history); // 히스토리 값 가져오기
   const removeHistory = useSearchHistoryStore((state) => state.removeHistory);
-  const [selectLabel, setSelectLabel] = useState('');
   const { location, setLocation } = useSearchStore();
 
   const getLocationLabel = (locationId: string) => {
@@ -26,6 +23,7 @@ const LocationModal = () => {
   // 선택한 버튼의 지역값을 전역 상태로 저장
   const handleLocationClick = (label: string) => {
     setLocation(label);
+    onClose();
   };
 
   // 검색 기록을 지우면서 input 상태 초기화

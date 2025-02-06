@@ -4,7 +4,7 @@ const LogoAuth = ({ className }: { className?: string }) => {
   return (
     <div>
       <svg
-        className={`mb-[40px] ${className}`}
+        className={`sm:mt-[106px] mb-[40px] w-[74px] h-[21px] sm:w-[139.947px] sm:h-[36.813px] ${className}`}
         width="139.947"
         height="36.813"
         viewBox="0 0 141 38"

@@ -53,7 +53,7 @@ const InputPassword = ({
             type="button"
             tabIndex={-1}
             onClick={togglePasswordVisibility}
-            className="px-3 text-neutral-500 hover:text-neutral-500"
+            className="px-3 text-neutral-500 hover:text-neutral-500 "
           >
             {isPasswordVisible ? (
               <CloseEyesIcon className="text-neutral-500" />

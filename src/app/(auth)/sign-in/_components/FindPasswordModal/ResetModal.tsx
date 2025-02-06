@@ -2,7 +2,7 @@
 import { FormState, ErrorState } from '@/types/auth/FindPasswordModalTypes';
 import CloseEyesIcon from '@/components/ui/icon/CloseEyesIcon';
 import OpenEyesIcon from '@/components/ui/icon/OpenEyesIcon';
-import { isValidPassword } from '@/utils/validation';
+import { isValidPassword } from '@/utils/calculator/validation';
 import React from 'react';
 
 interface ResetModalProps {

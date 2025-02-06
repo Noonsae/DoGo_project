@@ -7,18 +7,19 @@ import { useRouter } from 'next/navigation';
 
 import useSearchStore from '@/store/useSearchStore';
 
-import generateUrl from '@/utils/urlHelpers';
+import generateUrl from '@/utils/calculator/urlHelpers';
 
 import ScrollSearchBox from '@/components/ui/search/ScrollSearchBox';
 
-import LocationModal from './LocationModal';
-import DurationModal from './DurationModal';
-import DetailsModal from './DetailsModal';
+import LocationModal from './location/LocationModal';
+import DurationModal from './duration/DurationModal';
+import DetailsModal from './details/DetailsModal';
 
 import HiSearchIcon from '../icon/HiSearchIcon';
 import useSearchHistoryStore from '@/store/useSearchHistoryStore';
 
 const SearchBox = () => {
+  const [tab, setTab] = useState<'date' | 'flexible'>('date'); // 탭 상태
   const { location, checkIn, checkOut, details, stay, month, setLocation } = useSearchStore();
   const [isSticky, setIsSticky] = useState(false); // 스크롤 상태 관리
   const [activeModal, setActiveModal] = useState<'location' | 'duration' | 'details' | null>(null); // 모달 상태
@@ -42,6 +43,8 @@ const SearchBox = () => {
     const handleScroll = () => {
       setIsSticky(window.scrollY >= 300);
     };
+    // TODO: intersection observer로 수정
+    // scroll 이벤트가 성능에 안좋음
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -64,15 +67,13 @@ const SearchBox = () => {
     ['mousedown', 'touchstart']
   );
 
-  const url = generateUrl({ location, checkIn, checkOut, stay, month, details }); // URL 생성
-  
   const handleSearchClick = async () => {
-    const { location } = useSearchStore.getState();
+    // const { location } = useSearchStore.getState();
     if (location) {
       useSearchHistoryStore.getState().addHistory(location);
     }
-    setLocation('');
-    const searchUrl = url;
+    
+    const searchUrl = generateUrl({ location, checkIn, checkOut, stay, month, details }); // URL 생성
     await router.push(searchUrl); // 페이지 이동
     closeModal();
   };
@@ -84,12 +85,10 @@ const SearchBox = () => {
     }
   };
 
-  const [stayDuration, travelMonth] = stay.split('|').map((s) => s.trim());
-
   return (
     <>
       {isSticky ? (
-        <ScrollSearchBox />
+        <ScrollSearchBox tab={tab} setTab={setTab} />
       ) : (
         <div className="w-full max-w-[1300px] h-full mx-auto px-[50px] -mt-[210px]">
           <section className="w-full max-w-[1200px] h-[160px] mx-auto px-[32px] py-[24px] rounded-[8px] bg-white shadow-[0px_4px_12px_rgba(0,0,0,0.1)]">
@@ -121,14 +120,33 @@ const SearchBox = () => {
                   activeModal === 'duration' ? 'border-[#B3916A]' : 'border-[#BFBFBF]'
                 }`}
               >
-                <div className="w-1/2 h-full">
-                  <p className="text-[15px] text-[#636363] font-medium">숙박 기간</p>
-                  <span className="text-[16px] text-[#A0A0A0] font-medium">{stayDuration || `기간 선택`}</span>
-                </div>
-                <div className="w-1/2 h-full px-[16px]">
-                  <p className="text-[15px] text-[#636363] font-medium">여행 시기</p>
-                  <span className="text-[16px] text-[#A0A0A0] font-medium">{travelMonth || `기간 선택`}</span>
-                </div>
+                {tab === 'date' ? (
+                  <>
+                    <div className="w-1/2 h-full">
+                      <p className="text-[15px] text-[#636363] font-medium">체크인</p>
+                      <span className="text-[16px] text-[#A0A0A0] font-medium">{checkIn || `기간 선택`}</span>
+                    </div>
+                    <div className="w-1/2 h-full px-[16px]">
+                      <p className="text-[15px] text-[#636363] font-medium">체크아웃</p>
+                      <span className="text-[16px] text-[#A0A0A0] font-medium">{checkOut || `기간 선택`}</span>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="w-1/2 h-full">
+                      <p className="text-[15px] text-[#636363] font-medium">숙박 기간</p>
+                      <span className="text-[16px] text-[#A0A0A0] font-medium">
+                        {`숙박 옵션: ${stay}박` || `기간 선택`}
+                      </span>
+                    </div>
+                    <div className="w-1/2 h-full px-[16px]">
+                      <p className="text-[15px] text-[#636363] font-medium">여행 시기</p>
+                      <span className="text-[16px] text-[#A0A0A0] font-medium">
+                        {`숙박 월 : ${month}월` || `기간 선택`}
+                      </span>
+                    </div>
+                  </>
+                )}
               </div>
 
               {/* 객실 및 인원 */}
@@ -159,12 +177,12 @@ const SearchBox = () => {
             {/* 모달 */}
             {activeModal === 'location' && (
               <div ref={modalRef}>
-                <LocationModal />
+                <LocationModal onClose={() => setActiveModal(null)} />
               </div>
             )}
             {activeModal === 'duration' && (
               <div ref={modalRef}>
-                <DurationModal onClose={() => setActiveModal(null)} />
+                <DurationModal tab={tab} setTab={setTab} onClose={() => setActiveModal(null)} />
               </div>
             )}
             {activeModal === 'details' && (
@@ -172,7 +190,9 @@ const SearchBox = () => {
                 <DetailsModal onClose={() => setActiveModal(null)} />
               </div>
             )}
-          </section>
+            </section>
+            
+            
         </div>
       )}
     </>
