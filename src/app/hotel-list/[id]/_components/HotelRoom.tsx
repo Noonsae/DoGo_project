@@ -9,6 +9,7 @@ import { HotelRoomProps } from '@/types/hotel/hotel-room-type';
 
 import Modal from '@/components/ui/hotel-room/Modal';
 import { useRouter, useSearchParams } from 'next/navigation';
+import useSearchStore from '@/store/useSearchStore';
 
 const HotelRoom = ({ roomsData, getValidImageUrl, roomOption, hotelData }: HotelRoomProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,15 +26,15 @@ const HotelRoom = ({ roomsData, getValidImageUrl, roomOption, hotelData }: Hotel
     setSelectedRoom(null);
     setIsModalOpen(false);
   };
-  
-  const stay = searchParams.get('stay') || '1';
-  const roomHash = searchParams.get('room') || '1';
+ 
+  const room_count = searchParams.get('room');
+  const stay = useSearchStore((state) => state.stay);      
 
   // 한솔🔥
   const router = useRouter();
   const handleBooking = (room: RoomType) => {
     router.push(
-      `/booking?hotel_id=${hotelData.id}&room_id=${room.id}&price=${room.price}&stay=${stay}&room=${roomHash}`
+      `/booking?hotel_id=${hotelData.id}&room_id=${room.id}&price=${room.price}&room=${room_count}`
     );
   };
 
