@@ -6,33 +6,36 @@ import interactionPlugin from '@fullcalendar/interaction'; // needed for dayClic
 
 import '@/styles/calendar.css';
 import Swal from 'sweetalert2';
+import useSearchStore from '@/store/useSearchStore';
 
-const CalendarForm = ({
-  selectedDateRange,
-  setSelectedDateRange
-}: {
-  selectedDateRange: { start: string; end: string };
-  setSelectedDateRange: (range: { start: string; end: string }) => void;
-}) => {
-  const handleDateClick = (info: { dateStr: string }) => {
-    const clickedDate = info.dateStr;
+const CalendarForm = () => {
+  // TODO: c나누ㄱ
+  const checkIn = useSearchStore((state) => state.checkIn);
+  const checkOut = useSearchStore((state) => state.checkOut);
+  const setCheckIn = useSearchStore((state) => state.setCheckIn);
+  const setCheckOut = useSearchStore((state) => state.setCheckOut);
 
-    if (!selectedDateRange.start || (selectedDateRange.start && selectedDateRange.end)) {
-      // 시작 날짜 설정
-      setSelectedDateRange({ start: clickedDate, end: '' });
-    } else if (!selectedDateRange.end) {
-      // 종료 날짜 설정
-      if (new Date(clickedDate) >= new Date(selectedDateRange.start)) {
-        setSelectedDateRange({ start: selectedDateRange.start, end: clickedDate });
-      } else {
-        Swal.fire({
-          icon: 'warning',
-          title: '날짜를 확인해주세요.',
-          text: '시작일은 종료일보다 이후여야 합니다.',
-          confirmButtonColor: '#B3916A',
-          confirmButtonText: '날짜 다시 선택하기'
-        });
-      }
+  // 첫 번째 달력 클릭 핸들러
+  const handleCalendarStartDateClick = (info: { dateStr: string }) => {
+    setCheckIn(info.dateStr);
+    validateDates(info.dateStr, checkOut); // 날짜 검증
+  };
+
+  // 두 번째 달력 클릭 핸들러
+  const handleCalendarFinishDateClick = (info: { dateStr: string }) => {
+    setCheckOut(info.dateStr);
+    validateDates(checkIn, info.dateStr); // 날짜 검증
+  };
+
+  const validateDates = (startDate: string, finishDate: string) => {
+    if (startDate && finishDate && new Date(startDate) > new Date(finishDate)) {
+      Swal.fire({
+        icon: 'warning',
+        title: '날짜를 확인해주세요.',
+        text: '시작일은 종료일보다 이후여야 합니다.',
+        confirmButtonColor: '#B3916A',
+        confirmButtonText: '날짜 다시 선택하기'
+      });
     }
   };
 
@@ -51,7 +54,7 @@ const CalendarForm = ({
             center: 'title', // 중앙: 제목
             right: 'next' // 오른쪽: 다음
           }}
-          dateClick={handleDateClick} // 날짜 클릭 이벤트 핸들러
+          dateClick={handleCalendarStartDateClick} // 첫 번째 달력 클릭 핸들러
           selectable={true} // 날짜 선택 가능
           dayCellContent={(arg) => <span>{arg.date.getDate()}</span>}
         />
@@ -69,15 +72,14 @@ const CalendarForm = ({
               center: 'title', // 중앙: 제목
               right: 'next' // 오른쪽: 다음
             }}
-            initialDate={new Date(new Date().setMonth(new Date().getMonth() + 1))} // 다음 달 표시
-            dateClick={handleDateClick} // 날짜 클릭 이벤트 핸들러
+            dateClick={handleCalendarFinishDateClick} // 두 번재 달력 클릭 핸들러
             selectable={true} // 날짜 선택 가능
             dayCellContent={(arg) => <span>{arg.date.getDate()}</span>}
           />
         </div>
       </div>
       <p className="text-sm text-gray-500">
-        선택된 날짜: {selectedDateRange.start || '없음'} ~ {selectedDateRange.end || '없음'}
+        선택된 날짜: {checkIn} ~ {checkOut}
       </p>
     </div>
   );
