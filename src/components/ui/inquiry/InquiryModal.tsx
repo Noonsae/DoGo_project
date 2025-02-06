@@ -35,8 +35,9 @@ const InquiryModal = ({ isOpen, onClose, hotel_id }: InquiryModalProps) => {
             문의하기
           </h2>
           {/* 닫기 버튼 (모바일에서도 오른쪽 상단 고정) */}
-          <button onClick={onClose} className="absolute right-4 top-4">
-            <CloseButtonIcon className="text-white " />
+          {/* 닫기 버튼 (모바일에서는 왼쪽, 데스크탑에서는 오른쪽) */}
+          <button onClick={onClose} className="absolute top-4 left-4 sm:right-4 sm:left-auto">
+            <CloseButtonIcon className="text-white" />
           </button>
         </div>
 
