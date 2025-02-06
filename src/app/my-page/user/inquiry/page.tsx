@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
-import InquiryModal from '@/app/my-page/_components/InquiryModal';
 
 // 문의 데이터를 나타내는 인터페이스 정의
 interface Inquiry {
@@ -24,8 +23,6 @@ const UserInquiryPage: React.FC = () => {
   const [selectedInquiry, setSelectedInquiry] = useState<Inquiry | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const userId = '현재 로그인된 유저 ID'; // 실제 로그인된 유저 ID 가져오기
 
   useEffect(() => {
     fetchInquiries();
@@ -72,56 +69,37 @@ const UserInquiryPage: React.FC = () => {
     }
   };
 
-  // 문의 삭제 핸들러
-  const handleDeleteInquiry = async (id: string) => {
-    try {
-      const { error } = await browserSupabase().from('inquiries').delete().eq('id', id);
-      if (error) throw error;
-
-      setInquiries((prev) => prev.filter((inquiry) => inquiry.id !== id));
-    } catch (err) {
-      console.error('Error deleting inquiry:', err);
-      setError('문의 삭제 중 오류가 발생했습니다.');
-    }
-  };
-
   if (loading) return <p className="text-center text-gray-500">로딩 중...</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
     <div className="p-6 bg-white rounded-lg shadow">
-      <h1 className="text-2xl font-bold mb-4">1대1 문의</h1>
+      <h1 className="text-2xl font-bold mb-4">내 문의 목록</h1>
 
-      {/* 문의 등록 버튼 */}
-      <button
-        className="mb-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-        onClick={() => setIsModalOpen(true)}
-      >
-        문의 등록하기
-      </button>
-
-      {/* 문의 목록과 상세 정보 표시 */}
+      {/* 문의 리스트 */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* 문의 리스트 */}
         <div>
           <h2 className="text-lg font-semibold mb-2">문의 목록</h2>
           <ul className="space-y-4">
-            {inquiries.length === 0 && <p className="text-center text-gray-500">등록된 문의가 없습니다.</p>}
-            {inquiries.map((inquiry) => (
-              <li
-                key={inquiry.id}
-                onClick={() => setSelectedInquiry(inquiry)}
-                className={`p-4 border rounded shadow cursor-pointer ${
-                  selectedInquiry?.id === inquiry.id ? 'bg-gray-100' : ''
-                }`}
-              >
-                <h3 className="font-bold">{inquiry.title}</h3>
-                <p className="text-sm text-gray-500">작성일: {new Date(inquiry.created_at).toLocaleDateString()}</p>
-                <p className={`mt-1 font-semibold ${getStatusClass(inquiry.status)}`}>
-                  상태: {getStatusLabel(inquiry.status)}
-                </p>
-              </li>
-            ))}
+            {inquiries.length === 0 ? (
+              <p className="text-center text-gray-500">등록된 문의가 없습니다.</p>
+            ) : (
+              inquiries.map((inquiry) => (
+                <li
+                  key={inquiry.id}
+                  onClick={() => setSelectedInquiry(inquiry)}
+                  className={`p-4 border rounded shadow cursor-pointer ${
+                    selectedInquiry?.id === inquiry.id ? 'bg-gray-100' : ''
+                  }`}
+                >
+                  <h3 className="font-bold">{inquiry.title}</h3>
+                  <p className="text-sm text-gray-500">작성일: {new Date(inquiry.created_at).toLocaleDateString()}</p>
+                  <p className={`mt-1 font-semibold ${getStatusClass(inquiry.status)}`}>
+                    상태: {getStatusLabel(inquiry.status)}
+                  </p>
+                </li>
+              ))
+            )}
           </ul>
         </div>
 
@@ -151,15 +129,6 @@ const UserInquiryPage: React.FC = () => {
           </div>
         )}
       </div>
-
-      {/* 모달 추가 */}
-      <InquiryModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        userId={userId}
-        role="user"
-        onInquirySubmitted={fetchInquiries}
-      />
     </div>
   );
 };
