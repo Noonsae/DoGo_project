@@ -3,14 +3,15 @@
 import React, { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 import useAuthStore from '@/store/useAuth';
+
 interface Room {
   id: string;
   room_name: string;
   room_type: string;
   price: number;
   bed_type: string;
-  is_breakfast_included: string | null; // string 타입으로 수정
-  view: string; // view 속성 추가
+  is_breakfast_included: string | null;
+  view: string;
   created_at: string | null;
 }
 
@@ -18,87 +19,104 @@ const RoomPage = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [hotelId, setHotelId] = useState<string | null>(null); // 🔹 호텔 ID 상태 추가
   const [newRoom, setNewRoom] = useState({
     room_name: '',
     room_type: '',
     price: 0,
     bed_type: '',
-    is_breakfast_included: 'false', // string 타입으로 유지
-    view: '' // view 속성 초기화
+    is_breakfast_included: 'false',
+    view: ''
   });
+
   const user = useAuthStore((state) => state.user);
   const userId = user?.id;
 
-  // 방 목록 가져오기
+  // 🔹 로그인한 사용자의 호텔 ID 가져오기
   useEffect(() => {
-    const supabase = browserSupabase();
-    const fetchRooms = async () => {
+    const fetchHotelId = async () => {
       try {
-        if (!userId) {
-          return;
-        }
+        if (!userId) return;
 
-        const { data: hotelIdData, error: hotelIdError } = await supabase
+        const { data, error } = await browserSupabase()
           .from('hotels')
           .select('id')
           .eq('user_id', userId)
           .maybeSingle();
 
-        if (hotelIdData === null) {
-          return;
+        if (error) throw error;
+        if (data) {
+          setHotelId(data.id); // 호텔 ID 상태 업데이트
         }
+      } catch (err) {
+        console.error('Error fetching hotel ID:', err);
+        setError('호텔 정보를 불러오는 중 오류가 발생했습니다.');
+      }
+    };
 
-        if (hotelIdData.id) {
-          return;
-        }
+    fetchHotelId();
+  }, [userId]);
 
-        const { data, error } = await supabase
+  // 🔹 호텔 ID가 있을 때만 방 목록 가져오기
+  useEffect(() => {
+    const fetchRooms = async () => {
+      try {
+        if (!hotelId) return;
+
+        const { data, error } = await browserSupabase()
           .from('rooms')
           .select('id, room_name, room_type, price, bed_type, is_breakfast_included, view, created_at')
-          .eq('hotel_id', hotelIdData.id);
+          .eq('hotel_id', hotelId);
 
         if (error) throw error;
-
         setRooms(data || []);
       } catch (err) {
         console.error('Error fetching rooms:', err);
-        setError('방 데이터를 불러오는 중 오류가 발생했습니다.');
+        setError('객실 데이터를 불러오는 중 오류가 발생했습니다.');
       } finally {
         setLoading(false);
       }
     };
 
     fetchRooms();
-  }, [userId]);
+  }, [hotelId]);
 
-  // 방 추가하기
-  // const handleAddRoom = async () => {
-  //   try {
-  //     const { data, error } = await browserSupabase().from('rooms').insert([{
-  //       ...newRoom,
-  //       hotel_id: hotelId, // hotel_id 추가
-  //     }]);
+  // 🔹 방 추가하기
+  const handleAddRoom = async () => {
+    try {
+      if (!hotelId) {
+        alert('호텔 정보를 찾을 수 없습니다.');
+        return;
+      }
 
-  //     if (error) throw error;
+      const { data, error } = await browserSupabase().from('rooms').insert([
+        {
+          ...newRoom,
+          hotel_id: hotelId, // 🔹 수정된 hotelId 적용
+        },
+      ]);
 
-  //     if (data) {
-  //       setRooms((prev) => [...prev, data[0]]);
-  //     }
-  //     setNewRoom({
-  //       room_name: '',
-  //       room_type: '',
-  //       price: 0,
-  //       bed_type: '',
-  //       is_breakfast_included: 'false',
-  //       view: '',
-  //     });
-  //   } catch (err) {
-  //     console.error('Error adding room:', err);
-  //     setError('방 추가 중 오류가 발생했습니다.');
-  //   }
-  // };
+      if (error) throw error;
 
-  // 방 삭제하기
+      if (data) {
+        setRooms((prev) => [...prev, data[0]]);
+      }
+
+      setNewRoom({
+        room_name: '',
+        room_type: '',
+        price: 0,
+        bed_type: '',
+        is_breakfast_included: 'false',
+        view: '',
+      });
+    } catch (err) {
+      console.error('Error adding room:', err);
+      setError('객실 추가 중 오류가 발생했습니다.');
+    }
+  };
+
+  // 🔹 방 삭제하기
   const handleDeleteRoom = async (roomId: string) => {
     try {
       const { error } = await browserSupabase().from('rooms').delete().eq('id', roomId);
@@ -108,7 +126,7 @@ const RoomPage = () => {
       setRooms((prev) => prev.filter((room) => room.id !== roomId));
     } catch (err) {
       console.error('Error deleting room:', err);
-      setError('방 삭제 중 오류가 발생했습니다.');
+      setError('객실 삭제 중 오류가 발생했습니다.');
     }
   };
 
@@ -119,7 +137,7 @@ const RoomPage = () => {
     <div className="p-6 bg-white rounded-lg shadow">
       <h2 className="text-2xl font-bold mb-4">객실 관리</h2>
 
-      {/* 새 방 추가 */}
+      {/* 새 객실 추가 */}
       <div className="mb-6">
         <h3 className="font-semibold mb-2">새 객실 추가</h3>
         <div className="flex flex-col gap-4">
@@ -166,9 +184,9 @@ const RoomPage = () => {
             />
             조식 포함 여부
           </label>
-          {/* <button onClick={handleAddRoom} className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
+          <button onClick={handleAddRoom} className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
             객실 추가
-          </button> */}
+          </button>
         </div>
       </div>
 
@@ -199,10 +217,7 @@ const RoomPage = () => {
                 <td className="border p-2">{room.is_breakfast_included === 'true' ? '포함' : '미포함'}</td>
                 <td className="border p-2">{room.view}</td>
                 <td className="border p-2">
-                  <button
-                    onClick={() => handleDeleteRoom(room.id)}
-                    className="bg-red-500 text-white p-2 rounded hover:bg-red-600"
-                  >
+                  <button onClick={() => handleDeleteRoom(room.id)} className="bg-red-500 text-white p-2 rounded hover:bg-red-600">
                     삭제
                   </button>
                 </td>
