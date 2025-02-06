@@ -1,5 +1,3 @@
-import { useParams } from 'next/navigation';
-
 import { PostBookingDataType } from '@/types/supabase/booking-type';
 
 import { loadTossPayments } from '@tosspayments/payment-sdk';
@@ -10,10 +8,8 @@ const TossPaymentsButton = ({ disabled, bookingData }: { disabled?: boolean; boo
   const clientKey = process.env.NEXT_PUBLIC_TOSS_PAYMENTS_TEST_CLIENT_API_KEY; // 환경 변수 사용
 
   const { data: product } = useHotelNameAndRoomName(bookingData.hotel_id, bookingData.room_id);
-  
-  const mutation = usePostBookingData();
 
-  const { id } = useParams();
+  const mutation = usePostBookingData();
 
   const handlePayment = async () => {
     if (!clientKey) {
@@ -24,16 +20,12 @@ const TossPaymentsButton = ({ disabled, bookingData }: { disabled?: boolean; boo
     const booking_data = await mutation.mutateAsync(bookingData);
 
     if (!booking_data) {
-      return alert('?')
-    };
+      return alert('예약 관련 정보를 찾을 수 없습니다... 왜? ');
+    }
 
     const booking_id = booking_data[0].id;
-        
-    const tossPayments = await loadTossPayments(clientKey);
 
-    // TODO_01 : 고유 주문 번호 booking 테이블에서 가져오기
-    // TODO_02 : 상품명은 호텔 이름 + 객실 이름
-    // TODO_03 : 고객명은 user.name
+    const tossPayments = await loadTossPayments(clientKey);
 
     try {
       await tossPayments.requestPayment('카드', {

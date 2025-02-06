@@ -8,9 +8,11 @@ import useUserQuery from '@/hooks/user/useUserData';
 import useFetchBookingData from '@/hooks/booking/useFetchBookingData';
 
 import FileIcon from '@/components/ui/icon/FileIcon';
+import { getDayOfWeek } from '@/utils/calculator/dateCalculator';
+import { useEffect } from 'react';
+import { clearBookingData } from '@/utils/booking/booking';
 
-//예약확정페이지
-
+// 예약 확정 결과 페이지
 const BookingConfirmPage = () => {
 
   const router = useRouter();
@@ -20,6 +22,11 @@ const BookingConfirmPage = () => {
   const { data: userData } = useUserQuery(userId);
   const safeUserData = userData || { user_name: null, email: null, phone_number: null };
 
+  // 성공 페이지에 도달하면 로컬스토리지에 저장된 예약 일정 관련 정보를 제거함
+  useEffect(() => {    
+    clearBookingData();    
+  }, []);
+
   const handleHome = () => {
     router.push('/');
   };
@@ -27,6 +34,9 @@ const BookingConfirmPage = () => {
   const params = useParams();
 
   const { data: fetchBookingData } = useFetchBookingData(params.id as string);
+
+  const checkInDayOfWeek = getDayOfWeek(fetchBookingData ? fetchBookingData.check_in_date : '');
+  const checkOutDayOfWeek = getDayOfWeek(fetchBookingData ? fetchBookingData.check_out_date : '');
 
   const formatPhoneNumber = (phoneNumber: string): string => {
     return phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
@@ -77,7 +87,7 @@ const BookingConfirmPage = () => {
             <p className="font-semibold">체크인</p>
             <p className="text-gray-600">
               {fetchBookingData?.check_in_date ?? '날짜 없음'}
-              <p>{fetchBookingData?.hotels.check_in}</p>
+              <span>{`${fetchBookingData?.hotels.check_in} (${checkInDayOfWeek})`}</span>
             </p>
           </div>
           <div className="w-[1px] ml-36 bg-gray-300 h-10"></div>
@@ -85,8 +95,8 @@ const BookingConfirmPage = () => {
           <div className="ml-[24px]">
             <p className="font-semibold ">체크아웃</p>
             <p className="text-gray-600">
-              {fetchBookingData?.check_in_date ?? '날짜 없음'}
-              <p>{fetchBookingData?.hotels.check_out}</p>
+              {fetchBookingData?.check_out_date ?? '날짜 없음'}
+              <span>{`${fetchBookingData?.hotels.check_in} (${checkOutDayOfWeek})`}</span>
             </p>
           </div>
         </div>

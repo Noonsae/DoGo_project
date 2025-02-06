@@ -12,7 +12,7 @@ export default function AuthHeader() {
     }
   };
   return (
-    <div className="bg-white p-4">
+    <div className="bg-white px-[20px] py-[12px] sm:px-[20px] sm:py-[12px]">
       <button onClick={handleBack}>
         <GoBackIcon />
       </button>

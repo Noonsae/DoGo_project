@@ -9,7 +9,7 @@ const FlexibleForm = ({
   const stay = useSearchStore((state) => state.stay );
   const setStay = useSearchStore((state) => state.setStay );
   const month = useSearchStore((state) => state.month );
-  const setMonth = useSearchStore((state) => state.setMonth );
+  const setMonth = useSearchStore((state) => state.setMonth);
 
   return (
     <div className="mt-10 text-center">
