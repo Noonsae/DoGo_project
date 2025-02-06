@@ -4,12 +4,13 @@ import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { FiltersType } from '@/types/hotel/hotel-filter-type';
-import generateUrl from '@/utils/urlHelpers';
+
 import RefreshIcon from '@/components/ui/icon/RefreshIcon';
 import DualSlider from '@/app/hotel-list/_components/DualSlider';
 import BedTypeList from '@/app/hotel-list/_components/BedTypeList';
 import FacilityList from '@/app/hotel-list/_components/FacilityList';
 import ServiceList from '@/app/hotel-list/_components/ServiceList';
+import generateUrl from '@/utils/calculator/urlHelpers';
 
 interface FilterModalProps {
   isOpen: boolean;
