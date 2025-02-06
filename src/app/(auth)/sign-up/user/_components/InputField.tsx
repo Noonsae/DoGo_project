@@ -50,7 +50,7 @@ const InputField = ({
             type="button"
             tabIndex={-1}
             onClick={togglePasswordVisibility}
-            className="px-3 text-neutral-500 hover:text-neutral-500"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-neutral-500 hover:text-neutral-500"
           >
             {isPasswordVisible ? (
               <CloseEyesIcon className="text-neutral-500" />
@@ -60,7 +60,7 @@ const InputField = ({
           </button>
         )}
       </div>
-
+      {/* 커밋 */}
       {helperText && <p className="text-xs text-neutral-600 mt-1">{helperText}</p>}
 
       {error && <p className="text-[14px] text-red-500">{error}</p>}
