@@ -98,11 +98,9 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   return (
     <div className="w-full max-w-[1200px] px-[350px] sm:px-[300px] md:px-[200px] lg:px-[100px] xl:px-[50px] xl:mx-auto pt-[200px] xl:max-w-[1200px] 2xl:px-0  max-[360px]:px-[0px] max-[360px]:max-w-full">
       {/* AlwaysVisibleSearchBox를 항상 화면 상단에 고정 */}
-      <div className="fixed top-0 left-0 w-full z-30 bg-white border-b-0">
-        <div className="[&>div]:border-b-0">
-          <ScrollSearchBox tab={tab} setTab={setTab} />
-        </div>
-      </div>
+
+      <ScrollSearchBox tab={tab} setTab={setTab} />
+
       {/* 나머지 콘텐츠 */}
       <div className="">
         {loading ? (

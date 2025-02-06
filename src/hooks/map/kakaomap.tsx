@@ -2,9 +2,10 @@ import React, { useEffect, useRef } from 'react';
 
 interface KakaoMapProps {
   address: string; // 검색할 주소
+  className: string;
 }
 
-const KakaoMap = ({ address }: KakaoMapProps) => {
+const KakaoMap = ({ address, className }: KakaoMapProps) => {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -65,7 +66,7 @@ const KakaoMap = ({ address }: KakaoMapProps) => {
     loadKakaoMap();
   }, [address]);
 
-  return <div ref={mapContainerRef} style={{ width: '100%', height: '400px' }} />;
+  return <div ref={mapContainerRef} className={`w-full h-[400px] ${className}`} />;
 };
 
 export default KakaoMap;
