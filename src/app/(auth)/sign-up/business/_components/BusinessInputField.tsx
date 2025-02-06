@@ -56,7 +56,7 @@ const BusinessInputField = ({
           </button>
         )}
       </div>
-
+      {/* 커밋 */}
       {helperText && <p className="text-xs sm:text-sm text-neutral-600 mt-1">{helperText}</p>}
 
       {error && <p className=" sm:text-[14px] text-red-500 mt-[4px] sm:mt-[8px]">{error}</p>}
