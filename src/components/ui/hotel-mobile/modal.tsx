@@ -76,7 +76,6 @@ const FilterModal = ({ isOpen, setIsOpen }: FilterModalProps) => {
     console.log('🚀 적용되는 필터 상태:', filters);
 
     const url = generateUrl({
-      // label: filters.label || searchParams.get('label') || '', // ✅ label 유지
       location: filters.location || searchParams.get('location') || '',
       stars: filters.stars || [],
       minPrice: filters.minPrice ?? 0,
