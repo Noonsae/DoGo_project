@@ -54,49 +54,53 @@ const DualSlider: React.FC<DualSliderProps> = ({
   };
 
   return (
-    <div className="relative w-full h-[3px] mt-6 bg-gray-200 rounded-full" ref={sliderRef}>
-      {/* 트랙의 활성화된 부분 */}
-      <div
-        className="absolute h-[3px] bg-[#B3916A] rounded"
-        style={{
-          left: `${(minPriceValue / 2000000) * 100}%`,
-          right: `${100 - (maxPriceValue / 2000000) * 100}%`
-        }}
-      />
-      {/* 최소값 핸들 */}
-      <div
-        className="absolute w-2 h-2 bg-[#B3916A] border-2 border-[#B3916A] outline-none outline-offset-4 outline-[#B3916A] rounded-full cursor-pointer"
-        style={{
-          left: `${(minPriceValue / 2000000) * 100}%`,
-          transform: 'translate(-50%, -50%)',
-          top: '50%'
-        }}
-        onMouseDown={(event) => {
-          handleMouseDown('min');
-          event.preventDefault(); // 기본 드래그 동작 방지
-        }}
-        onDragStart={handleDragStart}
-      />
-      {/* 최대값 핸들 */}
-      <div
-        className="absolute w-2 h-2 bg-[#B3916A] border-2 border-[#B3916A] outline-none outline-offset-4 outline-[#B3916A] rounded-full cursor-pointer"
-        style={{
-          left: `${(maxPriceValue / 2000000) * 100}%`,
-          transform: 'translate(-50%, -50%)',
-          top: '50%'
-        }}
-        onMouseDown={(event) => {
-          handleMouseDown('max');
-          event.preventDefault(); // 기본 드래그 동작 방지
-        }}
-        onDragStart={handleDragStart}
-      />
-      {/* 값 표시 */}
-      <div className="flex justify-between text-[15px] mt-6 text-[#B3916A]">
-        <span>{minPriceValue.toLocaleString()}원</span>
-        <span>{maxPriceValue.toLocaleString()}원</span>
+    <>
+      {' '}
+      <div className="mt-[28px]"></div>
+      <div className="relative w-full h-[3px] mt-[24px] mb-[24px] bg-gray-200 rounded-full " ref={sliderRef}>
+        {/* 트랙의 활성화된 부분 */}
+        <div
+          className="absolute h-[3px] bg-[#B3916A] rounded"
+          style={{
+            left: `${(minPriceValue / 2000000) * 100}%`,
+            right: `${100 - (maxPriceValue / 2000000) * 100}%`
+          }}
+        />
+        {/* 최소값 핸들 */}
+        <div
+          className="absolute w-2 h-2 bg-[#B3916A] border-2 border-[#B3916A] outline-none outline-offset-4 outline-[#B3916A] rounded-full cursor-pointer"
+          style={{
+            left: `${(minPriceValue / 2000000) * 100}%`,
+            transform: 'translate(-50%, -50%)',
+            top: '50%'
+          }}
+          onMouseDown={(event) => {
+            handleMouseDown('min');
+            event.preventDefault(); // 기본 드래그 동작 방지
+          }}
+          onDragStart={handleDragStart}
+        />
+        {/* 최대값 핸들 */}
+        <div
+          className="absolute w-2 h-2 bg-[#B3916A] border-2 border-[#B3916A] outline-none outline-offset-4 outline-[#B3916A] rounded-full cursor-pointer"
+          style={{
+            left: `${(maxPriceValue / 2000000) * 100}%`,
+            transform: 'translate(-50%, -50%)',
+            top: '50%'
+          }}
+          onMouseDown={(event) => {
+            handleMouseDown('max');
+            event.preventDefault(); // 기본 드래그 동작 방지
+          }}
+          onDragStart={handleDragStart}
+        />
+        {/* 값 표시 */}
+        <div className="flex justify-start items-center text-[15px] mt-[24px] text-[#B3916A]">
+          <span className="max-[360px]:mt-[24px]">{minPriceValue.toLocaleString()}원~</span>
+          <span className="max-[360px]mt-[24px]">{maxPriceValue.toLocaleString()}원</span>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

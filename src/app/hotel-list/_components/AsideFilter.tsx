@@ -14,6 +14,9 @@ import DualSlider from './DualSlider';
 import FacilityList from './FacilityList';
 import ServiceList from './ServiceList';
 import BedTypeList from './BedTypeList';
+import InstanceIcon from '@/components/ui/icon/InstanceIcon';
+import FilterModal from '@/components/ui/hotel-mobile/modal';
+import DownIcon from '@/components/ui/icon/DownIcon';
 
 interface AsideFilterProps {
   onFilterChange: (newFilters: FiltersType) => void; // 필터 업데이트를 상위 컴포넌트로 전달
@@ -39,6 +42,7 @@ const AsideFilter = ({ onFilterChange }: AsideFilterProps) => {
   const [selectedBedTypes, setSelectedBedTypes] = useState<string[]>([]);
   const { location, checkIn, checkOut, stay, details } = useSearchStore();
   const [isMobile, setIsMobile] = useState(false);
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false); // ✅ 모달 상태 추가
 
   // 성급 필터
   const handleHotelGradeChange = (grade: number) => {
@@ -147,30 +151,57 @@ const AsideFilter = ({ onFilterChange }: AsideFilterProps) => {
     };
   }, []);
 
-  const handleFilterClick = (section: string) => {
-    router.push(`/hotel-mobile?page=${section}`);
+  const handleFilterClick = () => {
+    setIsFilterModalOpen(true);
   };
 
   if (isMobile) {
     return (
-      <div className="fixed top-[148px] z-50 bg-white left-0 w-full p-4  ">
+      <div className="fixed top-[148px] z-50 bg-white left-0 w-full p-4 ">
         <div className="flex overflow-x-scroll gap-3 scrollbar-hide">
-          {FILTERS.map(({ label, key }) => (
-            <button
-              key={key}
-              className="flex-shrink-0 bg-white text-#636363 px-4 py-2 rounded-[1px] border border-gray-300 text-sm font-semibold  whitespace-nowrap"
-              onClick={() => handleFilterClick(key)}
-            >
-              {label}
-            </button>
-          ))}
+          <button
+            className="flex bg-white text-[#636363] px-4 py-2 gap-1  border border-gray-300 text-sm font-semibold whitespace-nowrap rounded-[9999px]"
+            onClick={handleFilterClick}
+          >
+            {InstanceIcon()}필터
+          </button>
+          <button
+            className="flex bg-white text-[#636363] px-4 py-2 gap-1  border border-gray-300 text-sm font-semibold whitespace-nowrap rounded-[9999px]"
+            onClick={handleFilterClick}
+          >
+            가격{DownIcon()}
+          </button>
+          <button
+            className="flex bg-white text-[#636363] px-4 py-2 gap-1  border border-gray-300 text-sm font-semibold whitespace-nowrap rounded-[9999px]"
+            onClick={handleFilterClick}
+          >
+            호텔 성급{DownIcon()}
+          </button>
+          <button
+            className="flex bg-white text-[#636363] px-4 py-2 gap-1  border border-gray-300 text-sm font-semibold whitespace-nowrap rounded-[9999px]"
+            onClick={handleFilterClick}
+          >
+            침대 종류{DownIcon()}
+          </button>
+          <button
+            className="flex bg-white text-[#636363] px-4 py-2 gap-1  border border-gray-300 text-sm font-semibold whitespace-nowrap rounded-[9999px]"
+            onClick={handleFilterClick}
+          >
+            공용 시설{DownIcon()}
+          </button>
+          <button
+            className="flex bg-white text-[#636363] px-4 py-2 gap-1  border border-gray-300 text-sm font-semibold whitespace-nowrap rounded-[9999px]"
+            onClick={handleFilterClick}
+          >
+            편의 시설{DownIcon()}
+          </button>
         </div>
+        <FilterModal isOpen={isFilterModalOpen} setIsOpen={setIsFilterModalOpen} />
       </div>
     );
   }
-
   return (
-    <aside className="  px-4 py-3 max-lg:flex-row">
+    <aside className=" w-[298px] px-4 py-3 max-lg:flex-row">
       {/* 필터 - 적용 및 필터 초기화 */}
       <div className="flex flex-row items-center justify-between mb-[70px]">
         <div className="flex flex-row gap-4">
@@ -218,7 +249,6 @@ const AsideFilter = ({ onFilterChange }: AsideFilterProps) => {
       <BedTypeList selectedBeds={selectedBedTypes} onBedChange={handleBedTypeChange} />
       {/* 시설 필터 */}
       <FacilityList selectedFacilities={selectedFacilities} onFacilityChange={handleFacilityChange} />
-
       {/* 서비스 필터 */}
       <ServiceList selectedServices={selectedServices} onServiceChange={handleServiceChange} />
     </aside>
