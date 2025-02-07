@@ -29,7 +29,7 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ userData, selectedCode, setSe
           <span className="ml-1 text-[#FF5B45] text-[14px] leading-[1.45]">*</span>
         </p>
         <input
-          value={userData?.email || ''}
+          value={userData?.email || '로그인이 필요합니다'}
           className=" w-full px-4 py-3 text-[#232527] rounded-[8px] border border-[#BFBFBF]"
           placeholder="이메일"
         />
@@ -57,7 +57,7 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ userData, selectedCode, setSe
             ))}
           </select>
           <input
-            value={userData?.phone_number || '전화번호를 입력해주세요.'}
+            value={userData?.phone_number || '로그인이 필요합니다.'}
             className="w-full border px-4 py-3 rounded-[8px] text-[#232527]"
           />
         </div>
