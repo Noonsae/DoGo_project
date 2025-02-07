@@ -35,9 +35,9 @@ const LocationModal = ({ onClose }: { onClose: () => void }) => {
   return (
     <div className="modal-content modal-location fixed left-1/2 top-1/2 w-[404px] px-9 py-8 bg-white shadow-[0px_4px_12px_rgba(0,0,0,0.1)] rounded-[12px] z-50 transform -translate-x-1/2 -translate-y-1/2">
       <div>
-        <p className="mb-6 text-[18px] text-[#636363] font-normal leading-[1.45]">
+        {/* <p className="mb-6 text-[18px] text-[#636363] font-normal leading-[1.45]">
           검색어를 입력하거나 지역을 선택해주세요.
-        </p>
+        </p> */}
         <p className="mb-3 text-[20px] text-[#232527] font-semibold">최근 검색지</p>
         <div className="h-[126px] overflow-hidden">
           {history.length > 0 ? (
