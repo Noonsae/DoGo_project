@@ -116,7 +116,7 @@ const SearchBox = () => {
           )}
 
           {/* 검색창 ui */}
-          <section className="w-full max-w-[1200px] lg:h-[160px] mx-auto px-[32px] py-[24px] rounded-[8px] bg-white shadow-[0px_4px_12px_rgba(0,0,0,0.1)] xxs:h-[48px] xxs:py-3 xxs:px-4 xxs:mt-[-75px]">
+          <section className="w-full max-w-[1200px] lg:h-[160px] mx-auto sm:px-[32px] sm:py-[24px] rounded-[8px] bg-white shadow-[0px_4px_12px_rgba(0,0,0,0.1)] xxs:h-[48px] xxs:py-3 xxs:px-4 xxs:mt-[-75px]">
             <p className="text-[20px] font-semibold mb-[16px] lg:block xxs:hidden">숙소 검색</p>
             <div className="lg:hidden xxs:flex flex-row gap-2">
               <HiSearchIcon className="text-[#A0A0A0]" />
