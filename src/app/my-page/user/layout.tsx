@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import UserSidebar from '../_components/UserSidebar';
 
 const UserLayout = ({ children }: { children: React.ReactElement }) => {

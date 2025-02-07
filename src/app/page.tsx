@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
 
-import EventSection from './_components/EventSection';
 import HeroSection from './_components/HeroSection';
 import ContentsList from './_components/ContentsList';
 
