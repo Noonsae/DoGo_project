@@ -1,15 +1,14 @@
 import useSearchStore from '@/store/useSearchStore';
 import FiCalendarIcon from '../../icon/FiCalendarIcon';
+import Swal from 'sweetalert2';
 
-const FlexibleForm = ({
-  MonthList
-}: {
-  MonthList: {name: string; value: number;}[];
-}) => {
-  const stay = useSearchStore((state) => state.stay );
-  const setStay = useSearchStore((state) => state.setStay );
-  const month = useSearchStore((state) => state.month );
+const FlexibleForm = ({ MonthList }: { MonthList: { name: string; value: number }[] }) => {
+  const stay = useSearchStore((state) => state.stay);
+  const setStay = useSearchStore((state) => state.setStay);
+  const month = useSearchStore((state) => state.month);
   const setMonth = useSearchStore((state) => state.setMonth);
+
+  const currentMonth = new Date().getMonth() + 1;
 
   return (
     <div className="mt-10 text-center">
@@ -23,7 +22,7 @@ const FlexibleForm = ({
               if (stay === option) {
                 setStay(null);
               } else {
-                setStay(option)
+                setStay(option);
               }
             }} // 단일 선택
             className={`w-[76px] h-[36px] px-4 py-2 rounded-full border text-[15px] font-medium hover:bg-[#8F7455] hover:text-white active:bg-[#6B573F] ${
@@ -42,12 +41,19 @@ const FlexibleForm = ({
               key={m.value}
               value={m.value}
               onClick={() => {
+                if (m.value < currentMonth) {
+                  Swal.fire({
+                    title: '날짜를 확인해주세요.',
+                    text: '이전 날짜는 선택할 수 없습니다.',
+                    icon: 'error',
+                    confirmButtonText: '확인'
+                  });
+                }
                 if (m.value === month) {
                   setMonth(null);
                 } else {
-                  setMonth(m.value)
+                  setMonth(m.value);
                 }
-              
               }} // 단일 선택
               className={`h-[96px] flex flex-col items-center justify-center p-2 rounded-lg border 
               hover:bg-[#8F7455] hover:text-white active:bg-[#6B573F] ${
