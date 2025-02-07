@@ -24,7 +24,7 @@ DoGo는 사용자와 숙박 제공자를 연결하는 통합 숙박 예약 플�
 |:---:|:---:|:---:|:---:|:---:|
 |![title](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FFaThB%2FbtsL9OMyXWu%2FTmxOv0ndyOikvfUMPFXum0%2Fimg.png)|![title](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbCyxJX%2FbtsL8GWkId3%2FHcketKmGejF9MaaI6Jyxz1%2Fimg.png)|![title](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdiupAp%2FbtsL8Is7Y2l%2FHc9AkaOzK3Ca9r6y9jtneK%2Fimg.png)|![title](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbIbmbA%2FbtsL8ZBk8HD%2Fwpky53KwDa6dsNPMa949q0%2Fimg.png)|![title](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FLDvKA%2FbtsMaliRLM4%2FoUMVSKu2tCkcwFFjY7uU21%2Fimg.png)|
 |팀장|부팀장|팀원|팀원|디자이너|
-|레이아웃, 메인페이지, 검색창, 필터, 예약페이지, 결제페이지|마이페이지|호텔리스트, 호텔상세페이지|로그인, 회원가입, 문의하기|모바일 UI/UX 디자이너|
+|스키마관리, 레이아웃, 메인페이지, 검색창, 필터, 예약페이지, 결제페이지|마이페이지|호텔리스트, 호텔상세페이지|로그인, 회원가입, 문의하기|모바일 UI/UX 디자이너|
 
 ```
 DoGo_project
