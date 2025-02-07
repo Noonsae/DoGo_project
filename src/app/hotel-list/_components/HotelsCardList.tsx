@@ -70,11 +70,11 @@ const HotelCardList = ({ hotel, isFavorite, hotelId }: HotelListItemProps) => {
             className="object-cover w-full h-full"
           />
         </div>
+
         {/* 오른쪽 텍스트 */}
         <div
-          className="w-[492px] h-[240px] ml-1 flex flex-col justify-between items-start 
-                max-[360px]:w-[180px] max-[360px]:h-[172px] 
-               "
+          className="w-[492px] h-[240px] ml-6 flex flex-col justify-between items-start 
+                max-[360px]:w-[180px] max-[360px]:h-[172px]"
         >
           <div className="w-full max-[360px]:w-full overflow-hidden">
             {/* 호텔 이름과 별점 */}
