@@ -131,14 +131,16 @@ const SearchBox = () => {
                 } xxs:hidden lg:block `}
               >
                 <span className="text-[15px] text-[#636363] font-medium">여행지</span>
-                <input
-                  type="text-[16px] text-[#A0A0A0] font-medium"
-                  placeholder="여행지 검색"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  onKeyDown={handleKeyDownEnter}
+                <div
+                  // type="text-[16px] text-[#A0A0A0] font-medium"
+                  // placeholder="여행지 검색"
+                  // value={location}
+                  // onChange={(e) => setLocation(e.target.value)}
+                  // onKeyDown={handleKeyDownEnter}
                   className="w-full border-none outline-none"
-                />
+                >
+                    <p className="text-[16px] text-[#A0A0A0] font-medium">{ location ? location : '여행지 검색'}</p>
+                </div>
               </label>
 
               {/* 체크인과 체크아웃 */}
