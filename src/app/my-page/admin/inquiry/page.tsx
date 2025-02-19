@@ -1,10 +1,12 @@
-//ADMIN전용 문의 확인 페이지
+// ADMIN전용 문의 확인 페이지
+
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 import AdminSidebar from '@/app/my-page/_components/AdminSidebar';
 
+// TODO 타입 파일 분리 
 interface Inquiry {
   id: string;
   category: string;
@@ -29,15 +31,14 @@ const AdminInquiryPage: React.FC = () => {
   const [totalPages, setTotalPages] = useState(1);
   const pageSize = 10; // 한 페이지에 10개씩 표시
 
+  // TODO 데이터 요청 함수 분리
   useEffect(() => {
     const fetchInquiries = async () => {
       try {
         setLoading(true);
 
         // 전체 데이터 개수 가져오기
-        const { count } = await browserSupabase()
-          .from('inquiries')
-          .select('*', { count: 'exact', head: true });
+        const { count } = await browserSupabase().from('inquiries').select('*', { count: 'exact', head: true });
 
         if (count !== null) {
           setTotalPages(Math.ceil(count / pageSize));
@@ -71,7 +72,7 @@ const AdminInquiryPage: React.FC = () => {
           assigned_to: inquiry.assigned_to,
           created_at: inquiry.created_at,
           user_name: inquiry.users?.user_name ?? 'Unknown',
-          role: inquiry.users?.role ?? 'Unknown', // customer or business
+          role: inquiry.users?.role ?? 'Unknown' // customer or business
         }));
 
         setInquiries(formattedInquiries);
@@ -129,9 +130,7 @@ const AdminInquiryPage: React.FC = () => {
                       <td className="border p-2 hidden md:table-cell">{inquiry.content}</td>
                       <td className="border p-2">{inquiry.user_name}</td>
                       <td className="border p-2">{inquiry.role === 'customer' ? '사용자' : '업체'}</td>
-                      <td className="border p-2">
-                        {inquiry.status === 'resolved' ? '처리 완료' : '처리 중'}
-                      </td>
+                      <td className="border p-2">{inquiry.status === 'resolved' ? '처리 완료' : '처리 중'}</td>
                       <td className="border p-2 hidden md:table-cell">
                         {inquiry.business_reply ? (
                           <>

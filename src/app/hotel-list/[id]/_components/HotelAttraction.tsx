@@ -1,5 +1,8 @@
 'use client';
 
+// TODO 해당 코드의 필요성 검증 
+// 필요하다면 map api를 통해서 지역관련 추천 지역으로 가져오게 하기!
+
 import { useState, useRef, useEffect } from 'react';
 import RiThumbUpFillIcon from '@/components/ui/icon/RiThumbUpFillIcon';
 

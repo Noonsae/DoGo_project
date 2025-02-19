@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { browserSupabase } from '@/supabase/supabase-client';
 import useAuthStore from '@/store/useAuth';
@@ -31,6 +31,7 @@ const UserSidebar: React.FC = () => {
     setCurrentTab(currentPath);
   }, [pathname]);
 
+  // TODO 데이터 요청 함수 분리
   useEffect(() => {
     const fetchUserData = async () => {
       if (!userId) return;

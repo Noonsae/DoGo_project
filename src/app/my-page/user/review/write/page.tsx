@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { browserSupabase } from '@/supabase/supabase-client';
 import Image from 'next/image';
@@ -19,16 +19,13 @@ const ReviewWritePage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // TODO 데이터 요청 함수 분리
   useEffect(() => {
     if (!bookingId) return;
 
     const fetchRoomId = async () => {
       try {
-        const { data, error } = await browserSupabase()
-          .from('bookings')
-          .select('room_id')
-          .eq('id', bookingId)
-          .single();
+        const { data, error } = await browserSupabase().from('bookings').select('room_id').eq('id', bookingId).single();
 
         if (error) throw error;
         setRoomId(data?.room_id || null);
@@ -199,10 +196,16 @@ const ReviewWritePage = () => {
             <p className="text-lg font-semibold mb-4">페이지를 나가시겠습니까?</p>
             <p className="text-sm text-gray-600 mb-4">페이지를 나가면 후기 등록 시 작성된 내용이 초기화됩니다.</p>
             <div className="flex justify-center space-x-4">
-              <button className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400" onClick={() => setIsCancelModalOpen(false)}>
+              <button
+                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                onClick={() => setIsCancelModalOpen(false)}
+              >
                 아니요
               </button>
-              <button className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600" onClick={() => router.back()}>
+              <button
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                onClick={() => router.back()}
+              >
                 예
               </button>
             </div>

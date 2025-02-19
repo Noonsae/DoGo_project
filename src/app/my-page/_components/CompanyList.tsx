@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 
 // BusinessUser 데이터 타입 정의
+// TODO 타입 파일 분리 
 interface BusinessUser {
   id: string;
   user_name: string | null; // null 허용
@@ -23,6 +24,7 @@ const CompanyList: React.FC = () => {
   const pageSize = 10;
 
   // 데이터 가져오기
+  // TODO 데이터 요청 함수 분리
   useEffect(() => {
     const fetchCompanies = async () => {
       try {

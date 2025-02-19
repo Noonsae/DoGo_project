@@ -90,6 +90,7 @@ const SearchBox = () => {
     closeModal();
   };
 
+  // TODO 사용처 확인 후 적용
   const handleKeyDownEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault(); // 기본 엔터 키 동작 방지

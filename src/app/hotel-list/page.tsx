@@ -62,7 +62,7 @@ const HotelList = () => {
   const observerRef = useRef<HTMLDivElement | null>(null);
 
   // 즐겨찾기 상태
-  const { favoriteStatus, initializeFavorites } = useFavoriteStore();
+  const favoriteStatus = useFavoriteStore( state => state.favoriteStatus );
 
   // onClick Event - 상세 페이지로 이동
   const router = useRouter();

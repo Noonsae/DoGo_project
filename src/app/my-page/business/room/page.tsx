@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 import useAuthStore from '@/store/useAuth';
 
+// TODO 타입 파일 분리 
 interface Room {
   id: string;
   room_name: string;
@@ -33,16 +34,13 @@ const RoomPage = () => {
   const userId = user?.id;
 
   // 🔹 로그인한 사용자의 호텔 ID 가져오기
+  // TODO 데이터 요청 함수 분리
   useEffect(() => {
     const fetchHotelId = async () => {
       try {
         if (!userId) return;
 
-        const { data, error } = await browserSupabase()
-          .from('hotels')
-          .select('id')
-          .eq('user_id', userId)
-          .maybeSingle();
+        const { data, error } = await browserSupabase().from('hotels').select('id').eq('user_id', userId).maybeSingle();
 
         if (error) throw error;
         if (data) {
@@ -58,6 +56,7 @@ const RoomPage = () => {
   }, [userId]);
 
   // 🔹 호텔 ID가 있을 때만 방 목록 가져오기
+  // TODO 데이터 요청 함수 분리
   useEffect(() => {
     const fetchRooms = async () => {
       try {
@@ -89,12 +88,14 @@ const RoomPage = () => {
         return;
       }
 
-      const { data, error } = await browserSupabase().from('rooms').insert([
-        {
-          ...newRoom,
-          hotel_id: hotelId, // 🔹 수정된 hotelId 적용
-        },
-      ]);
+      const { data, error } = await browserSupabase()
+        .from('rooms')
+        .insert([
+          {
+            ...newRoom,
+            hotel_id: hotelId // 🔹 수정된 hotelId 적용
+          }
+        ]);
 
       if (error) throw error;
 
@@ -108,7 +109,7 @@ const RoomPage = () => {
         price: 0,
         bed_type: '',
         is_breakfast_included: 'false',
-        view: '',
+        view: ''
       });
     } catch (err) {
       console.error('Error adding room:', err);
@@ -217,7 +218,10 @@ const RoomPage = () => {
                 <td className="border p-2">{room.is_breakfast_included === 'true' ? '포함' : '미포함'}</td>
                 <td className="border p-2">{room.view}</td>
                 <td className="border p-2">
-                  <button onClick={() => handleDeleteRoom(room.id)} className="bg-red-500 text-white p-2 rounded hover:bg-red-600">
+                  <button
+                    onClick={() => handleDeleteRoom(room.id)}
+                    className="bg-red-500 text-white p-2 rounded hover:bg-red-600"
+                  >
                     삭제
                   </button>
                 </td>

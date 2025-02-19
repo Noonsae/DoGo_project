@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 
 // CooperationRequest 데이터 타입 정의
+// TODO 타입 파일 분리 
 interface CooperationRequest {
   id: string; // 요청 ID
   user_id: string | null; // 요청자 ID
@@ -21,6 +22,7 @@ const CooperationRequests: React.FC = () => {
   const [error, setError] = useState<string | null>(null); // 에러 상태
 
   // 데이터 가져오기
+  // TODO 데이터 요청 함수 분리
   useEffect(() => {
     const fetchRequests = async () => {
       try {

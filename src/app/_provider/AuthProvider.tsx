@@ -1,11 +1,16 @@
 'use client';
-import { browserSupabase } from '@/supabase/supabase-client';
+
 import { useEffect, ReactElement } from 'react';
+
+import { browserSupabase } from '@/supabase/supabase-client';
+
 import useAuthStore from '@/store/useAuth';
 
 export default function AuthProvider({ children }: { children: ReactElement }) {
+
   const { setAuth } = useAuthStore();
   const supabase = browserSupabase();
+
   // 새로고침
   useEffect(() => {
     // 로그인, 로그아웃 등 변경사항이 있을 때

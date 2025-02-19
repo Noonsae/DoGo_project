@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 import AdminSidebar from '@/app/my-page/_components/AdminSidebar';
 
 // 협력 요청 데이터 타입 정의
+// TODO 타입 파일 분리 
 interface CooperationRequest {
   id: string;
   userName: string;
@@ -20,8 +21,8 @@ const AdminCooperationPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [currentTab, setCurrentTab] = useState<'company' | 'requests' | 'bookings' | 'inquiry'>('requests'); // 'inquiry' 추가
 
+  // TODO 데이터 요청 함수 분리
   useEffect(() => {
-    // 협력 요청 데이터 가져오기
     const fetchRequests = async () => {
       try {
         setLoading(true);

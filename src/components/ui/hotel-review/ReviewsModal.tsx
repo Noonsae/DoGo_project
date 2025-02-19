@@ -1,6 +1,9 @@
-import { ReviewType } from '@/types/supabase/review-type';
+import { useEffect, useState } from 'react';
+
 import Image from 'next/image';
-import React, { useEffect, useRef, useState } from 'react';
+
+import { ReviewType } from '@/types/supabase/review-type';
+
 import ReviewThumbUpIcon from '../icon/ReviewThumbUpIcon';
 import RenderStars from '../icon/RenderStars';
 import DropDownIcon from '../icon/DropDownIcon';

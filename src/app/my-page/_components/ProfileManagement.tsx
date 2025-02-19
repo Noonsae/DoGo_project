@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 
 // 사용자 프로필 데이터를 정의하는 인터페이스
+// TODO 타입 파일 분리 
 interface UserProfile {
   id: string; // 사용자 고유 ID
   user_name: string; // 사용자 이름
@@ -27,6 +28,7 @@ const ProfileManagement: React.FC<ProfileManagementProps> = ({ userId }) => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null); // 성공 메시지 상태 관리
 
   // 사용자 프로필 데이터를 가져오는 useEffect 훅
+  // TODO 데이터 요청 함수 분리
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {

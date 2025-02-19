@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 
 // 객실 데이터를 나타내는 인터페이스 정의
+// TODO 타입 파일 분리 
 interface Room {
   id: string; // 객실 ID
   room_type: string; // 객실 유형
@@ -33,18 +34,15 @@ const RoomManagement: React.FC<RoomManagementProps> = ({ userId }) => {
     room_img_url: '',
     room_name: '',
     view: '',
-    is_breakfast_included: 'no', // 기본값 설정
+    is_breakfast_included: 'no' // 기본값 설정
   });
 
+  // TODO 데이터 요청 함수 분리
   useEffect(() => {
     // 호텔 ID 가져오기
     const fetchHotelId = async () => {
       try {
-        const { data, error } = await browserSupabase()
-          .from('hotels')
-          .select('id')
-          .eq('user_id', userId)
-          .single();
+        const { data, error } = await browserSupabase().from('hotels').select('id').eq('user_id', userId).single();
 
         if (error) throw error;
         setHotelId(data.id);
@@ -62,17 +60,14 @@ const RoomManagement: React.FC<RoomManagementProps> = ({ userId }) => {
 
     const fetchRooms = async () => {
       try {
-        const { data, error } = await browserSupabase()
-          .from('rooms')
-          .select('*')
-          .eq('hotel_id', hotelId);
+        const { data, error } = await browserSupabase().from('rooms').select('*').eq('hotel_id', hotelId);
 
         if (error) throw error;
 
         // 데이터 변환 (room_img_url 처리)
         const formattedData = (data || []).map((room: any) => ({
           ...room,
-          room_img_url: room.room_img_url ? String(room.room_img_url) : null,
+          room_img_url: room.room_img_url ? String(room.room_img_url) : null
         })) as Room[];
 
         setRooms(formattedData);
@@ -110,18 +105,15 @@ const RoomManagement: React.FC<RoomManagementProps> = ({ userId }) => {
         room_img_url: '',
         room_name: '',
         view: '',
-        is_breakfast_included: 'no', // 기본값 초기화
+        is_breakfast_included: 'no' // 기본값 초기화
       });
 
       // 데이터 새로고침
-      const { data } = await browserSupabase()
-        .from('rooms')
-        .select('*')
-        .eq('hotel_id', hotelId);
+      const { data } = await browserSupabase().from('rooms').select('*').eq('hotel_id', hotelId);
 
       const formattedData = (data || []).map((room: any) => ({
         ...room,
-        room_img_url: room.room_img_url ? String(room.room_img_url) : null,
+        room_img_url: room.room_img_url ? String(room.room_img_url) : null
       })) as Room[];
 
       setRooms(formattedData);
@@ -133,10 +125,7 @@ const RoomManagement: React.FC<RoomManagementProps> = ({ userId }) => {
 
   const handleDeleteRoom = async (roomId: string) => {
     try {
-      const { error } = await browserSupabase()
-        .from('rooms')
-        .delete()
-        .eq('id', roomId);
+      const { error } = await browserSupabase().from('rooms').delete().eq('id', roomId);
 
       if (error) throw error;
 
@@ -227,10 +216,7 @@ const RoomManagement: React.FC<RoomManagementProps> = ({ userId }) => {
               <td className="p-2 border">{room.price.toLocaleString()}원</td>
               <td className="p-2 border">{room.is_breakfast_included === 'yes' ? '포함' : '미포함'}</td>
               <td className="p-2 border">
-                <button
-                  onClick={() => handleDeleteRoom(room.id)}
-                  className="text-red-500 hover:underline"
-                >
+                <button onClick={() => handleDeleteRoom(room.id)} className="text-red-500 hover:underline">
                   삭제
                 </button>
               </td>

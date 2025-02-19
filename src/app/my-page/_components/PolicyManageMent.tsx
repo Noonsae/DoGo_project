@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 
 // 정책 데이터를 나타내는 인터페이스 정의
+// TODO 타입 파일 분리 
 interface Policy {
   id: string; // 정책 ID
   policy_name: string; // 정책 이름
@@ -28,20 +29,18 @@ const PolicyManagement: React.FC<PolicyManagementProps> = ({ userId, hotelId }) 
   const [selectedPolicy, setSelectedPolicy] = useState<Policy | null>(null); // 선택된 정책 데이터
 
   // 정책 데이터 가져오기
+  // TODO 코드의 필요성 검증 이후 데이터 요청 함수 분리
   useEffect(() => {
     const fetchPolicies = async () => {
       setLoading(true);
       setError(null);
 
       try {
-        const { data, error } = await browserSupabase()
-          .from('policies')
-          .select('*')
-          .eq('hotel_id', hotelId);
+        const { data, error } = await browserSupabase().from('policies').select('*').eq('hotel_id', hotelId);
 
         if (error) throw error;
 
-        setPolicies(data as Policy[] || []);
+        setPolicies((data as Policy[]) || []);
       } catch (err) {
         console.error('Error fetching policies:', err);
         setError('정책 데이터를 불러오는 중 오류가 발생했습니다.');
@@ -58,13 +57,15 @@ const PolicyManagement: React.FC<PolicyManagementProps> = ({ userId, hotelId }) 
     try {
       if (modalType === 'add') {
         // 새 정책 추가
-        await browserSupabase().from('policies').insert([
-          {
-            policy_name: policyName,
-            description,
-            hotel_id: hotelId,
-          },
-        ]);
+        await browserSupabase()
+          .from('policies')
+          .insert([
+            {
+              policy_name: policyName,
+              description,
+              hotel_id: hotelId
+            }
+          ]);
       } else if (modalType === 'edit' && selectedPolicy) {
         // 기존 정책 수정
         await browserSupabase()
@@ -74,12 +75,9 @@ const PolicyManagement: React.FC<PolicyManagementProps> = ({ userId, hotelId }) 
       }
 
       // 데이터 새로고침
-      const { data } = await browserSupabase()
-        .from('policies')
-        .select('*')
-        .eq('hotel_id', hotelId);
+      const { data } = await browserSupabase().from('policies').select('*').eq('hotel_id', hotelId);
 
-      setPolicies(data as Policy[] || []);
+      setPolicies((data as Policy[]) || []);
       closeModal();
     } catch (err) {
       console.error('Error saving policy:', err);
@@ -144,16 +142,10 @@ const PolicyManagement: React.FC<PolicyManagementProps> = ({ userId, hotelId }) 
                   <p className="text-sm text-gray-600">{policy.description || '설명이 없습니다.'}</p>
                 </div>
                 <div className="flex items-center space-x-4">
-                  <button
-                    onClick={() => openModal('edit', policy)}
-                    className="text-blue-500 hover:underline"
-                  >
+                  <button onClick={() => openModal('edit', policy)} className="text-blue-500 hover:underline">
                     수정하기
                   </button>
-                  <button
-                    onClick={() => handleDeletePolicy(policy.id)}
-                    className="text-red-500 hover:underline"
-                  >
+                  <button onClick={() => handleDeletePolicy(policy.id)} className="text-red-500 hover:underline">
                     삭제하기
                   </button>
                 </div>
@@ -167,9 +159,7 @@ const PolicyManagement: React.FC<PolicyManagementProps> = ({ userId, hotelId }) 
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-            <h3 className="text-xl font-semibold mb-4">
-              {modalType === 'add' ? '정책 추가하기' : '정책 수정하기'}
-            </h3>
+            <h3 className="text-xl font-semibold mb-4">{modalType === 'add' ? '정책 추가하기' : '정책 수정하기'}</h3>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -205,10 +195,7 @@ const PolicyManagement: React.FC<PolicyManagementProps> = ({ userId, hotelId }) 
                 >
                   취소
                 </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-brown-500 text-white rounded hover:bg-brown-600"
-                >
+                <button type="submit" className="px-4 py-2 bg-brown-500 text-white rounded hover:bg-brown-600">
                   저장하기
                 </button>
               </div>

@@ -86,6 +86,8 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   }
 
   // 객실 옵션 렌더링
+
+  // TODO SVG 파일 분리
   const roomOption = (
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path

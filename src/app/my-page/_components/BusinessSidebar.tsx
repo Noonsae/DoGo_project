@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { browserSupabase } from '@/supabase/supabase-client';
 import useAuthStore from '@/store/useAuth';
 
 // 사업자 정보 타입 정의
+// TODO 타입 파일 분리
 interface BusinessUser {
   id: string;
   user_name: string;
@@ -40,6 +41,7 @@ const BusinessSidebar: React.FC = () => {
   }, [pathname]);
 
   // Supabase에서 사업자 정보 가져오기
+  // TODO 데이터 호출 함수 분리
   useEffect(() => {
     const fetchBusinessInfo = async () => {
       try {

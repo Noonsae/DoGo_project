@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect } from 'react';
+
 import { useParams, useRouter } from 'next/navigation';
 
 import useAuthStore from '@/store/useAuth';
@@ -8,8 +10,8 @@ import useUserQuery from '@/hooks/user/useUserData';
 import useFetchBookingData from '@/hooks/booking/useFetchBookingData';
 
 import { getDayOfWeek } from '@/utils/calculator/dateCalculator';
-import { useEffect } from 'react';
 import { clearBookingData } from '@/utils/booking/booking';
+
 import IoCheckmarkCircle from '@/components/ui/icon/IoCheckmarkCircle';
 import IoIosCopyIcon from '@/components/ui/icon/IoIosCopyIcon';
 import IoBedIcon from '@/components/ui/icon/IoBedIcon';
