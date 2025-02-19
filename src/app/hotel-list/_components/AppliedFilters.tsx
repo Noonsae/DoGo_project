@@ -1,6 +1,6 @@
-import React from 'react';
 import { FetchHotelsFilterResponse, FiltersType } from '@/types/hotel/hotel-filter-type';
 
+//TODO 타입파일 정리
 interface AppliedFilterProps {
   filters: FiltersType;
   data: FetchHotelsFilterResponse;

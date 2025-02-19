@@ -1,4 +1,4 @@
-import React from 'react';
+// TODO 유동적인 색상을 지정할 수 있도록 수정
 
 const DividerIcon = () => {
   return (

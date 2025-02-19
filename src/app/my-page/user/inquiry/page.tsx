@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 
 // 문의 데이터를 나타내는 인터페이스 정의
+// TODO 타입 파일 분리 
 interface Inquiry {
   id: string;
   category: string;
@@ -29,6 +30,7 @@ const UserInquiryPage: React.FC = () => {
   }, []);
 
   // 문의 목록 가져오기
+  // TODO 데이터 요청 함수 분리
   const fetchInquiries = async () => {
     try {
       setLoading(true);

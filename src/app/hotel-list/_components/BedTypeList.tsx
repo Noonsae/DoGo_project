@@ -1,5 +1,4 @@
-import React from 'react';
-
+//TODO 타입파일 정리
 interface BedTypeListProps {
   selectedBeds: string[];
   onBedChange: (bedType: string) => void; // string으로 수정

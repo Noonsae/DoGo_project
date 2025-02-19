@@ -2,18 +2,20 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+
 import Link from 'next/link';
 
 import MyPageIcon from './navigator/MyPageIcon';
 import HamburgerBtn from './navigator/HamburgerBtn';
 import { WhiteGoBackIcon } from '../ui/icon/WhiteIcon';
 
-// ⭐ 설명: hotel-list에서 쓰일 헤더 UI
+// TODO 함수 표현식으로 변경
 export default function HotelListHeader() {
   const router = useRouter();
   const [userId, setUserId] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
 
+  // TODO 데이터 요청 함수 분리
   useEffect(() => {
     const fetchUserData = async () => {
       try {

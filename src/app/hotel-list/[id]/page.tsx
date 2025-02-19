@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 
 import useAuthStore from '@/store/useAuth';
-import useFavoriteStore from '@/hooks/favorite/useFavoriteStore';
+import useFavoriteStore from '@/store/useFavoriteStore';
 
 import useHotelReviews from '@/hooks/review/useHotelReviews';
 import useHotelRooms from '@/hooks/room/useHotelRooms';
@@ -86,6 +86,8 @@ const HotelDetailPage = ({ params }: { params: { id: string } }) => {
   }
 
   // 객실 옵션 렌더링
+
+  // TODO SVG 파일 분리
   const roomOption = (
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path

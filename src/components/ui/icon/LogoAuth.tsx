@@ -1,6 +1,6 @@
-import React from 'react';
+import { IconType } from "@/types/icon/icon-type";
 
-const LogoAuth = ({ className }: { className?: string }) => {
+const LogoAuth = ({ className }: IconType) => {
   return (
     <div>
       <svg

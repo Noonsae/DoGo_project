@@ -1,5 +1,3 @@
-import React, { useEffect, useState } from 'react';
-
 import { HotelBoxProps } from '@/types/hotel/hotel-box-type';
 
 import NearMeIcon from '@/components/ui/icon/NearMeIcon';

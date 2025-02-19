@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { browserSupabase } from '@/supabase/supabase-client';
 
 // 리뷰 데이터 타입 정의
+// TODO 타입 파일 분리 
 interface Review {
   id: string;
   room_id: string;
@@ -22,6 +23,7 @@ const UserReviewPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
+  // TODO 데이터 요청 함수 분리
   useEffect(() => {
     const fetchReviews = async () => {
       try {

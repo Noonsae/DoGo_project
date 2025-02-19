@@ -2,19 +2,22 @@
 
 import { useEffect, useState } from 'react';
 import { Database } from '@/types/supabase/supabase-type';
-import IoCloseIcon from '../icon/IoCloseIcon';
+// import IoCloseIcon from '../icon/IoCloseIcon';
 import IoCheckmarkCircle from '../icon/IoCheckmarkCircle';
 import FiChevronLeftIcon from '../icon/FiChevronLeftIcon';
 import FiChevronRightIcon from '../icon/FiChevronRightIcon';
 import { useRouter } from 'next/navigation';
 import CloseButtonIcon from '../icon/CloseButtonIcon';
+
 type RoomType = Database['public']['Tables']['rooms']['Row'];
+
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   room: RoomType;
   hotelData: { id: string };
 }
+
 const Modal = ({ isOpen, onClose, room, hotelData }: ModalProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeTab, setActiveTab] = useState('info');

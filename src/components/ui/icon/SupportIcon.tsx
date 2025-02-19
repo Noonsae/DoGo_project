@@ -1,4 +1,4 @@
-import React from 'react';
+// TODO 색상을 유동적으로 변경할 수 있도록 코드 수정
 
 const SupportIcon = () => {
   return (

@@ -1,9 +1,10 @@
 //문의하기 모달 UI 컴포넌트
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import CloseButtonIcon from '../icon/CloseButtonIcon';
 
 import InquiryCategory from './InquiryCategory';
 import InquiryForm from './InquiryForm';
+
 interface InquiryModalProps {
   isOpen: boolean;
   onClose: () => void;

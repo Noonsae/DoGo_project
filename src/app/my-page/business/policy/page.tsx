@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 import useAuthStore from '@/store/useAuth';
 
+// TODO 타입 파일 분리 
 interface Policy {
   id: string;
   policy_name: string;
@@ -22,16 +23,13 @@ const PolicyPage = () => {
   const userId = user?.id;
 
   // 로그인된 사용자의 호텔 ID 가져오기
+  // TODO 데이터 요청 함수 분리
   useEffect(() => {
     const fetchHotelId = async () => {
       try {
         if (!userId) return;
 
-        const { data, error } = await browserSupabase()
-          .from('hotels')
-          .select('id')
-          .eq('user_id', userId)
-          .maybeSingle();
+        const { data, error } = await browserSupabase().from('hotels').select('id').eq('user_id', userId).maybeSingle();
 
         if (error) throw error;
         if (data) {
@@ -47,6 +45,7 @@ const PolicyPage = () => {
   }, [userId]);
 
   // 호텔 ID가 있을 때만 정책 데이터 가져오기
+  // TODO 필요성 검증 이후 데이터 요청 함수 분리
   useEffect(() => {
     const fetchPolicies = async () => {
       try {
@@ -85,8 +84,8 @@ const PolicyPage = () => {
             policy_name: newPolicy.policy_name,
             description: newPolicy.description || null,
             hotel_id: hotelId, // 🔹 수정된 hotelId 적용
-            created_at: new Date().toISOString(),
-          },
+            created_at: new Date().toISOString()
+          }
         ])
         .select();
 

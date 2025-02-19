@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 import InquiryModal from '@/app/my-page/_components/InquiryModal';
 
 // 문의 데이터를 나타내는 인터페이스 정의
+// TODO 타입 파일 분리 
 interface Inquiry {
   id: string;
   title: string;
@@ -29,6 +30,7 @@ const BusinessInquiryPage: React.FC = () => {
   }, [currentPage]);
 
   // 문의 목록 가져오기
+  // TODO 데이터 요청 함수 분리
   const fetchInquiries = async () => {
     try {
       setLoading(true);
@@ -81,7 +83,10 @@ const BusinessInquiryPage: React.FC = () => {
       <h2 className="text-2xl font-bold mb-4">업체 문의 관리</h2>
 
       {/* 문의 등록 버튼 */}
-      <button className="mb-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600" onClick={() => setIsModalOpen(true)}>
+      <button
+        className="mb-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+        onClick={() => setIsModalOpen(true)}
+      >
         업체 문의 등록하기
       </button>
 
@@ -127,7 +132,9 @@ const BusinessInquiryPage: React.FC = () => {
         >
           이전
         </button>
-        <span className="mx-4">페이지 {currentPage} / {totalPages}</span>
+        <span className="mx-4">
+          페이지 {currentPage} / {totalPages}
+        </span>
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
@@ -138,7 +145,13 @@ const BusinessInquiryPage: React.FC = () => {
       </div>
 
       {/* 모달 추가 */}
-      <InquiryModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} userId={businessId} role="business" onInquirySubmitted={fetchInquiries} />
+      <InquiryModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        userId={businessId}
+        role="business"
+        onInquirySubmitted={fetchInquiries}
+      />
     </div>
   );
 };

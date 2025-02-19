@@ -1,7 +1,7 @@
 'use client';
 
 import { kakaoLogin as kakaoLoginAction } from '@/actions/auth';
-import React from 'react';
+
 import KaKaoIcon from '@/components/ui/icon/KaKaoIcon';
 
 const KakaoSignIn = () => {

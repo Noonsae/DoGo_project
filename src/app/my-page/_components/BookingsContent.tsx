@@ -1,8 +1,9 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 
 // Booking 데이터 타입 정의
+// TODO 예약 관련 타입 분리
 interface Booking {
   id: string; // 예약 ID
   created_at: string; // 예약 생성일
@@ -27,6 +28,7 @@ const BookingsContent: React.FC<BookingsContentProps> = ({ userId }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // TODO 데이터 요청 함수 분리
   useEffect(() => {
     const fetchBookings = async () => {
       try {

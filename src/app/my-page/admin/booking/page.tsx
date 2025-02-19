@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
-import AdminSidebar from '@/app/my-page/_components/AdminSidebar'; 
+// import AdminSidebar from '@/app/my-page/_components/AdminSidebar';
 
 // 예약 데이터 타입 정의
+// TODO 타입 파일 분리 
 interface Booking {
   id: string;
   user_id: string;
@@ -27,15 +28,14 @@ const AdminBookingPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // TODO 데이터 요청 함수 분리
   useEffect(() => {
     // 예약 데이터 가져오기
     const fetchBookings = async () => {
       try {
         setLoading(true);
 
-        const { data, error } = await browserSupabase()
-          .from('bookings')
-          .select(`
+        const { data, error } = await browserSupabase().from('bookings').select(`
             id,
             user_id,
             room_id,
@@ -64,12 +64,12 @@ const AdminBookingPage: React.FC = () => {
             status: booking.status as 'confirmed' | 'pending' | 'cancelled',
             user_details: {
               nickname: booking.users?.nickname || 'Unknown User',
-              email: booking.users?.email || 'Unknown Email',
+              email: booking.users?.email || 'Unknown Email'
             },
             room_details: {
               room_name: booking.rooms?.room_name || 'Unknown Room',
-              price: booking.rooms?.price || 0,
-            },
+              price: booking.rooms?.price || 0
+            }
           })) || [];
 
         setBookings(formattedData);
@@ -118,9 +118,7 @@ const AdminBookingPage: React.FC = () => {
                 {new Date(booking.check_out_date).toLocaleDateString()}
               </td>
               <td className="border border-gray-200 px-4 py-2">{booking.status}</td>
-              <td className="border border-gray-200 px-4 py-2">
-                {booking.room_details.price.toLocaleString()}원
-              </td>
+              <td className="border border-gray-200 px-4 py-2">{booking.room_details.price.toLocaleString()}원</td>
             </tr>
           ))}
         </tbody>

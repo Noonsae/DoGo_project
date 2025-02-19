@@ -1,8 +1,9 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 
 // Review 데이터 타입 정의
+// TODO 타입 파일 분리
 interface Review {
   id: string; // 후기 고유 ID
   room_id: string; // 객실 ID
@@ -26,12 +27,14 @@ const ReviewsContent: React.FC<ReviewsContentProps> = ({ userId }) => {
   const [loading, setLoading] = useState(true); // 로딩 상태
   const [error, setError] = useState<string | null>(null); // 에러 상태
 
+  // TODO 데이터 요청 함수 분리
   useEffect(() => {
     const fetchReviews = async () => {
       try {
         const { data, error } = await browserSupabase()
           .from('reviews')
-          .select(`
+          .select(
+            `
             id,
             room_id,
             user_id,
@@ -40,18 +43,20 @@ const ReviewsContent: React.FC<ReviewsContentProps> = ({ userId }) => {
             review_img_url,
             created_at,
             rooms (room_name)
-          `)
+          `
+          )
           .eq('user_id', userId);
 
         if (error) throw error;
 
-        const formattedData: Review[] = data?.map((review: any) => ({
-          ...review,
-          review_img_url: review.review_img_url
-            ? JSON.parse(review.review_img_url) // JSON 데이터 파싱
-            : null,
-          room: review.rooms || null,
-        })) || [];
+        const formattedData: Review[] =
+          data?.map((review: any) => ({
+            ...review,
+            review_img_url: review.review_img_url
+              ? JSON.parse(review.review_img_url) // JSON 데이터 파싱
+              : null,
+            room: review.rooms || null
+          })) || [];
 
         setReviews(formattedData);
       } catch (err) {

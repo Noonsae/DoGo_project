@@ -1,7 +1,6 @@
 'use client';
 
 import CheckIcon from '@/components/ui/icon/CheckIcon';
-import React from 'react';
 
 const SuccessModal = ({ form, onClose }: { form: any; onClose: () => void }) => (
   <div className=" w-full max-w-[352px] mx-auto">

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 
 import ProfileContent from '@/app/my-page/_components/ProfileContent';
@@ -19,6 +19,7 @@ const UserPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null); // 에러 상태
 
   // 사용자 정보 로드
+  // TODO AuthStore 사용로직으로 변경하기
   useEffect(() => {
     const fetchUser = async () => {
       try {

@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { browserSupabase } from '@/supabase/supabase-client';
 
+// TODO 타입 파일 분리 
 interface Booking {
   id: string;
   room_id: string;
@@ -27,6 +28,7 @@ const UserBookingPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
+  // TODO 데이터 요청 함수 분리
   useEffect(() => {
     const fetchBookings = async () => {
       try {

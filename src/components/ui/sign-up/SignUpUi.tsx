@@ -1,4 +1,4 @@
-import React from 'react';
+// TODO 타입파일 정리
 
 interface ModalProps {
   isOpen: boolean;

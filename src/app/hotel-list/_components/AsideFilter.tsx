@@ -1,35 +1,31 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+
 import { useRouter } from 'next/navigation';
 
 import useSearchStore from '@/store/useSearchStore';
+
 import generateUrl from '@/utils/calculator/urlHelpers';
 
-import { FacilitiesType } from '@/types/supabase/facilities-type';
-import { ServicesType } from '@/types/supabase/services-type';
-import { FiltersType } from '@/types/hotel/hotel-filter-type';
-import HiOutlineRefreshIcon from '@/components/ui/icon/HiOutlineRefreshIcon';
 import DualSlider from './DualSlider';
 import FacilityList from './FacilityList';
 import ServiceList from './ServiceList';
 import BedTypeList from './BedTypeList';
+
+import HiOutlineRefreshIcon from '@/components/ui/icon/HiOutlineRefreshIcon';
 import InstanceIcon from '@/components/ui/icon/InstanceIcon';
 import FilterModal from '@/components/ui/hotel-mobile/modal';
 import DownIcon from '@/components/ui/icon/DownIcon';
 
+import { FacilitiesType } from '@/types/supabase/facilities-type';
+import { ServicesType } from '@/types/supabase/services-type';
+import { FiltersType } from '@/types/hotel/hotel-filter-type';
+
+// TODO 타입파일 분리
 interface AsideFilterProps {
   onFilterChange: (newFilters: FiltersType) => void; // 필터 업데이트를 상위 컴포넌트로 전달
 }
-
-const FILTERS = [
-  { label: '전체', key: 'filters' },
-  { label: '호텔 성급', key: 'stars' },
-  { label: '침대 종류', key: 'beds' },
-  { label: '공용 시설', key: 'facilities' },
-  { label: '서비스', key: 'services' },
-  { label: '가격', key: 'price' }
-];
 
 const AsideFilter = ({ onFilterChange }: AsideFilterProps) => {
   const router = useRouter();

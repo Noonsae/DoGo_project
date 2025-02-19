@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 
 // 문의 데이터 타입 정의
+// TODO 타입 파일 분리 
 interface Inquiry {
   id: string;
   category: string;
@@ -26,6 +27,7 @@ const InquiryList: React.FC = () => {
   const [page, setPage] = useState(1);
   const pageSize = 10; // 한 페이지당 10개씩 표시
 
+  // TODO 데이터 요청 함수 분리
   useEffect(() => {
     const fetchInquiries = async () => {
       try {

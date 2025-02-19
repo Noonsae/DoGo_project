@@ -1,4 +1,4 @@
-import React from 'react';
+// TODO 색을 유동적으로 지정할 수 있도록 코드 수정
 
 const DownIcon = () => {
   return (

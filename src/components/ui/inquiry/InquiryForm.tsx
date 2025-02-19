@@ -1,11 +1,15 @@
-//문의 입력 폼
 'use client';
+
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
-import { getUser, getUserRole } from '@/actions/auth';
+
 import { useRouter } from 'next/navigation';
 
+import { getUser, getUserRole } from '@/actions/auth';
+
 import useAuthStore from '@/store/useAuth';
+
 import Swal from 'sweetalert2';
+
 interface InquiryFormProps {
   category: string;
   hotel_id: string;

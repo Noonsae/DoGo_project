@@ -1,15 +1,19 @@
 'use client';
 
-import { usePathname, useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
+
+import { useRouter } from 'next/navigation';
+
 import { login } from './actions/login';
-import Swal from 'sweetalert2';
-import DividerIcon from '@/components/ui/icon/DividerIcon';
+
 import FindIdModal from './_components/FindIdModal';
 import FindPasswordModal from './_components/FindPasswordModal/FindPasswordModal';
 import KakaoSignIn from './_components/KakaoSignIn';
+
+import DividerIcon from '@/components/ui/icon/DividerIcon';
 import LogoAuth from '@/components/ui/icon/LogoAuth';
-import Header from '@/components/layout/Header';
+
+import Swal from 'sweetalert2';
 
 const SignInPage = () => {
   const [form, setForm] = useState({

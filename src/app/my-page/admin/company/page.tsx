@@ -1,13 +1,15 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 import AdminSidebar from '@/app/my-page/_components/AdminSidebar';
 
 // AdminSidebar에서 지원하는 모든 탭 포함
+// TODO 타입 파일 분리 
 type AdminTabType = 'company' | 'requests' | 'bookings' | 'inquiry';
 
 // 회사 데이터 타입 정의
+// TODO 타입 파일 분리 
 interface Company {
   id: string;
   name: string;
@@ -28,12 +30,11 @@ const AdminCompanyPage: React.FC = () => {
   const pageSize = 10; // 한 페이지당 10개 표시
   const [totalPages, setTotalPages] = useState(1);
 
+  // TODO 데이터 요청 함수 분리
   useEffect(() => {
     // 전체 데이터 개수 가져오기
     const fetchTotalCompanies = async () => {
-      const { count, error } = await browserSupabase()
-        .from('users')
-        .select('*', { count: 'exact', head: true });
+      const { count, error } = await browserSupabase().from('users').select('*', { count: 'exact', head: true });
 
       if (!error && count !== null) {
         setTotalPages(Math.ceil(count / pageSize));
@@ -76,7 +77,7 @@ const AdminCompanyPage: React.FC = () => {
             businessNumber: item.businessNumber || '미등록',
             ownerName: item.ownerName || '미등록',
             contact: item.contact || '없음',
-            createdAt: item.createdAt,
+            createdAt: item.createdAt
           })) || [];
 
         setCompanies(formattedData);

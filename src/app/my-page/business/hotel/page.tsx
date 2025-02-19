@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
-import BusinessSidebar from '@/app/my-page/_components/BusinessSidebar';
+// import BusinessSidebar from '@/app/my-page/_components/BusinessSidebar';
 
+// TODO 타입 파일 분리 
 interface Hotel {
   id: string;
   name: string;
@@ -20,6 +21,7 @@ const HotelManagement: React.FC = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const [currentTab, setCurrentTab] = useState<string>('hotel'); // 기본값을 'hotel'로 설정
 
+  // TODO 데이터 요청 함수 분리
   useEffect(() => {
     const fetchUser = async () => {
       const { data, error } = await browserSupabase().auth.getUser();
@@ -33,12 +35,15 @@ const HotelManagement: React.FC = () => {
     fetchUser();
   }, []);
 
+  // TODO 데이터 요청 함수 분리
   useEffect(() => {
     const fetchHotel = async () => {
       try {
         const { data, error } = await browserSupabase()
           .from('hotels')
-          .select(`id, name, address, description, main_img_url, hotel_facility (facility_id), hotel_service (service_id)`)
+          .select(
+            `id, name, address, description, main_img_url, hotel_facility (facility_id), hotel_service (service_id)`
+          )
           .single();
 
         if (error) throw error;
@@ -50,7 +55,7 @@ const HotelManagement: React.FC = () => {
           description: data.description,
           main_img_url: data.main_img_url,
           facilities: data.hotel_facility.map((facility: any) => facility.facility_id),
-          services: data.hotel_service.map((service: any) => service.service_id),
+          services: data.hotel_service.map((service: any) => service.service_id)
         });
       } catch (err) {
         setHotel(null);
@@ -64,7 +69,6 @@ const HotelManagement: React.FC = () => {
 
   return (
     <div className="flex min-h-screen">
-      
       {/* 메인 컨텐츠 */}
       <main className="flex-1 p-8 bg-gray-50">
         <h1 className="text-3xl font-bold mb-8">호텔 관리</h1>

@@ -1,5 +1,3 @@
-import React from 'react';
-
 const ParentIcon = ({ isActive }: { isActive: boolean }) => {
   return (
     <svg width="23" height="19" viewBox="0 0 20 19" xmlns="http://www.w3.org/2000/svg" fill="none">

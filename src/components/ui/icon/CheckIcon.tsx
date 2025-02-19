@@ -1,5 +1,4 @@
-import React from 'react';
-
+// TODO 유동적인 색상을 넣을 수 있도록
 const CheckIcon = () => {
   return (
     <div>

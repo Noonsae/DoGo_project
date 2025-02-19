@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 
 // Inquiry 데이터 타입 정의
+// TODO 타입 파일 분리 
 interface Inquiry {
   id: string;
   title: string;
@@ -21,6 +22,7 @@ const InquiryManagement: React.FC<InquiryManagementProps> = ({ userId }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // TODO 데이터 요청 함수 분리
   useEffect(() => {
     const fetchInquiries = async () => {
       try {

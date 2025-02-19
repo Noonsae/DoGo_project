@@ -1,6 +1,7 @@
+import { useEffect, useState } from 'react';
+
 import { HotelPoliciesProps } from '@/types/hotel/hotel-policy-type';
 import { PolicyType } from '@/types/supabase/policy-type';
-import { useEffect, useState } from 'react';
 
 const HotelPolicies = ({ hotelId }: HotelPoliciesProps) => {
   const [policies, setPolicies] = useState<PolicyType[]>([]); // 상태 타입을 배열로 설정
@@ -17,6 +18,7 @@ const HotelPolicies = ({ hotelId }: HotelPoliciesProps) => {
   };
 
   // 데이터 패치
+  // TODO 데이터 가져오는 함수 분리하기!
   useEffect(() => {
     const loadData = async () => {
       try {

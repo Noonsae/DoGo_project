@@ -1,10 +1,10 @@
-//
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
 
 // 즐겨찾기 데이터를 나타내는 타입 정의
+// TODO 타입 파일 분리 
 interface Favorite {
   id: string; // 즐겨찾기 ID
   hotel_id: string; // 호텔 ID
@@ -22,6 +22,7 @@ const UserFavoritePage: React.FC = () => {
   const [loading, setLoading] = useState(true); // 로딩 상태
   const [error, setError] = useState<string | null>(null); // 에러 상태
 
+  // TODO 데이터 요청 함수 분리
   useEffect(() => {
     // 즐겨찾기 데이터 가져오기
     const fetchFavorites = async () => {
