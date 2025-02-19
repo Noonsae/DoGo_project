@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 import useHistoryStore from '@/store/useHistoryStore';
 
-import useFavoriteStore from '@/hooks/favorite/useFavoriteStore';
+import useFavoriteStore from '@/store/useFavoriteStore';
 import useFetchHotelsFilter from '@/hooks/hotel/useFetchHotelsFilter';
 
 import { HotelWithPriceOnly } from '@/types/supabase/hotel-type';

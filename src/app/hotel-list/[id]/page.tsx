@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 
 import useAuthStore from '@/store/useAuth';
-import useFavoriteStore from '@/hooks/favorite/useFavoriteStore';
+import useFavoriteStore from '@/store/useFavoriteStore';
 
 import useHotelReviews from '@/hooks/review/useHotelReviews';
 import useHotelRooms from '@/hooks/room/useHotelRooms';
