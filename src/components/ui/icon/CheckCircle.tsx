@@ -1,5 +1,4 @@
-import React from 'react';
-
+// TODO 유동적인 색상을 지정할 수 있도록 
 const CheckCircle = () => {
   return (
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">

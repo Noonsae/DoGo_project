@@ -1,10 +1,13 @@
 'use client';
+
 import { FormState, ErrorState } from '@/types/auth/FindPasswordModalTypes';
+
+import { isValidPassword } from '@/utils/calculator/validation';
+
 import CloseEyesIcon from '@/components/ui/icon/CloseEyesIcon';
 import OpenEyesIcon from '@/components/ui/icon/OpenEyesIcon';
-import { isValidPassword } from '@/utils/calculator/validation';
-import React from 'react';
 
+// TODO 타입 정리하기
 interface ResetModalProps {
   form: FormState;
   errors: ErrorState;

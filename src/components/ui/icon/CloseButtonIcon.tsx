@@ -1,5 +1,4 @@
 import { IconType } from '@/types/icon/icon-type';
-import React from 'react';
 
 const CloseButtonIcon = ({ className }: IconType) => {
   return (

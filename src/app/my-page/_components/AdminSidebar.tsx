@@ -1,7 +1,6 @@
 'use client';
 
-import React from 'react';
-
+//TODO 타입파일 정리
 interface AdminSidebarProps {
   currentTab: string; // 현재 선택된 탭의 ID
   setCurrentTab: (tab: 'company' | 'requests' | 'bookings'|'inquiry') => void; // 탭 변경 함수

@@ -1,6 +1,6 @@
-import React from 'react';
+import { IconType } from "@/types/icon/icon-type";
 
-const CloseEyesIcon = ({ className }: { className?: string }) => {
+const CloseEyesIcon = ({ className }: IconType) => {
   return (
     <div>
       <svg

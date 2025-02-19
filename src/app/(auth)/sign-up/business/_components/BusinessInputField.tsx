@@ -1,7 +1,9 @@
 'use client';
+
 import CloseEyesIcon from '@/components/ui/icon/CloseEyesIcon';
 import OpenEyesIcon from '@/components/ui/icon/OpenEyesIcon';
-import React from 'react';
+
+// TODO 타입 파일 정리하기 
 interface BusinessInputFieldProps {
   label: string;
   type?: 'text' | 'email' | 'password' | 'tel';
@@ -15,6 +17,7 @@ interface BusinessInputFieldProps {
   helperText?: string;
   className?: string;
 }
+
 const BusinessInputField = ({
   label,
   type = 'text',
