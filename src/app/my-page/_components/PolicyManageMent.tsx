@@ -2,16 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { browserSupabase } from '@/supabase/supabase-client';
+import { PolicyType } from '@/types/supabase/policy-type';
 
 // 정책 데이터를 나타내는 인터페이스 정의
 // TODO 타입 파일 분리 
-interface Policy {
-  id: string; // 정책 ID
-  policy_name: string; // 정책 이름
-  description: string | null; // 정책 설명
-  hotel_id: string | null; // 호텔 ID
-  created_at: string; // 생성 날짜
-}
 
 // Props 타입 정의
 interface PolicyManagementProps {
@@ -21,12 +15,12 @@ interface PolicyManagementProps {
 
 // PolicyManagement 컴포넌트
 const PolicyManagement: React.FC<PolicyManagementProps> = ({ userId, hotelId }) => {
-  const [policies, setPolicies] = useState<Policy[]>([]); // 정책 리스트
+  const [policies, setPolicies] = useState<PolicyType[]>([]); // 정책 리스트
   const [loading, setLoading] = useState(true); // 로딩 상태
   const [error, setError] = useState<string | null>(null); // 에러 메시지
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
   const [modalType, setModalType] = useState<'add' | 'edit'>('add'); // 모달 타입 ('add' 또는 'edit')
-  const [selectedPolicy, setSelectedPolicy] = useState<Policy | null>(null); // 선택된 정책 데이터
+  const [selectedPolicy, setSelectedPolicy] = useState<PolicyType | null>(null); // 선택된 정책 데이터
 
   // 정책 데이터 가져오기
   // TODO 코드의 필요성 검증 이후 데이터 요청 함수 분리
@@ -40,7 +34,7 @@ const PolicyManagement: React.FC<PolicyManagementProps> = ({ userId, hotelId }) 
 
         if (error) throw error;
 
-        setPolicies((data as Policy[]) || []);
+        setPolicies((data as PolicyType[]) || []);
       } catch (err) {
         console.error('Error fetching policies:', err);
         setError('정책 데이터를 불러오는 중 오류가 발생했습니다.');
@@ -77,7 +71,7 @@ const PolicyManagement: React.FC<PolicyManagementProps> = ({ userId, hotelId }) 
       // 데이터 새로고침
       const { data } = await browserSupabase().from('policies').select('*').eq('hotel_id', hotelId);
 
-      setPolicies((data as Policy[]) || []);
+      setPolicies((data as PolicyType[]) || []);
       closeModal();
     } catch (err) {
       console.error('Error saving policy:', err);
@@ -99,7 +93,7 @@ const PolicyManagement: React.FC<PolicyManagementProps> = ({ userId, hotelId }) 
   };
 
   // 모달 열기
-  const openModal = (type: 'add' | 'edit', policy?: Policy) => {
+  const openModal = (type: 'add' | 'edit', policy?: PolicyType) => {
     setModalType(type);
     setSelectedPolicy(policy || null);
     setIsModalOpen(true);
